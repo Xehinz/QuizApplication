@@ -1,27 +1,28 @@
 package utils.datumWrapper;
 
+import static java.lang.Math.abs;
+
+import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.text.DateFormatSymbols;
-
-import static java.lang.Math.*;
 
 /**
- * 
+ *
  * Custom Datum klasse die de java.util.GregorianCalendar klasse wrapt
- * 
+ *
  * @author Bert Neyt
  * @author Adriaan Kuipers
  * @author Ben Vandenberk
  * @version 4/10/2014
- * 
+ *
  */
 public class Datum implements Comparable<Datum> {
 
 	private GregorianCalendar gregorianCalendarDatum;
 
 	public Datum() {
-		this.gregorianCalendarDatum = new GregorianCalendar();
+		GregorianCalendar vandaag = new GregorianCalendar();
+		setDatum(vandaag.get(Calendar.DAY_OF_MONTH), vandaag.get(Calendar.MONTH) + 1, vandaag.get(Calendar.YEAR));
 	}
 
 	public Datum(int dag, int maand, int jaar) {
@@ -83,10 +84,12 @@ public class Datum implements Comparable<Datum> {
 		return this.getDag() + "/" + this.getMaand() + "/" + this.getJaar();
 	}
 
+	@Override
 	public String toString() {
 		return this.getDag() + " " + new DateFormatSymbols().getMonths()[this.getMaand() - 1] + " " + this.getJaar();
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Datum) {
 			return this.getDatumInAmerikaansFormaat().equals(((Datum) obj).getDatumInAmerikaansFormaat());
@@ -95,6 +98,7 @@ public class Datum implements Comparable<Datum> {
 		}
 	}
 
+	@Override
 	public int compareTo(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		return this.gregorianCalendarDatum.compareTo(inputDatum);
