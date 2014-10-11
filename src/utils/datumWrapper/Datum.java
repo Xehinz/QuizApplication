@@ -8,14 +8,15 @@ import static java.lang.Math.*;
 
 /**
  * 
+ * Custom Datum klasse die de java.util.GregorianCalendar klasse wrapt
+ * 
  * @author Bert Neyt
  * @author Adriaan Kuipers
  * @author Ben Vandenberk
- * Custom Datum klasse die de java.util.GregorianCalendar klasse wrapt
- * Versie 4/10/2014
+ * @version 4/10/2014
  * 
  */
-public class Datum {
+public class Datum implements Comparable<Datum> {
 
 	private GregorianCalendar gregorianCalendarDatum;
 
@@ -85,27 +86,26 @@ public class Datum {
 	public String toString() {
 		return this.getDag() + " " + new DateFormatSymbols().getMonths()[this.getMaand() - 1] + " " + this.getJaar();
 	}
-	
+
 	public boolean equals(Object obj) {
-		if(obj instanceof Datum){
-			return this.getDatumInAmerikaansFormaat().equals(((Datum)obj).getDatumInAmerikaansFormaat());
-		}
-		else {
+		if (obj instanceof Datum) {
+			return this.getDatumInAmerikaansFormaat().equals(((Datum) obj).getDatumInAmerikaansFormaat());
+		} else {
 			return false;
 		}
 	}
-	
+
 	public int compareTo(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		return this.gregorianCalendarDatum.compareTo(inputDatum);
 	}
-	
-	public boolean kleinerDan (Datum datum) {
+
+	public boolean kleinerDan(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		return inputDatum.before(this.gregorianCalendarDatum);
 	}
-	
-	public int verschilInJaren (Datum datum) {
+
+	public int verschilInJaren(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		if (this.equals(datum)) {
 			return 0;
@@ -113,21 +113,20 @@ public class Datum {
 		int verschil = -1;
 		if (this.gregorianCalendarDatum.after(inputDatum)) {
 			while (inputDatum.before(this.gregorianCalendarDatum)) {
-			    inputDatum.add(Calendar.YEAR, 1);
-			    verschil++;
+				inputDatum.add(Calendar.YEAR, 1);
+				verschil++;
 			}
-		}
-		else {
+		} else {
 			GregorianCalendar thisClone = new GregorianCalendar(this.getJaar(), this.getMaand() - 1, this.getDag());
 			while (thisClone.before(inputDatum)) {
 				thisClone.add(Calendar.YEAR, 1);
-			    verschil++;
+				verschil++;
 			}
 		}
 		return verschil;
 	}
-	
-	public int verschilInMaanden (Datum datum) {
+
+	public int verschilInMaanden(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		if (this.equals(datum)) {
 			return 0;
@@ -135,20 +134,18 @@ public class Datum {
 		int verschil = -1;
 		if (this.gregorianCalendarDatum.after(inputDatum)) {
 			while (inputDatum.before(this.gregorianCalendarDatum)) {
-			    inputDatum.add(Calendar.MONTH, 1);
-			    verschil++;
+				inputDatum.add(Calendar.MONTH, 1);
+				verschil++;
 			}
-		}
-		else {
+		} else {
 			GregorianCalendar thisClone = new GregorianCalendar(this.getJaar(), this.getMaand() - 1, this.getDag());
 			while (thisClone.before(inputDatum)) {
 				thisClone.add(Calendar.MONTH, 1);
-			    verschil++;
+				verschil++;
 			}
 		}
 		return verschil;
 	}
-	
 
 	public int verschilInDagen(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
@@ -161,42 +158,42 @@ public class Datum {
 	}
 
 	public Datum getVeranderdeDatum(int aantalDagen) {
-		Datum resultaatDatum = new Datum(this);		
-		resultaatDatum.veranderDatum(aantalDagen);		
+		Datum resultaatDatum = new Datum(this);
+		resultaatDatum.veranderDatum(aantalDagen);
 		return resultaatDatum;
 	}
 
 	public static void main(String[] args) {
-		Datum a = new Datum(12,07,2012);
+		Datum a = new Datum(12, 07, 2012);
 		a.getDatumInEuropeesFormaat();
 		System.out.println(a.getDatumInEuropeesFormaat());
-		Datum b = new Datum(12,07,2012);
+		Datum b = new Datum(12, 07, 2012);
 		System.out.println(b.getDatumInEuropeesFormaat());
-		Datum c = new Datum(17,05,2015);
+		Datum c = new Datum(17, 05, 2015);
 		System.out.println(c.getDatumInEuropeesFormaat());
-		Datum d = new Datum(04,01,1999);
+		Datum d = new Datum(04, 01, 1999);
 		System.out.println(d.getDatumInEuropeesFormaat());
 		System.out.println();
-		
+
 		System.out.println(a.compareTo(b));
 		System.out.println(a.compareTo(c));
 		System.out.println(a.compareTo(d));
 		System.out.println();
-		
+
 		System.out.println(a.equals(b));
 		System.out.println(a.equals(c));
 		System.out.println();
-		
+
 		System.out.println(a.kleinerDan(b));
 		System.out.println(a.kleinerDan(c));
 		System.out.println(a.kleinerDan(d));
 		System.out.println();
-		
+
 		System.out.println(a.verschilInJaren(b));
 		System.out.println(a.verschilInJaren(c));
 		System.out.println(a.verschilInJaren(d));
 		System.out.println();
-		
+
 		System.out.println(a.verschilInMaanden(b));
 		System.out.println(a.verschilInMaanden(c));
 		System.out.println(a.verschilInMaanden(d));
