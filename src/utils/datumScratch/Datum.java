@@ -1,7 +1,10 @@
 package utils.datumScratch;
 
-import java.util.Calendar;
+//Datum Klasse 'from scratch'
+//Authors: Tim Cool & Jef Bellens
+//Versie 1.2 : 11/10/2014 'Added Equals & CompareTo Method'
 
+import java.util.Calendar;
 import javax.naming.directory.InvalidAttributesException;
 
 public class Datum implements Comparable<Datum> {
@@ -68,7 +71,7 @@ public class Datum implements Comparable<Datum> {
 	}
 	
 	
-	public Datum veranderDatum(int aantalDagen) {
+	public Datum veranderDatum(int aantalDagen) throws InvalidAttributesException {
 		int dagen = convertDatumNaarDagen(this);
 
 		dagen += aantalDagen;
@@ -193,20 +196,39 @@ public class Datum implements Comparable<Datum> {
 
 	@Override
 	public int compareTo(Datum arg0) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (this.equals(arg0)) {
+			return 0;
+		} else if(arg0.kleinerDan(this)) {
+			return -1;
+		}
+		return 1;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Datum)
+		{
+			if (this.toString().equals(((Datum)obj).toString()))
+				return true;
+			 else
+				return false;
+		}
+		else
+		return false;
+	}
 	
 	
 	public static void main(String[] args) {
 		try {
+			//Testcode
 			Datum datum;
 			Datum datum2;
 			
-			datum = new Datum("01/02/1992");
+			datum = new Datum("03/02/1991");
+			datum2 = new Datum("03/02/1991");
 			
-			datum2 = new Datum("29/01/1991");
+			//datum2 = new Datum("29/01/1991");
+			System.out.print(datum.equals(datum2) + " " + datum.compareTo(datum2)+"\n");
 			System.out.print(datum + " is een schrikkeljaar? " + datum.schrikkelJaar(datum.jaar) + datum.convertDatumNaarDagen(datum) + "\n");
 			System.out.print(datum2 + " is een schrikkeljaar? " + datum2.schrikkelJaar(datum.jaar) + datum2.convertDatumNaarDagen(datum2) + "\n");
 			System.out.print("Amerikaans Formaat:\t" + datum.getDatumInAmerikaansFormaat() + "\n");
