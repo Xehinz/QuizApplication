@@ -161,10 +161,8 @@ public class Datum {
 	}
 
 	public Datum getVeranderdeDatum(int aantalDagen) {
-		Datum resultaatDatum = new Datum(this);
-		System.out.println("_Trace_" + resultaatDatum);
-		resultaatDatum.veranderDatum(aantalDagen);
-		System.out.println("_Trace_" + resultaatDatum);
+		Datum resultaatDatum = new Datum(this);		
+		resultaatDatum.veranderDatum(aantalDagen);		
 		return resultaatDatum;
 	}
 
