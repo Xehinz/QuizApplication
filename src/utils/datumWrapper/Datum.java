@@ -20,11 +20,27 @@ public class Datum implements Comparable<Datum> {
 
 	private GregorianCalendar gregorianCalendarDatum;
 
+	/**
+	 * Maakt een datum object aan met als waarde de dag van vandaag
+	 */
 	public Datum() {
 		GregorianCalendar vandaag = new GregorianCalendar();
 		setDatum(vandaag.get(Calendar.DAY_OF_MONTH), vandaag.get(Calendar.MONTH) + 1, vandaag.get(Calendar.YEAR));
 	}
 
+	/**
+	 * Maakt een datum object aan
+	 *
+	 * @param dag
+	 *            de dag van de maand
+	 * @param maand
+	 *            de maand
+	 * @param jaar
+	 *            het jaar
+	 *
+	 * @throws IllegalArgumentException
+	 *             als een van de argumenten of de combinatie van argumenten ongeldig is
+	 */
 	public Datum(int dag, int maand, int jaar) {
 		boolean b = this.setDatum(dag, maand, jaar);
 		if (!b) {
@@ -32,10 +48,24 @@ public class Datum implements Comparable<Datum> {
 		}
 	}
 
+	/**
+	 * Maakt een datum object aan op basis van een ander datum object
+	 *
+	 * @param datum
+	 *            het datum object op basis waarvan de constructor een nieuw datum object aanmaakt
+	 */
 	public Datum(Datum datum) {
 		this(datum.getDag(), datum.getMaand(), datum.getJaar());
 	}
 
+	/**
+	 * Maakt een datum object aan op basis van een string. Format: DD/MM/YYYY
+	 *
+	 * @param datum
+	 *            de String met een datum waarde (DD/MM/YYYY)
+	 * @throws IllegalArgumentException
+	 *             als de input String van een foutief formaat is of als de datumwaarde ongeldig is
+	 */
 	public Datum(String datum) {
 		String[] parts = datum.split("/");
 		String dag = parts[0];
@@ -44,25 +74,51 @@ public class Datum implements Comparable<Datum> {
 		try {
 			boolean b = this.setDatum(Integer.parseInt(dag), Integer.parseInt(maand), Integer.parseInt(jaar));
 			if (!b) {
-				throw new IllegalArgumentException("Ongeldige datum!");
+				throw new IllegalArgumentException("Ongeldige datum");
 			}
 		} catch (NumberFormatException N) {
-			throw new NumberFormatException(N.getMessage() + ": Foutieve input");
+			throw new IllegalArgumentException("Foutieve input", N);
 		}
 	}
 
+	/**
+	 * Haalt het jaar-gedeelte van het datum object op
+	 *
+	 * @return het jaar
+	 */
 	public int getJaar() {
 		return this.gregorianCalendarDatum.get(GregorianCalendar.YEAR);
 	}
 
+	/**
+	 * Haalt het maand-gedeelte van het datum object op
+	 *
+	 * @return de maand
+	 */
 	public int getMaand() {
 		return this.gregorianCalendarDatum.get(GregorianCalendar.MONTH) + 1;
 	}
 
+	/**
+	 * Haalt het dag-gedeelte van het datum object op
+	 *
+	 * @return de dag
+	 */
 	public int getDag() {
 		return this.gregorianCalendarDatum.get(GregorianCalendar.DAY_OF_MONTH);
 	}
 
+	/**
+	 * Zet het datum object op een geldige waarde
+	 *
+	 * @param dag
+	 *            de dag van de maand
+	 * @param maand
+	 *            de maand
+	 * @param jaar
+	 *            het jaar
+	 * @return true als het zetten van de datum gelukt is
+	 */
 	public boolean setDatum(int dag, int maand, int jaar) {
 		try {
 			GregorianCalendar GC = new GregorianCalendar(jaar, maand - 1, dag);
@@ -76,10 +132,20 @@ public class Datum implements Comparable<Datum> {
 		}
 	}
 
+	/**
+	 * Geeft een string terug in Amerikaans formaat (YYYY/MM/DD)
+	 *
+	 * @return een string in Amerikaans formaat (YYYY/MM/DD)
+	 */
 	public String getDatumInAmerikaansFormaat() {
 		return this.getJaar() + "/" + this.getMaand() + "/" + this.getDag();
 	}
 
+	/**
+	 * Geeft een string terug in Europees formaat (DD/MM/YYYY)
+	 *
+	 * @return een string in Europees formaat (DD/MM/YYYY)
+	 */
 	public String getDatumInEuropeesFormaat() {
 		return this.getDag() + "/" + this.getMaand() + "/" + this.getJaar();
 	}
@@ -104,11 +170,25 @@ public class Datum implements Comparable<Datum> {
 		return this.gregorianCalendarDatum.compareTo(inputDatum);
 	}
 
+	/**
+	 * Geeft true terug als het datum object zich chronologisch vóór het meegegeven datum object bevindt
+	 *
+	 * @param datum
+	 *            het datum object waarmee vergeleken wordt
+	 * @return true als het datum object zich chronologisch vóór het meegegeven datum object bevindt
+	 */
 	public boolean kleinerDan(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		return inputDatum.before(this.gregorianCalendarDatum);
 	}
 
+	/**
+	 * Geeft het aantal gehele jaren terug dat zich bevindt tussen het datum object en het meegegeven datum object
+	 *
+	 * @param datum
+	 *            het datum object waarmee vergeleken wordt
+	 * @return het aantal gehele jaren dat zich bevindt tussen het datum object en het meegegeven datum object
+	 */
 	public int verschilInJaren(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		if (this.equals(datum)) {
@@ -130,6 +210,13 @@ public class Datum implements Comparable<Datum> {
 		return verschil;
 	}
 
+	/**
+	 * Geeft het aantal gehele maanden terug dat zich bevindt tussen het datum object en het meegegeven datum object
+	 *
+	 * @param datum
+	 *            het datum object waarmee vergeleken wordt
+	 * @return het aantal gehele maanden dat zich bevindt tussen het datum object en het meegegeven datum object
+	 */
 	public int verschilInMaanden(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		if (this.equals(datum)) {
@@ -151,57 +238,41 @@ public class Datum implements Comparable<Datum> {
 		return verschil;
 	}
 
+	/**
+	 * Geeft het aantal gehele dagen terug dat zich bevindt tussen het datum object en het meegegeven datum object
+	 *
+	 * @param datum
+	 *            het datum object waarmee vergeleken wordt
+	 * @return het aantal gehele dagen dat zich bevindt tussen het datum object en het meegegeven datum object
+	 */
 	public int verschilInDagen(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
 		long verschil = abs(inputDatum.getTimeInMillis() - this.gregorianCalendarDatum.getTimeInMillis());
 		return (int) (verschil / (1000 * 60 * 60 * 24));
 	}
 
+	/**
+	 * Verandert de datum met het meegegeven aantal dagen. Een positief getal verhoogt de datum, een negatief getal
+	 * verlaagt ze
+	 *
+	 * @param aantalDagen
+	 *            het aantal dagen waarmee de datum aangepast wordt
+	 */
 	public void veranderDatum(int aantalDagen) {
 		this.gregorianCalendarDatum.add(Calendar.DAY_OF_YEAR, aantalDagen);
 	}
 
+	/**
+	 * Geeft een datum object terug dat verschilt van het huidige met het meegegeven aantal dagen. Een positieve waarde
+	 * geeft een latere datum terug, een negatieve een eerdere
+	 *
+	 * @param aantalDagen
+	 *            het aantal dagen waarmee de teruggegeven datum verschilt van het datum object
+	 * @return het datum object dat met het aantal dagen is veranderd
+	 */
 	public Datum getVeranderdeDatum(int aantalDagen) {
 		Datum resultaatDatum = new Datum(this);
 		resultaatDatum.veranderDatum(aantalDagen);
 		return resultaatDatum;
 	}
-
-	public static void main(String[] args) {
-		Datum a = new Datum(12, 07, 2012);
-		a.getDatumInEuropeesFormaat();
-		System.out.println(a.getDatumInEuropeesFormaat());
-		Datum b = new Datum(12, 07, 2012);
-		System.out.println(b.getDatumInEuropeesFormaat());
-		Datum c = new Datum(17, 05, 2015);
-		System.out.println(c.getDatumInEuropeesFormaat());
-		Datum d = new Datum(04, 01, 1999);
-		System.out.println(d.getDatumInEuropeesFormaat());
-		System.out.println();
-
-		System.out.println(a.compareTo(b));
-		System.out.println(a.compareTo(c));
-		System.out.println(a.compareTo(d));
-		System.out.println();
-
-		System.out.println(a.equals(b));
-		System.out.println(a.equals(c));
-		System.out.println();
-
-		System.out.println(a.kleinerDan(b));
-		System.out.println(a.kleinerDan(c));
-		System.out.println(a.kleinerDan(d));
-		System.out.println();
-
-		System.out.println(a.verschilInJaren(b));
-		System.out.println(a.verschilInJaren(c));
-		System.out.println(a.verschilInJaren(d));
-		System.out.println();
-
-		System.out.println(a.verschilInMaanden(b));
-		System.out.println(a.verschilInMaanden(c));
-		System.out.println(a.verschilInMaanden(d));
-		System.out.println();
-	}
-
 }
