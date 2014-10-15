@@ -3,9 +3,11 @@ package util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -242,5 +244,94 @@ public class DatumTest {
 	public void test_veranderDatum_geeft_juiste_datum() {
 		datum.veranderDatum(3);
 		assertEquals(datum, veranderdeDatum);
+	}
+	
+	@Test
+	public void test_setDatum_veel_random_datums_correct_geevalueerd() {
+
+		Random random = new Random();
+		int[][] geldigeDatums = new int[10000][];
+		int[][] ongeldigeDatums = new int[10000][];
+		int dag, maand, jaar;
+		int ongeldigeIndex = 0, geldigeIndex = 0;
+
+		GregorianCalendar datumTester = new GregorianCalendar();
+		datumTester.setLenient(false);
+
+		for (int i = 0; i < 10000; i++) {
+			dag = random.nextInt(40);
+			maand = random.nextInt(16);
+			jaar = random.nextInt(11500) - 500;
+
+			datumTester.set(jaar, maand - 1, dag);
+			try {
+				datumTester.getTime();
+				if (jaar < 0 || jaar > 9999) {
+					throw new IllegalArgumentException();
+				}
+				geldigeDatums[geldigeIndex++] = new int[] { dag, maand, jaar };
+			} catch (IllegalArgumentException ex) {
+				ongeldigeDatums[ongeldigeIndex++] = new int[] { dag, maand, jaar };
+			}
+		}
+
+		for (int i = 0; i < geldigeIndex; i++) {
+			assertTrue(datum.setDatum(geldigeDatums[i][0], geldigeDatums[i][1], geldigeDatums[i][2]));
+		}
+
+		for (int i = 0; i < ongeldigeIndex; i++) {
+			assertFalse(datum.setDatum(ongeldigeDatums[i][0], ongeldigeDatums[i][1], ongeldigeDatums[i][2]));
+		}
+	}
+
+	@Test
+	public void test_Datum_3int_veel_random_datums_correct_verwerkt() {
+
+		Random random = new Random();
+		int[][] geldigeDatums = new int[10000][];
+		int[][] ongeldigeDatums = new int[10000][];
+		int dag, maand, jaar;
+		int ongeldigeIndex = 0, geldigeIndex = 0;
+
+		GregorianCalendar datumTester = new GregorianCalendar();
+		datumTester.setLenient(false);
+
+		for (int i = 0; i < 10000; i++) {
+			dag = random.nextInt(40);
+			maand = random.nextInt(16);
+			jaar = random.nextInt(11500) - 500;
+
+			datumTester.set(jaar, maand - 1, dag);
+			try {
+				datumTester.getTime();
+				if (jaar < 0 || jaar > 9999) {
+					throw new IllegalArgumentException();
+				}
+				geldigeDatums[geldigeIndex++] = new int[] { dag, maand, jaar };
+			} catch (IllegalArgumentException ex) {
+				ongeldigeDatums[ongeldigeIndex++] = new int[] { dag, maand, jaar };
+			}
+		}
+
+		Datum testDatum;
+
+		for (int i = 0; i < geldigeIndex; i++) {
+			try {
+				testDatum = new Datum(geldigeDatums[i][0], geldigeDatums[i][1], geldigeDatums[i][2]);
+			} catch (Exception ex) {
+				fail("Een geldige datum is niet aanvaard");
+			}
+		}
+
+		int aantalExceptions = 0;
+		for (int i = 0; i < ongeldigeIndex; i++) {
+			try {
+				testDatum = new Datum(ongeldigeDatums[i][0], ongeldigeDatums[i][1], ongeldigeDatums[i][2]);
+			} catch (IllegalArgumentException ex) {
+				aantalExceptions++;
+			}
+		}
+
+		assertEquals("Niet aanvaarden van ongeldige datums", ongeldigeIndex, aantalExceptions);
 	}
 }
