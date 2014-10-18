@@ -121,7 +121,7 @@ public class Datum implements Comparable<Datum> {
 	 */
 	public boolean setDatum(int dag, int maand, int jaar) {
 		try {
-			if (jaar < 0 || jaar > 9999) {
+			if (jaar < 1 || jaar > 9999) {
 				return false;
 			}
 			this.gregorianCalendarDatum = new GregorianCalendar(jaar, maand - 1, dag);
@@ -262,6 +262,10 @@ public class Datum implements Comparable<Datum> {
 	 */
 	public void veranderDatum(int aantalDagen) {
 		this.gregorianCalendarDatum.add(Calendar.DAY_OF_YEAR, aantalDagen);
+		if (this.gregorianCalendarDatum.get(Calendar.ERA) == 0 || this.getJaar() > 9999) {
+			this.gregorianCalendarDatum.add(Calendar.DAY_OF_YEAR, -aantalDagen);
+			throw new IllegalArgumentException("Jaar buiten bereik");
+		}
 	}
 
 	/**

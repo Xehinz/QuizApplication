@@ -16,7 +16,8 @@ import util.datumWrapper.Datum;
 
 public class DatumTest {
 
-	private Datum geldigeDatum, eerdereDatum, latereDatum, zelfdeDatum, datum, datumString, veranderdeDatum;
+	private Datum geldigeDatum, eerdereDatum, latereDatum, zelfdeDatum, datum, datumString, veranderdeDatum, eersteDatum,
+			laatsteDatum, schrikkelDatum;
 
 	@Before
 	public void setUp() {
@@ -25,12 +26,15 @@ public class DatumTest {
 		veranderdeDatum = new Datum(14, 10, 2014);
 		geldigeDatum = new Datum(1, 2, 1980);
 		eerdereDatum = new Datum(31, 1, 1980);
-		latereDatum = new Datum(2, 2, 1980);
+		latereDatum = new Datum(2, 3, 1980);
 		zelfdeDatum = new Datum(1, 2, 1980);
+		eersteDatum = new Datum(1, 1, 1);
+		laatsteDatum = new Datum(31, 12, 9999);
+		schrikkelDatum = new Datum(29, 2, 2012);
 	}
 
 	@Test
-	public void test_Datum_Datum_datums_gelijk() {
+	public void testDatum_DatumAlsInput_DatumsZijnGelijk() {
 		Datum datum = new Datum(geldigeDatum);
 		assertEquals("Dag gelijk", geldigeDatum.getDag(), datum.getDag());
 		assertEquals("Maand gelijk", geldigeDatum.getMaand(), datum.getMaand());
@@ -38,7 +42,7 @@ public class DatumTest {
 	}
 
 	@Test
-	public void test_Datum_NoParam_datum_gelijk_aan_systeemdatum() {
+	public void testDatum_NoParam_DatumGelijkAanSysteemDatum() {
 		Datum datum = new Datum();
 		GregorianCalendar gregorianCalendar = new GregorianCalendar();
 		assertEquals("Dag gelijk", gregorianCalendar.get(Calendar.DAY_OF_MONTH), datum.getDag());
@@ -47,39 +51,39 @@ public class DatumTest {
 	}
 
 	@Test
-	public void test_getDatumInAmerikaansFormaat_string_in_juist_formaat() {
+	public void testGetDatumInAmerikaansFormaat_VanEenderWelkeDatum_StringInJuistFormaat() {
 		assertEquals("Datumstrings gelijk", "1980/2/1", geldigeDatum.getDatumInAmerikaansFormaat());
 	}
 
 	@Test
-	public void test_compareTo_zelfde_datum_geeft_0() {
+	public void testCompareTo_zelfdeDatum_Geeft0() {
 		assertEquals("Zelfde datum", 0, geldigeDatum.compareTo(zelfdeDatum));
 	}
 
 	@Test
-	public void test_compareTo_eerdere_datum_geeft_positief() {
+	public void testCompareTo_EerdereDatum_GeeftPositief() {
 		assertTrue(geldigeDatum.compareTo(eerdereDatum) > 0);
 	}
 
 	@Test
-	public void test_compareTo_latere_datum_geeft_negatief() {
+	public void testCompareTo_LatereDatum_GeeftNegatief() {
 		assertTrue(geldigeDatum.compareTo(latereDatum) < 0);
 	}
 
 	@Test
-	public void test_verschilInDagen_geen_verschil_geeft_0() {
+	public void testVerschilInDagen_GeenVerschil_Geeft0() {
 		assertEquals("Zelfde datum", 0, geldigeDatum.verschilInDagen(zelfdeDatum));
 	}
 
 	@Test
-	public void test_verschilInDagen_groot_verschil_correcte_waarde() {
+	public void testVerschilInDagen_GrootVerschil_GeeftCorrecteWaarde() {
 		// Juiste verschilwaarde berekend met on-line tool (http://www.timeanddate.com/date/duration.html)
 		Datum datumLangGeleden = new Datum(13, 2, 1599);
 		assertEquals("Verschil in dagen", 139145, geldigeDatum.verschilInDagen(datumLangGeleden));
 	}
 
 	@Test
-	public void test_verschilInDagen_verschillende_datum_minder_dan_24_uur_geeft_1() throws InterruptedException {
+	public void testVerschilInDagen_VerschillendeDatumMinderDan24Uur_Geeft1() throws InterruptedException {
 		Datum vandaag = new Datum();
 		Thread.sleep(10);
 		Datum vandaagEenBeetjeLater = new Datum();
@@ -88,34 +92,39 @@ public class DatumTest {
 	}
 
 	@Test
-	public void test_Datum_3int_gelijk_aan_input() {
+	public void testDatum_3IntInput_MaaktJuisteDatum() {
 		assertEquals("Dag gelijk", 1, geldigeDatum.getDag());
 		assertEquals("Maand gelijk", 2, geldigeDatum.getMaand());
 		assertEquals("Jaar gelijk", 1980, geldigeDatum.getJaar());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_3int_ongeldige_dag() {
+	public void testDatum3Int_OngeldigeDag_ThrowsIllegalArgumentException() {
 		Datum datum = new Datum(31, 4, 2000);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_3int_ongeldige_maand() {
+	public void testDatum3Int_OngeldigeMaand_ThrowsIllegalArgumentException() {
 		Datum datum = new Datum(4, 15, 2000);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_3int_ongeldig_jaar() {
+	public void testDatum3Int_TeHoogJaar_ThrowsIllegalArgumentException() {
 		Datum datum = new Datum(4, 4, 50000);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_3int_ongeldige_schrikkeldag() {
+	public void testDatum3Int_TeLaagJaar_ThrowsIllegalArgumentException() {
+		Datum datum = new Datum(4, 4, -10);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testDatum3Int_OngeldigeSchrikkeldag_ThrowsIllegalArgumentException() {
 		Datum datum = new Datum(29, 2, 1999);
 	}
 
 	@Test
-	public void test_setDatum_gelijk_aan_input() {
+	public void testSetDatum_GeldigeInput_ZetJuisteDatum() {
 		geldigeDatum.setDatum(4, 4, 2000);
 		assertEquals("Dag gelijk", 4, geldigeDatum.getDag());
 		assertEquals("Maand gelijk", 4, geldigeDatum.getMaand());
@@ -123,142 +132,247 @@ public class DatumTest {
 	}
 
 	@Test
-	public void test_setDatum_ongeldige_dag_geeft_false() {
+	public void testSetDatum_OngeldigeDag_GeeftFalse() {
 		assertFalse(geldigeDatum.setDatum(31, 4, 2000));
 	}
 
 	@Test
-	public void test_setDatum_ongeldige_maand_geeft_false() {
+	public void testSetDatum_OngeldigeMaand_GeeftFalse() {
 		assertFalse(geldigeDatum.setDatum(4, 15, 2000));
 	}
 
 	@Test
-	public void test_setDatum_ongeldig_jaar_geeft_false() {
+	public void testSetDatum_TeHoogJaar_GeeftFalse() {
 		assertFalse(geldigeDatum.setDatum(4, 4, 50000));
 	}
 
 	@Test
-	public void test_setDatum_ongeldige_schrikkeldag_geeft_false() {
+	public void testSetDatum_TeLaagJaar_GeeftFalse() {
+		assertFalse(geldigeDatum.setDatum(4, 4, -10));
+	}
+
+	@Test
+	public void testSetDatum_OngeldigeSchrikkeldag_GeeftFalse() {
 		assertFalse(geldigeDatum.setDatum(29, 2, 1999));
 	}
 
 	@Test
-	public void test_equals_zelfde_datum_geeft_true() {
+	public void testEquals_ZelfdeDatum_GeeftTrue() {
 		assertTrue(geldigeDatum.equals(zelfdeDatum));
 	}
 
 	@Test
-	public void test_equals_null_geeft_false() {
+	public void testEquals_Null_GeeftFalse() {
 		assertTrue(!geldigeDatum.equals(null));
 	}
 
 	@Test
-	public void test_equals_andere_klasse_geeft_false() {
+	public void testEquals_AndereKlasse_GeeftFalse() {
 		Object obj = new Object();
 		assertTrue(!geldigeDatum.equals(obj));
 	}
 
 	@Test
-	public void test_equals_andere_dag_geeft_false() {
+	public void testEquals_AndereDag_GeeftFalse() {
 		Datum datum = new Datum(2, 2, 1980);
 		assertTrue(!geldigeDatum.equals(datum));
 	}
 
 	@Test
-	public void test_equals_andere_maand_geeft_false() {
+	public void testEquals_AndereMaand_GeeftFalse() {
 		Datum datum = new Datum(1, 4, 1980);
 		assertTrue(!geldigeDatum.equals(datum));
 	}
 
 	@Test
-	public void test_equals_ander_jaar_geeft_false() {
+	public void testEquals_AnderJaar_GeeftFalse() {
 		Datum datum = new Datum(1, 2, 1984);
 		assertTrue(!geldigeDatum.equals(datum));
 	}
 
 	@Test
-	public void test_verschilInMaanden_correcte_waarde() {
+	public void testVerschilInMaanden_EenVerschil_WordtCorrectBerekend() {
 		Datum datum = new Datum(5, 1, 1981);
 		assertEquals("Verschil in Maanden", 11, geldigeDatum.verschilInMaanden(datum));
 	}
 
 	@Test
-	public void test_verschilInMaanden_geen_verschil_geeft_0() {
+	public void testVerschilInMaanden_GeenVerschil_Geeft0() {
 		assertEquals("Zelfde datum", 0, geldigeDatum.verschilInDagen(zelfdeDatum));
 	}
 
 	@Test
-	public void test_verschilInMaanden_kleiner_dan_1_geeft_0() {
+	public void testVerschilInMaanden_MinderDanMaandVerschil_Geeft0() {
 		Datum datum = new Datum(5, 1, 1980);
 		assertEquals("Verschil in Maanden", 0, geldigeDatum.verschilInMaanden(datum));
 	}
 
 	@Test
-	public void test_Datum_Met_String_Datum_wordt_aangemaakt() {
+	public void testDatum_StringAlsInput_MaaktJuisteDatumAan() {
 		assertEquals(30, datumString.getDag());
 		assertEquals(9, datumString.getMaand());
 		assertEquals(2014, datumString.getJaar());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_Met_String_faalt_voor_ongeldige_string() {
+	public void testDatumStringInput_OngeldigeInputString_ThrowsIllegalArgumentException() {
 		datum = new Datum("3a/09/2014");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_Met_String_faalt_voor_ongeldig_formaat() {
+	public void testDatumStringInput_OngeldigeInputStringFormaat_ThrowsIllegalArgumentException() {
 		datum = new Datum("01/28/2014");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_Met_String_faalt_voor_ongeldige_dag() {
+	public void testDatumStringInput_OngeldigeDag_ThrowsIllegalArgumentException() {
 		datum = new Datum("29/02/2014");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_Met_String_faalt_voor_ongeldige_maand() {
+	public void testDatumStringInput_OngeldigeMaand_ThrowsIllegalArgumentException() {
 		datum = new Datum("29/24/2014");
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void test_Datum_Met_String_faalt_voor_ongeldig_jaar() {
+	public void testDatumStringInput_TeHoogJaar_ThrowsIllegalArgumentException() {
 		datum = new Datum("29/02/10200");
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testDatumStringInput_TeLaagJaar_ThrowsIllegalArgumentException() {
+		datum = new Datum("29/02/0");
+	}
+
 	@Test
-	public void test_getDatumInEuropeesFormaat_Geeft_Juiste_Formaat() {
+	public void testGetDatumInEuropeesFormaat_VanEenderWelkeDatum_GeeftJuisteFormaat() {
 		assertEquals("11/10/2014", datum.getDatumInEuropeesFormaat());
 	}
 
 	@Test
-	public void test_kleinerDan_true_voor_parameter_Datum_die_kleiner_is() {
+	public void testKleinerDan_InputKleinereDatum_GeeftTrue() {
 		assertTrue(datum.kleinerDan(datumString));
 	}
 
 	@Test
-	public void test_kleinerDan_false_voor_parameter_Datum_die_groter_is() {
+	public void testKleinerDan_InputGrotereDatum_GeeftFalse() {
 		assertFalse(datumString.kleinerDan(datum));
 	}
 
 	@Test
-	public void test_veranderDatum_geeft_juiste_datum() {
+	public void testVeranderDatum_GeeftJuisteDatum() {
 		datum.veranderDatum(3);
 		assertEquals(datum, veranderdeDatum);
 	}
-	
-	@Test
-	public void test_setDatum_veel_random_datums_correct_geevalueerd() {
 
+	@Test
+	public void testGetJaar_VanGeldigeDatum_GeeftCorrectResultaat() {
+		assertTrue("foutief jaar 2014", geldigeDatum.getJaar() == 1980);
+	}
+
+	@Test
+	public void testGetJaar_VanLaatsteJaar_Geeft9999AlsResultaat() {
+		assertTrue("foutief jaar 9999", laatsteDatum.getJaar() == 9999);
+	}
+
+	@Test
+	public void testGetJaar_VanEersteJaar_Geeft1AlsResultaat() {
+		assertTrue("foutief jaar 1", eersteDatum.getJaar() == 1);
+	}
+
+	@Test
+	public void testGetMaand_VanMaand10_Geeft10AlsResultaat() {
+		assertTrue("foutieve maand 10", geldigeDatum.getMaand() == 2);
+	}
+
+	@Test
+	public void testGetDag_VanDag1_Geeft1AlsResultaat() {
+		assertTrue("foutieve dag 1", geldigeDatum.getDag() == 1);
+	}
+
+	@Test
+	public void testGetDag_VanDag31_Geeft31AlsResultaat() {
+		assertTrue("foutieve dag 31", laatsteDatum.getDag() == 31);
+	}
+
+	@Test
+	public void testGetDag_VanSchrikkeldag_Geeft29AlsResultaat() {
+		assertTrue("foutieve schrikkeldag 29", schrikkelDatum.getDag() == 29);
+	}
+
+	@Test
+	public void testToString_VanMaand10DitJaar_GeeftEenCorrectResultaat() {
+		assertEquals("foutieve toString 01/10/2014", geldigeDatum.toString(), "1 oktober 2014");
+	}
+
+	@Test
+	public void testToString_VanEersteDatum_GeeftEenCorrectResultaat() {
+		assertEquals("foutieve toString 01/01/0001", eersteDatum.toString(), "1 januari 1");
+	}
+
+	@Test
+	public void testToString_VanLaatsteDatum_GeeftEenCorrectResultaat() {
+		assertEquals("foutieve toString 31/12/9999", laatsteDatum.toString(), "31 december 9999");
+	}
+
+	@Test
+	public void testVerschilInJaren_VanHetzelfdeJaar_Geeft0AlsResultaat() {
+		assertTrue("foutief verschil in jaren <> 0", geldigeDatum.verschilInJaren(eerdereDatum) == 0);
+	}
+
+	@Test
+	public void testVerschilInJaren_VanHetzelfdeJaarMetGetter_Geeft0AlsResultaat() {
+		assertTrue("foutief verschil in jaren <> 0 obv getters",
+				geldigeDatum.verschilInJaren(latereDatum) == (geldigeDatum.getJaar() - latereDatum.getJaar()));
+	}
+
+	@Test
+	public void testVerschilInJaren_VolgordeKleinsteOfGrootsteMaaktNietsUit_GeeftCorrectResultaat() {
+		assertTrue("foutief verschil in jaren afhankelijk van volgorde kleinste en grootste jaar",
+				geldigeDatum.verschilInJaren(laatsteDatum) == laatsteDatum.verschilInJaren(geldigeDatum));
+	}
+
+	@Test
+	public void testVerschilInJaren_TussenEersteEnLaatsteDatum_Geeft9999AlsResultaat() {
+		assertTrue("foutief verschil in jaren <> 9999", laatsteDatum.verschilInJaren(eersteDatum) == (9999 - 1));
+	}
+
+	@Test
+	public void testVeranderDatum_VerhoogMet30Dagen_GeeftCorrectResultaat() {
+		geldigeDatum.veranderDatum(30);
+		assertEquals("foutieve verhoging met 30 dagen", geldigeDatum, latereDatum);
+	}
+
+	@Test
+	public void testVeranderDatum_VerlaagMet1Dagen_GeeftCorrectResultaat() {
+		geldigeDatum.veranderDatum(-1);
+		assertEquals("foutieve verlaging met 1 dag", geldigeDatum, eerdereDatum);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testVeranderDatum_VerlaagOnderDeLaagsteDatum_ThrowsIllegalArgumentException() {
+		eersteDatum.veranderDatum(-1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testVeranderDatum_VerhoogVoorbijDeHoogsteDatum_ThrowsIllegalArgumentException() {
+		laatsteDatum.veranderDatum(1);
+	}
+
+	@Test
+	public void testSetDatum_VeelRandomDatums_WordenCorrectGeevalueerd() {
+
+		final int AANTAL_DATUMS = 10000;
 		Random random = new Random();
-		int[][] geldigeDatums = new int[10000][];
-		int[][] ongeldigeDatums = new int[10000][];
+		int[][] geldigeDatums = new int[AANTAL_DATUMS][];
+		int[][] ongeldigeDatums = new int[AANTAL_DATUMS][];
 		int dag, maand, jaar;
 		int ongeldigeIndex = 0, geldigeIndex = 0;
 
 		GregorianCalendar datumTester = new GregorianCalendar();
 		datumTester.setLenient(false);
 
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < AANTAL_DATUMS; i++) {
 			dag = random.nextInt(40);
 			maand = random.nextInt(16);
 			jaar = random.nextInt(11500) - 500;
@@ -285,18 +399,19 @@ public class DatumTest {
 	}
 
 	@Test
-	public void test_Datum_3int_veel_random_datums_correct_verwerkt() {
+	public void testDatum3Int_VeelRandomDatums_WordenCorrectVerwerkt() {
 
+		final int AANTAL_DATUMS = 10000;
 		Random random = new Random();
-		int[][] geldigeDatums = new int[10000][];
-		int[][] ongeldigeDatums = new int[10000][];
+		int[][] geldigeDatums = new int[AANTAL_DATUMS][];
+		int[][] ongeldigeDatums = new int[AANTAL_DATUMS][];
 		int dag, maand, jaar;
 		int ongeldigeIndex = 0, geldigeIndex = 0;
 
 		GregorianCalendar datumTester = new GregorianCalendar();
 		datumTester.setLenient(false);
 
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < AANTAL_DATUMS; i++) {
 			dag = random.nextInt(40);
 			maand = random.nextInt(16);
 			jaar = random.nextInt(11500) - 500;
