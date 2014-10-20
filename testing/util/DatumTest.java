@@ -13,7 +13,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.datumWrapper.Datum;
+import util.datumScratch.Datum;
 
 public class DatumTest {
 
@@ -22,7 +22,7 @@ public class DatumTest {
 
 	@Before
 	public void setUp() {
-		Datum.setLocale(new Locale("nl", "BE"));
+		//Datum.setLocale(new Locale("nl", "BE"));
 		datum = new Datum(11, 10, 2014);
 		datumString = new Datum("30/09/2014");
 		veranderdeDatum = new Datum(14, 10, 2014);

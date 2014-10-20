@@ -10,68 +10,101 @@ import javax.naming.directory.InvalidAttributesException;
 
 public class Datum implements Comparable<Datum> {
 	private int dag, maand, jaar;
-	private int[] aantalDagenPerMaand = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+	private int[] aantalDagenPerMaand = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-	public Datum() throws InvalidAttributesException {
-		this(Calendar.getInstance().get(Calendar.DATE), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(
-				Calendar.YEAR) + 2);
+	public Datum() {
+		this(Calendar.getInstance().get(Calendar.DATE), Calendar.getInstance().get(Calendar.MONTH) + 1, Calendar.getInstance().get(
+				Calendar.YEAR));
 	}
 
-	public Datum(int dag, int maand, int jaar) throws InvalidAttributesException {
+	public Datum(int dag, int maand, int jaar) {
 		if (validate(dag, maand, jaar)) {
 			this.dag = dag;
 			this.maand = maand;
 			this.jaar = jaar;
 		} else {
-			throw new InvalidAttributesException("De ingegeven waarde is geen geldige datum!");
+			throw new IllegalArgumentException("De ingegeven waarde is geen geldige datum!");
 		}
 	}
 
-	public Datum(String datum) throws InvalidAttributesException {
-		super();
+	public Datum(String datum) throws IllegalArgumentException {
 		try {
-			this.dag = Integer.parseInt(datum.substring(0, 2));
-			this.maand = Integer.parseInt(datum.substring(3, 5));
-			this.jaar = Integer.parseInt(datum.substring(6, 10));
-		} catch (NumberFormatException ex) {
-			throw new InvalidAttributesException("Foutive invoer formaat!");
+			String[] parts = datum.split("/|-");
+			String tempDag = parts[0];
+			String tempMaand = parts[1];
+			String tempJaar = parts[2];
+			if(validate(Integer.parseInt(tempDag), Integer.parseInt(tempMaand), Integer.parseInt(tempJaar)))
+			{
+				this.dag = Integer.parseInt(tempDag);
+				this.maand = Integer.parseInt(tempMaand);
+				this.jaar = Integer.parseInt(tempJaar);
+			}
+			else
+			{
+				throw new IllegalArgumentException("Ingegeven waarde was incorrect!");
+			}
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Ingegeven waarde was incorrect!");
 		}
 	}
 
-	public Datum(Datum datum) throws InvalidAttributesException {
-		super();
-		this.dag = datum.dag;
-		this.maand = datum.maand;
-		this.jaar = datum.jaar;
+	public Datum(Datum datum){
+		this(datum.dag, datum.maand, datum.jaar);
 	}
 
-	public void setDatum(int dag, int maand, int jaar) throws InvalidAttributesException {
+	public int getDag() {
+		return dag;
+	}
+
+	public int getMaand() {
+		return maand;
+	}
+
+	public int getJaar() {
+		return jaar;
+	}
+	
+	public boolean setDatum(int dag, int maand, int jaar) {
 		if (validate(dag, maand, jaar)) {
 			this.dag = dag;
 			this.maand = maand;
 			this.jaar = jaar;
-		} else {
-			throw new InvalidAttributesException("De ingegeven waarde is geen geldige datum!");
-		}
-	}
-
-	public boolean kleinerDan(Datum datum) {
-		if (this.jaar < datum.jaar) {
-			return true;
-		} else if (this.jaar <= datum.jaar && this.maand < datum.maand) {
-			return true;
-		} else if (this.jaar <= datum.jaar && this.maand <= datum.maand && this.dag < datum.dag) {
 			return true;
 		}
 		return false;
 	}
 
-	public Datum veranderDatum(int aantalDagen) throws InvalidAttributesException {
+	public boolean kleinerDan(Datum datum) {
+		if (this.jaar < datum.jaar) {
+			return false;
+		} else if (this.jaar <= datum.jaar && this.maand < datum.maand) {
+			return false;
+		} else if (this.jaar <= datum.jaar && this.maand <= datum.maand && this.dag < datum.dag) {
+			return false;
+		}
+		return true;
+	}
+
+	public Datum veranderdeDatum(int aantalDagen) {
 		int dagen = convertDatumNaarDagen(this);
 
 		dagen += aantalDagen;
 
 		return convertDagenNaarDatum(dagen);
+	}
+	
+	public void veranderDatum(int aantalDagen) {
+		int dagen = convertDatumNaarDagen(this);
+		dagen += aantalDagen;
+		Datum tempDatum = convertDagenNaarDatum(dagen);
+		if(!validate(tempDatum.dag, tempDatum.maand, tempDatum.jaar))
+			throw new IllegalArgumentException();
+		else
+		{
+		this.dag = tempDatum.dag;
+		this.maand = tempDatum.maand;
+		this.jaar = tempDatum.jaar;
+		}
 	}
 
 	public int verschilInDagen(Datum d) {
@@ -101,7 +134,7 @@ public class Datum implements Comparable<Datum> {
 				dagen += 365;
 			}
 		}
-		for (int i = 0; i < this.maand - 1; i++) {
+		for (int i = 0; i < this.maand-1; i++) {
 			dagen += aantalDagenPerMaand[i];
 		}
 		dagen += this.dag - 1;
@@ -109,7 +142,6 @@ public class Datum implements Comparable<Datum> {
 	}
 
 	private Datum convertDagenNaarDatum(int dagen) {
-		try {
 			int jaar = 0;
 			for (int i = dagen; i >= 365; i -= 365) {
 				if (schrikkelJaar(jaar)) {
@@ -127,14 +159,11 @@ public class Datum implements Comparable<Datum> {
 				}
 			}
 			int dag = dagen + 1;
+			
 			Datum tempDatum;
-
 			tempDatum = new Datum(dag, maand, jaar);
+			
 			return tempDatum;
-		} catch (InvalidAttributesException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public boolean schrikkelJaar(int jaartal) // VERDER AFWERKEN!!!!!s
@@ -147,10 +176,18 @@ public class Datum implements Comparable<Datum> {
 	}
 
 	private boolean validate(int dag, int maand, int jaar) {
-		if (dag > 0 && dag <= 31 && maand > 0 && maand <= 12 && jaar > 0 && jaar <= 9999) {
-			return true;
+		
+		try {
+			if (dag > 0 && dag <= 31 && aantalDagenPerMaand[maand-1] > 0 && maand <= 12 && jaar > 0 && jaar <= 9999) {
+				if (maand == 2 && dag == 29 && !schrikkelJaar(jaar)) {
+					return false;
+				}
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
 		}
-		return false;
 	}
 
 	private String convertMonthToString(int maand) {
@@ -200,10 +237,10 @@ public class Datum implements Comparable<Datum> {
 	public int compareTo(Datum arg0) {
 		if (this.equals(arg0)) {
 			return 0;
-		} else if (arg0.kleinerDan(this)) {
-			return -1;
+		} else if (this.kleinerDan(arg0)) {
+			return 1;
 		}
-		return 1;
+		return -1;
 	}
 
 	@Override
@@ -223,25 +260,19 @@ public class Datum implements Comparable<Datum> {
 		try {
 			// Testcode
 			Datum datum;
-			Datum datum2;
 
-			datum = new Datum("03/02/1991");
-			datum2 = new Datum("03/02/1991");
-
-			// datum2 = new Datum("29/01/1991");
-			System.out.print(datum.equals(datum2) + " " + datum.compareTo(datum2) + "\n");
-			System.out.print(datum + " is een schrikkeljaar? " + datum.schrikkelJaar(datum.jaar)
-					+ datum.convertDatumNaarDagen(datum) + "\n");
-			System.out.print(datum2 + " is een schrikkeljaar? " + datum2.schrikkelJaar(datum.jaar)
-					+ datum2.convertDatumNaarDagen(datum2) + "\n");
-			System.out.print("Amerikaans Formaat:\t" + datum.getDatumInAmerikaansFormaat() + "\n");
-			System.out.print("Europees Formaat:\t" + datum.getDatumInEuropeesFormaat() + "\n");
-			System.out.print("Dagen:\t " + datum.verschilInDagen(datum2) + "\n");
-			System.out.print("Maanden: " + datum.verschilInMaanden(datum2) + "\n");
-			System.out.print("Jaren:\t " + datum.verschilInJaren(datum2));
-		} catch (InvalidAttributesException e) {
-			System.out.print(e.getMessage());
-			// e.printStackTrace();
+			datum = new Datum(31, 12, 9999);
+			
+			System.out.print(datum);
+			datum.veranderDatum(1);
+			
+			System.out.print(datum);
+			
 		}
+		catch (Exception e)
+		{
+			System.out.print(e.getMessage());
+		}
+		
 	}
 }
