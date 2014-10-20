@@ -1,11 +1,25 @@
 package model;
-
+/**
+ * 
+ * @author Bert Neyt
+ * @version 0.0
+ */
 public class QuizOpdracht {
 
 	private Quiz quiz;
 	private Opdracht opdracht;
 	private int maxScore;
 
+	/**
+	 * Constructor QuizOpdracht met 3 parameters
+	 * 
+	 * @param quiz
+	 *            de Quiz
+	 * @param opdracht
+	 *            de Opdracht
+	 * @param maxScore
+	 *            de maximum te behalen score
+	 */
 	public QuizOpdracht(Quiz quiz, Opdracht opdracht, int maxScore) {
 		this.quiz = quiz;
 		this.opdracht = opdracht;
