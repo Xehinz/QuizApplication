@@ -5,6 +5,7 @@ import static java.lang.Math.abs;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  *
@@ -19,6 +20,7 @@ import java.util.GregorianCalendar;
 public class Datum implements Comparable<Datum> {
 
 	private GregorianCalendar gregorianCalendarDatum;
+	private static Locale locale = Locale.getDefault();
 
 	/**
 	 * Maakt een datum object aan met als waarde de dag van vandaag
@@ -135,6 +137,16 @@ public class Datum implements Comparable<Datum> {
 	}
 
 	/**
+	 * Overrides de default JVM Locale met de meegegeven Locale
+	 *
+	 * @param locale
+	 *            de Locale die door de Datum klasse gebruikt wordt om datums te formateren
+	 */
+	public static void setLocale(Locale loc) {
+		locale = loc;
+	}
+
+	/**
 	 * Geeft een string terug in Amerikaans formaat (YYYY/MM/DD)
 	 *
 	 * @return een string in Amerikaans formaat (YYYY/MM/DD)
@@ -154,7 +166,8 @@ public class Datum implements Comparable<Datum> {
 
 	@Override
 	public String toString() {
-		return this.getDag() + " " + new DateFormatSymbols().getMonths()[this.getMaand() - 1] + " " + this.getJaar();
+		DateFormatSymbols dateFormatSymbols = DateFormatSymbols.getInstance(locale);
+		return this.getDag() + " " + dateFormatSymbols.getMonths()[this.getMaand() - 1] + " " + this.getJaar();
 	}
 
 	@Override

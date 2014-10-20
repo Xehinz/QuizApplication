@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Random;
 
 import org.junit.Before;
@@ -21,6 +22,7 @@ public class DatumTest {
 
 	@Before
 	public void setUp() {
+		Datum.setLocale(new Locale("nl", "BE"));
 		datum = new Datum(11, 10, 2014);
 		datumString = new Datum("30/09/2014");
 		veranderdeDatum = new Datum(14, 10, 2014);
@@ -100,26 +102,31 @@ public class DatumTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDatum3Int_OngeldigeDag_ThrowsIllegalArgumentException() {
+		@SuppressWarnings("unused")
 		Datum datum = new Datum(31, 4, 2000);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDatum3Int_OngeldigeMaand_ThrowsIllegalArgumentException() {
+		@SuppressWarnings("unused")
 		Datum datum = new Datum(4, 15, 2000);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDatum3Int_TeHoogJaar_ThrowsIllegalArgumentException() {
+		@SuppressWarnings("unused")
 		Datum datum = new Datum(4, 4, 50000);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDatum3Int_TeLaagJaar_ThrowsIllegalArgumentException() {
+		@SuppressWarnings("unused")
 		Datum datum = new Datum(4, 4, -10);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDatum3Int_OngeldigeSchrikkeldag_ThrowsIllegalArgumentException() {
+		@SuppressWarnings("unused")
 		Datum datum = new Datum(29, 2, 1999);
 	}
 
@@ -302,17 +309,17 @@ public class DatumTest {
 
 	@Test
 	public void testToString_VanMaand10DitJaar_GeeftEenCorrectResultaat() {
-		assertEquals("foutieve toString 01/10/2014", geldigeDatum.toString(), "1 oktober 2014");
+		assertEquals("foutieve toString 01/10/2014", "1 februari 1980", geldigeDatum.toString());
 	}
 
 	@Test
 	public void testToString_VanEersteDatum_GeeftEenCorrectResultaat() {
-		assertEquals("foutieve toString 01/01/0001", eersteDatum.toString(), "1 januari 1");
+		assertEquals("foutieve toString 01/01/0001", "1 januari 1", eersteDatum.toString());
 	}
 
 	@Test
 	public void testToString_VanLaatsteDatum_GeeftEenCorrectResultaat() {
-		assertEquals("foutieve toString 31/12/9999", laatsteDatum.toString(), "31 december 9999");
+		assertEquals("foutieve toString 31/12/9999", "31 december 9999", laatsteDatum.toString());
 	}
 
 	@Test
@@ -428,6 +435,7 @@ public class DatumTest {
 			}
 		}
 
+		@SuppressWarnings("unused")
 		Datum testDatum;
 
 		for (int i = 0; i < geldigeIndex; i++) {
