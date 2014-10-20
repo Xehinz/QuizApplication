@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  */
 
-public class Quiz {
+public class Quiz implements Comparable<Quiz> {
 
 	private String onderwerp = "";
 	private boolean isTest = true;
@@ -40,7 +40,7 @@ public class Quiz {
 	 * constructor van de Quiz-class
 	 * 
 	 * @param onderwerp
-	 *            het onderwper van deze quiz
+	 *            het onderwerp van deze quiz
 	 * @param isUniekeDeelname
 	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
 	 */
@@ -77,6 +77,15 @@ public class Quiz {
 	}
 
 	/**
+	 * Ophalen van de status van de quiz
+	 * 
+	 * @return
+	 */
+	public String getQuizStatus() {
+		return this.quizStatus;
+	}
+
+	/**
 	 * Ophalen van de indicator of deze quiz een test is of niet
 	 * 
 	 * @return
@@ -108,6 +117,18 @@ public class Quiz {
 	}
 
 	/**
+	 * Instellen van de status van de quiz
+	 * 
+	 * @param quizStatus
+	 *            de status van de quiz
+	 * @return
+	 */
+	public boolean setQuizStatus(String quizStatus) {
+		this.quizStatus = quizStatus;
+		return true;
+	}
+
+	/**
 	 * Instellen van de indicator of deze quiz een test is of niet
 	 * 
 	 * @param isTest
@@ -135,6 +156,7 @@ public class Quiz {
 	 * override toString --> levert 'onderwerp' af met Test(?), UniekeDeelname
 	 * (?) en status
 	 */
+	@Override
 	public String toString() {
 		return "Quiz met als onderwerp '" + this.getOnderwerp() + "' is "
 				+ (this.isTest ? "een" : "geen") + " test "
@@ -149,12 +171,13 @@ public class Quiz {
 	 *            een quiz waarmee we gaan vergelijken
 	 * @return
 	 */
-	public boolean equals(Quiz aQuiz) {
-		// uit te breiden naarmate andere attributen uitgewerkt worden (cfr. de
-		// lijst met opdrachten vergelijken)
-		return aQuiz.getOnderwerp() == this.getOnderwerp()
-				&& aQuiz.getIsTest() == aQuiz.getIsTest()
-				&& aQuiz.getIsUniekeDeelname() == this.getIsUniekeDeelname();
+	@Override
+	public boolean equals(Object aQuiz) {
+		return ((Quiz) aQuiz).getOnderwerp() == this.getOnderwerp()
+				&& ((Quiz) aQuiz).getIsTest() == this.getIsTest()
+				&& ((Quiz) aQuiz).getIsUniekeDeelname() == this
+						.getIsUniekeDeelname()
+				&& this.getOpdrachten().equals(((Quiz) aQuiz).getOpdrachten());
 	}
 
 	/**
@@ -193,7 +216,7 @@ public class Quiz {
 	 * 
 	 * @param volgnr
 	 *            het volgnummer van de opdracht (base 1)
-	 * @return
+	 * @return de link van de opdracht aan deze link via QuizOpdracht
 	 */
 	public QuizOpdracht getQuizOpdracht(int volgnr) {
 		// in de opgave staat deze method gedeclareerd als getOpdracht() wat
@@ -202,8 +225,16 @@ public class Quiz {
 		return this.quizOpdrachten.get(volgnr - 1);
 	}
 
-	// Comparable --> implements Comparable (x)
-	// - compareTo
+	/**
+	 * Vergelijk deze quiz met een andere quiz
+	 * 
+	 * @return een negatief nummer, een nul of een positief nummer als de quiz
+	 *         minder, dezelfde of meer opdrachten heeft
+	 */
+	public int compareTo(Quiz aQuiz) {
+		return 0;
+	}
+
 	// hashCode (res)
 
 }
