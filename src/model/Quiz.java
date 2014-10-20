@@ -173,10 +173,13 @@ public class Quiz implements Comparable<Quiz> {
 	 */
 	@Override
 	public boolean equals(Object aQuiz) {
+		// uit te breiden met nieuwe testen zodra extra attributen worden
+		// toegevoegd in deze class
 		return ((Quiz) aQuiz).getOnderwerp() == this.getOnderwerp()
 				&& ((Quiz) aQuiz).getIsTest() == this.getIsTest()
 				&& ((Quiz) aQuiz).getIsUniekeDeelname() == this
 						.getIsUniekeDeelname()
+				&& ((Quiz) aQuiz).getQuizStatus() == this.getQuizStatus()
 				&& this.getOpdrachten().equals(((Quiz) aQuiz).getOpdrachten());
 	}
 
