@@ -21,8 +21,17 @@ private List<Opdracht> opdrachtcatalogus;
 		return this.opdrachtcatalogus.get(volgnr-1);
 	}
 	
+	public boolean hasOpdracht(Opdracht opdracht){
+		return this.opdrachtcatalogus.contains(opdracht);
+	}
+	
 	public int count(){
 		return this.opdrachtcatalogus.size();
+	}
+	
+	@Override
+	public String toString(){
+		return "Opdrachtcatalogus met " + this.count() + " opdrachten";
 	}
 	
 }
