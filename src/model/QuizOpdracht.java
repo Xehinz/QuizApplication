@@ -30,12 +30,12 @@ public class QuizOpdracht {
 			int maxScore) {
 		QuizOpdracht quizOpdracht = new QuizOpdracht(quiz, opdracht, maxScore);
 		quiz.addQuizOpdracht(quizOpdracht);
-		opdracht.addQuizOpdracht(quizOpdracht);
+	//	opdracht.addQuizOpdracht(quizOpdracht);
 	}
 
 	public void detachOpdrachtFromQuiz() {
 		quiz.removeQuizOpdracht(this);
-		opdracht.removeQuizOpdracht(this);
+	//	opdracht.removeQuizOpdracht(this);
 	}
 
 	public Quiz getQuiz() {
