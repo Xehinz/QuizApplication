@@ -69,7 +69,7 @@ public class Datum implements Comparable<Datum> {
 	 *             als de input String van een foutief formaat is of als de datumwaarde ongeldig is
 	 */
 	public Datum(String datum) {
-		String[] parts = datum.split("/");
+		String[] parts = datum.split("/|-");
 		String dag = parts[0];
 		String maand = parts[1];
 		String jaar = parts[2];
