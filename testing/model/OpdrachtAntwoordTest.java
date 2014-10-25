@@ -1,19 +1,21 @@
 package model;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
 public class OpdrachtAntwoordTest {
 
+	private QuizDeelname quizDeelname;
+	private QuizOpdracht quizOpdracht;
+
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
+		// quizDeelname = new QuizDeelname()
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testOpdrachtAntwoordConstructor_JuisteInitialisatie() {
+		// OpdrachtAntwoord opdrachtAntwoord = new OpdrachtAntwoord()
 	}
 
 }

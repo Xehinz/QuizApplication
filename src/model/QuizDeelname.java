@@ -41,7 +41,7 @@ public class QuizDeelname implements Comparable<QuizDeelname> {
 	 */
 	// Quiz.geldigLeerjaar & Leerling.getLeerjaar bestaan niet
 	public boolean IsDeelnameMogelijk(Quiz quiz, Leerling leerling) {
-		if (!quiz.getQuizStatus().equals("") || quiz.geldigLeerjaar(leerling.getLeerjaar())) {
+		if (!quiz.getQuizStatus().equals("") || quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
 			return false;
 		} else {
 			return true;
@@ -58,7 +58,6 @@ public class QuizDeelname implements Comparable<QuizDeelname> {
 	/**
 	 * override toString --> return naam leerling, datum deelname & onderwerp ??? quiz
 	 */
-	// Leerling.getNaam bestaat niet
 	@Override
 	public String toString() {
 		return String.format("Deelname van %s aan %s-quiz op %s", this.leerling.getNaam(), this.quiz.getOnderwerp(),

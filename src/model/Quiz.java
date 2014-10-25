@@ -1,10 +1,10 @@
 package model;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * 
+ *
  * @author johan
  * @version 2014.10.20a
  *
@@ -17,42 +17,40 @@ public class Quiz implements Comparable<Quiz> {
 	private boolean isUniekeDeelname = false;
 	private String quizStatus = "new";
 	private List<QuizOpdracht> quizOpdrachten;
+	private boolean[] zijnDoelLeerjaren = new boolean[7];
 
 	/**
 	 * lege constructor van de Quiz-class
 	 */
 	public Quiz() {
-		this.quizOpdrachten = new ArrayList<QuizOpdracht>();
+		this("", false, "");
 	}
 
 	/**
 	 * constructor van de Quiz-class
-	 * 
+	 *
 	 * @param onderwerp
 	 *            het onderwerp van deze quiz
 	 */
 	public Quiz(String onderwerp) {
-		this.onderwerp = onderwerp;
-		this.quizOpdrachten = new ArrayList<QuizOpdracht>();
+		this(onderwerp, false, "");
 	}
 
 	/**
 	 * constructor van de Quiz-class
-	 * 
+	 *
 	 * @param onderwerp
 	 *            het onderwerp van deze quiz
 	 * @param isUniekeDeelname
 	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
 	 */
 	public Quiz(String onderwerp, boolean isUniekeDeelname) {
-		this.onderwerp = onderwerp;
-		this.isUniekeDeelname = isUniekeDeelname;
-		quizOpdrachten = new ArrayList<QuizOpdracht>();
+		this(onderwerp, isUniekeDeelname, "");
 	}
 
 	/**
 	 * constructor van de Quiz-class
-	 * 
+	 *
 	 * @param onderwerp
 	 *            het onderwerp van deze quiz
 	 * @param isUniekeDeelname
@@ -65,11 +63,15 @@ public class Quiz implements Comparable<Quiz> {
 		this.isUniekeDeelname = isUniekeDeelname;
 		this.quizStatus = quizStatus;
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
+
+		for (boolean isDoelLeerjaar : zijnDoelLeerjaren) {
+			isDoelLeerjaar = true;
+		}
 	}
 
 	/**
 	 * Ophalen van het onderwerp van de quiz
-	 * 
+	 *
 	 * @return
 	 */
 	public String getOnderwerp() {
@@ -78,7 +80,7 @@ public class Quiz implements Comparable<Quiz> {
 
 	/**
 	 * Ophalen van de status van de quiz
-	 * 
+	 *
 	 * @return
 	 */
 	public String getQuizStatus() {
@@ -87,7 +89,7 @@ public class Quiz implements Comparable<Quiz> {
 
 	/**
 	 * Ophalen van de indicator of deze quiz een test is of niet
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean getIsTest() {
@@ -95,9 +97,8 @@ public class Quiz implements Comparable<Quiz> {
 	}
 
 	/**
-	 * Ophalen van de indicator of aan deze quiz slechts 1x mag deelgenomen
-	 * worden
-	 * 
+	 * Ophalen van de indicator of aan deze quiz slechts 1x mag deelgenomen worden
+	 *
 	 * @return
 	 */
 	public boolean getIsUniekeDeelname() {
@@ -105,8 +106,28 @@ public class Quiz implements Comparable<Quiz> {
 	}
 
 	/**
+	 * Method om in te stellen voor welke leerjaren de quiz bedoeld is. Default is een quiz beschikbaar voor alle
+	 * leerjaren. Enkel de leerjaren die bij de láátste aanroep van deze method meegegeven zijn, bepalen voor welke
+	 * leerjaren de quiz beschikbaar is.
+	 *
+	 * @param doelLeerjaar
+	 *            1 of meerdere leerjaren waarvoor de quiz beschikbaar wordt gemaakt
+	 */
+	public void setDoelLeerjaren(int... doelLeerjaar) {
+		for (boolean isDoelLeerjaar : zijnDoelLeerjaren) {
+			isDoelLeerjaar = false;
+		}
+		for (int leerjaar : doelLeerjaar) {
+			if (leerjaar < 1 || leerjaar > 6) {
+				continue;
+			}
+			zijnDoelLeerjaren[leerjaar] = true;
+		}
+	}
+
+	/**
 	 * Instellen van het onderwerp van de quiz
-	 * 
+	 *
 	 * @param onderwerp
 	 *            het onderwerp van deze quiz
 	 * @return
@@ -118,7 +139,7 @@ public class Quiz implements Comparable<Quiz> {
 
 	/**
 	 * Instellen van de status van de quiz
-	 * 
+	 *
 	 * @param quizStatus
 	 *            de status van de quiz
 	 * @return
@@ -129,8 +150,22 @@ public class Quiz implements Comparable<Quiz> {
 	}
 
 	/**
+	 * Test of de quiz beschikbaar is voor het meegegeven leerjaar
+	 *
+	 * @param leerjaar
+	 *            het leerjaar om te testen
+	 * @return true als het meegegeven leerjaar een leerjaar is waarvoor de quiz beschikbaar is
+	 */
+	public boolean isGeldigLeerjaar(int leerjaar) {
+		if (leerjaar < 1 || leerjaar > 6) {
+			return false;
+		}
+		return zijnDoelLeerjaren[leerjaar];
+	}
+
+	/**
 	 * Instellen van de indicator of deze quiz een test is of niet
-	 * 
+	 *
 	 * @param isTest
 	 *            indicator of deze quiz een test is of niet
 	 * @return
@@ -142,7 +177,7 @@ public class Quiz implements Comparable<Quiz> {
 
 	/**
 	 * Instellen van de indicator of je aan deze quiz slechts 1x mag deelnemen
-	 * 
+	 *
 	 * @param isUniekeDeelname
 	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
 	 * @return
@@ -153,20 +188,17 @@ public class Quiz implements Comparable<Quiz> {
 	}
 
 	/**
-	 * override toString --> levert 'onderwerp' af met Test(?), UniekeDeelname
-	 * (?) en status
+	 * override toString --> levert 'onderwerp' af met Test(?), UniekeDeelname (?) en status
 	 */
 	@Override
 	public String toString() {
-		return "Quiz met als onderwerp '" + this.getOnderwerp() + "' is "
-				+ (this.isTest ? "een" : "geen") + " test "
-				+ (this.isUniekeDeelname ? "met" : "zonder")
-				+ " unieke deelname.";
+		return "Quiz met als onderwerp '" + this.getOnderwerp() + "' is " + (this.isTest ? "een" : "geen") + " test "
+				+ (this.isUniekeDeelname ? "met" : "zonder") + " unieke deelname.";
 	}
 
 	/**
 	 * override equals --> controle of deze quiz dezelfde als als de andere
-	 * 
+	 *
 	 * @param aQuiz
 	 *            een quiz waarmee we gaan vergelijken
 	 * @return
@@ -175,17 +207,15 @@ public class Quiz implements Comparable<Quiz> {
 	public boolean equals(Object aQuiz) {
 		// uit te breiden met nieuwe testen zodra extra attributen worden
 		// toegevoegd in deze class
-		return ((Quiz) aQuiz).getOnderwerp() == this.getOnderwerp()
-				&& ((Quiz) aQuiz).getIsTest() == this.getIsTest()
-				&& ((Quiz) aQuiz).getIsUniekeDeelname() == this
-						.getIsUniekeDeelname()
+		return ((Quiz) aQuiz).getOnderwerp() == this.getOnderwerp() && ((Quiz) aQuiz).getIsTest() == this.getIsTest()
+				&& ((Quiz) aQuiz).getIsUniekeDeelname() == this.getIsUniekeDeelname()
 				&& ((Quiz) aQuiz).getQuizStatus() == this.getQuizStatus()
 				&& this.getOpdrachten().equals(((Quiz) aQuiz).getOpdrachten());
 	}
 
 	/**
 	 * Toevoegen van een nieuwe opdracht voor deze quiz
-	 * 
+	 *
 	 * @param quizOpdracht
 	 */
 	protected void addQuizOpdracht(QuizOpdracht quizOpdracht) {
@@ -194,7 +224,7 @@ public class Quiz implements Comparable<Quiz> {
 
 	/**
 	 * Verwijderen van een bestaande opdracht voor deze quiz
-	 * 
+	 *
 	 * @param quizOpdracht
 	 */
 	protected void removeQuizOpdracht(QuizOpdracht quizOpdracht) {
@@ -203,7 +233,7 @@ public class Quiz implements Comparable<Quiz> {
 
 	/**
 	 * Ophalen van de list van opdrachten gelinkt aan deze quiz
-	 * 
+	 *
 	 * @return
 	 */
 	public ArrayList<Opdracht> getOpdrachten() {
@@ -216,7 +246,7 @@ public class Quiz implements Comparable<Quiz> {
 
 	/**
 	 * Ophalen van een opdracht uit alle opdrachten gelinkt aan deze quiz
-	 * 
+	 *
 	 * @param volgnr
 	 *            het volgnummer van de opdracht (base 1)
 	 * @return de link van de opdracht aan deze link via QuizOpdracht
@@ -230,10 +260,10 @@ public class Quiz implements Comparable<Quiz> {
 
 	/**
 	 * Vergelijk deze quiz met een andere quiz
-	 * 
-	 * @return een negatief nummer, een nul of een positief nummer als de quiz
-	 *         minder, dezelfde of meer opdrachten heeft
+	 *
+	 * @return een negatief nummer, een nul of een positief nummer als de quiz minder, dezelfde of meer opdrachten heeft
 	 */
+	@Override
 	public int compareTo(Quiz aQuiz) {
 		return 0;
 	}
