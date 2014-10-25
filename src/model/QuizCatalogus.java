@@ -1,11 +1,19 @@
 package model;
 
 import java.util.List;
+import java.util.ArrayList;
+
 
 public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	private List<Quiz> quizcatalogus;
 
+	/**
+	 * Constructor zonder parameters waarbij we de List initialiseren als nieuwe List
+	 * --> aangezien we geen List<Quiz>(); kunnen instantiëren, gebruiken we ArrayList
+	 * http://stackoverflow.com/questions/13395114/how-to-initialize-liststring-object-in-java
+	 */
 	public QuizCatalogus() {
+		this.quizcatalogus = new ArrayList<Quiz>(); //added
 	}
 
 	public QuizCatalogus(List<Quiz> qc) {

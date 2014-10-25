@@ -5,12 +5,12 @@ import java.util.List;
 
 /**
  *
- * @author johan
- * @version 2014.10.20a
+ * @author johan, ben (constructor, zijnDoelLeerjaren)
+ * @version 2014.10.25
  *
  */
 
-public class Quiz implements Comparable<Quiz> {
+public class Quiz implements Comparable<Quiz>, Cloneable {
 
 	private String onderwerp = "";
 	private boolean isTest = true;
@@ -97,7 +97,8 @@ public class Quiz implements Comparable<Quiz> {
 	}
 
 	/**
-	 * Ophalen van de indicator of aan deze quiz slechts 1x mag deelgenomen worden
+	 * Ophalen van de indicator of aan deze quiz slechts 1x mag deelgenomen
+	 * worden
 	 *
 	 * @return
 	 */
@@ -106,12 +107,14 @@ public class Quiz implements Comparable<Quiz> {
 	}
 
 	/**
-	 * Method om in te stellen voor welke leerjaren de quiz bedoeld is. Default is een quiz beschikbaar voor alle
-	 * leerjaren. Enkel de leerjaren die bij de láátste aanroep van deze method meegegeven zijn, bepalen voor welke
+	 * Method om in te stellen voor welke leerjaren de quiz bedoeld is. Default
+	 * is een quiz beschikbaar voor alle leerjaren. Enkel de leerjaren die bij
+	 * de láátste aanroep van deze method meegegeven zijn, bepalen voor welke
 	 * leerjaren de quiz beschikbaar is.
 	 *
 	 * @param doelLeerjaar
-	 *            1 of meerdere leerjaren waarvoor de quiz beschikbaar wordt gemaakt
+	 *            1 of meerdere leerjaren waarvoor de quiz beschikbaar wordt
+	 *            gemaakt
 	 */
 	public void setDoelLeerjaren(int... doelLeerjaar) {
 		for (boolean isDoelLeerjaar : zijnDoelLeerjaren) {
@@ -154,7 +157,8 @@ public class Quiz implements Comparable<Quiz> {
 	 *
 	 * @param leerjaar
 	 *            het leerjaar om te testen
-	 * @return true als het meegegeven leerjaar een leerjaar is waarvoor de quiz beschikbaar is
+	 * @return true als het meegegeven leerjaar een leerjaar is waarvoor de quiz
+	 *         beschikbaar is
 	 */
 	public boolean isGeldigLeerjaar(int leerjaar) {
 		if (leerjaar < 1 || leerjaar > 6) {
@@ -188,12 +192,15 @@ public class Quiz implements Comparable<Quiz> {
 	}
 
 	/**
-	 * override toString --> levert 'onderwerp' af met Test(?), UniekeDeelname (?) en status
+	 * override toString --> levert 'onderwerp' af met Test(?), UniekeDeelname
+	 * (?) en status
 	 */
 	@Override
 	public String toString() {
-		return "Quiz met als onderwerp '" + this.getOnderwerp() + "' is " + (this.isTest ? "een" : "geen") + " test "
-				+ (this.isUniekeDeelname ? "met" : "zonder") + " unieke deelname.";
+		return "Quiz met als onderwerp '" + this.getOnderwerp() + "' is "
+				+ (this.isTest ? "een" : "geen") + " test "
+				+ (this.isUniekeDeelname ? "met" : "zonder")
+				+ " unieke deelname.";
 	}
 
 	/**
@@ -207,8 +214,10 @@ public class Quiz implements Comparable<Quiz> {
 	public boolean equals(Object aQuiz) {
 		// uit te breiden met nieuwe testen zodra extra attributen worden
 		// toegevoegd in deze class
-		return ((Quiz) aQuiz).getOnderwerp() == this.getOnderwerp() && ((Quiz) aQuiz).getIsTest() == this.getIsTest()
-				&& ((Quiz) aQuiz).getIsUniekeDeelname() == this.getIsUniekeDeelname()
+		return ((Quiz) aQuiz).getOnderwerp() == this.getOnderwerp()
+				&& ((Quiz) aQuiz).getIsTest() == this.getIsTest()
+				&& ((Quiz) aQuiz).getIsUniekeDeelname() == this
+						.getIsUniekeDeelname()
 				&& ((Quiz) aQuiz).getQuizStatus() == this.getQuizStatus()
 				&& this.getOpdrachten().equals(((Quiz) aQuiz).getOpdrachten());
 	}
@@ -261,11 +270,26 @@ public class Quiz implements Comparable<Quiz> {
 	/**
 	 * Vergelijk deze quiz met een andere quiz
 	 *
-	 * @return een negatief nummer, een nul of een positief nummer als de quiz minder, dezelfde of meer opdrachten heeft
+	 * @return een negatief nummer, een nul of een positief nummer als de quiz
+	 *         minder, dezelfde of meer opdrachten heeft
 	 */
 	@Override
 	public int compareTo(Quiz aQuiz) {
-		return 0;
+		if (this.getOpdrachten().size() < aQuiz.getOpdrachten().size()) {
+			return -1;
+		} else if (this.getOpdrachten().size() > aQuiz.getOpdrachten().size()) {
+			return 1;
+		} else
+			return 0;
+	}
+
+	@Override
+	/**
+	 * Geeft een Quiz terug die een clone is van deze quiz (thx Bert)
+	 * @return een geclonede Quiz
+	 */
+	public Quiz clone() throws CloneNotSupportedException {
+		return (Quiz) super.clone();
 	}
 
 	// hashCode (res)
