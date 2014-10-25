@@ -9,9 +9,9 @@ import util.datumWrapper.Datum;
  */
 public class QuizDeelname implements Comparable<QuizDeelname> {
 
-	private Leerling leerling;
-	private Quiz quiz;
-	private Datum datum;
+	private final Leerling leerling;
+	private final Quiz quiz;
+	private final Datum datum;
 
 	/**
 	 * Constructor QuizDeelname met 2 parameters
@@ -21,7 +21,7 @@ public class QuizDeelname implements Comparable<QuizDeelname> {
 	 * @param leerling
 	 *            de Leerling
 	 */
-	public QuizDeelname(Quiz quiz, Leerling leerling) {
+	private QuizDeelname(Quiz quiz, Leerling leerling) {
 		if (!this.IsDeelnameMogelijk(quiz, leerling)) {
 			throw new IllegalArgumentException("Deelname niet mogelijk");
 		}
@@ -29,6 +29,24 @@ public class QuizDeelname implements Comparable<QuizDeelname> {
 		this.quiz = quiz;
 		this.leerling = leerling;
 	}
+
+	public Leerling getLeerling() {
+		return leerling;
+	}
+	
+	public Quiz getQuiz() {
+		return quiz;
+	}
+	
+	public Datum getDatum() {
+		return datum;
+	}
+
+	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) {
+		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling);
+		leerling.addQuizDeelname(quizDeelname);
+		quiz.addQuizDeelname(quizDeelname);
+	}	
 
 	/**
 	 * Testen of leerling aan quiz deel mag nemen
@@ -39,7 +57,6 @@ public class QuizDeelname implements Comparable<QuizDeelname> {
 	 *            Leerling die wenst deel te nemen
 	 * @return
 	 */
-	// Quiz.geldigLeerjaar & Leerling.getLeerjaar bestaan niet
 	public boolean IsDeelnameMogelijk(Quiz quiz, Leerling leerling) {
 		if (!quiz.getQuizStatus().equals("") || quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
 			return false;

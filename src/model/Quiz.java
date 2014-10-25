@@ -17,6 +17,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	private boolean isUniekeDeelname = false;
 	private String quizStatus = "new";
 	private List<QuizOpdracht> quizOpdrachten;
+	private List<QuizDeelname> quizDeelnames;
 	private boolean[] zijnDoelLeerjaren = new boolean[7];
 
 	/**
@@ -63,6 +64,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		this.isUniekeDeelname = isUniekeDeelname;
 		this.quizStatus = quizStatus;
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
+		quizDeelnames = new ArrayList<QuizDeelname>();
 
 		for (boolean isDoelLeerjaar : zijnDoelLeerjaren) {
 			isDoelLeerjaar = true;
@@ -254,17 +256,61 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Ophalen van een opdracht uit alle opdrachten gelinkt aan deze quiz
+	 * Ophalen van een QuizOpdracht uit alle QuizOpdrachten gelinkt aan deze quiz
 	 *
 	 * @param volgnr
-	 *            het volgnummer van de opdracht (base 1)
-	 * @return de link van de opdracht aan deze link via QuizOpdracht
+	 *            het volgnummer van de QuizOpdracht (base 1)
+	 * @return de link van de opdracht aan deze Quiz via QuizOpdracht
 	 */
 	public QuizOpdracht getQuizOpdracht(int volgnr) {
 		// in de opgave staat deze method gedeclareerd als getOpdracht() wat
 		// verwarring kan brengen aangezien het returntype QuizOpdracht is en
 		// niet Opdracht !
 		return this.quizOpdrachten.get(volgnr - 1);
+	}
+
+	/**
+	 * Toevoegen van een nieuwe deelname aan deze quiz
+	 *
+	 * @param quizDeelname
+	 *            de QuizDeelname om toe te voegen
+	 */
+	public void addQuizDeelname(QuizDeelname quizDeelname) {
+		quizDeelnames.add(quizDeelname);
+	}
+
+	/**
+	 * Verwijderen van een deelname aan deze quiz
+	 *
+	 * @param quizDeelname
+	 *            de QuizDeelname om te verwijderen
+	 */
+	public void removeQuizDeelname(QuizDeelname quizDeelname) {
+		quizDeelnames.remove(quizDeelname);
+	}
+
+	/**
+	 * Ophalen van de list van leerlingen die reeds deelnamen aan deze quiz
+	 *
+	 * @return een ArrayList&lt;Leerling&gt; met alle Leerling objecten die een deelname relatie hebben met dit Quiz
+	 *         object
+	 */
+	public ArrayList<Leerling> getLeerlingenDieDeelnamen() {
+		ArrayList<Leerling> deelnemers = new ArrayList<Leerling>();
+		for (QuizDeelname quizDeelname : this.quizDeelnames) {
+			deelnemers.add(quizDeelname.getLeerling());
+		}
+		return deelnemers;
+	}
+	
+	/**
+	 * Ophalen van een QuizDeelname uit alle QuizDeelnames gelinkt aan deze Quiz
+	 * 
+	 * @param volgnr het volgnummer van de QuizDeelname (base 1)
+	 * @return een QuizDeelname die deze Quiz linkt aan een Leerling
+	 */
+	public QuizDeelname getQuizDeelname(int volgnr) {
+		return this.quizDeelnames.get(volgnr - 1);
 	}
 
 	/**
