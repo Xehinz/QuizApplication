@@ -7,7 +7,7 @@ import util.datumWrapper.Datum;
  * @author Adriaan Kuipers
  * @version 24/10/2014
  */
-public class QuizDeelname implements Comparable<QuizDeelname> {
+public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 
 	private final Leerling leerling;
 	private final Quiz quiz;
@@ -33,11 +33,11 @@ public class QuizDeelname implements Comparable<QuizDeelname> {
 	public Leerling getLeerling() {
 		return leerling;
 	}
-	
+
 	public Quiz getQuiz() {
 		return quiz;
 	}
-	
+
 	public Datum getDatum() {
 		return datum;
 	}
@@ -46,7 +46,7 @@ public class QuizDeelname implements Comparable<QuizDeelname> {
 		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling);
 		leerling.addQuizDeelname(quizDeelname);
 		quiz.addQuizDeelname(quizDeelname);
-	}	
+	}
 
 	/**
 	 * Testen of leerling aan quiz deel mag nemen
@@ -109,6 +109,14 @@ public class QuizDeelname implements Comparable<QuizDeelname> {
 	@Override
 	public int hashCode() {
 		return 0;
+	}
+
+	// Hier moet een keuze gemaakt worden
+	// Ofwel is deep cloning van QuizDeelname mogelijk, maar dan mogen de fields niet final zijn
+	// Ofwel maakt clone() een shallow copy en kunnen de fields final zijn
+	@Override
+	public QuizDeelname clone() throws CloneNotSupportedException {
+		return (QuizDeelname) super.clone();
 	}
 
 }

@@ -20,4 +20,9 @@ public enum Leraar {
 		return familienaam;
 	}
 
+	@Override
+	public String toString() {
+		return voornaam + " " + familienaam;
+	}
+
 }

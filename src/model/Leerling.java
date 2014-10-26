@@ -163,4 +163,11 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		return hash;
 	}
 
+	@Override
+	public Leerling clone() throws CloneNotSupportedException {
+		Leerling clone = (Leerling) super.clone();
+		clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames.clone();
+		return clone;
+	}
+
 }

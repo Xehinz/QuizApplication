@@ -3,12 +3,13 @@ package model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import util.datumWrapper.Datum;
 
 /**
  * De Opdracht klasse modelleert een opdracht die gebruikt kan worden in meerdere quizzen. Bij een opdracht horen
  * volgende parameters:
- *  
+ *
  * <ul>
  * <li>De vraag waarop een antwoord moet gevonden worden (String)</li>
  * <li>Het juiste antwoord op de vraag (String)</li>
@@ -21,12 +22,12 @@ import util.datumWrapper.Datum;
  * <li>[OPTIONEEL] Het maximum aantal toegestane antwoordpogingen (int). De default waarde is 1</li>
  * <li>[OPTIONEEL] De maximum toegestane antwoordtijd in seconden (int). Default is de antwoordtijd ongelimiteerd</li>
  * </ul>
- * 
+ *
  * @author Ben Vandenberk
  * @version 25/10/2014
  *
  */
-public class Opdracht {
+public class Opdracht implements Comparable<Opdracht>, Cloneable {
 
 	private String vraag;
 	private String juisteAntwoord;
@@ -37,76 +38,105 @@ public class Opdracht {
 	private OpdrachtCategorie opdrachtCategorie;
 	private final Leraar auteur;
 
-	private Datum aanmaakDatum;
+	private final Datum aanmaakDatum;
 
 	private ArrayList<String> antwoordHints;
 	private ArrayList<QuizOpdracht> quizOpdrachten;
 
 	/**
-	 * Maakt een Opdracht object aan met een opdrachtcategorie en een auteur.<br/><br/>
-	 * 
+	 * Maakt een Opdracht object aan met een opdrachtcategorie en een auteur.<br/>
+	 * <br/>
+	 *
 	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is 1 (Default waarden)
-	 * 
-	 * @param opdrachtCategorie de OpdrachtCategorie
-	 * @param auteur de Leraar die de Opdracht gecreëerd heeft
+	 *
+	 * @param opdrachtCategorie
+	 *            de OpdrachtCategorie
+	 * @param auteur
+	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
 	public Opdracht(OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		this("", "", 1, 0, opdrachtCategorie, auteur);
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een antwoord, een opdrachtcategorie en een auteur.<br/><br/>
-	 * 
+	 * Maakt een Opdracht object aan met een vraag, een antwoord, een opdrachtcategorie en een auteur.<br/>
+	 * <br/>
+	 *
 	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is 1 (Default waarden)
-	 * 
-	 * @param vraag de String die de vraag bevat
-	 * @param juisteAntwoord de String die het correcte antwoord bevat
-	 * @param opdrachtCategorie de OpdrachtCategorie
-	 * @param auteur de Leraar die de Opdracht gecreëerd heeft
+	 *
+	 * @param vraag
+	 *            de String die de vraag bevat
+	 * @param juisteAntwoord
+	 *            de String die het correcte antwoord bevat
+	 * @param opdrachtCategorie
+	 *            de OpdrachtCategorie
+	 * @param auteur
+	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
 	public Opdracht(String vraag, String juisteAntwoord, OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		this(vraag, juisteAntwoord, 1, 0, opdrachtCategorie, auteur);
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een maximum aantal pogingen, een antwoord, een opdrachtcategorie en een auteur.<br/><br/>
-	 * 
+	 * Maakt een Opdracht object aan met een vraag, een maximum aantal pogingen, een antwoord, een opdrachtcategorie en
+	 * een auteur.<br/>
+	 * <br/>
+	 *
 	 * De antwoordtijd is ongelimiteerd (default)
-	 * 
-	 * @param vraag de String die de vraag bevat
-	 * @param maxAantalPogingen het maximaal aantal toegelaten antwoordpogingen
-	 * @param juisteAntwoord de String die het correcte antwoord bevat
-	 * @param opdrachtCategorie de OpdrachtCategorie
-	 * @param auteur de Leraar die de Opdracht gecreëerd heeft
+	 *
+	 * @param vraag
+	 *            de String die de vraag bevat
+	 * @param maxAantalPogingen
+	 *            het maximaal aantal toegelaten antwoordpogingen
+	 * @param juisteAntwoord
+	 *            de String die het correcte antwoord bevat
+	 * @param opdrachtCategorie
+	 *            de OpdrachtCategorie
+	 * @param auteur
+	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
 	public Opdracht(String vraag, int maxAantalPogingen, String juisteAntwoord, OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		this(vraag, juisteAntwoord, maxAantalPogingen, 0, opdrachtCategorie, auteur);
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximale antwoordtijd, een opdrachtcategorie en een auteur.<br/><br/>
-	 * 
+	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximale antwoordtijd, een opdrachtcategorie en
+	 * een auteur.<br/>
+	 * <br/>
+	 *
 	 * Het maximaal aantal antwoordpogingen is 1 (default)
-	 * 
-	 * @param vraag de String die de vraag bevat
-	 * @param juisteAntwoord de String die het correcte antwoord bevat
-	 * @param maxAntwoordTijd de maximaal toegelaten antwoordtijd
-	 * @param opdrachtCategorie de OpdrachtCategorie
-	 * @param auteur de Leraar die de Opdracht gecreëerd heeft
+	 *
+	 * @param vraag
+	 *            de String die de vraag bevat
+	 * @param juisteAntwoord
+	 *            de String die het correcte antwoord bevat
+	 * @param maxAntwoordTijd
+	 *            de maximaal toegelaten antwoordtijd
+	 * @param opdrachtCategorie
+	 *            de OpdrachtCategorie
+	 * @param auteur
+	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
 	public Opdracht(String vraag, String juisteAntwoord, int maxAntwoordTijd, OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		this(vraag, juisteAntwoord, 1, maxAntwoordTijd, opdrachtCategorie, auteur);
 	}
 
 	/**
-	 *  Maakt een Opdracht object aan met een vraag, een antwoord, een maximum aantal pogingen, een maximale antwoordtijd, een opdrachtcategorie en een auteur
-	 *  
-	 * @param vraag de String die de vraag bevat
-	 * @param juisteAntwoord de String die het correcte antwoord bevat
-	 * @param maxAantalPogingen het maximaal aantal toegelaten antwoordpogingen
-	 * @param maxAntwoordTijd de maximaal toegelaten antwoordtijd
-	 * @param opdrachtCategorie de OpdrachtCategorie
-	 * @param auteur de Leraar die de Opdracht gecreëerd heeft
+	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximum aantal pogingen, een maximale
+	 * antwoordtijd, een opdrachtcategorie en een auteur
+	 *
+	 * @param vraag
+	 *            de String die de vraag bevat
+	 * @param juisteAntwoord
+	 *            de String die het correcte antwoord bevat
+	 * @param maxAantalPogingen
+	 *            het maximaal aantal toegelaten antwoordpogingen
+	 * @param maxAntwoordTijd
+	 *            de maximaal toegelaten antwoordtijd
+	 * @param opdrachtCategorie
+	 *            de OpdrachtCategorie
+	 * @param auteur
+	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
 	public Opdracht(String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
@@ -121,9 +151,9 @@ public class Opdracht {
 		aanmaakDatum = new Datum();
 	}
 
-	/** 
+	/**
 	 * Haalt de te beantwoorden vraag op
-	 * 
+	 *
 	 * @return de vraag
 	 */
 	public String getVraag() {
@@ -132,8 +162,9 @@ public class Opdracht {
 
 	/**
 	 * Stelt de te beantwoorden vraag in
-	 * 
-	 * @param vraag de String die de vraag bevat
+	 *
+	 * @param vraag
+	 *            de String die de vraag bevat
 	 */
 	public void setVraag(String vraag) {
 		this.vraag = vraag;
@@ -141,7 +172,7 @@ public class Opdracht {
 
 	/**
 	 * Haalt het correcte antwoord op de vraag op
-	 * 
+	 *
 	 * @return een String met het antwoord op de vraag
 	 */
 	public String getJuisteAntwoord() {
@@ -150,8 +181,9 @@ public class Opdracht {
 
 	/**
 	 * Stelt het correcte antwoord op de vraag in
-	 * 
-	 * @param juisteAntwoord de String die het antwoord bevat
+	 *
+	 * @param juisteAntwoord
+	 *            de String die het antwoord bevat
 	 */
 	public void setJuisteAntwoord(String juisteAntwoord) {
 		this.juisteAntwoord = juisteAntwoord;
@@ -159,7 +191,7 @@ public class Opdracht {
 
 	/**
 	 * Haalt het maximum aantal antwoordpogingen op
-	 * 
+	 *
 	 * @return het maximum aantal antwoordpogingen
 	 */
 	public int getMaxAantalPogingen() {
@@ -168,8 +200,9 @@ public class Opdracht {
 
 	/**
 	 * Stelt het maximum aantal antwoordpogingen in
-	 * 
-	 * @param maxAantalPogingen het maximum aantal antwoordpogingen
+	 *
+	 * @param maxAantalPogingen
+	 *            het maximum aantal antwoordpogingen
 	 */
 	public void setMaxAantalPogingen(int maxAantalPogingen) {
 		if (maxAantalPogingen < 1) {
@@ -180,7 +213,7 @@ public class Opdracht {
 
 	/**
 	 * Haalt de maximum toegestane antwoordtijd op
-	 * 
+	 *
 	 * @return de maximum toegestane antwoordtijd
 	 */
 	public int getMaxAntwoordTijd() {
@@ -189,19 +222,20 @@ public class Opdracht {
 
 	/**
 	 * Stelt de maximum toegestane antwoordtijd in
-	 * 
-	 * @param maxAntwoordTijd de maximum toegestane antwoordtijd
+	 *
+	 * @param maxAntwoordTijd
+	 *            de maximum toegestane antwoordtijd
 	 */
 	public void setMaxAntwoordTijd(int maxAntwoordTijd) {
-		if (maxAntwoordTijd < 1) {
-			throw new IllegalArgumentException("De antwoordtijd moet minstens 1 seconde bedragen");
+		if (maxAntwoordTijd < 0) {
+			throw new IllegalArgumentException("De antwoordtijd moet positief zijn");
 		}
 		this.maxAntwoordTijd = maxAntwoordTijd;
 	}
 
 	/**
 	 * Haalt de opdrachtcategorie op
-	 * 
+	 *
 	 * @return de OpdrachtCategorie waartoe de Opdracht behoort
 	 */
 	public OpdrachtCategorie getOpdrachtCategorie() {
@@ -210,8 +244,9 @@ public class Opdracht {
 
 	/**
 	 * Stelt de opdrachtcategorie in
-	 * 
-	 * @param opdrachtCategorie de OpdrachtCategorie waartoe de Opdracht zal behoren
+	 *
+	 * @param opdrachtCategorie
+	 *            de OpdrachtCategorie waartoe de Opdracht zal behoren
 	 */
 	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie) {
 		this.opdrachtCategorie = opdrachtCategorie;
@@ -219,7 +254,7 @@ public class Opdracht {
 
 	/**
 	 * Haalt de leraar op die de opdracht gecreëerd heeft
-	 * 
+	 *
 	 * @return de Leraar die de Opdracht gecreëerd heeft
 	 */
 	public Leraar getAuteur() {
@@ -228,7 +263,7 @@ public class Opdracht {
 
 	/**
 	 * Haalt de aanmaakdatum van de opdracht op
-	 * 
+	 *
 	 * @return de Datum waarop de opdracht aangemaakt is
 	 */
 	public Datum getAanmaakDatum() {
@@ -237,8 +272,9 @@ public class Opdracht {
 
 	/**
 	 * Voegt een QuizOpdracht toe aan de lijst van QuizOpdrachten teneinde de Opdracht te linken aan een Quiz
-	 * 
-	 * @param quizOpdracht de QuizOpdracht om toe te voegen
+	 *
+	 * @param quizOpdracht
+	 *            de QuizOpdracht om toe te voegen
 	 */
 	public void addQuizOpdracht(QuizOpdracht quizOpdracht) {
 		quizOpdrachten.add(quizOpdracht);
@@ -246,8 +282,9 @@ public class Opdracht {
 
 	/**
 	 * Verwijdert een QuizOpdracht uit de lijst van QuizOpdrachten
-	 * 
-	 * @param quizOpdracht de QuizOpdracht om te verwijderen
+	 *
+	 * @param quizOpdracht
+	 *            de QuizOpdracht om te verwijderen
 	 */
 	public void removeQuizOpdracht(QuizOpdracht quizOpdracht) {
 		quizOpdrachten.remove(quizOpdracht);
@@ -255,8 +292,9 @@ public class Opdracht {
 
 	/**
 	 * Voegt een antwoordhint toe aan een lijst van hints voor deze Opdracht
-	 * 
-	 * @param hint de String met de hint om toe te voegen
+	 *
+	 * @param hint
+	 *            de String met de hint om toe te voegen
 	 */
 	public void addHint(String hint) {
 		antwoordHints.add(hint);
@@ -264,8 +302,9 @@ public class Opdracht {
 
 	/**
 	 * Verwijdert een antwoordhint uit de lijst van hints voor deze Opdracht
-	 * 
-	 * @param hint de String met de hint om te verwijderen
+	 *
+	 * @param hint
+	 *            de String met de hint om te verwijderen
 	 */
 	public void removeHint(String hint) {
 		antwoordHints.remove(hint);
@@ -273,19 +312,20 @@ public class Opdracht {
 
 	/**
 	 * Verwijdert een antwoordhint uit de lijst van hints voor deze Opdracht
-	 * 
-	 * @param volgnr het volgnummer van de hint, beginnende bij 1
+	 *
+	 * @param volgnr
+	 *            het volgnummer van de hint, beginnende bij 1
 	 */
 	public void removeHint(int volgnr) {
 		if (volgnr < 0 || volgnr > antwoordHints.size() - 1) {
 			return;
 		}
-		antwoordHints.remove(volgnr - 1);	
+		antwoordHints.remove(volgnr - 1);
 	}
 
 	/**
 	 * Haalt een read-only versie van het lijstje met antwoordhints op
-	 * 
+	 *
 	 * @return de read-only List&lt;String&gt; van antwoordhints
 	 */
 	public List<String> getHints() {
@@ -294,11 +334,86 @@ public class Opdracht {
 
 	/**
 	 * Controleert of het meegegeven antwoord de correcte oplossing is van de vraag van deze Opdracht
-	 * 
-	 * @param antwoord de String met het te testen antwoord
+	 *
+	 * @param antwoord
+	 *            de String met het te testen antwoord
 	 * @return <code>true</code> als het meegegeven antwoord correct is
 	 */
 	public boolean isJuisteAntwoord(String antwoord) {
 		return antwoord.equalsIgnoreCase(juisteAntwoord);
+	}
+
+	@Override
+	public String toString() {
+		return "Opdracht - aangemaakt: " + aanmaakDatum + " - auteur: " + auteur + "\nCategorie: " + opdrachtCategorie
+				+ "\nVraag: " + vraag + "\nAntwoord: " + juisteAntwoord + "\nAntwoordtijd: "
+				+ (maxAntwoordTijd == 0 ? "ongelimiteerd" : maxAntwoordTijd) + " - Aantal toegestane pogingen: "
+				+ maxAantalPogingen;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Opdracht)) {
+			return false;
+		}
+
+		Opdracht opdracht = (Opdracht) obj;
+		if (!opdracht.aanmaakDatum.equals(this.aanmaakDatum)) {
+			return false;
+		}
+		if (!opdracht.auteur.equals(this.auteur)) {
+			return false;
+		}
+		if (!opdracht.vraag.equals(this.vraag)) {
+			return false;
+		}
+		if (!opdracht.opdrachtCategorie.equals(this.opdrachtCategorie)) {
+			return false;
+		}
+		if (opdracht.maxAantalPogingen != this.maxAantalPogingen) {
+			return false;
+		}
+		if (opdracht.maxAntwoordTijd != this.maxAntwoordTijd) {
+			return false;
+		}
+		if (!opdracht.juisteAntwoord.equals(this.juisteAntwoord)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		String hashString = aanmaakDatum.toString() + auteur + vraag + opdrachtCategorie + juisteAntwoord;
+		int hash = hashString.hashCode();
+		hash = hash * 13 + maxAntwoordTijd;
+		hash = hash * 23 + maxAantalPogingen;
+		return hash;
+	}
+
+	/**
+	 * Vergelijkt twee opdrachten alfabetisch, eerst op de opdrachtcategorie, dan op de vraag
+	 */
+	@Override
+	public int compareTo(Opdracht opdracht) {
+		if (this.opdrachtCategorie.toString().compareToIgnoreCase(opdracht.opdrachtCategorie.toString()) == 0) {
+			return this.vraag.compareToIgnoreCase(opdracht.vraag);
+		} else if (this.opdrachtCategorie.toString().compareToIgnoreCase(opdracht.opdrachtCategorie.toString()) < 0) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+
+	@Override
+	public Opdracht clone() throws CloneNotSupportedException {
+		Opdracht clone = (Opdracht) super.clone();
+		clone.antwoordHints = (ArrayList<String>) this.antwoordHints.clone();
+		clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten.clone();
+		return clone;
 	}
 }
