@@ -1,34 +1,40 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class LeerlingContainer {
+public class LeerlingContainer implements Iterable<Leerling> {
 
 	private Leerling leerling;
-	
+
 	public <leerling> Leerling getLeerling() {
-		
+
 		return leerling;
-		
+
 	}
-	
-	private ArrayList<Leerling> Leerlingen;
-	
+
+	private ArrayList<Leerling> leerlingen;
+
 	public LeerlingContainer() {
-		Leerlingen = new ArrayList<Leerling>();
+		leerlingen = new ArrayList<Leerling>();
 	}
 
 	public void addLeerling(Leerling l) {
-		if (!Leerlingen.contains(l)) {
-			Leerlingen.add(l);
+		if (!leerlingen.contains(l)) {
+			leerlingen.add(l);
 		}
 		return;
 	}
 
 	public void removeLeerling(Leerling l) {
-		if (Leerlingen.contains(l)) {
-			Leerlingen.remove(l);
+		if (leerlingen.contains(l)) {
+			leerlingen.remove(l);
 		}
 	}
-	
+
+	@Override
+	public Iterator<Leerling> iterator() {
+		return leerlingen.iterator();
+	}
+
 }

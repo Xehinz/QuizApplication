@@ -1,17 +1,20 @@
 package model;
 
+import java.util.ArrayList;
+
 import util.datumWrapper.Datum;
 
 /**
  *
- * @author Adriaan Kuipers
- * @version 24/10/2014
+ * @author Adriaan Kuipers, Ben Vandenberk
+ * @version 27/10/2014
  */
 public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 
 	private final Leerling leerling;
 	private final Quiz quiz;
 	private final Datum datum;
+	private ArrayList<OpdrachtAntwoord> opdrachtAntwoorden;
 
 	/**
 	 * Constructor QuizDeelname met 2 parameters
@@ -22,12 +25,10 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 *            de Leerling
 	 */
 	private QuizDeelname(Quiz quiz, Leerling leerling) {
-		if (!this.IsDeelnameMogelijk(quiz, leerling)) {
-			throw new IllegalArgumentException("Deelname niet mogelijk");
-		}
 		this.datum = new Datum();
 		this.quiz = quiz;
 		this.leerling = leerling;
+		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
 	}
 
 	public Leerling getLeerling() {
@@ -43,26 +44,17 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) {
+		if (!quiz.isDeelnameMogelijk()) {
+			throw new IllegalArgumentException(String.format("De status van de quiz(%s) laat niet toe aan de quiz deel te nemen",
+					quiz.getQuizStatus()));
+		}
+		if (!quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
+			throw new IllegalArgumentException(String.format(
+					"De quiz is niet opengesteld voor het leerjaar waarin de leerling zich bevindt (%d)", leerling.getLeerjaar()));
+		}
 		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling);
 		leerling.addQuizDeelname(quizDeelname);
 		quiz.addQuizDeelname(quizDeelname);
-	}
-
-	/**
-	 * Testen of leerling aan quiz deel mag nemen
-	 *
-	 * @param quiz
-	 *            Quiz waaraan leerling wenst deel te nemen
-	 * @param leerling
-	 *            Leerling die wenst deel te nemen
-	 * @return
-	 */
-	public boolean IsDeelnameMogelijk(Quiz quiz, Leerling leerling) {
-		if (!quiz.getQuizStatus().equals("") || quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	/**

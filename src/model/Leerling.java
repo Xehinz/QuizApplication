@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -109,8 +111,27 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	 * @param quizDeelname
 	 *            de QuizDeelname om toe te voegen
 	 */
-	public void addQuizDeelname(QuizDeelname quizDeelname) {
+	protected void addQuizDeelname(QuizDeelname quizDeelname) {
 		this.quizDeelnames.add(quizDeelname);
+	}
+
+	/**
+	 * Verwijderen van een QuizDeelname gelinkt aan deze Leerling
+	 *
+	 * @param quizDeelname
+	 *            de te verwijderen QuizDeelname
+	 */
+	protected void removeQuizDeelname(QuizDeelname quizDeelname) {
+		this.quizDeelnames.remove(quizDeelname);
+	}
+
+	/**
+	 * Geeft een read-only List terug van de QuizDeelnames van deze Leerling
+	 *
+	 * @return een read-only List&lt;QuizDeelname&gt; geassocieerd met deze Leerling
+	 */
+	public List<QuizDeelname> getQuizDeelnames() {
+		return Collections.unmodifiableList(this.quizDeelnames);
 	}
 
 	/**

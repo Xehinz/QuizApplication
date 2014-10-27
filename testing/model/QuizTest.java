@@ -38,7 +38,7 @@ public class QuizTest {
 
 	@Test
 	public void testQuiz_IsUniekeDeelname_IsOK() {
-		Quiz isUniekeDeelname = new Quiz("is uniekedeelname", true, "status");
+		Quiz isUniekeDeelname = new Quiz("is uniekedeelname", true);
 		assertTrue("Een unieke deelname is een constraint (bij constructor)", isUniekeDeelname.getIsUniekeDeelname());
 
 		isUniekeDeelname = new Quiz("is uniekedeelname");
@@ -48,12 +48,12 @@ public class QuizTest {
 
 	@Test
 	public void testQuiz_getStatus_IsOK() {
-		Quiz isStatus = new Quiz("een quiz met een status", false, "een status");
-		assertTrue("Deze status is bij initialisatie gelijk", isStatus.getQuizStatus() == "een status");
+		Quiz isStatus = new Quiz("een quiz met een status", false);
+		assertTrue("Deze status is bij initialisatie gelijk", isStatus.getQuizStatus() == QuizStatus.IN_CONSTRUCTIE);
 
 		isStatus = new Quiz("een andere quiz zonder status bij initialisatie");
-		isStatus.setQuizStatus("een andere status");
-		assertTrue("Deze status is bij set-method gelijk", isStatus.getQuizStatus() == "een andere status");
+		isStatus.setQuizStatus(QuizStatus.AFGEWERKT);
+		assertTrue("Deze status is bij set-method gelijk", isStatus.getQuizStatus() == QuizStatus.AFGEWERKT);
 	}
 
 	@Test
