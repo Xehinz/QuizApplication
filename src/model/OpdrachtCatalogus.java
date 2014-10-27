@@ -137,9 +137,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 *
 	 * @param OC
 	 *            de te vergelijken catalogus
-	 * @return 0 indien evenveel
-	 * @return 1 indien meer
-	 * @return -1 indien minder
 	 */
 
 	@Override
