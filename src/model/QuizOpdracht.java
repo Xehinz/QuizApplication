@@ -58,4 +58,12 @@ public class QuizOpdracht {
 		return maxScore;
 	}
 
+	public double getGemiddeldeScore() {
+		double somScores = 0;
+		for (OpdrachtAntwoord opdrachtAntwoord : this.opdrachtAntwoorden) {
+			somScores += opdrachtAntwoord.getBehaaldeScore();
+		}
+		return somScores / this.opdrachtAntwoorden.size();
+	}
+
 }

@@ -3,10 +3,12 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.datumWrapper.Datum;
+
 /**
  *
  * @author johan, ben (constructor, zijnDoelLeerjaren)
- * @version 2014.10.25
+ * @version 2014.10.28
  *
  */
 
@@ -19,6 +21,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	private List<QuizOpdracht> quizOpdrachten;
 	private List<QuizDeelname> quizDeelnames;
 	private boolean[] zijnDoelLeerjaren = new boolean[7];
+	private final Datum aanmaakDatum;
 
 	/**
 	 * lege constructor van de Quiz-class
@@ -45,25 +48,12 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * @param isUniekeDeelname
 	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
 	 */
-	// public Quiz(String onderwerp, boolean isUniekeDeelname) {
-	// this(onderwerp, isUniekeDeelname, "");
-	// }
-
-	/**
-	 * constructor van de Quiz-class
-	 *
-	 * @param onderwerp
-	 *            het onderwerp van deze quiz
-	 * @param isUniekeDeelname
-	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
-	 * @param quizStatus
-	 *            status van de quiz
-	 */
 	public Quiz(String onderwerp, boolean isUniekeDeelname) {
 		this.onderwerp = onderwerp;
 		this.isUniekeDeelname = isUniekeDeelname;
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
 		quizDeelnames = new ArrayList<QuizDeelname>();
+		aanmaakDatum = new Datum();
 
 		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
 			zijnDoelLeerjaren[i] = true;
@@ -104,6 +94,36 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	public boolean getIsUniekeDeelname() {
 		return this.isUniekeDeelname;
+	}
+
+	/**
+	 * Geeft een kopie van het Datum objectje terug dat de aanmaakdatum van deze quiz voorstelt
+	 *
+	 * @return de Datum van aanmaak van deze Quiz
+	 */
+	public Datum getAanmaakDatum() {
+		return new Datum(aanmaakDatum);
+	}
+
+	/**
+	 * Geeft de som terug van de maximum te behalen scores van alle opdrachten van deze quiz
+	 *
+	 * @return de som van de maximum te behalen scores van alle opdrachten van deze quiz
+	 */
+	public int getMaxScore() {
+		int maxScore = 0;
+		for (QuizOpdracht quizOpdracht : this.quizOpdrachten) {
+			maxScore += quizOpdracht.getMaxScore();
+		}
+		return maxScore;
+	}
+
+	public double getGemiddeldeScore() {
+		double somScores = 0;
+		for (QuizDeelname quizDeelname : this.quizDeelnames) {
+			somScores += quizDeelname.getBehaaldeScore();
+		}
+		return somScores / this.quizDeelnames.size();
 	}
 
 	/**

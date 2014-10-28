@@ -43,6 +43,21 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		return new Datum(datum);
 	}
 
+	/**
+	 * Geeft de score terug die voor deze quizdeelname behaald werd. De score staat op 10 en is afgerond tot op het
+	 * gehele getal
+	 *
+	 * @return de score op 10 voor deze quizdeelname
+	 */
+	public int getBehaaldeScore() {
+		double behaaldeScore = 0;
+		for (OpdrachtAntwoord opdrachtAntwoord : this.opdrachtAntwoorden) {
+			behaaldeScore += opdrachtAntwoord.getBehaaldeScore();
+		}
+		double opTien = behaaldeScore / this.quiz.getMaxScore() * 10.0;
+		return (int)Math.round(opTien);
+	}
+
 	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) {
 		if (!quiz.isDeelnameMogelijk()) {
 			throw new IllegalArgumentException(String.format("De status van de quiz(%s) laat niet toe aan de quiz deel te nemen",

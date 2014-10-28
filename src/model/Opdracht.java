@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.activity.InvalidActivityException;
+
 import util.datumWrapper.Datum;
 
 /**
@@ -165,8 +167,14 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param vraag
 	 *            de String die de vraag bevat
+	 * @throws InvalidActivityException
+	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setVraag(String vraag) {
+	public void setVraag(String vraag) throws InvalidActivityException {
+		if (!isAanpasbaar()) {
+			throw new InvalidActivityException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
 		this.vraag = vraag;
 	}
 
@@ -184,8 +192,14 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param juisteAntwoord
 	 *            de String die het antwoord bevat
+	 * @throws InvalidActivityException
+	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setJuisteAntwoord(String juisteAntwoord) {
+	public void setJuisteAntwoord(String juisteAntwoord) throws InvalidActivityException {
+		if (!isAanpasbaar()) {
+			throw new InvalidActivityException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
 		this.juisteAntwoord = juisteAntwoord;
 	}
 
@@ -203,8 +217,14 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param maxAantalPogingen
 	 *            het maximum aantal antwoordpogingen
+	 * @throws InvalidActivityException
+	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setMaxAantalPogingen(int maxAantalPogingen) {
+	public void setMaxAantalPogingen(int maxAantalPogingen) throws InvalidActivityException {
+		if (!isAanpasbaar()) {
+			throw new InvalidActivityException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
 		if (maxAantalPogingen < 1) {
 			throw new IllegalArgumentException("Het aantal pogingen moet minstens 1 zijn");
 		}
@@ -225,8 +245,14 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param maxAntwoordTijd
 	 *            de maximum toegestane antwoordtijd
+	 * @throws InvalidActivityException
+	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setMaxAntwoordTijd(int maxAntwoordTijd) {
+	public void setMaxAntwoordTijd(int maxAntwoordTijd) throws InvalidActivityException {
+		if (!isAanpasbaar()) {
+			throw new InvalidActivityException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
 		if (maxAntwoordTijd < 0) {
 			throw new IllegalArgumentException("De antwoordtijd moet positief zijn");
 		}
@@ -247,8 +273,14 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie waartoe de Opdracht zal behoren
+	 * @throws InvalidActivityException
+	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie) {
+	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie) throws InvalidActivityException {
+		if (!isAanpasbaar()) {
+			throw new InvalidActivityException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
 		this.opdrachtCategorie = opdrachtCategorie;
 	}
 
@@ -262,12 +294,12 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Haalt de aanmaakdatum van de opdracht op
+	 * Geeft een kopie van het Datum objectje terug dat de aanmaakdatum van deze opdracht voorstelt
 	 *
-	 * @return de Datum waarop de opdracht aangemaakt is
+	 * @return de Datum van aanmaak van deze opdracht
 	 */
 	public Datum getAanmaakDatum() {
-		return aanmaakDatum;
+		return new Datum(aanmaakDatum);
 	}
 
 	/**
@@ -277,6 +309,22 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 */
 	public boolean heeftTijdsbeperking() {
 		return maxAntwoordTijd != 0;
+	}
+
+	/**
+	 * Wanneer een opdracht in een quiz is opgenomen die al door een leerling is gemaakt, mag de opdracht niet meer
+	 * gewijzigd worden
+	 *
+	 * @return true als de opdracht nog niet is opgelost in een actieve quiz
+	 */
+	private boolean isAanpasbaar() {
+		boolean isAanpasbaar = true;
+		for (QuizOpdracht quizOpdracht : this.quizOpdrachten) {
+			if (quizOpdracht.getQuiz().getLeerlingenDieDeelnamen().size() > 0) {
+				isAanpasbaar = false;
+			}
+		}
+		return isAanpasbaar;
 	}
 
 	/**

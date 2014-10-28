@@ -134,8 +134,17 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		return Collections.unmodifiableList(this.quizDeelnames);
 	}
 
-	public List<Quiz> getQuizzen() {
-
+	/**
+	 * Geeft een lijstje terug van quizzen waaraan de Leerling reeds deelnam
+	 * 	
+	 * @return een ArrayList&lt;Quiz&gt; van quizzen waaraan de Leerling reeds deelnam
+	 */
+	public ArrayList<Quiz> getDeelgenomenQuizzen() {
+		ArrayList<Quiz> deelgenomenAan = new ArrayList<Quiz>();
+		for (QuizDeelname quizDeelname : this.quizDeelnames) {
+			deelgenomenAan.add(quizDeelname.getQuiz());
+		}
+		return deelgenomenAan;
 	}
 
 	/**
