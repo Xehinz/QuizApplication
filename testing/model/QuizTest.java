@@ -18,19 +18,19 @@ public class QuizTest {
 
 	@Before
 	public void setUp() throws Exception {
-		myQuiz = new Quiz("nieuwe quiz");
-		otherQuiz = new Quiz("andere quiz");
+		myQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "nieuwe quiz");
+		otherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "andere quiz");
 	}
 
 	@Test
 	public void testQuiz_GeefOnderwerp_IsOK() {
-		Quiz raarOnderwerp = new Quiz("raar onderwerp");
+		Quiz raarOnderwerp = new Quiz(Leraar.CHARLOTTE_NEVEN, "raar onderwerp");
 		assertTrue("Het onderwerp is hetzelfde", raarOnderwerp.getOnderwerp() == "raar onderwerp");
 	}
 
 	@Test
 	public void testQuiz_IsTest_IsOK() {
-		Quiz isTest = new Quiz("is test");
+		Quiz isTest = new Quiz(Leraar.CHARLOTTE_NEVEN, "is test");
 		isTest.setIsTest(true);
 
 		assertTrue("Deze quiz is een test", isTest.getIsTest());
@@ -38,28 +38,28 @@ public class QuizTest {
 
 	@Test
 	public void testQuiz_IsUniekeDeelname_IsOK() {
-		Quiz isUniekeDeelname = new Quiz("is uniekedeelname", true);
+		Quiz isUniekeDeelname = new Quiz(Leraar.CHARLOTTE_NEVEN, "is uniekedeelname", true);
 		assertTrue("Een unieke deelname is een constraint (bij constructor)", isUniekeDeelname.getIsUniekeDeelname());
 
-		isUniekeDeelname = new Quiz("is uniekedeelname");
+		isUniekeDeelname = new Quiz(Leraar.CHARLOTTE_NEVEN, "is uniekedeelname");
 		isUniekeDeelname.setIsUniekeDeelname(false);
 		assertFalse("Een unieke deelname is een constraint (bij setter)", isUniekeDeelname.getIsUniekeDeelname());
 	}
 
 	@Test
 	public void testQuiz_getStatus_IsOK() {
-		Quiz isStatus = new Quiz("een quiz met een status", false);
+		Quiz isStatus = new Quiz(Leraar.CHARLOTTE_NEVEN, "een quiz met een status", false);
 		assertTrue("Deze status is bij initialisatie gelijk", isStatus.getQuizStatus() == QuizStatus.IN_CONSTRUCTIE);
 
-		isStatus = new Quiz("een andere quiz zonder status bij initialisatie");
+		isStatus = new Quiz(Leraar.CHARLOTTE_NEVEN, "een andere quiz zonder status bij initialisatie");
 		isStatus.setQuizStatus(QuizStatus.AFGEWERKT);
 		assertTrue("Deze status is bij set-method gelijk", isStatus.getQuizStatus() == QuizStatus.AFGEWERKT);
 	}
 
 	@Test
 	public void testQuiz_getOpdrachtenVanEenCloneQuiz_EqualsEenCloneQuiz_IsOK() {
-		Quiz aQuiz = new Quiz("new quiz");
-		Quiz anotherQuiz = new Quiz("another quiz");
+		Quiz aQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "new quiz");
+		Quiz anotherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "another quiz");
 		Opdracht aOpdracht = new Opdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
 
 		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 5);
@@ -84,8 +84,8 @@ public class QuizTest {
 
 	@Test
 	public void testQuiz_VergelijkOpdrachten_IsKleiner() {
-		Quiz aQuiz = new Quiz("new quiz");
-		Quiz anotherQuiz = new Quiz("another quiz");
+		Quiz aQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "new quiz");
+		Quiz anotherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "another quiz");
 		Opdracht aOpdracht = new Opdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
 
 		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 5);

@@ -142,11 +142,16 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 */
 	public Opdracht(String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
-		setVraag(vraag);
-		setJuisteAntwoord(juisteAntwoord);
-		setMaxAantalPogingen(maxAantalPogingen);
-		setMaxAntwoordTijd(maxAntwoordTijd);
-		setOpdrachtCategorie(opdrachtCategorie);
+		try {
+			setVraag(vraag);
+			setJuisteAntwoord(juisteAntwoord);
+			setMaxAantalPogingen(maxAantalPogingen);
+			setMaxAntwoordTijd(maxAntwoordTijd);
+			setOpdrachtCategorie(opdrachtCategorie);
+		} catch (InvalidActivityException ex) {
+			// Bij het aanmaken van een Opdracht zal de Opdracht steeds aanpasbaar zijn. De Exception zal zich nooit
+			// voordoen
+		}
 		this.auteur = auteur;
 		antwoordHints = new ArrayList<String>();
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
@@ -317,7 +322,7 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @return true als de opdracht nog niet is opgelost in een actieve quiz
 	 */
-	private boolean isAanpasbaar() {
+	public boolean isAanpasbaar() {
 		boolean isAanpasbaar = true;
 		for (QuizOpdracht quizOpdracht : this.quizOpdrachten) {
 			if (quizOpdracht.getQuiz().getLeerlingenDieDeelnamen().size() > 0) {
@@ -325,6 +330,15 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 			}
 		}
 		return isAanpasbaar;
+	}
+
+	/**
+	 * Wanneer een opdracht in een quiz is opgenomen kan ze niet meer verwijderd worden
+	 *
+	 * @return true als de opdracht nog niet gelinkt is en dus verwijderd kan worden
+	 */
+	public boolean isVerwijderbaar() {
+		return this.quizOpdrachten.size() == 0;
 	}
 
 	/**

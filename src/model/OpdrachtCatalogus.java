@@ -2,6 +2,8 @@ package model;
 
 import java.util.List;
 
+import javax.activity.InvalidActivityException;
+
 /**
  * De OpdrachtCatalogus klasse, met 1 field: Een lijst met alle aangemaakte opdrachten
  *
@@ -72,9 +74,14 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 *
 	 * @param O
 	 *            de te verwijderen Opdracht
+	 * @throws InvalidActivityException
+	 *             als de opdracht reeds gelinkt is aan een quiz
 	 */
 
-	public void removeOpdracht(Opdracht O) {
+	public void removeOpdracht(Opdracht O) throws InvalidActivityException {
+		if (!O.isVerwijderbaar()) {
+			throw new InvalidActivityException("De opdracht kan niet verwijderd worden omdat ze reeds gelinkt is aan een quiz");
+		}
 		this.opdrachtcatalogus.remove(O);
 	}
 

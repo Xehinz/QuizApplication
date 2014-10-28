@@ -1,7 +1,9 @@
 package model;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.activity.InvalidActivityException;
 
 /**
  * De QuizCatalogus klasse, met 1 field: Een lijst met alle bestaande quizzen
@@ -16,13 +18,13 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 
 	/**
 	 * Maakt een nieuwe QuizCatalogus aan
-	 * 
-	 * Constructor zonder parameters waarbij we de List initialiseren als nieuwe List
-	 * --> aangezien we geen List<Quiz>(); kunnen instantiëren, gebruiken we ArrayList
+	 *
+	 * Constructor zonder parameters waarbij we de List initialiseren als nieuwe List --> aangezien we geen
+	 * List<Quiz>(); kunnen instantiï¿½ren, gebruiken we ArrayList
 	 * http://stackoverflow.com/questions/13395114/how-to-initialize-liststring-object-in-java
 	 */
 	public QuizCatalogus() {
-		this.quizcatalogus = new ArrayList<Quiz>(); //added
+		this.quizcatalogus = new ArrayList<Quiz>(); // added
 	}
 
 	/**
@@ -31,7 +33,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	 * @param qc
 	 *            een lijst van quizzen
 	 */
-	
+
 	public QuizCatalogus(List<Quiz> qc) {
 		this.quizcatalogus = qc;
 	}
@@ -41,7 +43,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	 *
 	 * @return de gekloonde QuizCatalogus
 	 */
-	
+
 	public QuizCatalogus getCloneQuizCatalogus() {
 		try {
 			return this.clone();
@@ -49,7 +51,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Kloont QuizCatalogus
 	 *
@@ -67,8 +69,8 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	 * @param Q
 	 *            de toe te voegen Quiz
 	 */
-	
-	public void addOpdracht(Quiz Q) {
+
+	public void addQuiz(Quiz Q) {
 		this.quizcatalogus.add(Q);
 	}
 
@@ -77,9 +79,16 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	 *
 	 * @param Q
 	 *            de te verwijderen Quiz
+	 * @throws InvalidActivityException
+	 *             als de quiz zich niet in de status 'In constructie' of 'Afgewerkt' bevindt en dus niet verwijderbaar
+	 *             is
 	 */
-	
-	public void removeOpdracht(Quiz Q) {
+
+	public void removeQuiz(Quiz Q) throws InvalidActivityException {
+		if (!Q.isVerwijderbaar()) {
+			throw new InvalidActivityException(String.format("De quiz bevindt zich in de status %s en is dus niet verwijderbaar",
+					Q.getQuizStatus().toString()));
+		}
 		this.quizcatalogus.remove(Q);
 	}
 
@@ -90,11 +99,11 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	 *            het volgnummer
 	 * @return de quiz met het ingegeven volgnummer
 	 */
-	
+
 	public Quiz getQuiz(int volgnr) {
 		return this.quizcatalogus.get(volgnr - 1);
 	}
-	
+
 	/**
 	 * check of de catalogus een bepaalde quiz bevat
 	 *
@@ -106,7 +115,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	public boolean hasQuiz(Quiz quiz) {
 		return this.quizcatalogus.contains(quiz);
 	}
-	
+
 	/**
 	 * telt het aantal quizzen in de catalogus
 	 *
@@ -120,7 +129,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	/**
 	 * Override van de toString methode
 	 */
-	
+
 	@Override
 	public String toString() {
 		return "Quizcatalogus met " + this.count() + " quizzen";
@@ -132,10 +141,9 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	 * @param aQuizCatalogus
 	 *            de te vergelijken catalogus
 	 */
-	
+
 	public boolean equals(QuizCatalogus aQuizCatalogus) {
-		return aQuizCatalogus.getCloneQuizCatalogus().quizcatalogus
-				.containsAll(this.quizcatalogus);
+		return aQuizCatalogus.getCloneQuizCatalogus().quizcatalogus.containsAll(this.quizcatalogus);
 	}
 
 	/**
@@ -144,7 +152,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	 * @param QC
 	 *            de te vergelijken catalogus
 	 */
-	
+
 	@Override
 	public int compareTo(QuizCatalogus QC) {
 		if (this.count() < QC.count()) {
@@ -152,7 +160,8 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 		}
 		if (this.count() > QC.count()) {
 			return 1;
-		} else
+		} else {
 			return 0;
+		}
 	}
 }

@@ -22,22 +22,28 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	private List<QuizDeelname> quizDeelnames;
 	private boolean[] zijnDoelLeerjaren = new boolean[7];
 	private final Datum aanmaakDatum;
+	private final Leraar auteur;
 
 	/**
-	 * lege constructor van de Quiz-class
+	 * Maakt Quiz object met enkel een auteur als argument
+	 *
+	 * @param auteur
+	 *            de Leraar die de Quiz heeft aangemaakt
 	 */
-	public Quiz() {
-		this("", false);
+	public Quiz(Leraar auteur) {
+		this(auteur, "", false);
 	}
 
 	/**
 	 * constructor van de Quiz-class
 	 *
+	 * @param auteur
+	 *            de Leraar die de Quiz heeft aangemaakt
 	 * @param onderwerp
 	 *            het onderwerp van deze quiz
 	 */
-	public Quiz(String onderwerp) {
-		this(onderwerp, false);
+	public Quiz(Leraar auteur, String onderwerp) {
+		this(auteur, onderwerp, false);
 	}
 
 	/**
@@ -47,10 +53,13 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 *            het onderwerp van deze quiz
 	 * @param isUniekeDeelname
 	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
+	 * @param auteur
+	 *            de Leraar die de Quiz heeft aangemaakt
 	 */
-	public Quiz(String onderwerp, boolean isUniekeDeelname) {
+	public Quiz(Leraar auteur, String onderwerp, boolean isUniekeDeelname) {
 		this.onderwerp = onderwerp;
 		this.isUniekeDeelname = isUniekeDeelname;
+		this.auteur = auteur;
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
 		quizDeelnames = new ArrayList<QuizDeelname>();
 		aanmaakDatum = new Datum();
@@ -103,6 +112,15 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	public Datum getAanmaakDatum() {
 		return new Datum(aanmaakDatum);
+	}
+
+	/**
+	 * Geeft de auteur van de Quiz terug
+	 *
+	 * @return de Leraar die de Quiz heeft aangemaakt
+	 */
+	public Leraar getAuteur() {
+		return auteur;
 	}
 
 	/**
@@ -191,6 +209,15 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	public boolean isDeelnameMogelijk() {
 		return this.quizStatus.isDeelnameMogelijk();
+	}
+
+	/**
+	 * Enkel wanneer een quiz zich in de status 'In constructie' of 'Afgewerkt' bevindt, is ze verwijderbaar
+	 *
+	 * @return true als de quiz de status 'In constructie' of 'Afgewerkt' heeft en dus verwijderbaar is
+	 */
+	public boolean isVerwijderbaar() {
+		return this.quizStatus == QuizStatus.IN_CONSTRUCTIE || this.quizStatus == QuizStatus.AFGEWERKT;
 	}
 
 	/**
