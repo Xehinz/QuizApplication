@@ -271,6 +271,15 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
+	 * Geeft een boolean terug om aan te geven of de Opdracht op tijd is of niet
+	 *
+	 * @return true als er een tijdsbeperking geldt
+	 */
+	public boolean heeftTijdsbeperking() {
+		return maxAntwoordTijd != 0;
+	}
+
+	/**
 	 * Voegt een QuizOpdracht toe aan de lijst van QuizOpdrachten teneinde de Opdracht te linken aan een Quiz
 	 *
 	 * @param quizOpdracht

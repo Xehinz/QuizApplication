@@ -40,7 +40,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	public Datum getDatum() {
-		return datum;
+		return new Datum(datum);
 	}
 
 	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) {
@@ -72,16 +72,6 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	protected void addOpdrachtAntwoord(OpdrachtAntwoord opdrachtAntwoord) {
 		this.opdrachtAntwoorden.add(opdrachtAntwoord);
-	}
-
-	/**
-	 * Verwijderen van een bestaand OpdrachtAntwoord uit deze QuizDeelname
-	 *
-	 * @param opdrachtAntwoord
-	 *            het OpdrachtAntwoord om te verwijderen
-	 */
-	protected void removeOpdrachtAntwoord(OpdrachtAntwoord opdrachtAntwoord) {
-		this.opdrachtAntwoorden.remove(opdrachtAntwoord);
 	}
 
 	/**

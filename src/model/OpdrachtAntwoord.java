@@ -1,11 +1,29 @@
 package model;
 
+/**
+ * Klasse die een QuizDeelname aan een QuizOpdracht verbindt. Het OpdrachtAntwoord object houdt gegevens bij over het
+ * antwoord op één vraag binnen één quizdeelname. Volgende zaken worden bijgehouden:
+ * <ul>
+ * <li>Het definitieve (laatste) antwoord (String)</li>
+ * <li>Het aantal pogingen om tot dit antwoord te komen (int)</li>
+ * <li>De gebruikte tijd om tot dit antwoord te komen in seconden (int)</li>
+ * <li>De behaalde score</li>
+ * </ul>
+ *
+ * Het algoritme om tot dit antwoord te komen is voorlopig hard-coded opgenomen in deze klasse. Wanneer we het Strategy
+ * pattern gaan implementeren, is het de bedoeling om de scoreberekening met behulp van klasses flexibeler te maken.
+ *
+ * @author Tim Cool, Ben Vandenberk
+ * @version 28/10/2014
+ *
+ */
 public class OpdrachtAntwoord {
 	private final QuizDeelname quizDeelname;
 	private final QuizOpdracht quizOpdracht;
 	private final String laatsteAntwoord;
 	private final int aantalPogingen;
 	private final int antwoordTijd;
+	private final double behaaldeScore;
 
 	public QuizDeelname getQuizDeelname() {
 		return quizDeelname;
@@ -27,13 +45,43 @@ public class OpdrachtAntwoord {
 		return antwoordTijd;
 	}
 
-	public OpdrachtAntwoord(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
+	public double getBehaaldeScore() {
+		return behaaldeScore;
+	}
+
+	private OpdrachtAntwoord(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
 			String laatsteAntwoord) {
 		this.quizDeelname = quizDeelname;
 		this.quizOpdracht = quizOpdracht;
 		this.aantalPogingen = aantalPogingen;
 		this.antwoordTijd = antwoordTijd;
 		this.laatsteAntwoord = laatsteAntwoord;
+		behaaldeScore = berekenScore();
+	}
+
+	private double berekenScore() {
+		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) {
+			return 0.0;
+		} else {
+			if (quizOpdracht.getOpdracht().heeftTijdsbeperking()
+					&& antwoordTijd > quizOpdracht.getOpdracht().getMaxAntwoordTijd()) {
+				return 0.0;
+			} else {
+				if (aantalPogingen == 1) {
+					return quizOpdracht.getMaxScore();
+				} else {
+					return quizOpdracht.getMaxScore() / 2.0;
+				}
+			}
+		}
+	}
+
+	public static void koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
+			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) {
+		OpdrachtAntwoord opdrachtAntwoord = new OpdrachtAntwoord(quizDeelname, quizOpdracht, aantalPogingen, antwoordTijd,
+				laatsteAntwoord);
+		quizDeelname.addOpdrachtAntwoord(opdrachtAntwoord);
+		quizOpdracht.addOpdrachtAntwoord(opdrachtAntwoord);
 	}
 
 	@Override

@@ -134,6 +134,10 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		return Collections.unmodifiableList(this.quizDeelnames);
 	}
 
+	public List<Quiz> getQuizzen() {
+
+	}
+
 	/**
 	 * Geeft een String representatie terug van dit Leerling object van de vorm "Leerling [voornaam] [familienaam]"
 	 */
