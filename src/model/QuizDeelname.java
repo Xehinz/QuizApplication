@@ -32,7 +32,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	public Leerling getLeerling() {
-		return leerling;
+		return leerling.clone();
 	}
 
 	public Quiz getQuiz() {
@@ -62,6 +62,39 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	public String feedback() {
 		return "";
+	}
+
+	/**
+	 * Toevoegen van OpdrachtAntwoord aan deze QuizDeelname
+	 *
+	 * @param opdrachtAntwoord
+	 *            het OpdrachtAntwoord om toe te voegen
+	 */
+	protected void addOpdrachtAntwoord(OpdrachtAntwoord opdrachtAntwoord) {
+		this.opdrachtAntwoorden.add(opdrachtAntwoord);
+	}
+
+	/**
+	 * Verwijderen van een bestaand OpdrachtAntwoord uit deze QuizDeelname
+	 *
+	 * @param opdrachtAntwoord
+	 *            het OpdrachtAntwoord om te verwijderen
+	 */
+	protected void removeOpdrachtAntwoord(OpdrachtAntwoord opdrachtAntwoord) {
+		this.opdrachtAntwoorden.remove(opdrachtAntwoord);
+	}
+
+	/**
+	 * Geeft een shallow copy van de lijst met OpdrachtAntwoorden van deze QuizDeelname terug.
+	 *
+	 * @return een shallow copy van de ArrayList&lt;OpdrachtAntwoord&gt; van deze QuizDeelname
+	 */
+	public ArrayList<OpdrachtAntwoord> getOpdrachtAntwoorden() {
+		ArrayList<OpdrachtAntwoord> kopie = new ArrayList<OpdrachtAntwoord>();
+		for (OpdrachtAntwoord opdrachtAntwoord : this.opdrachtAntwoorden) {
+			kopie.add(opdrachtAntwoord);
+		}
+		return kopie;
 	}
 
 	/**

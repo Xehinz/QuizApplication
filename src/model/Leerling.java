@@ -185,9 +185,14 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	}
 
 	@Override
-	public Leerling clone() throws CloneNotSupportedException {
-		Leerling clone = (Leerling) super.clone();
-		clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames.clone();
+	public Leerling clone() {
+		Leerling clone = null;
+		try {
+			clone = (Leerling) super.clone();
+			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames.clone();
+		} catch (CloneNotSupportedException ex) {
+			// absorbeer
+		}
 		return clone;
 	}
 

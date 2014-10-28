@@ -65,8 +65,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
 		quizDeelnames = new ArrayList<QuizDeelname>();
 
-		for (boolean isDoelLeerjaar : zijnDoelLeerjaren) {
-			isDoelLeerjaar = true;
+		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
+			zijnDoelLeerjaren[i] = true;
 		}
 	}
 
@@ -115,8 +115,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 *            1 of meerdere leerjaren waarvoor de quiz beschikbaar wordt gemaakt
 	 */
 	public void setDoelLeerjaren(int... doelLeerjaar) {
-		for (boolean isDoelLeerjaar : zijnDoelLeerjaren) {
-			isDoelLeerjaar = false;
+		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
+			zijnDoelLeerjaren[i] = false;
 		}
 		for (int leerjaar : doelLeerjaar) {
 			if (leerjaar < 1 || leerjaar > 6) {
