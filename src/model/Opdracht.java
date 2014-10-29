@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.activity.InvalidActivityException;
-
 import util.datumWrapper.Datum;
 
 /**
@@ -148,7 +146,7 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 			setMaxAantalPogingen(maxAantalPogingen);
 			setMaxAntwoordTijd(maxAntwoordTijd);
 			setOpdrachtCategorie(opdrachtCategorie);
-		} catch (InvalidActivityException ex) {
+		} catch (UnsupportedOperationException ex) {
 			// Bij het aanmaken van een Opdracht zal de Opdracht steeds aanpasbaar zijn. De Exception zal zich nooit
 			// voordoen
 		}
@@ -172,12 +170,12 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param vraag
 	 *            de String die de vraag bevat
-	 * @throws InvalidActivityException
+	 * @throws UnsupportedOperationException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setVraag(String vraag) throws InvalidActivityException {
+	public void setVraag(String vraag) throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
-			throw new InvalidActivityException(
+			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		this.vraag = vraag;
@@ -197,12 +195,12 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param juisteAntwoord
 	 *            de String die het antwoord bevat
-	 * @throws InvalidActivityException
+	 * @throws UnsupportedOperationException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setJuisteAntwoord(String juisteAntwoord) throws InvalidActivityException {
+	public void setJuisteAntwoord(String juisteAntwoord) throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
-			throw new InvalidActivityException(
+			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		this.juisteAntwoord = juisteAntwoord;
@@ -222,12 +220,12 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param maxAantalPogingen
 	 *            het maximum aantal antwoordpogingen
-	 * @throws InvalidActivityException
+	 * @throws UnsupportedOperationException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setMaxAantalPogingen(int maxAantalPogingen) throws InvalidActivityException {
+	public void setMaxAantalPogingen(int maxAantalPogingen) throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
-			throw new InvalidActivityException(
+			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		if (maxAantalPogingen < 1) {
@@ -250,12 +248,12 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param maxAntwoordTijd
 	 *            de maximum toegestane antwoordtijd
-	 * @throws InvalidActivityException
+	 * @throws UnsupportedOperationException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setMaxAntwoordTijd(int maxAntwoordTijd) throws InvalidActivityException {
+	public void setMaxAntwoordTijd(int maxAntwoordTijd) throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
-			throw new InvalidActivityException(
+			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		if (maxAntwoordTijd < 0) {
@@ -278,12 +276,12 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie waartoe de Opdracht zal behoren
-	 * @throws InvalidActivityException
+	 * @throws UnsupportedOperationException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie) throws InvalidActivityException {
+	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie) throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
-			throw new InvalidActivityException(
+			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		this.opdrachtCategorie = opdrachtCategorie;
@@ -481,10 +479,16 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	@Override
-	public Opdracht clone() throws CloneNotSupportedException {
-		Opdracht clone = (Opdracht) super.clone();
-		clone.antwoordHints = (ArrayList<String>) this.antwoordHints.clone();
-		clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten.clone();
+	public Opdracht clone() {
+		Opdracht clone = null;
+		try {
+			clone = (Opdracht) super.clone();
+			clone.antwoordHints = (ArrayList<String>) this.antwoordHints.clone();
+			clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten.clone();
+		} catch (CloneNotSupportedException ex) {
+			// Opdracht is Cloneable, kan geen CloneNotSupportedException throwen
+			ex.printStackTrace();
+		}
 		return clone;
 	}
 }

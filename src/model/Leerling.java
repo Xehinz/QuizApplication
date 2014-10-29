@@ -136,7 +136,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 
 	/**
 	 * Geeft een lijstje terug van quizzen waaraan de Leerling reeds deelnam
-	 * 	
+	 * 
 	 * @return een ArrayList&lt;Quiz&gt; van quizzen waaraan de Leerling reeds deelnam
 	 */
 	public ArrayList<Quiz> getDeelgenomenQuizzen() {
@@ -204,7 +204,8 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 			clone = (Leerling) super.clone();
 			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames.clone();
 		} catch (CloneNotSupportedException ex) {
-			// absorbeer
+			// Leerling implementeert Cloneable, kan geen CloneNotSupportedException throwen
+			ex.printStackTrace();
 		}
 		return clone;
 	}

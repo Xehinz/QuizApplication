@@ -20,9 +20,9 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * Constructor QuizDeelname met 2 parameters
 	 *
 	 * @param quiz
-	 *            de Quiz
+	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
-	 *            de Leerling
+	 *            de Leerling die deelneemt aan een Quiz
 	 */
 	private QuizDeelname(Quiz quiz, Leerling leerling) {
 		this.datum = new Datum();
@@ -31,14 +31,29 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
 	}
 
+	/**
+	 * Haalt de deelnemende Leerling op
+	 *
+	 * @return de Leerling die deelneemt aan een Quiz
+	 */
 	public Leerling getLeerling() {
-		return leerling.clone();
+		return leerling;
 	}
 
+	/**
+	 * Haalt de Quiz waaraan wordt deelgenomen op
+	 *
+	 * @return de Quiz waaraan deelgenomen wordt
+	 */
 	public Quiz getQuiz() {
 		return quiz;
 	}
 
+	/**
+	 * Haalt de datum van deelname op. Dit is een kopie van het interne Datum objectje
+	 *
+	 * @return de Datum die de datum van deelname voorstelt
+	 */
 	public Datum getDatum() {
 		return new Datum(datum);
 	}
@@ -55,16 +70,28 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 			behaaldeScore += opdrachtAntwoord.getBehaaldeScore();
 		}
 		double opTien = behaaldeScore / this.quiz.getMaxScore() * 10.0;
-		return (int)Math.round(opTien);
+		return (int) Math.round(opTien);
 	}
 
-	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) {
+	/**
+	 * Legt de relatie tussen een Leerling en een Quiz. Roep deze method aan om een Leerling te laten deelnemen aan een
+	 * Quiz
+	 *
+	 * @param quiz
+	 *            de Quiz waaraan de Leerling deelneemt
+	 * @param leerling
+	 *            de deelnemende Leerling
+	 * @throws UnsupportedOperationException
+	 *             wanneer de status van de Quiz geen deelnames toelaat of wanneer de Leerling niet in het juiste
+	 *             leerjaar zit om deel te nemen
+	 */
+	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) throws UnsupportedOperationException {
 		if (!quiz.isDeelnameMogelijk()) {
-			throw new IllegalArgumentException(String.format("De status van de quiz(%s) laat niet toe aan de quiz deel te nemen",
-					quiz.getQuizStatus()));
+			throw new UnsupportedOperationException(String.format(
+					"De status van de quiz(%s) laat niet toe aan de quiz deel te nemen", quiz.getQuizStatus()));
 		}
 		if (!quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
-			throw new IllegalArgumentException(String.format(
+			throw new UnsupportedOperationException(String.format(
 					"De quiz is niet opengesteld voor het leerjaar waarin de leerling zich bevindt (%d)", leerling.getLeerjaar()));
 		}
 		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling);
@@ -107,7 +134,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Deelname van %s aan %s-quiz op %s", this.leerling.getNaam(), this.quiz.getOnderwerp(),
+		return String.format("Deelname van %s aan quiz: %s op %s", this.leerling.getNaam(), this.quiz.getOnderwerp(),
 				this.datum.getDatumInEuropeesFormaat());
 	}
 
@@ -141,12 +168,17 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		return 0;
 	}
 
-	// Hier moet een keuze gemaakt worden
-	// Ofwel is deep cloning van QuizDeelname mogelijk, maar dan mogen de fields niet final zijn
-	// Ofwel maakt clone() een shallow copy en kunnen de fields final zijn
 	@Override
-	public QuizDeelname clone() throws CloneNotSupportedException {
-		return (QuizDeelname) super.clone();
+	public QuizDeelname clone() {
+		QuizDeelname clone = null;
+		try {
+			clone = (QuizDeelname) super.clone();
+			clone.opdrachtAntwoorden = (ArrayList<OpdrachtAntwoord>) this.opdrachtAntwoorden.clone();
+		} catch (CloneNotSupportedException ex) {
+			// QuizDeelname implementeert Cloneable, mag geen CloneNotSupportedException throwen
+			ex.printStackTrace();
+		}
+		return clone;
 	}
 
 }

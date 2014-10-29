@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import util.datumWrapper.Datum;
 
@@ -15,13 +14,13 @@ import util.datumWrapper.Datum;
 public class Quiz implements Comparable<Quiz>, Cloneable {
 
 	private String onderwerp = "";
-	private boolean isTest = true;
+	private boolean isTest = false;
 	private boolean isUniekeDeelname = false;
 	private QuizStatus quizStatus = QuizStatus.IN_CONSTRUCTIE;
-	private List<QuizOpdracht> quizOpdrachten;
-	private List<QuizDeelname> quizDeelnames;
+	private ArrayList<QuizOpdracht> quizOpdrachten;
+	private ArrayList<QuizDeelname> quizDeelnames;
 	private boolean[] zijnDoelLeerjaren = new boolean[7];
-	private final Datum aanmaakDatum;
+	private Datum aanmaakDatum;
 	private final Leraar auteur;
 
 	/**
@@ -136,6 +135,11 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		return maxScore;
 	}
 
+	/**
+	 * Geeft de gemiddelde van alle deelnames aan deze Quiz terug
+	 *
+	 * @return een double dat de gemiddelde score van alle deelnames aan deze Quiz voorstelt
+	 */
 	public double getGemiddeldeScore() {
 		double somScores = 0;
 		for (QuizDeelname quizDeelname : this.quizDeelnames) {
@@ -168,24 +172,20 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Instellen van het onderwerp van de quiz
 	 *
 	 * @param onderwerp
-	 *            het onderwerp van deze quiz
-	 * @return
+	 *            het onderwerp van deze quiz *
 	 */
-	public boolean setOnderwerp(String onderwerp) {
+	public void setOnderwerp(String onderwerp) {
 		this.onderwerp = onderwerp;
-		return true;
 	}
 
 	/**
 	 * Instellen van de status van de quiz
 	 *
 	 * @param quizStatus
-	 *            de status van de quiz
-	 * @return
+	 *            de status van de quiz *
 	 */
-	public boolean setQuizStatus(QuizStatus quizStatus) {
+	public void setQuizStatus(QuizStatus quizStatus) {
 		this.quizStatus = quizStatus;
-		return true;
 	}
 
 	/**
@@ -224,24 +224,23 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Instellen van de indicator of deze quiz een test is of niet
 	 *
 	 * @param isTest
-	 *            indicator of deze quiz een test is of niet
-	 * @return
+	 *            indicator of deze quiz een test is of niet *
 	 */
-	public boolean setIsTest(boolean isTest) {
+	public void setIsTest(boolean isTest) {
 		this.isTest = isTest;
-		return true;
+		if (isTest) {
+			isUniekeDeelname = true;
+		}
 	}
 
 	/**
 	 * Instellen van de indicator of je aan deze quiz slechts 1x mag deelnemen
 	 *
 	 * @param isUniekeDeelname
-	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
-	 * @return
+	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden *
 	 */
-	public boolean setIsUniekeDeelname(boolean isUniekeDeelname) {
+	public void setIsUniekeDeelname(boolean isUniekeDeelname) {
 		this.isUniekeDeelname = isUniekeDeelname;
-		return true;
 	}
 
 	/**
@@ -363,7 +362,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Vergelijk deze quiz met een andere quiz
 	 *
-	 * @return een negatief nummer, een nul of een positief nummer als de quiz minder, dezelfde of meer opdrachten heeft
+	 * @return een negatief nummer, een nul of een positief nummer als de quiz minder, hetzelfde aantal of meer
+	 *         opdrachten heeft
 	 */
 	@Override
 	public int compareTo(Quiz aQuiz) {
@@ -381,10 +381,23 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Geeft een Quiz terug die een clone is van deze quiz (thx Bert)
 	 * @return een geclonede Quiz
 	 */
-	public Quiz clone() throws CloneNotSupportedException {
-		return (Quiz) super.clone();
+	public Quiz clone() {
+		Quiz clone = null;
+		try {
+			clone = (Quiz) super.clone();
+			clone.aanmaakDatum = new Datum(aanmaakDatum);
+			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames.clone();
+			clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten.clone();
+		} catch (CloneNotSupportedException ex) {
+			// Quiz is Cloneable, kan geen CloneNotSupportedException throwen
+			ex.printStackTrace();
+		}
+		return clone;
 	}
 
-	// hashCode (res)
+	@Override
+	public int hashCode() {
+		return String.format("%s%s%s", onderwerp, auteur.toString(), aanmaakDatum).hashCode();
+	}
 
 }

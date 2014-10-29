@@ -3,15 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class LeerlingContainer implements Iterable<Leerling> {
-
-	private Leerling leerling;
-
-	public <leerling> Leerling getLeerling() {
-
-		return leerling;
-
-	}
+public class LeerlingContainer implements Iterable<Leerling>, Cloneable {
 
 	private ArrayList<Leerling> leerlingen;
 
@@ -19,6 +11,13 @@ public class LeerlingContainer implements Iterable<Leerling> {
 		leerlingen = new ArrayList<Leerling>();
 	}
 
+	/**
+	 * Voegt een Leerling toe aan de interne collectie van Leerlingen. Laat niet toe om dezelfde Leerling tweemaal toe
+	 * te voegen
+	 *
+	 * @param l
+	 *            de Leerling om toe te voegen
+	 */
 	public void addLeerling(Leerling l) {
 		if (!leerlingen.contains(l)) {
 			leerlingen.add(l);
@@ -26,10 +25,37 @@ public class LeerlingContainer implements Iterable<Leerling> {
 		return;
 	}
 
+	/**
+	 * Verwijdert een Leerling van de interne collectie van Leerlingen
+	 *
+	 * @param l
+	 *            de Leerling om te verwijderen
+	 */
 	public void removeLeerling(Leerling l) {
-		if (leerlingen.contains(l)) {
-			leerlingen.remove(l);
+		leerlingen.remove(l);
+	}
+
+	/**
+	 * Geeft een kopie van de lijst met Leerlingen terug. De referenties naar de Leerlingen wijzen naar dezelfde
+	 * Leerling objecten als de referenties in deze LeerlingContainer
+	 *
+	 * @return een ArrayList&lt;Leerling&gt; met Leerlingen
+	 */
+	public ArrayList<Leerling> getLeerlingen() {
+		ArrayList<Leerling> leerlingen = new ArrayList<Leerling>();
+		for (Leerling leerling : this.leerlingen) {
+			leerlingen.add(leerling);
 		}
+		return leerlingen;
+	}
+
+	/**
+	 * Geeft het aantal Leerlingen in deze LeerlingContainer terug
+	 *
+	 * @return het aantal Leerlingen
+	 */
+	public int count() {
+		return leerlingen.size();
 	}
 
 	@Override
@@ -37,4 +63,32 @@ public class LeerlingContainer implements Iterable<Leerling> {
 		return leerlingen.iterator();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof LeerlingContainer)) {
+			return false;
+		}
+
+		LeerlingContainer other = (LeerlingContainer) obj;
+		return other.getLeerlingen().equals(this.leerlingen);
+	}
+
+	@Override
+	public LeerlingContainer clone() {
+		LeerlingContainer clone = null;
+		try {
+			clone = (LeerlingContainer) super.clone();
+			clone.leerlingen = new ArrayList<Leerling>();
+			for (Leerling leerling : this) {
+				clone.leerlingen.add(leerling.clone());
+			}
+		} catch (CloneNotSupportedException ex) {
+			// LeerlingContainer implementeert Cloneable dus kan geen CloneNotSupportedException throwen
+			ex.printStackTrace();
+		}
+		return clone;
+	}
 }

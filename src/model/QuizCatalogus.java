@@ -3,8 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.activity.InvalidActivityException;
-
 /**
  * De QuizCatalogus klasse, met 1 field: Een lijst met alle bestaande quizzen
  *
@@ -79,15 +77,15 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 	 *
 	 * @param Q
 	 *            de te verwijderen Quiz
-	 * @throws InvalidActivityException
+	 * @throws UnsupportedOperationException
 	 *             als de quiz zich niet in de status 'In constructie' of 'Afgewerkt' bevindt en dus niet verwijderbaar
 	 *             is
 	 */
 
-	public void removeQuiz(Quiz Q) throws InvalidActivityException {
+	public void removeQuiz(Quiz Q) throws UnsupportedOperationException {
 		if (!Q.isVerwijderbaar()) {
-			throw new InvalidActivityException(String.format("De quiz bevindt zich in de status %s en is dus niet verwijderbaar",
-					Q.getQuizStatus().toString()));
+			throw new UnsupportedOperationException(String.format(
+					"De quiz bevindt zich in de status %s en is dus niet verwijderbaar", Q.getQuizStatus().toString()));
 		}
 		this.quizcatalogus.remove(Q);
 	}
