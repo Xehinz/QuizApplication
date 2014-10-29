@@ -194,7 +194,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		int hash = 1;
 		hash = hash * 13 + leerjaar;
 		hash = hash * 19 + getNaam().hashCode();
-		return hash;
+		return hash % Integer.MAX_VALUE;
 	}
 
 	@Override

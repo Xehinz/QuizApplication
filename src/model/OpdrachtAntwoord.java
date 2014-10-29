@@ -1,8 +1,9 @@
 package model;
 
 /**
- * Klasse die een QuizDeelname aan een QuizOpdracht verbindt. Het OpdrachtAntwoord object houdt gegevens bij over het
- * antwoord op één vraag binnen één quizdeelname. Volgende zaken worden bijgehouden:
+ * Klasse die een QuizDeelname aan een QuizOpdracht verbindt. Eenmaal er een instantie van OpdrachtAntwoord is
+ * aangemaakt, is het antwoord van de Leerling op de Opdracht binnen de QuizDeelname definitief. Het OpdrachtAntwoord
+ * object houdt gegevens bij over het antwoord op één vraag binnen één quizdeelname. Volgende zaken worden bijgehouden:
  * <ul>
  * <li>Het definitieve (laatste) antwoord (String)</li>
  * <li>Het aantal pogingen om tot dit antwoord te komen (int)</li>
@@ -14,10 +15,10 @@ package model;
  * pattern gaan implementeren, is het de bedoeling om de scoreberekening met behulp van klasses flexibeler te maken.
  *
  * @author Tim Cool, Ben Vandenberk
- * @version 28/10/2014
+ * @version 29/10/2014
  *
  */
-public class OpdrachtAntwoord {
+public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable{
 	private final QuizDeelname quizDeelname;
 	private final QuizOpdracht quizOpdracht;
 	private final String laatsteAntwoord;
@@ -25,26 +26,56 @@ public class OpdrachtAntwoord {
 	private final int antwoordTijd;
 	private final double behaaldeScore;
 
+	/**
+	 * Haalt de QuizDeelname gelinkt aan dit object op
+	 * 
+	 * @return de QuizDeelname gelinkt aan dit object
+	 */
 	public QuizDeelname getQuizDeelname() {
 		return quizDeelname;
 	}
 
+	/**
+	 * Haalt de QuizOpdracht gelinkt aan dit object op
+	 * 
+	 * @return de QuizOpdracht gelinkt aan dit object
+	 */
 	public QuizOpdracht getQuizOpdracht() {
 		return quizOpdracht;
 	}
 
+	/**
+	 * Haalt het definitieve (laatste) antwoord op
+	 * 
+	 * @return de String met het definitieve antwoord
+	 */
 	public String getLaatsteAntwoord() {
 		return laatsteAntwoord;
 	}
 
+	/**
+	 * Haalt het benutte aantal pogingen op
+	 * 
+	 * @return het benutte aantal pogingen
+	 */
 	public int getAantalPogingen() {
 		return aantalPogingen;
 	}
 
+	/**
+	 * Haalt de gebruikte antwoordtijd in seconden op
+	 * 
+	 * @return de gebruikte antwoordtijd in seconden
+	 */
 	public int getAntwoordTijd() {
 		return antwoordTijd;
 	}
 
+	/**
+	 * Haalt de behaalde score op (decimaal getal)
+	 * 
+	 * @return de double die de behaalde score voorstelt
+	 */
 	public double getBehaaldeScore() {
 		return behaaldeScore;
 	}
@@ -59,6 +90,9 @@ public class OpdrachtAntwoord {
 		behaaldeScore = berekenScore();
 	}
 
+	/**
+	 * Uitwerking van het scoreberekeningsalgoritme op pagina 5 van de opgave
+	 */
 	private double berekenScore() {
 		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) {
 			return 0.0;
@@ -76,6 +110,21 @@ public class OpdrachtAntwoord {
 		}
 	}
 
+	/**
+	 * Legt de relatie tussen een QuizDeelname en een QuizOpdracht. Eenmaal dat deze method gecalled is, is het antwoord
+	 * van de Leerling op de Opdracht binnen de QuizDeelname definitief
+	 * 
+	 * @param quizDeelname
+	 *            de QuizDeelname die de Leerling met de Quiz die hij aan het maken is verbindt
+	 * @param quizOpdracht
+	 *            de QuizOpdracht waarop de Leerling antwoord
+	 * @param aantalPogingen
+	 *            het aantalPogingen dat de Leerling nodig heeft gehad
+	 * @param antwoordTijd
+	 *            de tijd in seconden die de Leerling nodig heeft gehad
+	 * @param laatsteAntwoord
+	 *            de String met het definitieve antwoord van de Leerling
+	 */
 	public static void koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
 			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) {
 		OpdrachtAntwoord opdrachtAntwoord = new OpdrachtAntwoord(quizDeelname, quizOpdracht, aantalPogingen, antwoordTijd,
@@ -93,7 +142,7 @@ public class OpdrachtAntwoord {
 		result = prime * result + ((laatsteAntwoord == null) ? 0 : laatsteAntwoord.hashCode());
 		result = prime * result + ((quizDeelname == null) ? 0 : quizDeelname.hashCode());
 		result = prime * result + ((quizOpdracht == null) ? 0 : quizOpdracht.hashCode());
-		return result;
+		return result % Integer.MAX_VALUE;
 	}
 
 	@Override
@@ -136,6 +185,43 @@ public class OpdrachtAntwoord {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		String result = "";
+		result += String
+				.format("OpdrachtAntwoord dat\n\t%s\nen\n\t%s\nmet elkaar verbindt", this.quizDeelname, this.quizOpdracht);
+		result += "\n\nDefinitieve antwoord: " + laatsteAntwoord;
+		result += "\nAantal pogingen: " + aantalPogingen;
+		result += "\nGebruikte tijd (s): " + antwoordTijd;
+		result += "\nBehaalde score: " + behaaldeScore;
+		return result;
+	}
+	
+	/**
+	 * Vergelijkt dit OpdrachtAntwoord met een ander OpdrachtAntwoord, eerst op QuizDeelname, dan op QuizOpdracht 
+	 * 
+	 * @param opdrachtAntwoord het OpdrachtAntwoord om mee te vergelijken
+	 * @return
+	 */
+	public int compareTo(OpdrachtAntwoord opdrachtAntwoord) {
+		if (this.quizDeelname.compareTo(opdrachtAntwoord.quizDeelname) == 0) {
+			return this.quizOpdracht.compareTo(opdrachtAntwoord.quizOpdracht);
+		}
+		else {
+			return this.quizDeelname.compareTo(opdrachtAntwoord.quizDeelname);
+		}
+	}
+	
+	public OpdrachtAntwoord clone() {
+		OpdrachtAntwoord clone = null;
+		try {
+			clone = (OpdrachtAntwoord)super.clone();			
+		} catch (CloneNotSupportedException ex) {
+			ex.printStackTrace();
+		}
+		return clone;
 	}
 
 }

@@ -140,6 +140,10 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 */
 	public Opdracht(String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
+		this.auteur = auteur;
+		antwoordHints = new ArrayList<String>();
+		quizOpdrachten = new ArrayList<QuizOpdracht>();
+		aanmaakDatum = new Datum();
 		try {
 			setVraag(vraag);
 			setJuisteAntwoord(juisteAntwoord);
@@ -149,11 +153,7 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 		} catch (UnsupportedOperationException ex) {
 			// Bij het aanmaken van een Opdracht zal de Opdracht steeds aanpasbaar zijn. De Exception zal zich nooit
 			// voordoen
-		}
-		this.auteur = auteur;
-		antwoordHints = new ArrayList<String>();
-		quizOpdrachten = new ArrayList<QuizOpdracht>();
-		aanmaakDatum = new Datum();
+		}		
 	}
 
 	/**
@@ -461,7 +461,7 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 		int hash = hashString.hashCode();
 		hash = hash * 13 + maxAntwoordTijd;
 		hash = hash * 23 + maxAantalPogingen;
-		return hash;
+		return hash % Integer.MAX_VALUE;
 	}
 
 	/**

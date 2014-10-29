@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import util.datumWrapper.Datum;
 
 /**
+ * Klasse die een Quiz aan een Leerling verbindt. Houdt, naast de Leerling en de Quiz, ook de datum van deelname bij
  *
  * @author Adriaan Kuipers, Ben Vandenberk
- * @version 27/10/2014
+ * @version 29/10/2014
  */
 public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 
@@ -130,7 +131,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * override toString --> return naam leerling, datum deelname & onderwerp ??? quiz
+	 * Override van default toString met info over de deelname 
 	 */
 	@Override
 	public String toString() {
@@ -139,33 +140,58 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * override equals --> controle of deze quizdeelname dezelfde is als de andere
+	 * Override van equals: controle of deze quizdeelname dezelfde is als de andere
 	 *
 	 * @param aQuizDeelname
 	 *            een quizdeelname waarmee we gaan vergelijken
-	 * @return
+	 * @return true als de meegegeven QuizDeelname hetzelfde is als deze QuizDeelname
 	 */
 	@Override
 	public boolean equals(Object aQuizDeelname) {
+		if (aQuizDeelname == null) {
+			return false;
+		}
+		if (!(aQuizDeelname instanceof QuizDeelname)) {
+			return false;
+		}
+		QuizDeelname other = (QuizDeelname)aQuizDeelname;
+		if (!other.getLeerling().equals(this.leerling)) {
+			return false;
+		}
+		if (!other.getQuiz().equals(this.quiz)) {
+			return false;
+		}
+		if (!other.getDatum().equals(this.datum)) {
+			return false;
+		}
+		if (!other.getOpdrachtAntwoorden().equals(this.opdrachtAntwoorden)) {
+			return false;
+		}
 		return true;
 	}
 
 	/**
-	 * Vergelijk deze quizdeelname met een andere quizdeelname
+	 * Vergelijkt deze QuizDeelname met een andere op basis van de Leerling (alfabetisch) en dan op datum van deelname
 	 *
-	 * @return een negatief nummer, een nul of een positief nummer als de quizdeelname ???
+	 * @return een negatief nummer, nul of een positief nummer als de quizdeelname voor, op dezelfde plaats of na de andere QuizDeelname komt
 	 */
 	@Override
 	public int compareTo(QuizDeelname aQuizDeelname) {
-		return 0;
+		if (this.leerling.compareTo(aQuizDeelname.getLeerling()) == 0) {
+			return this.datum.compareTo(aQuizDeelname.getDatum());
+		}
+		else {
+			return this.leerling.compareTo(aQuizDeelname.getLeerling());
+		}
 	}
-
-	/**
-	 * ???
-	 */
+	
 	@Override
 	public int hashCode() {
-		return 0;
+		int hash = 1;
+		hash = hash * 7 * leerling.hashCode();
+		hash = hash * 3 * quiz.hashCode();
+		hash = hash * 5 * datum.toString().hashCode();
+		return hash % Integer.MAX_VALUE;
 	}
 
 	@Override
