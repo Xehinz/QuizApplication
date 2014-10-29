@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Bert Neyt
  * @version 0.0
  */
-public class QuizOpdracht {
+public class QuizOpdracht implements Comparable<QuizOpdracht>{
 
 	private Quiz quiz;
 	private Opdracht opdracht;
@@ -64,6 +64,29 @@ public class QuizOpdracht {
 			somScores += opdrachtAntwoord.getBehaaldeScore();
 		}
 		return somScores / this.opdrachtAntwoorden.size();
+	}
+	
+	/**
+	 * Nog uitwerken
+	 * @param quizOpdracht
+	 * @return
+	 */
+	public int compareTo(QuizOpdracht quizOpdracht) {
+		return 0;
+	}
+	
+	/**
+	 * Nog uitwerken
+	 */
+	public QuizOpdracht clone() {
+		QuizOpdracht clone= null;
+		try {
+			clone = (QuizOpdracht)super.clone();
+			//...
+		} catch (CloneNotSupportedException ex) {
+			ex.printStackTrace();
+		}
+		return clone;
 	}
 
 }
