@@ -11,25 +11,30 @@ import util.datumWrapper.Datum;
 
 public class OpdrachtAntwoordTest {
 
-	private Quiz quiz;
+	private Quiz quiz, kleinereQuiz;
 	private Opdracht opdrachtZonderTijdZonderPogingen, opdrachtOpTijdZonderPogingen, opdrachtZonderTijd1Poging;
-	private Leerling leerling;
-	private QuizDeelname quizDeelname;
-	private QuizOpdracht quizOpdrachtZonderTijdZonderPogingen, quizOpdrachtOpTijdZonderPogingen, quizOpdrachtZonderTijd1Poging;
+	private Leerling leerling, kleinereLeerling;
+	private QuizDeelname quizDeelname, kleinereQuizDeelname;
+	private QuizOpdracht quizOpdrachtZonderTijdZonderPogingen, quizOpdrachtOpTijdZonderPogingen, quizOpdrachtZonderTijd1Poging,
+			kleinereQuizOpdracht;
 
 	@Before
 	public void setUp() {
 		quiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "De Hoofdsteden van Europa");
 		quiz.setQuizStatus(QuizStatus.OPENGESTELD);
 
+		kleinereQuiz = new Quiz(Leraar.MIEKE_WITTEMANS, "Quiz met minder opdrachten");
+		kleinereQuiz.setQuizStatus(QuizStatus.OPENGESTELD);
+
 		opdrachtZonderTijdZonderPogingen = new Opdracht("Wat is de hoofdstad van Frankrijk?", 0, "Parijs",
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.MARIA_AERTS);
 		opdrachtOpTijdZonderPogingen = new Opdracht("Wat is de hoofdstad van België?", "Brussel", 0, 20,
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.JOS_VERBEEK);
 		opdrachtZonderTijd1Poging = new Opdracht("Wat is de hoofdstad van België?", "Brussel", 1, 0,
-				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.JOS_VERBEEK);
+				OpdrachtCategorie.WETENSCHAPPEN, Leraar.JOS_VERBEEK);
 
 		leerling = new Leerling("Karel", "Boghen", 3);
+		kleinereLeerling = new Leerling("Laura", "Aaltert", 4);
 
 		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdrachtZonderTijdZonderPogingen, 10);
 		quizOpdrachtZonderTijdZonderPogingen = quiz.getQuizOpdracht(1);
@@ -38,8 +43,15 @@ public class OpdrachtAntwoordTest {
 		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdrachtZonderTijd1Poging, 10);
 		quizOpdrachtZonderTijd1Poging = quiz.getQuizOpdracht(3);
 
+		// De QuizOpdracht is kleiner omdat de Quiz kleiner is (minder opdrachten)
+		QuizOpdracht.attachOpdrachtToQuiz(kleinereQuiz, opdrachtZonderTijdZonderPogingen, 5);
+		kleinereQuizOpdracht = kleinereQuiz.getQuizOpdracht(1);
+
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
 		quizDeelname = quiz.getQuizDeelname(1);
+		// De QuizDeelname is kleiner omdat de Leerling kleiner is (familienaam alfabetisch eerder)
+		QuizDeelname.koppelQuizAanLeerling(kleinereQuiz, kleinereLeerling);
+		kleinereQuizDeelname = kleinereQuiz.getQuizDeelname(1);
 	}
 
 	@Test
@@ -156,6 +168,83 @@ public class OpdrachtAntwoordTest {
 				quizOpdrachtZonderTijdZonderPogingen, 1, 10, "Parijs");
 		Datum datum = new Datum();
 		assertFalse("Object van ander type is niet gelijk", opdrachtAntwoord.equals(datum));
+	}
+
+	@Test
+	public void testEquals_ZelfdeOpdrachtAntwoorden_ZijnGelijk() {
+		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijdZonderPogingen, 1, 10, "Parijs");
+		OpdrachtAntwoord zelfdeAntwoord = opdrachtAntwoord.clone();
+		assertTrue("Twee dezelfde OpdrachtAntwoorden zijn gelijk", opdrachtAntwoord.equals(zelfdeAntwoord));
+	}
+
+	@Test
+	public void testEquals_VerschillendeOpdrachtAntwoorden_ZijnNietGelijk() {
+		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijdZonderPogingen, 1, 10, "Parijs");
+		OpdrachtAntwoord anderOpdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijd1Poging, 1, 10, "Parijs");
+		assertFalse("Verschillende OpdrachtAntwoorden zijn niet gelijk", opdrachtAntwoord.equals(anderOpdrachtAntwoord));
+	}
+
+	@Test
+	public void testClone_GeeftZelfdeOpdrachtAntwoordTerug() {
+		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijdZonderPogingen, 1, 10, "Parijs");
+		OpdrachtAntwoord clone = opdrachtAntwoord.clone();
+		assertEquals("Clone en origineel zijn gelijk", opdrachtAntwoord, clone);
+	}
+
+	// Hier worden OpdrachtAntwoorden vergeleken die bij verschillende QuizDeelnames horen
+	@Test
+	public void testCompareTo_KleinerOpdrachtAntwoordAlsArgument_GeeftPositief() {
+		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijdZonderPogingen, 1, 10, "Parijs");
+		OpdrachtAntwoord kleinerOpdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(kleinereQuizDeelname,
+				kleinereQuizOpdracht, 1, 10, "MaaktNietUit");
+		assertTrue("'Kleiner' OpdrachtAntwoord als argument van compareTo geeft een positief resultaat",
+				opdrachtAntwoord.compareTo(kleinerOpdrachtAntwoord) > 0);
+	}
+
+	// Hier worden OpdrachtAntwoorden vergeleken die bij verschillende QuizDeelnames horen
+	@Test
+	public void testCompareTo_GroterOpdrachtAntwoordAlsArgument_geeftNegatief() {
+		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijdZonderPogingen, 1, 10, "Parijs");
+		OpdrachtAntwoord kleinerOpdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(kleinereQuizDeelname,
+				kleinereQuizOpdracht, 1, 10, "MaaktNietUit");
+		assertTrue("'Groter' OpdrachtAntwoord als argument van compareTo geeft een positief resultaat",
+				kleinerOpdrachtAntwoord.compareTo(opdrachtAntwoord) < 0);
+	}
+
+	// Hier worden OpdrachtAntwoorden vergeleken die bij dezelfde QuizDeelname horen
+	@Test
+	public void testCompareTo_KleinerArgumentEnkelDoorOpdracht_GeeftPositief() {
+		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijd1Poging, 1, 10, "Sarajevo");
+		OpdrachtAntwoord kleinerOpdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijdZonderPogingen, 1, 10, "Sarajevo");
+		assertTrue("OpdrachtAntwoord als argument dat enkel kleiner is door de QuizOpdracht geeft positief resultaat",
+				opdrachtAntwoord.compareTo(kleinerOpdrachtAntwoord) > 0);
+	}
+
+	// Hier worden OpdrachtAntwoorden vergeleken die bij dezelfde QuizDeelname horen
+	@Test
+	public void testCompareTo_GroterArgumentEnkelDoorOpdracht_GeeftNegatief() {
+		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijd1Poging, 1, 10, "Sarajevo");
+		OpdrachtAntwoord kleinerOpdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijdZonderPogingen, 1, 10, "Sarajevo");
+		assertTrue("OpdrachtAntwoord als argument dat enkel groter is door de QuizOpdracht geeft negatief resultaat",
+				kleinerOpdrachtAntwoord.compareTo(opdrachtAntwoord) < 0);
+	}
+
+	@Test
+	public void testCompareTo_ZelfdeOpdrachtAntwoord_Geeft0() {
+		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
+				quizOpdrachtZonderTijd1Poging, 1, 10, "Sarajevo");
+		OpdrachtAntwoord zelfdeOpdrachtAntwoord = opdrachtAntwoord.clone();
+		assertTrue("Zelfde OpdrachtAntwoorden vergelijken geeft 0", opdrachtAntwoord.compareTo(zelfdeOpdrachtAntwoord) == 0);
 	}
 
 }
