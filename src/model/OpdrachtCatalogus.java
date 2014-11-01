@@ -174,4 +174,15 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		return this.opdrachtcatalogus.iterator();
 	}
 
+	@Override
+	public int hashCode() {
+		long hash = 1;
+		for (Opdracht opdracht : this.opdrachtcatalogus) {
+			hash *= 3;
+			hash += opdracht.hashCode();
+		}
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
+	}
+
 }

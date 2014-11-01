@@ -131,7 +131,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * Override van default toString met info over de deelname 
+	 * Override van default toString met info over de deelname
 	 */
 	@Override
 	public String toString() {
@@ -154,7 +154,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		if (!(aQuizDeelname instanceof QuizDeelname)) {
 			return false;
 		}
-		QuizDeelname other = (QuizDeelname)aQuizDeelname;
+		QuizDeelname other = (QuizDeelname) aQuizDeelname;
 		if (!other.getLeerling().equals(this.leerling)) {
 			return false;
 		}
@@ -173,25 +173,26 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	/**
 	 * Vergelijkt deze QuizDeelname met een andere op basis van de Leerling (alfabetisch) en dan op datum van deelname
 	 *
-	 * @return een negatief nummer, nul of een positief nummer als de quizdeelname voor, op dezelfde plaats of na de andere QuizDeelname komt
+	 * @return een negatief nummer, nul of een positief nummer als de quizdeelname voor, op dezelfde plaats of na de
+	 *         andere QuizDeelname komt
 	 */
 	@Override
 	public int compareTo(QuizDeelname aQuizDeelname) {
 		if (this.leerling.compareTo(aQuizDeelname.getLeerling()) == 0) {
 			return this.datum.compareTo(aQuizDeelname.getDatum());
-		}
-		else {
+		} else {
 			return this.leerling.compareTo(aQuizDeelname.getLeerling());
 		}
 	}
-	
+
 	@Override
 	public int hashCode() {
-		int hash = 1;
+		long hash = 1;
 		hash = hash * 7 * leerling.hashCode();
-		hash = hash * 3 * quiz.hashCode();
-		hash = hash * 5 * datum.toString().hashCode();
-		return hash % Integer.MAX_VALUE;
+		hash = hash * 31 * quiz.hashCode();
+		hash = hash * 19 * datum.toString().hashCode();
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
 	}
 
 	@Override

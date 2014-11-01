@@ -459,10 +459,11 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	@Override
 	public int hashCode() {
 		String hashString = aanmaakDatum.toString() + auteur + vraag + opdrachtCategorie + juisteAntwoord;
-		int hash = hashString.hashCode();
+		long hash = hashString.hashCode();
 		hash = hash * 13 + maxAntwoordTijd;
 		hash = hash * 23 + maxAantalPogingen;
-		return hash % Integer.MAX_VALUE;
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
 	}
 
 	/**

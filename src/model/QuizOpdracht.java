@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Bert Neyt
  * @version 0.0
  */
-public class QuizOpdracht implements Comparable<QuizOpdracht>{
+public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	private Quiz quiz;
 	private Opdracht opdracht;
@@ -65,28 +65,62 @@ public class QuizOpdracht implements Comparable<QuizOpdracht>{
 		}
 		return somScores / this.opdrachtAntwoorden.size();
 	}
-	
+
 	/**
 	 * Nog uitwerken
+	 * 
 	 * @param quizOpdracht
 	 * @return
 	 */
+	@Override
 	public int compareTo(QuizOpdracht quizOpdracht) {
 		return 0;
 	}
-	
+
 	/**
 	 * Nog uitwerken
 	 */
+	@Override
 	public QuizOpdracht clone() {
-		QuizOpdracht clone= null;
+		QuizOpdracht clone = null;
 		try {
-			clone = (QuizOpdracht)super.clone();
-			//...
+			clone = (QuizOpdracht) super.clone();
+			// ...
 		} catch (CloneNotSupportedException ex) {
 			ex.printStackTrace();
 		}
 		return clone;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof QuizOpdracht)) {
+			return false;
+		}
+		QuizOpdracht other = (QuizOpdracht) obj;
+		if (!this.quiz.equals(other.quiz)) {
+			return false;
+		}
+		if (!this.opdracht.equals(other.opdracht)) {
+			return false;
+		}
+		if (!(this.maxScore == other.maxScore)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		long hash = 1;
+		hash = hash * 19 + maxScore;
+		hash = hash * 13 + opdracht.hashCode();
+		hash = hash * 7 + quiz.hashCode();
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
 	}
 
 }

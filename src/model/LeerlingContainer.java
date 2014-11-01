@@ -91,4 +91,15 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable {
 		}
 		return clone;
 	}
+
+	@Override
+	public int hashCode() {
+		long hash = 1;
+		for (Leerling leerling : this) {
+			hash *= 13;
+			hash += leerling.hashCode();
+		}
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
+	}
 }

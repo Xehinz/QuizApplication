@@ -136,7 +136,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 
 	/**
 	 * Geeft een lijstje terug van quizzen waaraan de Leerling reeds deelnam
-	 * 
+	 *
 	 * @return een ArrayList&lt;Quiz&gt; van quizzen waaraan de Leerling reeds deelnam
 	 */
 	public ArrayList<Quiz> getDeelgenomenQuizzen() {
@@ -191,10 +191,11 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 
 	@Override
 	public int hashCode() {
-		int hash = 1;
+		long hash = 1;
 		hash = hash * 13 + leerjaar;
 		hash = hash * 19 + getNaam().hashCode();
-		return hash % Integer.MAX_VALUE;
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
 	}
 
 	@Override

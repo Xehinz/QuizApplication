@@ -18,7 +18,7 @@ package model;
  * @version 29/10/2014
  *
  */
-public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable{
+public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable {
 	private final QuizDeelname quizDeelname;
 	private final QuizOpdracht quizOpdracht;
 	private final String laatsteAntwoord;
@@ -28,7 +28,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	/**
 	 * Haalt de QuizDeelname gelinkt aan dit object op
-	 * 
+	 *
 	 * @return de QuizDeelname gelinkt aan dit object
 	 */
 	public QuizDeelname getQuizDeelname() {
@@ -37,7 +37,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	/**
 	 * Haalt de QuizOpdracht gelinkt aan dit object op
-	 * 
+	 *
 	 * @return de QuizOpdracht gelinkt aan dit object
 	 */
 	public QuizOpdracht getQuizOpdracht() {
@@ -46,7 +46,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	/**
 	 * Haalt het definitieve (laatste) antwoord op
-	 * 
+	 *
 	 * @return de String met het definitieve antwoord
 	 */
 	public String getLaatsteAntwoord() {
@@ -55,7 +55,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	/**
 	 * Haalt het benutte aantal pogingen op
-	 * 
+	 *
 	 * @return het benutte aantal pogingen
 	 */
 	public int getAantalPogingen() {
@@ -64,7 +64,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	/**
 	 * Haalt de gebruikte antwoordtijd in seconden op
-	 * 
+	 *
 	 * @return de gebruikte antwoordtijd in seconden
 	 */
 	public int getAntwoordTijd() {
@@ -73,7 +73,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	/**
 	 * Haalt de behaalde score op (decimaal getal)
-	 * 
+	 *
 	 * @return de double die de behaalde score voorstelt
 	 */
 	public double getBehaaldeScore() {
@@ -113,7 +113,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	/**
 	 * Legt de relatie tussen een QuizDeelname en een QuizOpdracht. Eenmaal dat deze method gecalled is, is het antwoord
 	 * van de Leerling op de Opdracht binnen de QuizDeelname definitief
-	 * 
+	 *
 	 * @param quizDeelname
 	 *            de QuizDeelname die de Leerling met de Quiz die hij aan het maken is verbindt
 	 * @param quizOpdracht
@@ -135,14 +135,15 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + aantalPogingen;
-		result = prime * result + antwoordTijd;
-		result = prime * result + ((laatsteAntwoord == null) ? 0 : laatsteAntwoord.hashCode());
-		result = prime * result + ((quizDeelname == null) ? 0 : quizDeelname.hashCode());
-		result = prime * result + ((quizOpdracht == null) ? 0 : quizOpdracht.hashCode());
-		return result % Integer.MAX_VALUE;
+		final int PRIME = 31;
+		long result = 1;
+		result = PRIME * result + aantalPogingen;
+		result = PRIME * result + antwoordTijd;
+		result = PRIME * result + ((laatsteAntwoord == null) ? 0 : laatsteAntwoord.hashCode());
+		result = PRIME * result + ((quizDeelname == null) ? 0 : quizDeelname.hashCode());
+		result = PRIME * result + ((quizOpdracht == null) ? 0 : quizOpdracht.hashCode());
+		result %= Integer.MAX_VALUE;
+		return (int) result;
 	}
 
 	@Override
@@ -198,26 +199,28 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 		result += "\nBehaalde score: " + behaaldeScore;
 		return result;
 	}
-	
+
 	/**
-	 * Vergelijkt dit OpdrachtAntwoord met een ander OpdrachtAntwoord, eerst op QuizDeelname, dan op QuizOpdracht 
-	 * 
-	 * @param opdrachtAntwoord het OpdrachtAntwoord om mee te vergelijken
+	 * Vergelijkt dit OpdrachtAntwoord met een ander OpdrachtAntwoord, eerst op QuizDeelname, dan op QuizOpdracht
+	 *
+	 * @param opdrachtAntwoord
+	 *            het OpdrachtAntwoord om mee te vergelijken
 	 * @return
 	 */
+	@Override
 	public int compareTo(OpdrachtAntwoord opdrachtAntwoord) {
 		if (this.quizDeelname.compareTo(opdrachtAntwoord.quizDeelname) == 0) {
 			return this.quizOpdracht.compareTo(opdrachtAntwoord.quizOpdracht);
-		}
-		else {
+		} else {
 			return this.quizDeelname.compareTo(opdrachtAntwoord.quizDeelname);
 		}
 	}
-	
+
+	@Override
 	public OpdrachtAntwoord clone() {
 		OpdrachtAntwoord clone = null;
 		try {
-			clone = (OpdrachtAntwoord)super.clone();			
+			clone = (OpdrachtAntwoord) super.clone();
 		} catch (CloneNotSupportedException ex) {
 			ex.printStackTrace();
 		}

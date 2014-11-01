@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  *
  */
 
-public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
+public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iterable<Quiz> {
 	private List<Quiz> quizcatalogus;
 
 	/**
@@ -161,5 +162,21 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable {
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		long hash = 1;
+		for (Quiz quiz : this) {
+			hash *= 19;
+			hash += quiz.hashCode();
+		}
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
+	}
+
+	@Override
+	public Iterator<Quiz> iterator() {
+		return this.quizcatalogus.iterator();
 	}
 }
