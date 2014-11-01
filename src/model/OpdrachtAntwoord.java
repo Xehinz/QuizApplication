@@ -82,6 +82,15 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	private OpdrachtAntwoord(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
 			String laatsteAntwoord) {
+		if (quizDeelname == null || quizOpdracht == null) {
+			throw new IllegalArgumentException("De QuizDeelname en de QuizOpdracht moeten verwijzen naar een bestaand object");
+		}
+		if (aantalPogingen < 1) {
+			throw new IllegalArgumentException("Het aantal pogingen kan niet kleiner zijn dan 1");
+		}
+		if (antwoordTijd < 0) {
+			throw new IllegalArgumentException("De antwoordtijd moet positief zijn");
+		}
 		this.quizDeelname = quizDeelname;
 		this.quizOpdracht = quizOpdracht;
 		this.aantalPogingen = aantalPogingen;
@@ -94,17 +103,22 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	 * Uitwerking van het scoreberekeningsalgoritme op pagina 5 van de opgave
 	 */
 	private double berekenScore() {
-		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) {
+		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) { // FOUT ANTWOORD
 			return 0.0;
-		} else {
+		} else { // JUIST ANTWOORD
 			if (quizOpdracht.getOpdracht().heeftTijdsbeperking()
-					&& antwoordTijd > quizOpdracht.getOpdracht().getMaxAntwoordTijd()) {
+					&& antwoordTijd > quizOpdracht.getOpdracht().getMaxAntwoordTijd()) { // TE VEEL TIJD GEBRUIKT
 				return 0.0;
-			} else {
+			} else { // TIJD OKE
 				if (aantalPogingen == 1) {
 					return quizOpdracht.getMaxScore();
 				} else {
-					return quizOpdracht.getMaxScore() / 2.0;
+					if (!quizOpdracht.getOpdracht().heeftPogingBeperking()) { // ONBEPERKT AANTAL POGINGEN
+						return quizOpdracht.getMaxScore() / 2.0;
+					} else { // BEPERKT AANTAL POGINGEN
+						return aantalPogingen <= quizOpdracht.getOpdracht().getMaxAantalPogingen() ? quizOpdracht.getMaxScore() / 2.0
+								: 0.0;
+					}
 				}
 			}
 		}
@@ -125,12 +139,13 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	 * @param laatsteAntwoord
 	 *            de String met het definitieve antwoord van de Leerling
 	 */
-	public static void koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
-			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) {
+	public static OpdrachtAntwoord koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
+			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) throws IllegalArgumentException {
 		OpdrachtAntwoord opdrachtAntwoord = new OpdrachtAntwoord(quizDeelname, quizOpdracht, aantalPogingen, antwoordTijd,
 				laatsteAntwoord);
 		quizDeelname.addOpdrachtAntwoord(opdrachtAntwoord);
 		quizOpdracht.addOpdrachtAntwoord(opdrachtAntwoord);
+		return opdrachtAntwoord;
 	}
 
 	@Override

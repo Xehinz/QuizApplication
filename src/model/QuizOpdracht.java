@@ -46,6 +46,19 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 		this.opdrachtAntwoorden.add(opdrachtAntwoord);
 	}
 
+	/**
+	 * Geeft een kopie van de lijst met OpdrachtAntwoorden terug
+	 *
+	 * @return een kopie van de lijst met OpdrachtAntwoorden
+	 */
+	public ArrayList<OpdrachtAntwoord> getOpdrachtAntwoorden() {
+		ArrayList<OpdrachtAntwoord> kopie = new ArrayList<OpdrachtAntwoord>();
+		for (OpdrachtAntwoord opdrachtAntwoord : this.opdrachtAntwoorden) {
+			kopie.add(opdrachtAntwoord);
+		}
+		return kopie;
+	}
+
 	public Quiz getQuiz() {
 		return quiz;
 	}
@@ -68,7 +81,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	/**
 	 * Nog uitwerken
-	 * 
+	 *
 	 * @param quizOpdracht
 	 * @return
 	 */

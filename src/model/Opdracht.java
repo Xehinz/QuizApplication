@@ -1,8 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import util.datumWrapper.Datum;
 
@@ -19,7 +17,8 @@ import util.datumWrapper.Datum;
  * <li>Een lijst met antwoordhints (ArrayList&lt;String&gt;). Deze lijst kan leeg zijn</li>
  * <li>Een lijst met QuizOpdrachten (ArrayList&lt;QuizOpdracht&gt;). De klasse QuizOpdracht linkt de opdracht aan 0, 1
  * of meerdere quizzen</li>
- * <li>[OPTIONEEL] Het maximum aantal toegestane antwoordpogingen (int). De default waarde is 1</li>
+ * <li>[OPTIONEEL] Het maximum aantal toegestane antwoordpogingen (int). De default waarde is 1. Om een ongelimiteerd
+ * aantal pogingen toe te laten op 0 zetten</li>
  * <li>[OPTIONEEL] De maximum toegestane antwoordtijd in seconden (int). Default is de antwoordtijd ongelimiteerd</li>
  * </ul>
  *
@@ -208,12 +207,14 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Haalt het maximum aantal antwoordpogingen op
+	 * Haalt het maximum aantal antwoordpogingen op. Geeft 9999 terug wanneer het het maximum aantal pogingen
+	 * ongelimiteerd is. Dit is om fouten te vermijden; Gebruik de method heeftPogingsBeperking() om te testen op een
+	 * beperkt aantal pogingen
 	 *
 	 * @return het maximum aantal antwoordpogingen
 	 */
 	public int getMaxAantalPogingen() {
-		return maxAantalPogingen;
+		return heeftPogingBeperking() ? maxAantalPogingen : 9999;
 	}
 
 	/**
@@ -229,19 +230,20 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
-		if (maxAantalPogingen < 1) {
-			throw new IllegalArgumentException("Het aantal pogingen moet minstens 1 zijn");
+		if (maxAantalPogingen < 0) {
+			throw new IllegalArgumentException("Het aantal pogingen moet minstens 0 (= ongelimiteerd) zijn");
 		}
 		this.maxAantalPogingen = maxAantalPogingen;
 	}
 
 	/**
-	 * Haalt de maximum toegestane antwoordtijd op
+	 * Haalt de maximum toegestane antwoordtijd op. Geeft 9999 terug wanneer de antwoordtijd ongelimiteerd is. Dit is om
+	 * fouten te vermijden; Gebruik de method heeftTijdsbeperking() om te testen op een tijdsbeperking
 	 *
 	 * @return de maximum toegestane antwoordtijd
 	 */
 	public int getMaxAntwoordTijd() {
-		return maxAntwoordTijd;
+		return heeftTijdsbeperking() ? maxAntwoordTijd : 9999;
 	}
 
 	/**
@@ -316,6 +318,15 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
+	 * Geeft een boolean terug om aan te geven of er voor de Opdracht slechts een beperkt aantal pogingen is toegestaan
+	 *
+	 * @return true als het aantal pogingen beperkt is
+	 */
+	public boolean heeftPogingBeperking() {
+		return maxAantalPogingen != 0;
+	}
+
+	/**
 	 * Wanneer een opdracht in een quiz is opgenomen die al door een leerling is gemaakt, mag de opdracht niet meer
 	 * gewijzigd worden
 	 *
@@ -346,7 +357,7 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param quizOpdracht
 	 *            de QuizOpdracht om toe te voegen
 	 */
-	public void addQuizOpdracht(QuizOpdracht quizOpdracht) {
+	protected void addQuizOpdracht(QuizOpdracht quizOpdracht) {
 		quizOpdrachten.add(quizOpdracht);
 	}
 
@@ -356,8 +367,21 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param quizOpdracht
 	 *            de QuizOpdracht om te verwijderen
 	 */
-	public void removeQuizOpdracht(QuizOpdracht quizOpdracht) {
+	protected void removeQuizOpdracht(QuizOpdracht quizOpdracht) {
 		quizOpdrachten.remove(quizOpdracht);
+	}
+
+	/**
+	 * Geeft een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht terug
+	 *
+	 * @return een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht
+	 */
+	public ArrayList<QuizOpdracht> getQuizOpdrachten() {
+		ArrayList<QuizOpdracht> kopie = new ArrayList<QuizOpdracht>();
+		for (QuizOpdracht quizOpdracht : quizOpdrachten) {
+			kopie.add(quizOpdracht);
+		}
+		return kopie;
 	}
 
 	/**
@@ -394,12 +418,16 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Haalt een read-only versie van het lijstje met antwoordhints op
+	 * Geeft een kopie van de lijst met antwoordhints terug
 	 *
-	 * @return de read-only List&lt;String&gt; van antwoordhints
+	 * @return een kopie van de lijst met antwoordhints
 	 */
-	public List<String> getHints() {
-		return Collections.unmodifiableList(antwoordHints);
+	public ArrayList<String> getHints() {
+		ArrayList<String> kopie = new ArrayList<String>();
+		for (String hint : antwoordHints) {
+			kopie.add(hint);
+		}
+		return kopie;
 	}
 
 	/**
