@@ -164,9 +164,6 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		if (!other.getDatum().equals(this.datum)) {
 			return false;
 		}
-		if (!other.getOpdrachtAntwoorden().equals(this.opdrachtAntwoorden)) {
-			return false;
-		}
 		return true;
 	}
 

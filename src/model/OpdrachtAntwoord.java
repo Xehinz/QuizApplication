@@ -82,9 +82,6 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	private OpdrachtAntwoord(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
 			String laatsteAntwoord) {
-		if (quizDeelname == null || quizOpdracht == null) {
-			throw new IllegalArgumentException("De QuizDeelname en de QuizOpdracht moeten verwijzen naar een bestaand object");
-		}
 		if (aantalPogingen < 1) {
 			throw new IllegalArgumentException("Het aantal pogingen kan niet kleiner zijn dan 1");
 		}
@@ -141,6 +138,15 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	 */
 	public static OpdrachtAntwoord koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
 			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) throws IllegalArgumentException {
+		if (quizDeelname == null || quizOpdracht == null) {
+			throw new IllegalArgumentException("De QuizDeelname en de QuizOpdracht moeten verwijzen naar een bestaand object");
+		}
+		for (OpdrachtAntwoord antwoord : quizDeelname.getOpdrachtAntwoorden()) {
+			if (antwoord.getQuizOpdracht().equals(quizOpdracht)) {
+				throw new UnsupportedOperationException(
+						"Binnen deze QuizDeelname is er al een OpdrachtAntwoord voor deze QuizOpdracht");
+			}
+		}
 		OpdrachtAntwoord opdrachtAntwoord = new OpdrachtAntwoord(quizDeelname, quizOpdracht, aantalPogingen, antwoordTijd,
 				laatsteAntwoord);
 		quizDeelname.addOpdrachtAntwoord(opdrachtAntwoord);
@@ -163,9 +169,6 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
 		if (obj == null) {
 			return false;
 		}
