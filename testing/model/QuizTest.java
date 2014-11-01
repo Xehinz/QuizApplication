@@ -71,12 +71,7 @@ public class QuizTest {
 		// aQuiz.addQuizOpdracht(aQuizOpdracht);
 		// aQuiz.addQuizOpdracht(anotherQuizOpdracht);
 
-		try {
-			anotherQuiz = aQuiz.clone();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		anotherQuiz = aQuiz.clone();
 
 		assertEquals("Deze quiz-opdrachten zijn dezelfde", aQuiz.getOpdrachten(), anotherQuiz.getOpdrachten());
 		assertTrue("Deze quizen zijn gelijk", aQuiz.equals(anotherQuiz));

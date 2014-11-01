@@ -153,7 +153,8 @@ public class Opdracht implements Comparable<Opdracht>, Cloneable {
 		} catch (UnsupportedOperationException ex) {
 			// Bij het aanmaken van een Opdracht zal de Opdracht steeds aanpasbaar zijn. De Exception zal zich nooit
 			// voordoen
-		}		
+			ex.printStackTrace();
+		}
 	}
 
 	/**

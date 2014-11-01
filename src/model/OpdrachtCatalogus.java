@@ -1,6 +1,7 @@
 package model;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * De OpdrachtCatalogus klasse, met 1 field: Een lijst met alle aangemaakte opdrachten
@@ -10,14 +11,15 @@ import java.util.List;
  *
  */
 
-public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneable {
-	private List<Opdracht> opdrachtcatalogus;
+public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneable, Iterable<Opdracht> {
+	private ArrayList<Opdracht> opdrachtcatalogus;
 
 	/**
 	 * Maakt een nieuwe OpdrachtCatalogus aan
 	 */
 
 	public OpdrachtCatalogus() {
+		this.opdrachtcatalogus = new ArrayList<Opdracht>();
 	}
 
 	/**
@@ -27,7 +29,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 *            een lijst van opdrachten
 	 */
 
-	public OpdrachtCatalogus(List<Opdracht> oc) {
+	public OpdrachtCatalogus(ArrayList<Opdracht> oc) {
 		this.opdrachtcatalogus = oc;
 	}
 
@@ -38,22 +40,18 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 */
 
 	@Override
-	public OpdrachtCatalogus clone() throws CloneNotSupportedException {
-		return (OpdrachtCatalogus) super.clone();
-	}
-
-	/**
-	 * Haalt de gekloonde OpdrachtCatalogus op
-	 *
-	 * @return de gekloonde OpdrachtCatalogus
-	 */
-
-	public OpdrachtCatalogus getCloneOpdrachtCatalogus() {
+	public OpdrachtCatalogus clone() {
+		OpdrachtCatalogus clone = null;
 		try {
-			return this.clone();
-		} catch (Exception E) {
-			return null;
+			clone = (OpdrachtCatalogus) super.clone();
+			clone.opdrachtcatalogus = new ArrayList<Opdracht>();
+			for (Opdracht opdracht : this.opdrachtcatalogus) {
+				clone.opdrachtcatalogus.add(opdracht.clone());
+			}
+		} catch (CloneNotSupportedException ex) {
+			ex.printStackTrace();
 		}
+		return clone;
 	}
 
 	/**
@@ -85,7 +83,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	}
 
 	/**
-	 * Haalt een opdracht op met een bepaald volgnummer
+	 * Haalt een opdracht op met een bepaald volgnummer, beginnende bij 1
 	 *
 	 * @param volgnr
 	 *            het volgnummer
@@ -93,6 +91,13 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 */
 
 	public Opdracht getOpdracht(int volgnr) {
+		if (volgnr < 1) {
+			throw new IndexOutOfBoundsException("Het kleinst mogelijke volgnummer is 1");
+		}
+		if (volgnr > opdrachtcatalogus.size()) {
+			throw new IndexOutOfBoundsException(String.format("De catalogus bevat slechts %d opdrachten",
+					opdrachtcatalogus.size()));
+		}
 		return this.opdrachtcatalogus.get(volgnr - 1);
 	}
 
@@ -134,8 +139,16 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 *            de te vergelijken catalogus
 	 */
 
-	public boolean equals(OpdrachtCatalogus aOpdrachtCatalogus) {
-		return aOpdrachtCatalogus.getCloneOpdrachtCatalogus().opdrachtcatalogus.containsAll(this.opdrachtcatalogus);
+	@Override
+	public boolean equals(Object aOpdrachtCatalogus) {
+		if (aOpdrachtCatalogus == null) {
+			return false;
+		}
+		if (!(aOpdrachtCatalogus instanceof OpdrachtCatalogus)) {
+			return false;
+		}
+		OpdrachtCatalogus other = (OpdrachtCatalogus) aOpdrachtCatalogus;
+		return other.opdrachtcatalogus.containsAll(this.opdrachtcatalogus);
 	}
 
 	/**
@@ -144,7 +157,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 * @param OC
 	 *            de te vergelijken catalogus
 	 */
-
 	@Override
 	public int compareTo(OpdrachtCatalogus OC) {
 		if (this.count() < OC.count()) {
@@ -155,6 +167,11 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		} else {
 			return 0;
 		}
+	}
+
+	@Override
+	public Iterator<Opdracht> iterator() {
+		return this.opdrachtcatalogus.iterator();
 	}
 
 }
