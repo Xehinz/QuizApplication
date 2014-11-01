@@ -60,7 +60,7 @@ public class QuizTest {
 	public void testQuiz_getOpdrachtenVanEenCloneQuiz_EqualsEenCloneQuiz_IsOK() {
 		Quiz aQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "new quiz");
 		Quiz anotherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "another quiz");
-		Opdracht aOpdracht = new Opdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
+		Opdracht aOpdracht = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
 
 		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 5);
 		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 10);
@@ -81,7 +81,7 @@ public class QuizTest {
 	public void testQuiz_VergelijkOpdrachten_IsKleiner() {
 		Quiz aQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "new quiz");
 		Quiz anotherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "another quiz");
-		Opdracht aOpdracht = new Opdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
+		Opdracht aOpdracht = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
 
 		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 5);
 		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 10);

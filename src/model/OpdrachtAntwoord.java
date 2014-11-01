@@ -15,7 +15,7 @@ package model;
  * pattern gaan implementeren, is het de bedoeling om de scoreberekening met behulp van klasses flexibeler te maken.
  *
  * @author Tim Cool, Ben Vandenberk
- * @version 29/10/2014
+ * @version 01/11/2014
  *
  */
 public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable {
@@ -137,7 +137,8 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	 *            de String met het definitieve antwoord van de Leerling
 	 */
 	public static OpdrachtAntwoord koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
-			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) throws IllegalArgumentException, UnsupportedOperationException {
+			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) throws IllegalArgumentException,
+			UnsupportedOperationException {
 		if (quizDeelname == null || quizOpdracht == null) {
 			throw new IllegalArgumentException("De QuizDeelname en de QuizOpdracht moeten verwijzen naar een bestaand object");
 		}

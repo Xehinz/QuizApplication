@@ -9,6 +9,21 @@ import org.junit.Test;
 
 import util.datumWrapper.Datum;
 
+/**
+ * Test de modelklasse OpdrachtAntwoord. Test volgende functionaliteiten:
+ * <ul>
+ * <li>Een QuizDeelname aan een QuizOpdracht koppelen mbv de static method koppelQuizDeelnameAanQuizOpdracht(...)</li>
+ * <li>De scoreberekening - opgehaald door GetBehaaldeScore()</li>
+ * <li>equals()</li>
+ * <li>clone()</li>
+ * <li>compareTo - vergelijken van twee OpdrachtAntwoorden, eerst op basis van de QuizDeelname, dan op basis van de
+ * QuizOpdracht</li>
+ * </ul>
+ *
+ * @author Ben Vandenberk
+ * @version 01/11/2014
+ *
+ */
 public class OpdrachtAntwoordTest {
 
 	private Quiz quiz, kleinereQuiz;
@@ -26,11 +41,11 @@ public class OpdrachtAntwoordTest {
 		kleinereQuiz = new Quiz(Leraar.MIEKE_WITTEMANS, "Quiz met minder opdrachten");
 		kleinereQuiz.setQuizStatus(QuizStatus.OPENGESTELD);
 
-		opdrachtZonderTijdZonderPogingen = new Opdracht("Wat is de hoofdstad van Frankrijk?", 0, "Parijs",
+		opdrachtZonderTijdZonderPogingen = new KlassiekeOpdracht("Wat is de hoofdstad van Frankrijk?", 0, "Parijs",
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.MARIA_AERTS);
-		opdrachtOpTijdZonderPogingen = new Opdracht("Wat is de hoofdstad van België?", "Brussel", 0, 20,
+		opdrachtOpTijdZonderPogingen = new KlassiekeOpdracht("Wat is de hoofdstad van België?", "Brussel", 0, 20,
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.JOS_VERBEEK);
-		opdrachtZonderTijd1Poging = new Opdracht("Wat is de hoofdstad van België?", "Brussel", 1, 0,
+		opdrachtZonderTijd1Poging = new KlassiekeOpdracht("Wat is de hoofdstad van België?", "Brussel", 1, 0,
 				OpdrachtCategorie.WETENSCHAPPEN, Leraar.JOS_VERBEEK);
 
 		leerling = new Leerling("Karel", "Boghen", 3);
@@ -133,7 +148,7 @@ public class OpdrachtAntwoordTest {
 	}
 
 	@Test
-	public void testGetBehaaldeScore_TeveelPogingen_0Punten() {
+	public void testGetBehaaldeScore_JuistAntwoordTeveelPogingen_0Punten() {
 		OpdrachtAntwoord juisteAntwoordTeveelPogingen = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
 				quizOpdrachtZonderTijd1Poging, 2, 10, "Brussel");
 		assertEquals("Meerdere poging op opdracht met 1 poging levert 0 punten op", 0,
@@ -141,7 +156,7 @@ public class OpdrachtAntwoordTest {
 	}
 
 	@Test
-	public void testGetBehaaldeScore_AantalPogingenOke_MaxScore() {
+	public void testGetBehaaldeScore_JuistAntwoordAantalPogingenOke_MaxScore() {
 		OpdrachtAntwoord juisteAntwoordAantalPogingenOke = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
 				quizOpdrachtZonderTijd1Poging, 1, 10, "Brussel");
 		assertEquals("Juiste antwoord na 1 poging bij opdracht met pogingsbeperking levert max punten op",

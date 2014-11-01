@@ -9,10 +9,27 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test de modelklasse OpdrachtCatalogus. Test volgende functionaliteiten:
+ * <ul>
+ * <li>Aanmaken van een OpdrachtCatalogus</li>
+ * <li>Toevoegen en verwijderen van Opdrachten</li>
+ * <li>Testen of de catalogus een Opdracht bevat [boolean hasOpdracht(Opdracht)]</li>
+ * <li>Een Opdracht uit de catalogus opvragen</li>
+ * <li>De grootte van de catalogus opvragen</li>
+ * <li>equals()</li>
+ * <li>clone()</li>
+ * <li>compareTo()</li>
+ * </ul>
+ *
+ * @author Ben Vandenberk
+ * @version 01/11/2014
+ *
+ */
 public class OpdrachtCatalogusTest {
 
 	OpdrachtCatalogus legeOpdrachtCatalogus, opdrachtCatalogusGemaaktMetLijstOpdrachten, gevuldeCatalogusZelfdeOpdrachten,
-			gevuldeCatalogusAndereOpdrachten, tweedeLegeCatalogus;
+	gevuldeCatalogusAndereOpdrachten, tweedeLegeCatalogus;
 	ArrayList<Opdracht> opdrachten;
 	Opdracht opdracht1, opdracht2, opdracht3;
 
@@ -21,9 +38,9 @@ public class OpdrachtCatalogusTest {
 		legeOpdrachtCatalogus = new OpdrachtCatalogus();
 		tweedeLegeCatalogus = new OpdrachtCatalogus();
 
-		opdracht1 = new Opdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
-		opdracht2 = new Opdracht(OpdrachtCategorie.WETENSCHAPPEN, Leraar.MARIA_AERTS);
-		opdracht3 = new Opdracht(OpdrachtCategorie.NEDERLANDS, Leraar.STEVEN_OPDEBEEK);
+		opdracht1 = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
+		opdracht2 = new KlassiekeOpdracht(OpdrachtCategorie.WETENSCHAPPEN, Leraar.MARIA_AERTS);
+		opdracht3 = new KlassiekeOpdracht(OpdrachtCategorie.NEDERLANDS, Leraar.STEVEN_OPDEBEEK);
 
 		opdrachten = new ArrayList<Opdracht>();
 
@@ -123,7 +140,7 @@ public class OpdrachtCatalogusTest {
 
 	@Test
 	public void testEquals_ObjectAnderType_GeeftFalse() {
-		Opdracht anderTypeObject = new Opdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.MIEKE_WITTEMANS);
+		Opdracht anderTypeObject = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.MIEKE_WITTEMANS);
 		assertFalse("OpdrachtCatalogus vergelijken met een Opdracht geeft false", legeOpdrachtCatalogus.equals(anderTypeObject));
 	}
 

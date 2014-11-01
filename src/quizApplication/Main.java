@@ -3,6 +3,7 @@
  */
 package quizApplication;
 
+import model.KlassiekeOpdracht;
 import model.Leerling;
 import model.Leraar;
 import model.Opdracht;
@@ -25,8 +26,9 @@ public class Main {
 	public static void main(String[] args) {
 		Quiz quiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "TestQuiz");
 		quiz.setQuizStatus(QuizStatus.OPENGESTELD);
-		Opdracht opdracht = new Opdracht("Wat is de hoofdstad van Frankrijk?", "Parijs", OpdrachtCategorie.AARDRIJKSKUNDE,
-				Leraar.CHARLOTTE_NEVEN);
+		Opdracht opdracht = new KlassiekeOpdracht("Wat is de hoofdstad van Frankrijk?", "Parijs",
+				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
+		System.out.println(opdracht);
 		Leerling leerling = new Leerling("Ben", "Vandenberk", 4);
 
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
@@ -37,7 +39,7 @@ public class Main {
 
 		OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdracht, 1, 10, "Parijs");
 
-		System.out.println(leerling.getQuizDeelnames().get(0).getOpdrachtAntwoorden().get(0));
+		// System.out.println(leerling.getQuizDeelnames().get(0).getOpdrachtAntwoorden().get(0));
 
 	}
 }

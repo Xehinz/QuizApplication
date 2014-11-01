@@ -80,25 +80,27 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	}
 
 	/**
-	 * Nog uitwerken
+	 * Vergelijkt deze QuizOpdracht met een andere QuizOpdracht, eerst op basis van de Quiz, dan op basis van de
+	 * Opdracht
 	 *
 	 * @param quizOpdracht
-	 * @return
+	 *            de QuizOpdracht waarmee vergeleken wordt
+	 * @return -1, 0 of 1 als deze QuizOpdracht voor, op dezelfde plaats of na het argument-QuizOpdracht komt
 	 */
 	@Override
 	public int compareTo(QuizOpdracht quizOpdracht) {
-		return 0;
+		if (this.quiz.compareTo(quizOpdracht.getQuiz()) == 0) {
+			return this.opdracht.compareTo(quizOpdracht.getOpdracht());
+		} else {
+			return this.quiz.compareTo(quizOpdracht.getQuiz());
+		}
 	}
 
-	/**
-	 * Nog uitwerken
-	 */
 	@Override
 	public QuizOpdracht clone() {
 		QuizOpdracht clone = null;
 		try {
 			clone = (QuizOpdracht) super.clone();
-			// ...
 		} catch (CloneNotSupportedException ex) {
 			ex.printStackTrace();
 		}
