@@ -46,6 +46,18 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;
 	}
+	
+	public String getJuisteAntwoord() {
+		return opsommingJuisteAntwoord;
+	}
+
+	public void setJuisteAntwoord(String opsommingjuisteantwoord) throws UnsupportedOperationException {
+		if (!isAanpasbaar()) {
+			throw new UnsupportedOperationException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
+		this.opsommingJuisteAntwoord = opsommingjuisteantwoord;
+	}
 
 	@Override
 	public boolean isValide(String antwoord) {
