@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class Opsomming extends Opdracht implements Valideerbaar {
 
-	private ArrayList<String> opsommingJuisteAntwoord;
+	private String opsommingJuisteAntwoord;
 	private boolean inJuisteVolgorde;
 	private int aantalAntwoordenInOpsomming;
 
@@ -13,7 +13,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 		super(opdrachtCategorie, auteur);
 	}
 
-	public Opsomming(String vraag, ArrayList<String> juisteAntwoord,
+	public Opsomming(String vraag, String juisteAntwoord,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
 			boolean injuistevolgorde) {
 		super(vraag, opdrachtCategorie, auteur);
@@ -22,23 +22,22 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 	}
 
 	public Opsomming(String vraag, int maxAantalPogingen,
-			ArrayList<String> juisteAntwoord,
-			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
-			boolean injuistevolgorde) {
+			String juisteAntwoord, OpdrachtCategorie opdrachtCategorie,
+			Leraar auteur, boolean injuistevolgorde) {
 		super(vraag, maxAantalPogingen, 0, opdrachtCategorie, auteur);
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;
 	}
 
-	public Opsomming(String vraag, ArrayList<String> juisteAntwoord,
-			int maxAntwoordTijd, OpdrachtCategorie opdrachtCategorie,
-			Leraar auteur, boolean injuistevolgorde) {
+	public Opsomming(String vraag, String juisteAntwoord, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
+			boolean injuistevolgorde) {
 		super(vraag, maxAntwoordTijd, opdrachtCategorie, auteur);
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;
 	}
 
-	public Opsomming(String vraag, ArrayList<String> juisteAntwoord,
+	public Opsomming(String vraag, String juisteAntwoord,
 			int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
 			boolean injuistevolgorde) {
@@ -53,8 +52,9 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 		ArrayList<String> antwoorden = new ArrayList<String>(
 				Arrays.asList(antwoord.split(";")));
 		if (antwoorden.size() == this.aantalAntwoordenInOpsomming)
-		return true;
-		else return false;
+			return true;
+		else
+			return false;
 	}
 
 	@Override
@@ -66,14 +66,16 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 	public boolean isJuisteAntwoord(String antwoord) {
 		ArrayList<String> antwoorden = new ArrayList<String>(
 				Arrays.asList(antwoord.split(";")));
+		ArrayList<String> juisteantwoorden = new ArrayList<String>(
+				Arrays.asList(this.opsommingJuisteAntwoord.split(";")));
 		if (this.inJuisteVolgorde) {
-			if (this.opsommingJuisteAntwoord.equals(antwoorden))
+			if (juisteantwoorden.equals(antwoorden))
 				return true;
 			else
 				return false;
 		} else {
-			if (this.opsommingJuisteAntwoord.containsAll(antwoorden)
-					&& antwoorden.containsAll(this.opsommingJuisteAntwoord))
+			if (juisteantwoorden.containsAll(antwoorden)
+					&& antwoorden.containsAll(juisteantwoorden))
 				return true;
 			else
 				return false;
@@ -82,6 +84,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	@Override
 	public String toString() {
-		return super.toString(); // Nog aanvullen
+		return super.toString() + opsommingJuisteAntwoord + " met de volgorde "
+				+ (inJuisteVolgorde ? "" : "niet") + " belangrijk.";
 	}
 }
