@@ -61,10 +61,10 @@ public class Datum implements Comparable<Datum> {
 	}
 
 	/**
-	 * Maakt een datum object aan op basis van een string. Format: DD/MM/YYYY
+	 * Maakt een datum object aan op basis van een string. Format: DD/MM/YYYY of DD-MM-YYYY
 	 *
 	 * @param datum
-	 *            de String met een datum waarde (DD/MM/YYYY)
+	 *            de String met een datum waarde (DD/MM/YYYY of DD-MM-YYYY)
 	 * @throws IllegalArgumentException
 	 *             als de input String van een foutief formaat is of als de datumwaarde ongeldig is
 	 */
@@ -194,7 +194,7 @@ public class Datum implements Comparable<Datum> {
 	 */
 	public boolean kleinerDan(Datum datum) {
 		GregorianCalendar inputDatum = new GregorianCalendar(datum.getJaar(), datum.getMaand() - 1, datum.getDag());
-		return inputDatum.before(this.gregorianCalendarDatum);
+		return this.gregorianCalendarDatum.before(inputDatum);
 	}
 
 	/**

@@ -13,6 +13,7 @@ import model.Quiz;
 import model.QuizDeelname;
 import model.QuizOpdracht;
 import model.QuizStatus;
+import util.datumWrapper.Datum;
 
 /**
  * @author Cool Tim
@@ -40,6 +41,10 @@ public class Main {
 		OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdracht, 1, 10, "Parijs");
 
 		// System.out.println(leerling.getQuizDeelnames().get(0).getOpdrachtAntwoorden().get(0));
+
+		Datum d = new Datum(20, 2, 1990);
+		Datum later = new Datum(25, 2, 1990);
+		System.out.println(d.kleinerDan(later));
 
 	}
 }

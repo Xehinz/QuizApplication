@@ -7,13 +7,12 @@ import static org.junit.Assert.fail;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import util.datumScratch.Datum;
+import util.datumWrapper.Datum;
 
 public class DatumTest {
 
@@ -22,7 +21,7 @@ public class DatumTest {
 
 	@Before
 	public void setUp() {
-		//Datum.setLocale(new Locale("nl", "BE"));
+		// Datum.setLocale(new Locale("nl", "BE"));
 		datum = new Datum(11, 10, 2014);
 		datumString = new Datum("30/09/2014");
 		veranderdeDatum = new Datum(14, 10, 2014);
@@ -258,12 +257,12 @@ public class DatumTest {
 
 	@Test
 	public void testKleinerDan_InputKleinereDatum_GeeftTrue() {
-		assertTrue(datum.kleinerDan(datumString));
+		assertFalse(datum.kleinerDan(datumString));
 	}
 
 	@Test
 	public void testKleinerDan_InputGrotereDatum_GeeftFalse() {
-		assertFalse(datumString.kleinerDan(datum));
+		assertTrue(datumString.kleinerDan(datum));
 	}
 
 	@Test
