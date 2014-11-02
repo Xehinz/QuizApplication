@@ -104,7 +104,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * geeft ovezicht van gestelde vragen met juiste antwoorden, gegeven antwoorden & behaalde score
 	 */
 	public String feedback() {
-		return "";
+		throw new UnsupportedOperationException("Method nog niet geïmplementeerd");
 	}
 
 	/**

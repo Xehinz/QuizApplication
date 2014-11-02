@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class LeerlingContainer implements Iterable<Leerling>, Cloneable {
+public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Comparable<LeerlingContainer> {
 
 	private ArrayList<Leerling> leerlingen;
 
@@ -101,5 +101,27 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable {
 		}
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
+	}
+
+	/**
+	 * Vergelijkt een LeerlingContainer met een andere LeerlingContainer op basis van de hoeveelheid Leerlingen
+	 */
+	@Override
+	public int compareTo(LeerlingContainer leerlingContainer) {
+		if (leerlingContainer == null) {
+			return 1;
+		}
+		if (this.count() < leerlingContainer.count()) {
+			return -1;
+		}
+		if (this.count() > leerlingContainer.count()) {
+			return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("LeerlingContainer met %d leerlingen", count());
 	}
 }

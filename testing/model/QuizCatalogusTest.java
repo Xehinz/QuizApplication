@@ -56,7 +56,7 @@ public class QuizCatalogusTest {
 
 	@Test
 	public void testQuizCatalogus_getCloneVergelijkenMetAndereCatalogusQuiz_IsOK() {
-		QuizCatalogus vergelijkCataloog = quizCatalogusBasis.getCloneQuizCatalogus();
+		QuizCatalogus vergelijkCataloog = quizCatalogusBasis.clone();
 		assertTrue("Vergelijken met een andere CatalogusQuiz mbv getClone & Equals", quizCatalogusBasis.equals(vergelijkCataloog));
 	}
 
@@ -68,14 +68,14 @@ public class QuizCatalogusTest {
 
 	@Test
 	public void testQuizCatalogus_CountVanQuizCatalogusEnCountVanClone_IsOK() {
-		assertEquals("De count van origineel en clone is hetzelfde", quizCatalogusBasis.getCloneQuizCatalogus().count(),
+		assertEquals("De count van origineel en clone is hetzelfde", quizCatalogusBasis.clone().count(),
 				quizCatalogusBasis.count());
 	}
 
 	@Test
 	public void testQuizCatalogus_addQuizAndCountIt_IsOK() {
 		Quiz meQuick = new Quiz(Leraar.CHARLOTTE_NEVEN, "Quiz me quick");
-		QuizCatalogus vergelijkCatalogus = quizCatalogusBasis.getCloneQuizCatalogus();
+		QuizCatalogus vergelijkCatalogus = quizCatalogusBasis.clone();
 
 		quizCatalogusBasis.addQuiz(meQuick);
 		vergelijkCatalogus.addQuiz(meQuick);
