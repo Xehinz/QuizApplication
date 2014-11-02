@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * De QuizCatalogus klasse, met 1 field: Een lijst met alle bestaande quizzen
@@ -13,7 +12,7 @@ import java.util.List;
  */
 
 public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iterable<Quiz> {
-	private List<Quiz> quizcatalogus;
+	private ArrayList<Quiz> quizcatalogus;
 
 	/**
 	 * Maakt een nieuwe QuizCatalogus aan
@@ -33,7 +32,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *            een lijst van quizzen
 	 */
 
-	public QuizCatalogus(List<Quiz> qc) {
+	public QuizCatalogus(ArrayList<Quiz> qc) {
 		this.quizcatalogus = qc;
 	}
 
@@ -43,23 +42,19 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 * @return de gekloonde QuizCatalogus
 	 */
 
-	public QuizCatalogus getCloneQuizCatalogus() {
-		try {
-			return this.clone();
-		} catch (Exception E) {
-			return null;
-		}
-	}
-
-	/**
-	 * Kloont QuizCatalogus
-	 *
-	 * @return de gekloonde QuizCatalogus
-	 */
-
 	@Override
-	public QuizCatalogus clone() throws CloneNotSupportedException {
-		return (QuizCatalogus) super.clone();
+	public QuizCatalogus clone() {
+		QuizCatalogus clone = null;
+		try {
+			clone = (QuizCatalogus) super.clone();
+			clone.quizcatalogus = new ArrayList<Quiz>();
+			for (Quiz quiz : this.quizcatalogus) {
+				clone.quizcatalogus.add(quiz.clone());
+			}
+		} catch (CloneNotSupportedException ex) {
+			ex.printStackTrace();
+		}
+		return clone;
 	}
 
 	/**
@@ -141,8 +136,16 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *            de te vergelijken catalogus
 	 */
 
-	public boolean equals(QuizCatalogus aQuizCatalogus) {
-		return aQuizCatalogus.getCloneQuizCatalogus().quizcatalogus.containsAll(this.quizcatalogus);
+	@Override
+	public boolean equals(Object aQuizCatalogus) {
+		if (aQuizCatalogus == null) {
+			return false;
+		}
+		if (!(aQuizCatalogus instanceof QuizCatalogus)) {
+			return false;
+		}
+		QuizCatalogus other = (QuizCatalogus) aQuizCatalogus;
+		return other.quizcatalogus.containsAll(this.quizcatalogus);
 	}
 
 	/**

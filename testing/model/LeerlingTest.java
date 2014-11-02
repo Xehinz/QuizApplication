@@ -18,7 +18,6 @@ import org.junit.Test;
 public class LeerlingTest {
 
 	private Leerling leerling, zelfdeleerling, tweedeleerling, derdeleerling, vierdeleerling;
-	// private QuizDeelname quizdeelname;
 	private Quiz quiz;
 
 	@Before
@@ -110,11 +109,6 @@ public class LeerlingTest {
 		assertEquals("Leerjaar gelijk", 3, leerling.getLeerjaar());
 	}
 
-	/*
-	 * @Test public void testAddQuizDeelname_QuizDeelname_QuizDeelnameIsToegevoegd(){
-	 * leerling.addQuizDeelname(quizdeelname); assertTrue("Quizdeelname toegevoegd", ) }
-	 */
-
 	/**
 	 * Test de toString method
 	 */
@@ -178,13 +172,5 @@ public class LeerlingTest {
 		assertFalse(leerling.equals(quiz));
 	}
 
-	/**
-	 * Hoe hashcode testen?
-	 */
-
-	/*
-	 * @Test public void testClone_Leerling_IsDezelfde(){ Leerling gekloond = vierdeleerling.clone();
-	 * assertTrue(gekloond.equals(vierdeleerling)); }
-	 */
 
 }
