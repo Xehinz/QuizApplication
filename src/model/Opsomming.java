@@ -7,6 +7,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	private ArrayList<String> opsommingJuisteAntwoord;
 	private boolean inJuisteVolgorde;
+	private int aantalAntwoordenInOpsomming;
 
 	public Opsomming(OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		super(opdrachtCategorie, auteur);
@@ -49,19 +50,22 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	@Override
 	public boolean isValide(String antwoord) {
-		return false;
+		ArrayList<String> antwoorden = new ArrayList<String>(
+				Arrays.asList(antwoord.split(";")));
+		if (antwoorden.size() == this.aantalAntwoordenInOpsomming)
+		return true;
+		else return false;
 	}
 
 	@Override
 	public String getValideerTekst() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Typ je antwoorden achter elkaar gescheiden door ;";
 	}
 
 	@Override
 	public boolean isJuisteAntwoord(String antwoord) {
 		ArrayList<String> antwoorden = new ArrayList<String>(
-				Arrays.asList(antwoord.split(",")));
+				Arrays.asList(antwoord.split(";")));
 		if (this.inJuisteVolgorde) {
 			if (this.opsommingJuisteAntwoord.equals(antwoorden))
 				return true;
