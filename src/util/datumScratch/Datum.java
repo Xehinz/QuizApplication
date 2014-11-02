@@ -1,6 +1,7 @@
 package util.datumScratch;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Datum klasse opgebouwd 'from scratch', met eigen logica
@@ -349,6 +350,22 @@ public class Datum implements Comparable<Datum> {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Doet niets!<br/>
+	 * <br/>
+	 *
+	 * Method om deze klasse volledig compatibel te maken met de wrapper klasse. In de wrapper klasse roepen we een
+	 * method uit de Java libraries uit om de maanden voluit te laten schrijven. Op een Engels systeem falen daardoor
+	 * onze toString() tests. In de testklasse forceren we de Datum klasse om Nederlandstalige maanden te gebruiken. In
+	 * deze klasse is dit niet nodig omdat het schrijven van maanden zelf gecodeerd is
+	 *
+	 * @param locale
+	 *            doet niets!
+	 */
+	public static void setLocale(Locale locale) {
+		return;
 	}
 
 	private void addDag() {
