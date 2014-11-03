@@ -40,16 +40,36 @@ public class KlassiekeOpdracht extends Opdracht {
 			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
-		this.juisteAntwoord = juisteAntwoord;
+		this.juisteAntwoord = juisteAntwoord.trim();
 	}
 
 	@Override
 	public boolean isJuisteAntwoord(String antwoord) {
-		return antwoord.equals(juisteAntwoord);
+		return antwoord.trim().equalsIgnoreCase(juisteAntwoord);
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() + juisteAntwoord;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!super.equals(obj)) {
+			return false;
+		}
+		KlassiekeOpdracht other = (KlassiekeOpdracht) obj;
+		if (this.juisteAntwoord != other.juisteAntwoord) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		long hash = super.hashCode();
+		hash = 41 * hash + juisteAntwoord.hashCode();
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
 	}
 }

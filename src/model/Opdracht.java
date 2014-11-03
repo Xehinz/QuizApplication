@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import util.datumWrapper.Datum;
 
 /**
- * De Opdracht klasse modelleert een opdracht die gebruikt kan worden in meerdere quizzen. Het is een abstracte klasse. Bij een opdracht horen
- * volgende parameters:
+ * De Opdracht klasse modelleert een opdracht die gebruikt kan worden in meerdere quizzen. Het is een abstracte klasse.
+ * Bij een opdracht horen volgende parameters:
  *
  * <ul>
  * <li>De vraag waarop een antwoord moet gevonden worden (String)</li>
@@ -416,7 +416,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof Opdracht)) {
+		if (!(this.getClass() == obj.getClass())) {
 			return false;
 		}
 
