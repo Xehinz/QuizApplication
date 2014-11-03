@@ -368,7 +368,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	public ArrayList<Opdracht> getOpdrachten() {
 		ArrayList<Opdracht> opdrachten = new ArrayList<Opdracht>();
 		for (QuizOpdracht quizOpdracht : this.quizOpdrachten) {
-			opdrachten.add(quizOpdracht.getOpdracht());
+			opdrachten.add(quizOpdracht.getOpdracht().clone());
 		}
 		return opdrachten;
 	}
@@ -417,7 +417,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	public ArrayList<Leerling> getLeerlingenDieDeelnamen() {
 		ArrayList<Leerling> deelnemers = new ArrayList<Leerling>();
 		for (QuizDeelname quizDeelname : this.quizDeelnames) {
-			deelnemers.add(quizDeelname.getLeerling());
+			deelnemers.add(quizDeelname.getLeerling().clone());
 		}
 		return deelnemers;
 	}
@@ -462,7 +462,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	public Quiz clone() {
 		Quiz clone = null;
 		try {
-			clone = (Quiz) super.clone();
+			clone = (Quiz) super.clone(); //first shallow cloning for the basic types
+			//then start deep cloning for the object types
 			clone.aanmaakDatum = new Datum(aanmaakDatum);
 			clone.zijnDoelLeerjaren = this.zijnDoelLeerjaren.clone();
 			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames
