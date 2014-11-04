@@ -3,16 +3,10 @@
  */
 package quizApplication;
 
-import model.KlassiekeOpdracht;
+import java.util.ArrayList;
+
 import model.Leerling;
-import model.Leraar;
-import model.Opdracht;
-import model.OpdrachtAntwoord;
-import model.OpdrachtCategorie;
-import model.Quiz;
-import model.QuizDeelname;
-import model.QuizOpdracht;
-import model.QuizStatus;
+import persistency.TxtLeerlingLeesSchrijf;
 
 /**
  * @author Cool Tim
@@ -24,26 +18,21 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Quiz quiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "TestQuiz");
-		quiz.setQuizStatus(QuizStatus.OPENGESTELD);
-		Opdracht opdracht = new KlassiekeOpdracht("Wat is de hoofdstad van Frankrijk?", "Parijs",
-				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
-		System.out.println(opdracht);
-		Leerling leerling = new Leerling("Ben", "Vandenberk", 4);
+		Leerling leerling1 = new Leerling("Jos", "Verbeek", 3);
+		Leerling leerling2 = new Leerling("Maria", "Ratel", 5);
 
-		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
-		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdracht, 10);
+		ArrayList<Leerling> leerlingen = new ArrayList<Leerling>();
+		leerlingen.add(leerling1);
+		leerlingen.add(leerling2);
 
-		QuizDeelname quizDeelname = leerling.getQuizDeelnames().get(0);
-		QuizOpdracht quizOpdracht = quiz.getQuizOpdracht(1);
+		TxtLeerlingLeesSchrijf schrijver = new TxtLeerlingLeesSchrijf();
+		schrijver.useCSV(true);
+		schrijver.schrijf(leerlingen);
 
-		OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdracht, 1, 10, "Parijs");
-
-		KlassiekeOpdracht kleiner = new KlassiekeOpdracht("vraagA", "antwoord", OpdrachtCategorie.AARDRIJKSKUNDE,
-				Leraar.CHARLOTTE_NEVEN);
-		KlassiekeOpdracht groter = new KlassiekeOpdracht("vraagB", "antwoord", OpdrachtCategorie.AARDRIJKSKUNDE,
-				Leraar.CHARLOTTE_NEVEN);
-		System.out.println(kleiner.compareTo(groter));
+		ArrayList<Leerling> opgehaaldUitCSV = schrijver.lees();
+		for (Leerling l : opgehaaldUitCSV) {
+			System.out.println(l);
+		}
 
 	}
 }

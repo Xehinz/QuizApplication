@@ -152,7 +152,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return "Leerling " + getNaam();
+		return "Leerling " + getNaam() + " uit leerjaar " + getLeerjaar();
 	}
 
 	/**
