@@ -22,6 +22,7 @@ public class QuizCatalogusTest {
 
 	private QuizCatalogus quizCatalogusBasis;
 	private QuizCatalogus quizCatalogusExtra;
+	private QuizCatalogus catalogus;
 	private Quiz myQuiz;
 	private Quiz myOtherQuiz;
 
@@ -31,6 +32,8 @@ public class QuizCatalogusTest {
 		myOtherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "test andere quiz");
 		quizCatalogusBasis = new QuizCatalogus();
 		quizCatalogusExtra = new QuizCatalogus();
+		catalogus = new QuizCatalogus();
+		catalogus.addQuiz(new Quiz(Leraar.JOS_VERBEEK, "De Hoofdsteden van Europa"));
 	}
 
 	@Test
@@ -80,7 +83,7 @@ public class QuizCatalogusTest {
 		QuizCatalogus vergelijkCatalogus = quizCatalogusBasis.clone();
 
 		quizCatalogusBasis.addQuiz(meQuick);
-		vergelijkCatalogus.addQuiz(meQuick);		
+		vergelijkCatalogus.addQuiz(meQuick);
 
 		assertTrue("Quiz toegevoegd", quizCatalogusBasis.count() == vergelijkCatalogus.count());
 	}
@@ -100,6 +103,26 @@ public class QuizCatalogusTest {
 		ArrayList<Quiz> quizzenKopie = quizCatalogusBasis.getQuizzen();
 		quizzenKopie.add(myQuiz);
 		assertTrue("Toevoegen aan verkregen lijst verandert catalogus niet", quizCatalogusBasis.count() == 0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddQuiz_OnderwerpIsGelijkOpSpatiesNa_ThrowsIllegalArgumentException() {
+		catalogus.addQuiz(new Quiz(Leraar.CHARLOTTE_NEVEN, "    De    Hoofdsteden     van    Europa"));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddQuiz_OnderwerpIsGelijkOpKapitalisatieNa_ThrowsIllegalArgumentException() {
+		catalogus.addQuiz(new Quiz(Leraar.CHARLOTTE_NEVEN, "DE HOofDsTEdEn VaN eUrOPA"));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddQuiz_OnderwerpIsGelijkOpLeestekensNa_ThrowsIllegalArgumentException() {
+		catalogus.addQuiz(new Quiz(Leraar.CHARLOTTE_NEVEN, ",,D,e //@! Hoofdsted/...en;,, v('an ^$ù%Eur,;?opa"));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddQuiz_OnderwerpIsGelijkOpVoegwoordenNa_ThrowsIllegalArgumentException() {
+		catalogus.addQuiz(new Quiz(Leraar.CHARLOTTE_NEVEN, "van De in Hoofdsteden met een van het Europa"));
 	}
 
 }

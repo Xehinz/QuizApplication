@@ -57,13 +57,19 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	}
 
 	/**
-	 * voegt een quiz toe
+	 * Voegt een quiz toe
 	 *
 	 * @param Q
 	 *            de toe te voegen Quiz
+	 * @throws IllegalArgumentException
+	 *             als het onderwerp van de meegegeven Quiz al voorkomt in de QuizCatalogus
 	 */
 
-	public void addQuiz(Quiz Q) {
+	public void addQuiz(Quiz Q) throws IllegalArgumentException {
+		if (onderwerpBestaatAl(Q.getOnderwerp())) {
+			throw new IllegalArgumentException(
+					"In de catalogus zit al een quiz met een onderwerp dat equivalent is aan dat van de meegegeven Quiz");
+		}
 		this.quizcatalogus.add(Q);
 	}
 
@@ -181,5 +187,55 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	@Override
 	public Iterator<Quiz> iterator() {
 		return this.quizcatalogus.iterator();
+	}
+
+	private boolean onderwerpBestaatAl(String onderwerp) {
+		for (Quiz quiz : quizcatalogus) {
+			if (vormOmNaarElementairOnderwerp(onderwerp).equals(vormOmNaarElementairOnderwerp(quiz.getOnderwerp()))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private String vormOmNaarElementairOnderwerp(String onderwerp) {
+		String[] teNegeren = new String[] { "de", "een", "het", "met", "van", "in" };
+
+		onderwerp = onderwerp.toLowerCase();
+		String[] woorden = onderwerp.split(" ");
+
+		String result = "";
+		boolean isNegeerWoord;
+		for (int i = 0; i < woorden.length; i++) {
+			if (woorden[i].isEmpty()) {
+				continue;
+			}
+			woorden[i] = woorden[i].trim();
+			woorden[i] = verwijderSpecialeTekens(woorden[i]);
+			isNegeerWoord = false;
+			for (int j = 0; j < teNegeren.length && !isNegeerWoord; j++) {
+				if (woorden[i].equals(teNegeren[j])) {
+					isNegeerWoord = true;
+				}
+			}
+			if (!isNegeerWoord) {
+				result += woorden[i] + " ";
+			}
+		}
+
+		return result.trim();
+	}
+
+	private String verwijderSpecialeTekens(String input) {
+		char[] charArray = input.toCharArray();
+		String result = "";
+
+		for (char c : charArray) {
+			if (c >= 97 && c <= 122) {
+				result += c;
+			}
+		}
+
+		return result;
 	}
 }
