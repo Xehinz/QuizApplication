@@ -7,6 +7,9 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 
 	private ArrayList<Leerling> leerlingen;
 
+	/**
+	 * Maakt een LeerlingContainer aan
+	 */
 	public LeerlingContainer() {
 		leerlingen = new ArrayList<Leerling>();
 	}
@@ -21,8 +24,7 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 	public void addLeerling(Leerling l) {
 		if (!leerlingen.contains(l)) {
 			leerlingen.add(l);
-		}
-		return;
+		}		
 	}
 
 	/**

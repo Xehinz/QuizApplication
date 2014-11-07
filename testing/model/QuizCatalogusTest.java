@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import javax.activity.InvalidActivityException;
 
 import org.junit.Before;
@@ -78,8 +80,7 @@ public class QuizCatalogusTest {
 		QuizCatalogus vergelijkCatalogus = quizCatalogusBasis.clone();
 
 		quizCatalogusBasis.addQuiz(meQuick);
-		vergelijkCatalogus.addQuiz(meQuick);
-		System.out.println(quizCatalogusBasis.count() == (vergelijkCatalogus.count()));
+		vergelijkCatalogus.addQuiz(meQuick);		
 
 		assertTrue("Quiz toegevoegd", quizCatalogusBasis.count() == vergelijkCatalogus.count());
 	}
@@ -95,15 +96,10 @@ public class QuizCatalogusTest {
 	}
 
 	@Test
-	public void testQuizCatalogus_getQuizIsTheSameWhenAddedInTwoCatalogi_IsOK() {
-		Quiz newQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "een te vergelijken quiz", false);
-
-		quizCatalogusBasis.addQuiz(myOtherQuiz);
-		quizCatalogusBasis.addQuiz(newQuiz);
-		quizCatalogusExtra.addQuiz(newQuiz);
-
-		assertEquals("get Quiz by postion-number is the same", quizCatalogusBasis.getQuiz(quizCatalogusBasis.count()),
-				quizCatalogusExtra.getQuiz(quizCatalogusExtra.count()));
+	public void testGetQuizzen_ToevoegenAanVerkregenLijst_VerandertCatalogusNiet() {
+		ArrayList<Quiz> quizzenKopie = quizCatalogusBasis.getQuizzen();
+		quizzenKopie.add(myQuiz);
+		assertTrue("Toevoegen aan verkregen lijst verandert catalogus niet", quizCatalogusBasis.count() == 0);
 	}
 
 }

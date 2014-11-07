@@ -31,7 +31,7 @@ public class OpdrachtAntwoordTest {
 	private Leerling leerling, kleinereLeerling;
 	private QuizDeelname quizDeelname, kleinereQuizDeelname;
 	private QuizOpdracht quizOpdrachtZonderTijdZonderPogingen, quizOpdrachtOpTijdZonderPogingen, quizOpdrachtZonderTijd1Poging,
-			kleinereQuizOpdracht;
+	kleinereQuizOpdracht;
 
 	@Before
 	public void setUp() {
@@ -52,21 +52,21 @@ public class OpdrachtAntwoordTest {
 		kleinereLeerling = new Leerling("Laura", "Aaltert", 4);
 
 		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdrachtZonderTijdZonderPogingen, 10);
-		quizOpdrachtZonderTijdZonderPogingen = quiz.getQuizOpdracht(1);
+		quizOpdrachtZonderTijdZonderPogingen = quiz.getQuizOpdrachten().get(0);
 		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdrachtOpTijdZonderPogingen, 10);
-		quizOpdrachtOpTijdZonderPogingen = quiz.getQuizOpdracht(2);
+		quizOpdrachtOpTijdZonderPogingen = quiz.getQuizOpdrachten().get(1);
 		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdrachtZonderTijd1Poging, 10);
-		quizOpdrachtZonderTijd1Poging = quiz.getQuizOpdracht(3);
+		quizOpdrachtZonderTijd1Poging = quiz.getQuizOpdrachten().get(2);
 
 		// De QuizOpdracht is kleiner omdat de Quiz kleiner is (minder opdrachten)
 		QuizOpdracht.attachOpdrachtToQuiz(kleinereQuiz, opdrachtZonderTijdZonderPogingen, 5);
-		kleinereQuizOpdracht = kleinereQuiz.getQuizOpdracht(1);
+		kleinereQuizOpdracht = kleinereQuiz.getQuizOpdrachten().get(0);
 
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
-		quizDeelname = quiz.getQuizDeelname(1);
+		quizDeelname = quiz.getQuizDeelnames().get(0);
 		// De QuizDeelname is kleiner omdat de Leerling kleiner is (familienaam alfabetisch eerder)
 		QuizDeelname.koppelQuizAanLeerling(kleinereQuiz, kleinereLeerling);
-		kleinereQuizDeelname = kleinereQuiz.getQuizDeelname(1);
+		kleinereQuizDeelname = kleinereQuiz.getQuizDeelnames().get(0);
 	}
 
 	@Test

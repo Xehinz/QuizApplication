@@ -1,6 +1,8 @@
 package model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -18,8 +20,7 @@ import util.datumWrapper.Datum;
 
 public class QuizDeelnameTest {
 
-	private QuizDeelname quizdeelname, quizdeelname2, quizdeelname3,
-			quizdeelname4;
+	private QuizDeelname quizdeelname, quizdeelname2, quizdeelname3, quizdeelname4;
 	private Quiz quiz, quiz2, quiz3, quiz4;
 	private Leerling leerling, leerling2, leerling3;
 	private KlassiekeOpdracht opdracht1, opdracht2;
@@ -36,40 +37,37 @@ public class QuizDeelnameTest {
 		quiz2 = new Quiz(Leraar.JOS_VERBEEK);
 		quiz2.setQuizStatus(QuizStatus.IN_CONSTRUCTIE);
 		quiz3 = new Quiz(Leraar.MARIA_AERTS);
-		quiz3.isGeldigLeerjaar(1);
+		quiz3.setQuizStatus(QuizStatus.OPENGESTELD);
+		quiz3.setDoelLeerjaren(1);
 		quiz4 = new Quiz(Leraar.CHARLOTTE_NEVEN, "Onderwerp 2");
 		quiz4.setQuizStatus(QuizStatus.OPENGESTELD);
-		
+
 		leerling = new Leerling("Bram", "Verhelst", 3);
 		leerling2 = new Leerling("An", "Stijnen", 2);
 		leerling3 = new Leerling("Bram", "Verhelst", 3);
-		
+
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling2);
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling3);
 		QuizDeelname.koppelQuizAanLeerling(quiz4, leerling);
-		
-		quizdeelname = quiz.getQuizDeelname(1);
-		quizdeelname2 = quiz.getQuizDeelname(2);
-		quizdeelname3 = quiz.getQuizDeelname(3);
-		quizdeelname4 = quiz4.getQuizDeelname(1);
-		
-		opdracht1 = new KlassiekeOpdracht("Wat is de hoofdstad van Nederland",
-				"Amsterdam", 1, 15, OpdrachtCategorie.AARDRIJKSKUNDE,
-				Leraar.JOS_VERBEEK);
-		opdracht2 = new KlassiekeOpdracht("Hoeveel is 2 maal 2", "4", 1, 10,
-				OpdrachtCategorie.WISKUNDE, Leraar.MIEKE_WITTEMANS);
-		
+
+		quizdeelname = quiz.getQuizDeelnames().get(0);
+		quizdeelname2 = quiz.getQuizDeelnames().get(1);
+		quizdeelname3 = quiz.getQuizDeelnames().get(2);
+		quizdeelname4 = quiz.getQuizDeelnames().get(0);
+
+		opdracht1 = new KlassiekeOpdracht("Wat is de hoofdstad van Nederland", "Amsterdam", 1, 15,
+				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.JOS_VERBEEK);
+		opdracht2 = new KlassiekeOpdracht("Hoeveel is 2 maal 2", "4", 1, 10, OpdrachtCategorie.WISKUNDE, Leraar.MIEKE_WITTEMANS);
+
 		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdracht1, 5);
 		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdracht2, 5);
-		quizopdracht1 = quiz.getQuizOpdracht(1);
-		quizopdracht2 = quiz.getQuizOpdracht(2);
-		
-		opdrachtantwoord1 = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(
-				quizdeelname, quizopdracht1, 1, 11, "Brussel");
-		opdrachtantwoord2 = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(
-				quizdeelname, quizopdracht2, 1, 10, "4");
-		
+		quizopdracht1 = quiz.getQuizOpdrachten().get(0);
+		quizopdracht2 = quiz.getQuizOpdrachten().get(1);
+
+		opdrachtantwoord1 = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizdeelname, quizopdracht1, 1, 11, "Brussel");
+		opdrachtantwoord2 = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizdeelname, quizopdracht2, 1, 10, "4");
+
 		opdrachtantwoordlijst = new ArrayList<OpdrachtAntwoord>();
 		opdrachtantwoordlijst.add(opdrachtantwoord1);
 		opdrachtantwoordlijst.add(opdrachtantwoord2);
@@ -120,8 +118,7 @@ public class QuizDeelnameTest {
 	@Test
 	public void testAddOpdrachtAntwoord_OpdrachtAntwoord_IsOk() {
 		quizdeelname.addOpdrachtAntwoord(opdrachtantwoord1);
-		assertTrue(quizdeelname.getOpdrachtAntwoorden().contains(
-				opdrachtantwoord1));
+		assertTrue(quizdeelname.getOpdrachtAntwoorden().contains(opdrachtantwoord1));
 	}
 
 	/**
@@ -130,8 +127,7 @@ public class QuizDeelnameTest {
 
 	@Test
 	public void testGetOpdrachtAntwoorden_NoParam_IsOk() {
-		assertEquals(quizdeelname.getOpdrachtAntwoorden(),
-				opdrachtantwoordlijst);
+		assertEquals(quizdeelname.getOpdrachtAntwoorden(), opdrachtantwoordlijst);
 	}
 
 	/**
@@ -140,23 +136,21 @@ public class QuizDeelnameTest {
 
 	@Test
 	public void testToString_NoParam_IsOk() {
-		assertEquals("Deelname van Bram Verhelst aan quiz: Onderwerp 1 op "
-				+ datum.getDatumInEuropeesFormaat(), quizdeelname.toString());
+		assertEquals("Deelname van Bram Verhelst aan quiz: Onderwerp 1 op " + datum.getDatumInEuropeesFormaat(),
+				quizdeelname.toString());
 	}
 
 	/**
-	 * test de equals methode voor een deelname van dezelfde leerling aan
-	 * dezelfde quiz
+	 * test de equals methode voor een deelname van dezelfde leerling aan dezelfde quiz
 	 */
 
 	@Test
 	public void testEquals_TweeDezelfdeQuizDeelnames_GeeftTrue() {
-		assertTrue(quizdeelname.equals(quizdeelname3));
+		assertTrue(quizdeelname.equals(quizdeelname4));
 	}
 
 	/**
-	 * test de equals methode voor een deelname van verschillende leerlingen aan
-	 * dezelfde quiz
+	 * test de equals methode voor een deelname van verschillende leerlingen aan dezelfde quiz
 	 */
 
 	@Test
@@ -165,18 +159,16 @@ public class QuizDeelnameTest {
 	}
 
 	/**
-	 * test de equals methode voor een deelname van dezelfde leerling aan 2
-	 * verschillende quizzen
+	 * test de equals methode voor een deelname van dezelfde leerling aan 2 verschillende quizzen
 	 */
 
 	@Test
 	public void testEquals_TweeVerschillendeQuizDeelnames_GeeftFalseB() {
-		assertFalse(quizdeelname.equals(quizdeelname4));
+		assertFalse(quizdeelname.equals(quizdeelname2));
 	}
 
 	/**
-	 * test de compareTo methode voor een quizdeelname op dezelfde dag van 2
-	 * verschillende leerlingen
+	 * test de compareTo methode voor een quizdeelname op dezelfde dag van 2 verschillende leerlingen
 	 */
 
 	@Test

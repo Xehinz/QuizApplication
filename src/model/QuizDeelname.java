@@ -38,7 +38,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * @return de Leerling die deelneemt aan een Quiz
 	 */
 	public Leerling getLeerling() {
-		return leerling;
+		return leerling.clone();
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * @return de Quiz waaraan deelgenomen wordt
 	 */
 	public Quiz getQuiz() {
-		return quiz;
+		return quiz.clone();
 	}
 
 	/**

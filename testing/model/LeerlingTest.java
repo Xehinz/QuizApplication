@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +30,8 @@ public class LeerlingTest {
 		derdeleerling = new Leerling("Rebecca", "Hofkens", 6);
 		vierdeleerling = new Leerling("Jef", "hOfKeNS", 4);
 		quiz = new Quiz(Leraar.CHARLOTTE_NEVEN);
-		// quizdeelname = new QuizDeelname(quiz, leerling);
+		quiz.setQuizStatus(QuizStatus.OPENGESTELD);
+		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
 	}
 
 	/**
@@ -110,12 +113,28 @@ public class LeerlingTest {
 	}
 
 	/**
+	 * Test of het toevoegen van quizzen aan of het veranderen van quizzen in de lijst met deelgenomen quizzen niets wijzigt aan het Leerling object en zijn quizdeelnames
+	 */
+	
+	@Test
+	public void testGetDeelgenomenQuizzen_ToevoegenOfAanpassenQuiz_GeenEffectOpLeerlingObject() {
+		ArrayList<Quiz> quizzenLeerling = leerling.getDeelgenomenQuizzen();
+		quizzenLeerling.get(0).setOnderwerp("Veranderd onderwerp");
+		assertEquals("Veranderen onderwerp in lijst van deelgenomen quizzen verandert niets aan oorspronkelijk Quiz object", "",
+				leerling.getDeelgenomenQuizzen().get(0).getOnderwerp());
+
+		quizzenLeerling.add(new Quiz(Leraar.JOS_VERBEEK));
+		assertEquals("Toevoegen quiz aan lijst van deelgenomen quizzen verandert niets aan oorspronkelijk Leerling object", 1,
+				leerling.getDeelgenomenQuizzen().size());
+	}	
+
+	/**
 	 * Test de toString method
 	 */
 
 	@Test
 	public void testToString_NoParam_IsOK() {
-		assertEquals("Leerling Marie Vandamme", leerling.toString());
+		assertEquals("Leerling Marie Vandamme uit leerjaar 3", leerling.toString());
 	}
 
 	/**
@@ -171,6 +190,5 @@ public class LeerlingTest {
 	public void testEquals_ObjectIsGeenLeerling_GeeftFalse() {
 		assertFalse(leerling.equals(quiz));
 	}
-
 
 }

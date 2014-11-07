@@ -29,7 +29,7 @@ import org.junit.Test;
 public class OpdrachtCatalogusTest {
 
 	OpdrachtCatalogus legeOpdrachtCatalogus, opdrachtCatalogusGemaaktMetLijstOpdrachten, gevuldeCatalogusZelfdeOpdrachten,
-	gevuldeCatalogusAndereOpdrachten, tweedeLegeCatalogus;
+			gevuldeCatalogusAndereOpdrachten, tweedeLegeCatalogus;
 	ArrayList<Opdracht> opdrachten;
 	Opdracht opdracht1, opdracht2, opdracht3;
 
@@ -101,27 +101,6 @@ public class OpdrachtCatalogusTest {
 		assertTrue("True na toevoeging", opdrachtCatalogusGemaaktMetLijstOpdrachten.hasOpdracht(opdracht3));
 	}
 
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testGetOpdracht_OphalenNuldeOpdracht_ThrowsIndexOutOfBoundsException() {
-		opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdracht(0);
-	}
-
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testGetOpdracht_OphalenOpdrachtUitLegeCatalogus_ThrowsIndexOutOfBoundsException() {
-		legeOpdrachtCatalogus.getOpdracht(1);
-	}
-
-	@Test(expected = IndexOutOfBoundsException.class)
-	public void testGetOpdracht_OphalenOpdrachtTeHoogVolgnummer_ThrowsIndexOutOfBoundsException() {
-		opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdracht(3);
-	}
-
-	@Test
-	public void testGetOpdracht_OphalenBestaandeOpdracht_HaaltJuisteOpdrachtOp() {
-		Opdracht opgehaaldeOpdracht = opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdracht(2);
-		assertEquals("Juiste opdracht wordt opgehaald", opdracht2, opgehaaldeOpdracht);
-	}
-
 	@Test
 	public void testCount_LegeCatalogus_Geeft0() {
 		assertEquals("Lege catalogus geeft count van 0", 0, legeOpdrachtCatalogus.count());
@@ -130,6 +109,14 @@ public class OpdrachtCatalogusTest {
 	@Test
 	public void testCount_GevuldeCatalogus_GeeftCorrecteCount() {
 		assertEquals("Gevulde catalgous geeft correcte count", 2, opdrachtCatalogusGemaaktMetLijstOpdrachten.count());
+	}
+
+	@Test
+	public void testGetOpdrachten_ToevoegenOpdracht_GeenEffectOpOpdrachtCatalogus() {
+		ArrayList<Opdracht> kopieVanLijst = opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdrachten();
+		kopieVanLijst.add(opdracht3);
+		assertFalse("Toevoegen van opdracht aan verkregen lijst voegt geen opdracht toe aan de opdrachtcatalogus",
+				opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdrachten().equals(kopieVanLijst));
 	}
 
 	@Test
@@ -164,10 +151,8 @@ public class OpdrachtCatalogusTest {
 	@Test
 	public void testClone_ClonenCatalogus_CatalogiBevattenZelfdeOpdrachten() {
 		OpdrachtCatalogus clone = opdrachtCatalogusGemaaktMetLijstOpdrachten.clone();
-		for (int i = 1; i <= clone.count(); i++) {
-			assertEquals("Opdrachten van clone zijn dezelfde", opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdracht(i),
-					clone.getOpdracht(i));
-		}
+		assertEquals("Geclonede opdrachtcatalogus bevat zelfde opdrachten als origineel",
+				opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdrachten(), clone.getOpdrachten());
 	}
 
 	@Test
@@ -183,11 +168,11 @@ public class OpdrachtCatalogusTest {
 	public void testClone_WijzigingenToebrengenAanOpdrachtenVanClone_HebbenGeenInvloedOpOpdrachtenOrigineel() {
 		OpdrachtCatalogus clone = opdrachtCatalogusGemaaktMetLijstOpdrachten.clone();
 
-		Opdracht teWijzigen = clone.getOpdracht(1);
+		Opdracht teWijzigen = clone.getOpdrachten().get(0);
 		String onnozeleVraag = "Waarom zijn bananen krom?";
 		teWijzigen.setVraag(onnozeleVraag);
 
-		Opdracht origineel = opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdracht(1);
+		Opdracht origineel = opdrachtCatalogusGemaaktMetLijstOpdrachten.getOpdrachten().get(0);
 		assertFalse("Na wijzigen van een opdracht van de clone is de opdracht in de originele catalogus onveranderd",
 				origineel.getVraag() == onnozeleVraag);
 	}

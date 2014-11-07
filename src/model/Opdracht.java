@@ -335,7 +335,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Geeft een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht terug
+	 * Geeft een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht terug. De QuizOpdrachten in de
+	 * teruggegeven lijst zijn geen kopies omdat aan een QuizOpdracht toch niets gewijzigd kan worden
 	 *
 	 * @return een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht
 	 */

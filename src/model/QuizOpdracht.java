@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 
 /**
- * 
+ *
  * @author Bert Neyt
  * @version 0.0
  */
@@ -11,12 +11,12 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	private Quiz quiz;
 	private Opdracht opdracht;
-	private int maxScore;
+	private final int maxScore;
 	private ArrayList<OpdrachtAntwoord> opdrachtAntwoorden;
 
 	/**
 	 * Constructor QuizOpdracht met 3 parameters
-	 * 
+	 *
 	 * @param quiz
 	 *            de Quiz
 	 * @param opdracht
@@ -31,8 +31,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
 	}
 
-	public static void attachOpdrachtToQuiz(Quiz quiz, Opdracht opdracht,
-			int maxScore) {
+	public static void attachOpdrachtToQuiz(Quiz quiz, Opdracht opdracht, int maxScore) {
 		QuizOpdracht quizOpdracht = new QuizOpdracht(quiz, opdracht, maxScore);
 		quiz.addQuizOpdracht(quizOpdracht);
 		opdracht.addQuizOpdracht(quizOpdracht);
@@ -49,7 +48,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	/**
 	 * Geeft een kopie van de lijst met OpdrachtAntwoorden terug
-	 * 
+	 *
 	 * @return een kopie van de lijst met OpdrachtAntwoorden
 	 */
 	public ArrayList<OpdrachtAntwoord> getOpdrachtAntwoorden() {
@@ -61,11 +60,11 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	}
 
 	public Quiz getQuiz() {
-		return quiz;
+		return quiz.clone();
 	}
 
 	public Opdracht getOpdracht() {
-		return opdracht;
+		return opdracht.clone();
 	}
 
 	public int getMaxScore() {
@@ -81,13 +80,12 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	}
 
 	/**
-	 * Vergelijkt deze QuizOpdracht met een andere QuizOpdracht, eerst op basis
-	 * van de Quiz, dan op basis van de Opdracht
-	 * 
+	 * Vergelijkt deze QuizOpdracht met een andere QuizOpdracht, eerst op basis van de Quiz, dan op basis van de
+	 * Opdracht
+	 *
 	 * @param quizOpdracht
 	 *            de QuizOpdracht waarmee vergeleken wordt
-	 * @return -1, 0 of 1 als deze QuizOpdracht voor, op dezelfde plaats of na
-	 *         het argument-QuizOpdracht komt
+	 * @return -1, 0 of 1 als deze QuizOpdracht voor, op dezelfde plaats of na het argument-QuizOpdracht komt
 	 */
 	@Override
 	public int compareTo(QuizOpdracht quizOpdracht) {
@@ -142,13 +140,9 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	@Override
 	public String toString() {
-		return "Quiz met onderwerp " + this.quiz.getOnderwerp()
-				+ " gemaakt door " + this.quiz.getAuteur() + " op "
-				+ this.quiz.getAanmaakDatum()
-				+ "\nbevat\nOpdracht met als vraag " + this.opdracht.getVraag()
-				+ " uit de opdrachtcategorie "
-				+ this.opdracht.getOpdrachtCategorie()
-				+ "\nmet maximale score " + this.maxScore;
+		return "Quiz met onderwerp " + this.quiz.getOnderwerp() + " gemaakt door " + this.quiz.getAuteur() + " op "
+				+ this.quiz.getAanmaakDatum() + "\nbevat\nOpdracht met als vraag " + this.opdracht.getVraag()
+				+ " uit de opdrachtcategorie " + this.opdracht.getOpdrachtCategorie() + "\nmet maximale score " + this.maxScore;
 	}
 
 }

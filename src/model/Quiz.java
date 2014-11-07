@@ -261,12 +261,40 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	@Override
 	public boolean equals(Object aQuiz) {
-		// uit te breiden met nieuwe testen zodra extra attributen worden
-		// toegevoegd in deze class
-		return ((Quiz) aQuiz).getOnderwerp() == this.getOnderwerp() && ((Quiz) aQuiz).getIsTest() == this.getIsTest()
-				&& ((Quiz) aQuiz).getIsUniekeDeelname() == this.getIsUniekeDeelname()
-				&& ((Quiz) aQuiz).getQuizStatus() == this.getQuizStatus()
-				&& this.getOpdrachten().equals(((Quiz) aQuiz).getOpdrachten());
+		if (aQuiz == null) {
+			return false;
+		}
+		if (!(aQuiz instanceof Quiz)) {
+			return false;
+		}
+		Quiz other = (Quiz) aQuiz;
+		if (this.onderwerp != other.onderwerp) {
+			return false;
+		}
+		if (this.isTest != other.isTest) {
+			return false;
+		}
+		if (this.isUniekeDeelname != other.isUniekeDeelname) {
+			return false;
+		}
+		if (this.quizStatus != other.quizStatus) {
+			return false;
+		}
+		if (!this.aanmaakDatum.equals(other.aanmaakDatum)) {
+			return false;
+		}
+		if (this.auteur != other.auteur) {
+			return false;
+		}
+		if (!this.getOpdrachten().equals(other.getOpdrachten())) {
+			return false;
+		}
+		for (int i = 0; i < this.zijnDoelLeerjaren.length; i++) {
+			if (this.zijnDoelLeerjaren[i] != other.zijnDoelLeerjaren[i]) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -301,17 +329,16 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Ophalen van een QuizOpdracht uit alle QuizOpdrachten gelinkt aan deze quiz
+	 * Ophalen van een kopie van de lijst van QuizOpdrachten geassocieerd aan deze Quiz
 	 *
-	 * @param volgnr
-	 *            het volgnummer van de QuizOpdracht (base 1)
-	 * @return de link van de opdracht aan deze Quiz via QuizOpdracht
+	 * @return een een kopie van de lijst van QuizOpdrachten geassocieerd aan deze Quiz
 	 */
-	public QuizOpdracht getQuizOpdracht(int volgnr) {
-		// in de opgave staat deze method gedeclareerd als getOpdracht() wat
-		// verwarring kan brengen aangezien het returntype QuizOpdracht is en
-		// niet Opdracht !
-		return this.quizOpdrachten.get(volgnr - 1);
+	public ArrayList<QuizOpdracht> getQuizOpdrachten() {
+		ArrayList<QuizOpdracht> kopieQuizOpdrachten = new ArrayList<QuizOpdracht>();
+		for (QuizOpdracht quizOpdracht : quizOpdrachten) {
+			kopieQuizOpdrachten.add(quizOpdracht);
+		}
+		return kopieQuizOpdrachten;
 	}
 
 	/**
@@ -349,14 +376,16 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Ophalen van een QuizDeelname uit alle QuizDeelnames gelinkt aan deze Quiz
+	 * Ophalen van een kopie van de lijst van QuizDeelnames geassocieerd met deze Quiz
 	 *
-	 * @param volgnr
-	 *            het volgnummer van de QuizDeelname (base 1)
-	 * @return een QuizDeelname die deze Quiz linkt aan een Leerling
+	 * @return een kopie van de lijst met QuizDeelnames geassocieerd met deze Quiz
 	 */
-	public QuizDeelname getQuizDeelname(int volgnr) {
-		return this.quizDeelnames.get(volgnr - 1);
+	public ArrayList<QuizDeelname> getQuizDeelnames() {
+		ArrayList<QuizDeelname> kopieQuizDeelnames = new ArrayList<QuizDeelname>();
+		for (QuizDeelname quizDeelname : quizDeelnames) {
+			kopieQuizDeelnames.add(quizDeelname);
+		}
+		return kopieQuizDeelnames;
 	}
 
 	/**
@@ -386,6 +415,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		try {
 			clone = (Quiz) super.clone();
 			clone.aanmaakDatum = new Datum(aanmaakDatum);
+			clone.zijnDoelLeerjaren = this.zijnDoelLeerjaren.clone();
 			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames.clone();
 			clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten.clone();
 		} catch (CloneNotSupportedException ex) {
@@ -397,7 +427,21 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 
 	@Override
 	public int hashCode() {
-		return String.format("%s%s%s", onderwerp, auteur.toString(), aanmaakDatum).hashCode();
+		long hash = 1;
+		hash = hash * 13 + onderwerp.hashCode();
+		hash = hash * 23 + (isTest ? 10 : 20);
+		hash = hash * 7 + (isUniekeDeelname ? 80 : 120);
+		hash = hash * 17 + quizStatus.hashCode();
+		hash = hash * 19 + aanmaakDatum.toString().hashCode();
+		hash = hash * 31 + auteur.toString().hashCode();
+		for (boolean bool : zijnDoelLeerjaren) {
+			hash = hash * 13 + (bool ? 30 : 70);
+		}
+		for (Opdracht opdracht : getOpdrachten()) {
+			hash = hash * 19 + opdracht.hashCode();
+		}
+		hash %= Integer.MAX_VALUE;
+		return (int) hash;
 	}
 
 }

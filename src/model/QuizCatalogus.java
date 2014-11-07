@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 /**
@@ -12,17 +14,14 @@ import java.util.Iterator;
  */
 
 public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iterable<Quiz> {
-	private ArrayList<Quiz> quizcatalogus;
+	private HashSet<Quiz> quizcatalogus;
 
 	/**
 	 * Maakt een nieuwe QuizCatalogus aan
 	 *
-	 * Constructor zonder parameters waarbij we de List initialiseren als nieuwe List --> aangezien we geen
-	 * List<Quiz>(); kunnen instanti�ren, gebruiken we ArrayList
-	 * http://stackoverflow.com/questions/13395114/how-to-initialize-liststring-object-in-java
 	 */
 	public QuizCatalogus() {
-		this.quizcatalogus = new ArrayList<Quiz>(); // added
+		this.quizcatalogus = new HashSet<Quiz>(); // added
 	}
 
 	/**
@@ -32,8 +31,8 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *            een lijst van quizzen
 	 */
 
-	public QuizCatalogus(ArrayList<Quiz> qc) {
-		this.quizcatalogus = qc;
+	public QuizCatalogus(Collection<Quiz> qc) {
+		this.quizcatalogus = new HashSet<Quiz>(qc);
 	}
 
 	/**
@@ -47,7 +46,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 		QuizCatalogus clone = null;
 		try {
 			clone = (QuizCatalogus) super.clone();
-			clone.quizcatalogus = new ArrayList<Quiz>();
+			clone.quizcatalogus = new HashSet<Quiz>();
 			for (Quiz quiz : this.quizcatalogus) {
 				clone.quizcatalogus.add(quiz.clone());
 			}
@@ -87,15 +86,16 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	}
 
 	/**
-	 * Haalt een quiz op met een bepaald volgnummer
+	 * Geeft een kopie van de interne lijst van quizzen terug
 	 *
-	 * @param volgnr
-	 *            het volgnummer
-	 * @return de quiz met het ingegeven volgnummer
+	 * @return een kopie van de interne lijst van quizzen terug
 	 */
-
-	public Quiz getQuiz(int volgnr) {
-		return this.quizcatalogus.get(volgnr - 1);
+	public ArrayList<Quiz> getQuizzen() {
+		ArrayList<Quiz> kopieQuizzen = new ArrayList<Quiz>();
+		for (Quiz quiz : quizcatalogus) {
+			kopieQuizzen.add(quiz);
+		}
+		return kopieQuizzen;
 	}
 
 	/**

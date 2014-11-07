@@ -6,6 +6,7 @@ public class KlassiekeOpdracht extends Opdracht {
 
 	public KlassiekeOpdracht(OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		super(opdrachtCategorie, auteur);
+		this.juisteAntwoord = "";
 	}
 
 	public KlassiekeOpdracht(String vraag, String juisteAntwoord, OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
@@ -50,7 +51,7 @@ public class KlassiekeOpdracht extends Opdracht {
 
 	@Override
 	public String toString() {
-		return super.toString() + juisteAntwoord;
+		return "Klassieke " + super.toString() + juisteAntwoord;
 	}
 
 	@Override
@@ -72,4 +73,8 @@ public class KlassiekeOpdracht extends Opdracht {
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}
+
+	public KlassiekeOpdracht clone() {
+	 return (KlassiekeOpdracht)super.clone();
+	 }
 }

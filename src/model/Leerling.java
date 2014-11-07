@@ -1,8 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  *
@@ -126,23 +124,29 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	}
 
 	/**
-	 * Geeft een read-only List terug van de QuizDeelnames van deze Leerling
+	 * Geeft een kopie van de lijst van QuizDeelnames van deze leerling terug. De QuizDeelnames zijn geen clones omdat
+	 * aan een QuizDeelname toch niets gewijzigd kan worden
 	 *
-	 * @return een read-only List&lt;QuizDeelname&gt; geassocieerd met deze Leerling
+	 * @return een ArrayList&lt;QuizDeelname&gt; dat een kopie is van de interne lijst met QuizDeelnames geassocieerd
+	 *         met deze Leerling
 	 */
-	public List<QuizDeelname> getQuizDeelnames() {
-		return Collections.unmodifiableList(this.quizDeelnames);
+	public ArrayList<QuizDeelname> getQuizDeelnames() {
+		ArrayList<QuizDeelname> quizDeelnames = new ArrayList<QuizDeelname>();
+		for (QuizDeelname quizDeelname : this.quizDeelnames) {
+			quizDeelnames.add(quizDeelname);
+		}
+		return quizDeelnames;
 	}
 
 	/**
-	 * Geeft een lijstje terug van quizzen waaraan de Leerling reeds deelnam
+	 * Geeft een lijstje terug met kopies van de quizzen waaraan de Leerling reeds deelnam
 	 *
-	 * @return een ArrayList&lt;Quiz&gt; van quizzen waaraan de Leerling reeds deelnam
+	 * @return een ArrayList&lt;Quiz&gt; met kopies van de quizzen waaraan de Leerling reeds deelnam
 	 */
 	public ArrayList<Quiz> getDeelgenomenQuizzen() {
 		ArrayList<Quiz> deelgenomenAan = new ArrayList<Quiz>();
 		for (QuizDeelname quizDeelname : this.quizDeelnames) {
-			deelgenomenAan.add(quizDeelname.getQuiz());
+			deelgenomenAan.add(quizDeelname.getQuiz().clone());
 		}
 		return deelgenomenAan;
 	}

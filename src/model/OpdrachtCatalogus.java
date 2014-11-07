@@ -1,6 +1,8 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 /**
@@ -12,14 +14,14 @@ import java.util.Iterator;
  */
 
 public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneable, Iterable<Opdracht> {
-	private ArrayList<Opdracht> opdrachtcatalogus;
+	private HashSet<Opdracht> opdrachtcatalogus;
 
 	/**
 	 * Maakt een nieuwe OpdrachtCatalogus aan
 	 */
 
 	public OpdrachtCatalogus() {
-		this.opdrachtcatalogus = new ArrayList<Opdracht>();
+		this.opdrachtcatalogus = new HashSet<Opdracht>();
 	}
 
 	/**
@@ -29,8 +31,8 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 *            een lijst van opdrachten
 	 */
 
-	public OpdrachtCatalogus(ArrayList<Opdracht> oc) {
-		this.opdrachtcatalogus = oc;
+	public OpdrachtCatalogus(Collection<Opdracht> oc) {
+		this.opdrachtcatalogus = new HashSet<Opdracht>(oc);
 	}
 
 	/**
@@ -44,7 +46,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		OpdrachtCatalogus clone = null;
 		try {
 			clone = (OpdrachtCatalogus) super.clone();
-			clone.opdrachtcatalogus = new ArrayList<Opdracht>();
+			clone.opdrachtcatalogus = new HashSet<Opdracht>();
 			for (Opdracht opdracht : this.opdrachtcatalogus) {
 				clone.opdrachtcatalogus.add(opdracht.clone());
 			}
@@ -83,25 +85,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	}
 
 	/**
-	 * Haalt een opdracht op met een bepaald volgnummer, beginnende bij 1
-	 *
-	 * @param volgnr
-	 *            het volgnummer
-	 * @return de opdracht met het ingegeven volgnummer
-	 */
-
-	public Opdracht getOpdracht(int volgnr) {
-		if (volgnr < 1) {
-			throw new IndexOutOfBoundsException("Het kleinst mogelijke volgnummer is 1");
-		}
-		if (volgnr > opdrachtcatalogus.size()) {
-			throw new IndexOutOfBoundsException(String.format("De catalogus bevat slechts %d opdrachten",
-					opdrachtcatalogus.size()));
-		}
-		return this.opdrachtcatalogus.get(volgnr - 1);
-	}
-
-	/**
 	 * check of de catalogus een bepaalde opdracht bevat
 	 *
 	 * @param opdracht
@@ -121,6 +104,19 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 
 	public int count() {
 		return this.opdrachtcatalogus.size();
+	}
+
+	/**
+	 * Geeft een kopie van de interne lijst van Opdrachten terug
+	 *
+	 * @return een ArrayList&lt;Opdracht&gt; met een kopie van de interne lijst van Opdrachten
+	 */
+	public ArrayList<Opdracht> getOpdrachten() {
+		ArrayList<Opdracht> opdrachten = new ArrayList<Opdracht>();
+		for (Opdracht opdracht : opdrachtcatalogus) {
+			opdrachten.add(opdracht);
+		}
+		return opdrachten;
 	}
 
 	/**

@@ -135,6 +135,10 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	 *            de tijd in seconden die de Leerling nodig heeft gehad
 	 * @param laatsteAntwoord
 	 *            de String met het definitieve antwoord van de Leerling
+	 * @throws IllegalArgumentException
+	 *             als de quizDeelname of de quizOpdracht null is
+	 * @throws UnsupportedOperationException
+	 *             als er al een OpdrachtAntwoord bestaat voor deze QuizDeelname en QuizOpdracht
 	 */
 	public static OpdrachtAntwoord koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
 			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) throws IllegalArgumentException,
