@@ -16,11 +16,11 @@ public interface DBStrategy {
 
 	public ArrayList<Quiz> leesQuizzen();
 
-	public ArrayList<QuizDeelname> leesQuizDeelnames();
+	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames();
 
-	public ArrayList<QuizOpdracht> leesQuizOpdrachten();
+	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten();
 
-	public ArrayList<OpdrachtAntwoord> leesOpdrachtAntwoorden();
+	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden();
 
 	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten);
 

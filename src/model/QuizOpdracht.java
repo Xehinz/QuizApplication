@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import util.IDBeheerder;
+
 /**
  *
  * @author Bert Neyt
@@ -9,6 +11,9 @@ import java.util.ArrayList;
  */
 public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
+	private static IDBeheerder idBeheerder = new IDBeheerder();
+
+	private int ID;
 	private Quiz quiz;
 	private Opdracht opdracht;
 	private final int maxScore;
@@ -29,6 +34,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 		this.opdracht = opdracht;
 		this.maxScore = maxScore;
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
+		ID = idBeheerder.kenIDToe();
 	}
 
 	public static void attachOpdrachtToQuiz(Quiz quiz, Opdracht opdracht, int maxScore) {
@@ -69,6 +75,15 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	public int getMaxScore() {
 		return maxScore;
+	}
+
+	/**
+	 * Haalt de ID van de QuizOpdracht op
+	 * 
+	 * @return de ID van de QuizOpdracht op
+	 */
+	public int getID() {
+		return ID;
 	}
 
 	public double getGemiddeldeScore() {

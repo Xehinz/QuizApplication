@@ -30,7 +30,7 @@ public class TxtLeerlingLeesSchrijf extends TxtTemplate {
 		} catch (IndexOutOfBoundsException Iex) {
 			throw new IOException("Een record bevatte te weinig velden om een Leerling aan te maken", Iex);
 		} catch (Exception ex) {
-			throw new IOException(ex.getMessage());
+			throw new IOException("Fout: " + ex.getMessage(), ex);
 		}
 	}
 

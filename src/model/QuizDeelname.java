@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import util.IDBeheerder;
 import util.datumWrapper.Datum;
 
 /**
@@ -12,6 +13,9 @@ import util.datumWrapper.Datum;
  */
 public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 
+	private static IDBeheerder idBeheerder = new IDBeheerder();
+
+	private int ID;
 	private final Leerling leerling;
 	private final Quiz quiz;
 	private final Datum datum;
@@ -30,6 +34,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		this.quiz = quiz;
 		this.leerling = leerling;
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
+		ID = idBeheerder.kenIDToe();
 	}
 
 	/**
@@ -72,6 +77,15 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		}
 		double opTien = behaaldeScore / this.quiz.getMaxScore() * 10.0;
 		return (int) Math.round(opTien);
+	}
+
+	/**
+	 * Haalt de ID van de QuizDeelname op
+	 * 
+	 * @return de ID van de QuizDeelname op
+	 */
+	public int getID() {
+		return ID;
 	}
 
 	/**

@@ -30,19 +30,19 @@ public class TxtDB implements DBStrategy {
 	}
 
 	@Override
-	public ArrayList<QuizDeelname> leesQuizDeelnames() {
+	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<QuizOpdracht> leesQuizOpdrachten() {
+	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<OpdrachtAntwoord> leesOpdrachtAntwoorden() {
+	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden() {
 		// TODO Auto-generated method stub
 		return null;
 	}
