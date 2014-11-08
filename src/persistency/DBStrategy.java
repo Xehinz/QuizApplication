@@ -2,23 +2,35 @@ package persistency;
 
 import java.util.ArrayList;
 
-import model.LeerlingContainer;
+import model.Leerling;
+import model.Opdracht;
 import model.OpdrachtAntwoord;
-import model.OpdrachtCatalogus;
-import model.QuizCatalogus;
+import model.Quiz;
 import model.QuizDeelname;
 import model.QuizOpdracht;
 
 public interface DBStrategy {
-	public OpdrachtCatalogus leesOpdrachten();
+	public ArrayList<Opdracht> leesOpdrachten();
 
-	public LeerlingContainer leesLeerlingen();
+	public ArrayList<Leerling> leesLeerlingen();
 
-	public QuizCatalogus leesQuizzen();
+	public ArrayList<Quiz> leesQuizzen();
 
 	public ArrayList<QuizDeelname> leesQuizDeelnames();
 
 	public ArrayList<QuizOpdracht> leesQuizOpdrachten();
 
 	public ArrayList<OpdrachtAntwoord> leesOpdrachtAntwoorden();
+
+	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten);
+
+	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen);
+
+	public void schrijfQuizzen(ArrayList<Quiz> quizzen);
+
+	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames);
+
+	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten);
+
+	public void schrijfOpdrachtAntwoorden(ArrayList<OpdrachtAntwoord> opdrachtAntwoorden);
 }

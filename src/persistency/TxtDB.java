@@ -2,29 +2,29 @@ package persistency;
 
 import java.util.ArrayList;
 
-import model.LeerlingContainer;
+import model.Leerling;
+import model.Opdracht;
 import model.OpdrachtAntwoord;
-import model.OpdrachtCatalogus;
-import model.QuizCatalogus;
+import model.Quiz;
 import model.QuizDeelname;
 import model.QuizOpdracht;
 
 public class TxtDB implements DBStrategy {
 
 	@Override
-	public OpdrachtCatalogus leesOpdrachten() {
+	public ArrayList<Opdracht> leesOpdrachten() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public LeerlingContainer leesLeerlingen() {
+	public ArrayList<Leerling> leesLeerlingen() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public QuizCatalogus leesQuizzen() {
+	public ArrayList<Quiz> leesQuizzen() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -45,6 +45,42 @@ public class TxtDB implements DBStrategy {
 	public ArrayList<OpdrachtAntwoord> leesOpdrachtAntwoorden() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void schrijfQuizzen(ArrayList<Quiz> quizzen) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void schrijfOpdrachtAntwoorden(ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
