@@ -47,6 +47,13 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 		this.inJuisteVolgorde = injuistevolgorde;
 	}
 
+	public Opsomming(int ID, String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur, boolean injuistevolgorde) {
+		super(ID, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+		this.opsommingJuisteAntwoord = juisteAntwoord;
+		this.inJuisteVolgorde = injuistevolgorde;
+	}
+
 	public String getJuisteAntwoord() {
 		return opsommingJuisteAntwoord;
 	}

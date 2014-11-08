@@ -31,6 +31,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 
 	private int maxAantalPogingen;
 	private int maxAntwoordTijd;
+	private int ID;
 
 	private OpdrachtCategorie opdrachtCategorie;
 	private final Leraar auteur;
@@ -142,6 +143,29 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 			// voordoen
 			ex.printStackTrace();
 		}
+	}
+
+	/**
+	 * Maakt een Opdracht object aan dat al een ID toegewezen had. Gebruik deze constructor alleen om een Opdracht te
+	 * maken uit opslag (tekst / DB)
+	 *
+	 * @param ID
+	 *            de ID van de Opdracht
+	 * @param vraag
+	 *            de String die de vraag bevat
+	 * @param maxAantalPogingen
+	 *            het maximaal aantal toegelaten antwoordpogingen
+	 * @param maxAntwoordTijd
+	 *            de maximaal toegelaten antwoordtijd
+	 * @param opdrachtCategorie
+	 *            de OpdrachtCategorie
+	 * @param auteur
+	 *            de Leraar die de Opdracht gecreëerd heeft
+	 */
+	public Opdracht(int ID, String vraag, int maxAantalPogingen, int maxAntwoordTijd, OpdrachtCategorie opdrachtCategorie,
+			Leraar auteur) {
+		this(vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+		this.ID = ID;
 	}
 
 	/**
@@ -335,6 +359,25 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
+	 * Method die door de container klasse gebruikt kan worden om de ID van deze Opdracht te zetten
+	 *
+	 * @param id
+	 *            de ID van deze Opdracht
+	 */
+	protected void setID(int id) {
+		ID = id;
+	}
+
+	/**
+	 * Haalt de ID van de Opdracht op
+	 *
+	 * @return de ID van de Opdracht
+	 */
+	public int getID() {
+		return ID;
+	}
+
+	/**
 	 * Geeft een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht terug. De QuizOpdrachten in de
 	 * teruggegeven lijst zijn geen kopies omdat aan een QuizOpdracht toch niets gewijzigd kan worden
 	 *
@@ -405,7 +448,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 
 	@Override
 	public String toString() {
-		return "Opdracht - aangemaakt: " + aanmaakDatum + " - auteur: " + auteur + "\nCategorie: " + opdrachtCategorie
+		return "Opdracht " + ID + " - aangemaakt: " + aanmaakDatum + " - auteur: " + auteur + "\nCategorie: " + opdrachtCategorie
 				+ "\nAntwoordtijd: " + (maxAntwoordTijd == 0 ? "ongelimiteerd" : maxAntwoordTijd)
 				+ " - Aantal toegestane pogingen: " + (maxAantalPogingen == 0 ? "ongelimiteerd" : maxAantalPogingen)
 				+ "\nVraag: " + vraag + "\nAntwoord: ";
@@ -440,6 +483,9 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		if (opdracht.maxAntwoordTijd != this.maxAntwoordTijd) {
 			return false;
 		}
+		if (opdracht.ID != this.ID) {
+			return false;
+		}
 		return true;
 	}
 
@@ -449,6 +495,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		long hash = hashString.hashCode();
 		hash = hash * 13 + maxAntwoordTijd;
 		hash = hash * 23 + maxAantalPogingen;
+		hash = hash * 29 + ID;
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}

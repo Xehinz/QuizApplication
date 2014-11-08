@@ -32,6 +32,12 @@ public class KlassiekeOpdracht extends Opdracht {
 		this.juisteAntwoord = juisteAntwoord;
 	}
 
+	public KlassiekeOpdracht(int ID, String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
+		super(ID, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+		this.juisteAntwoord = juisteAntwoord;
+	}
+
 	public String getJuisteAntwoord() {
 		return juisteAntwoord;
 	}
@@ -74,7 +80,8 @@ public class KlassiekeOpdracht extends Opdracht {
 		return (int) hash;
 	}
 
+	@Override
 	public KlassiekeOpdracht clone() {
-	 return (KlassiekeOpdracht)super.clone();
-	 }
+		return (KlassiekeOpdracht) super.clone();
+	}
 }

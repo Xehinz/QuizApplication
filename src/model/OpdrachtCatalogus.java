@@ -15,6 +15,7 @@ import java.util.Iterator;
 
 public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneable, Iterable<Opdracht> {
 	private HashSet<Opdracht> opdrachtcatalogus;
+	private int hoogsteID;
 
 	/**
 	 * Maakt een nieuwe OpdrachtCatalogus aan
@@ -22,6 +23,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 
 	public OpdrachtCatalogus() {
 		this.opdrachtcatalogus = new HashSet<Opdracht>();
+		hoogsteID = 0;
 	}
 
 	/**
@@ -33,27 +35,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 
 	public OpdrachtCatalogus(Collection<Opdracht> oc) {
 		this.opdrachtcatalogus = new HashSet<Opdracht>(oc);
-	}
-
-	/**
-	 * Kloont OpdrachtCatalogus
-	 *
-	 * @return de gekloonde OpdrachtCatalogus
-	 */
-
-	@Override
-	public OpdrachtCatalogus clone() {
-		OpdrachtCatalogus clone = null;
-		try {
-			clone = (OpdrachtCatalogus) super.clone();
-			clone.opdrachtcatalogus = new HashSet<Opdracht>();
-			for (Opdracht opdracht : this.opdrachtcatalogus) {
-				clone.opdrachtcatalogus.add(opdracht.clone());
-			}
-		} catch (CloneNotSupportedException ex) {
-			ex.printStackTrace();
-		}
-		return clone;
+		hoogsteID = 0;
 	}
 
 	/**
@@ -65,6 +47,14 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 
 	public void addOpdracht(Opdracht O) {
 		this.opdrachtcatalogus.add(O);
+		if (O.getID() == 0) {
+			O.setID(++hoogsteID);
+		}
+		else {
+			if (O.getID() > hoogsteID) {
+				hoogsteID = O.getID();
+			}
+		}
 	}
 
 	/**
@@ -80,6 +70,9 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		if (!O.isVerwijderbaar()) {
 			throw new UnsupportedOperationException(
 					"De opdracht kan niet verwijderd worden omdat ze reeds gelinkt is aan een quiz");
+		}
+		if (O.getID() == hoogsteID) {
+			hoogsteID--;
 		}
 		this.opdrachtcatalogus.remove(O);
 	}
@@ -180,5 +173,25 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}
+	
+	/**
+	 * Kloont OpdrachtCatalogus
+	 *
+	 * @return de gekloonde OpdrachtCatalogus
+	 */
 
+	@Override
+	public OpdrachtCatalogus clone() {
+		OpdrachtCatalogus clone = null;
+		try {
+			clone = (OpdrachtCatalogus) super.clone();
+			clone.opdrachtcatalogus = new HashSet<Opdracht>();
+			for (Opdracht opdracht : this.opdrachtcatalogus) {
+				clone.opdrachtcatalogus.add(opdracht.clone());
+			}
+		} catch (CloneNotSupportedException ex) {
+			ex.printStackTrace();
+		}
+		return clone;
+	}
 }
