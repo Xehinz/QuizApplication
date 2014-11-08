@@ -448,8 +448,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 
 	@Override
 	public String toString() {
-		return "Opdracht " + ID + " - aangemaakt: " + aanmaakDatum + " - auteur: " + auteur + "\nCategorie: " + opdrachtCategorie
-				+ "\nAntwoordtijd: " + (maxAntwoordTijd == 0 ? "ongelimiteerd" : maxAntwoordTijd)
+		return "Opdracht [ID=" + ID + "] - aangemaakt: " + aanmaakDatum + " - auteur: " + auteur + "\nCategorie: "
+				+ opdrachtCategorie + "\nAntwoordtijd: " + (maxAntwoordTijd == 0 ? "ongelimiteerd" : maxAntwoordTijd)
 				+ " - Aantal toegestane pogingen: " + (maxAantalPogingen == 0 ? "ongelimiteerd" : maxAantalPogingen)
 				+ "\nVraag: " + vraag + "\nAntwoord: ";
 	}
