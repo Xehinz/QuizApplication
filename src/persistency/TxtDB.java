@@ -9,78 +9,83 @@ import model.Quiz;
 import model.QuizDeelname;
 import model.QuizOpdracht;
 
+/**
+ * klasse die het gebruik van de Txt databank beheert.
+ *
+ * @author Adriaan Kuipers
+ * @version 09/11/2014
+ *
+ */
+
 public class TxtDB implements DBStrategy {
+	
+	TxtLeerlingLeesSchrijf txtLeerlingLeesSchrijf;
+	TxtOpdrachtAntwoordLeesSchrijf txtOpdrachtAntwoordLeesSchrijf;
+	TxtOpdrachtLeesSchrijf txtOpdrachtLeesSchrijf;
+	TxtQuizDeelnameLeesSchrijf txtQuizDeelnameLeesSchrijf;
+	TxtQuizLeesSchrijf txtQuizLeesSchrijf;
+	TxtQuizOpdrachtLeesSchrijf txtQuizOpdrachtLeesSchrijf;
+	
+	
 
 	@Override
 	public ArrayList<Opdracht> leesOpdrachten() {
-		// TODO Auto-generated method stub
-		return null;
+		return txtOpdrachtLeesSchrijf.lees();
 	}
 
 	@Override
 	public ArrayList<Leerling> leesLeerlingen() {
-		// TODO Auto-generated method stub
-		return null;
+		return txtLeerlingLeesSchrijf.lees();
 	}
 
 	@Override
 	public ArrayList<Quiz> leesQuizzen() {
-		// TODO Auto-generated method stub
-		return null;
+		return txtQuizLeesSchrijf.lees();
 	}
 
 	@Override
 	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames() {
-		// TODO Auto-generated method stub
-		return null;
+		return txtQuizDeelnameLeesSchrijf.lees();
 	}
 
 	@Override
 	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten() {
-		// TODO Auto-generated method stub
-		return null;
+		return txtQuizOpdrachtLeesSchrijf.lees();
 	}
 
 	@Override
 	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden() {
-		// TODO Auto-generated method stub
-		return null;
+		return txtOpdrachtAntwoordLeesSchrijf.lees();
 	}
 
 	@Override
 	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) {
-		// TODO Auto-generated method stub
-
+		txtOpdrachtLeesSchrijf.schrijf(opdrachten);
 	}
 
 	@Override
 	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen) {
-		// TODO Auto-generated method stub
-
+		txtLeerlingLeesSchrijf.schrijf(leerlingen);
 	}
 
 	@Override
 	public void schrijfQuizzen(ArrayList<Quiz> quizzen) {
-		// TODO Auto-generated method stub
-
+		txtQuizLeesSchrijf.schrijf(quizzen);
 	}
 
 	@Override
 	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames) {
-		// TODO Auto-generated method stub
-
+		txtQuizDeelnameLeesSchrijf.schrijf(quizDeelnames);
 	}
 
 	@Override
 	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten) {
-		// TODO Auto-generated method stub
-
+		txtQuizOpdrachtLeesSchrijf.schrijf(quizOpdrachten);
 	}
 
 	@Override
 	public void schrijfOpdrachtAntwoorden(ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) {
-		// TODO Auto-generated method stub
-
+		txtOpdrachtAntwoordLeesSchrijf.schrijf(opdrachtAntwoorden);
 	}
 
 }
