@@ -34,8 +34,11 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 */
 
 	public OpdrachtCatalogus(Collection<Opdracht> oc) {
-		this.opdrachtcatalogus = new HashSet<Opdracht>(oc);
+		this.opdrachtcatalogus = new HashSet<Opdracht>();
 		hoogsteID = 0;
+		for (Opdracht opdracht : oc) {
+			addOpdracht(opdracht);
+		}
 	}
 
 	/**
