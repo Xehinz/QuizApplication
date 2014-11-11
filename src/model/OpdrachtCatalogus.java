@@ -111,6 +111,22 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		}
 		return opdrachten;
 	}
+	
+	/**
+	 * Haalt de Opdracht op uit de OpdrachtCatalogus met een bepaalde ID
+	 * 
+	 * @param opdrachtID de ID van de gewenste Opdracht
+	 * @return de Opdracht met matchende ID
+	 * @throws IllegalArgumentException wanneer er geen Opdracht object gevonden wordt met de meegegeven ID
+	 */
+	public Opdracht getOpdracht(int opdrachtID) throws IllegalArgumentException {
+		for (Opdracht opdracht : this) {
+			if (opdracht.getID() == opdrachtID) {
+				return opdracht;
+			}
+		} 
+		throw new IllegalArgumentException("De OpdrachtCatalogus bevat geen Opdracht met ID=" + opdrachtID);
+	}
 
 	/**
 	 * Override van de toString methode

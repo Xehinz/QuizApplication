@@ -125,6 +125,22 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	public int count() {
 		return this.quizcatalogus.size();
 	}
+	
+	/**
+	 * Haalt de Quiz op uit de QuizCatalogus met een bepaalde ID
+	 * 
+	 * @param quizID de ID van de gewenste Quiz
+	 * @return de Quiz met matchende ID
+	 * @throws IllegalArgumentException wanneer er geen Quiz object gevonden wordt met de meegegeven ID
+	 */
+	public Quiz getQuiz(int quizID) throws IllegalArgumentException {
+		for (Quiz quiz : this) {
+			if (quiz.getID() == quizID) {
+				return quiz;
+			}
+		}
+		throw new IllegalArgumentException("De QuizCatalogus bevat geen Quiz met ID=" + quizID);
+	}
 
 	/**
 	 * Override van de toString methode

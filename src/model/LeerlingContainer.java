@@ -59,6 +59,22 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 	public int count() {
 		return leerlingen.size();
 	}
+	
+	/**
+	 * Haalt de Leerling met een bepaald ID op uit de LeerlingContainer
+	 * 
+	 * @param leerlingID de ID van de gewenste Leerling
+	 * @return de Leerling met matchende ID
+	 * @throws IllegalArgumentException wanneer er geen Leerling object gevonden wordt met de meegegeven ID
+	 */
+	public Leerling getLeerling(int leerlingID) throws IllegalArgumentException {
+		for (Leerling leerling : this) {
+			if (leerling.getID() == leerlingID) {
+				return leerling;
+			}
+		}
+		throw new IllegalArgumentException("De LeerlingContainer bevat geen leerling met ID=" + leerlingID);
+	}
 
 	@Override
 	public Iterator<Leerling> iterator() {
