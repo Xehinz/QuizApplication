@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+import util.IDBeheerder;
 import util.datumWrapper.Datum;
 
 /**
@@ -13,6 +14,9 @@ import util.datumWrapper.Datum;
 
 public class Quiz implements Comparable<Quiz>, Cloneable {
 
+	private static IDBeheerder idBeheerder = new IDBeheerder();
+	
+	private int ID;
 	private String onderwerp = "";
 	private boolean isTest = false;
 	private boolean isUniekeDeelname = false;
@@ -31,6 +35,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	public Quiz(Leraar auteur) {
 		this(auteur, "", false);
+		ID = idBeheerder.kenIDToe();
 	}
 
 	/**
@@ -43,6 +48,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	public Quiz(Leraar auteur, String onderwerp) {
 		this(auteur, onderwerp, false);
+		ID = idBeheerder.kenIDToe();
 	}
 
 	/**
@@ -62,6 +68,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
 		quizDeelnames = new ArrayList<QuizDeelname>();
 		aanmaakDatum = new Datum();
+		ID = idBeheerder.kenIDToe();
 
 		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
 			zijnDoelLeerjaren[i] = true;
@@ -148,6 +155,10 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		return somScores / this.quizDeelnames.size();
 	}
 
+	public int getID(){
+		return ID;
+	}
+	
 	/**
 	 * Method om in te stellen voor welke leerjaren de quiz bedoeld is. Default is een quiz beschikbaar voor alle
 	 * leerjaren. Enkel de leerjaren die bij de láátste aanroep van deze method meegegeven zijn, bepalen voor welke
