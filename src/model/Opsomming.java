@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- *
+ * 
  * @author Bert Neyt
- *
+ * 
  */
 public class Opsomming extends Opdracht implements Valideerbaar {
 
@@ -19,46 +19,66 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 		this.opsommingJuisteAntwoord = "";
 	}
 
-	public Opsomming(String vraag, String juisteAntwoord, OpdrachtCategorie opdrachtCategorie, Leraar auteur,
+	public Opsomming(String vraag, String juisteAntwoord,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
 			boolean injuistevolgorde) {
 		super(vraag, opdrachtCategorie, auteur);
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;
+		this.setAantalAntwoordenInOpsomming();
 	}
 
-	public Opsomming(String vraag, int maxAantalPogingen, String juisteAntwoord, OpdrachtCategorie opdrachtCategorie,
+	public Opsomming(String vraag, int maxAantalPogingen,
+			String juisteAntwoord, OpdrachtCategorie opdrachtCategorie,
 			Leraar auteur, boolean injuistevolgorde) {
 		super(vraag, maxAantalPogingen, 0, opdrachtCategorie, auteur);
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;
+		this.setAantalAntwoordenInOpsomming();
 	}
 
-	public Opsomming(String vraag, String juisteAntwoord, int maxAntwoordTijd, OpdrachtCategorie opdrachtCategorie,
-			Leraar auteur, boolean injuistevolgorde) {
+	public Opsomming(String vraag, String juisteAntwoord, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
+			boolean injuistevolgorde) {
 		super(vraag, maxAntwoordTijd, opdrachtCategorie, auteur);
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;
+		this.setAantalAntwoordenInOpsomming();
 	}
 
-	public Opsomming(String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
-			OpdrachtCategorie opdrachtCategorie, Leraar auteur, boolean injuistevolgorde) {
-		super(vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+	public Opsomming(String vraag, String juisteAntwoord,
+			int maxAantalPogingen, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
+			boolean injuistevolgorde) {
+		super(vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie,
+				auteur);
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;
+		this.setAantalAntwoordenInOpsomming();
 	}
 
-	public Opsomming(int ID, String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
-			OpdrachtCategorie opdrachtCategorie, Leraar auteur, boolean injuistevolgorde) {
-		super(ID, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+	public Opsomming(int ID, String vraag, String juisteAntwoord,
+			int maxAantalPogingen, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
+			boolean injuistevolgorde) {
+		super(ID, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie,
+				auteur);
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;
+		this.setAantalAntwoordenInOpsomming();
 	}
 
 	public String getJuisteAntwoord() {
 		return opsommingJuisteAntwoord;
 	}
 
-	public void setJuisteAntwoord(String opsommingjuisteantwoord) throws UnsupportedOperationException {
+	public void setAantalAntwoordenInOpsomming() {
+		this.aantalAntwoordenInOpsomming = Opsomming.getLijstJuisteAntwoord(
+				this.opsommingJuisteAntwoord).size();
+	}
+
+	public void setJuisteAntwoord(String opsommingjuisteantwoord)
+			throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
 			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
@@ -66,10 +86,20 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 		this.opsommingJuisteAntwoord = opsommingjuisteantwoord;
 	}
 
+	public static ArrayList<String> getLijstJuisteAntwoord(String antwoord) {
+		ArrayList<String> checkList = new ArrayList<String>(
+				Arrays.asList(antwoord.split(";")));
+		ArrayList<String> newList = new ArrayList<String>();
+		for (String A : checkList) {
+			String B = A.trim();
+			newList.add(B);
+		}
+		return newList;
+	}
+
 	@Override
 	public boolean isValide(String antwoord) {
-		ArrayList<String> antwoorden = new ArrayList<String>(Arrays.asList(antwoord.split(";")));
-		if (antwoorden.size() == this.aantalAntwoordenInOpsomming) {
+		if (Opsomming.getLijstJuisteAntwoord(antwoord).size() == this.aantalAntwoordenInOpsomming) {
 			return true;
 		} else {
 			return false;
@@ -83,8 +113,10 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	@Override
 	public boolean isJuisteAntwoord(String antwoord) {
-		ArrayList<String> antwoorden = new ArrayList<String>(Arrays.asList(antwoord.split(";")));
-		ArrayList<String> juisteantwoorden = new ArrayList<String>(Arrays.asList(this.opsommingJuisteAntwoord.split(";")));
+		ArrayList<String> antwoorden = Opsomming
+				.getLijstJuisteAntwoord(antwoord.toLowerCase());
+		ArrayList<String> juisteantwoorden = Opsomming
+				.getLijstJuisteAntwoord(this.opsommingJuisteAntwoord.toLowerCase());
 		if (this.inJuisteVolgorde) {
 			if (juisteantwoorden.equals(antwoorden)) {
 				return true;
@@ -92,7 +124,8 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 				return false;
 			}
 		} else {
-			if (juisteantwoorden.containsAll(antwoorden) && antwoorden.containsAll(juisteantwoorden)) {
+			if (juisteantwoorden.containsAll(antwoorden)
+					&& antwoorden.containsAll(juisteantwoorden)) {
 				return true;
 			} else {
 				return false;
@@ -102,8 +135,8 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	@Override
 	public String toString() {
-		return super.toString() + opsommingJuisteAntwoord + " met de volgorde " + (inJuisteVolgorde ? "" : "niet")
-				+ " belangrijk.";
+		return super.toString() + opsommingJuisteAntwoord + " met de volgorde "
+				+ (inJuisteVolgorde ? "" : "niet") + " belangrijk.";
 	}
 
 	@Override
@@ -112,16 +145,23 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 			return false;
 		}
 		Opsomming other = (Opsomming) obj;
-		if (this.opsommingJuisteAntwoord != other.opsommingJuisteAntwoord) {
-			return false;
-		}
 		if (this.inJuisteVolgorde != other.inJuisteVolgorde) {
 			return false;
 		}
 		if (this.aantalAntwoordenInOpsomming != other.aantalAntwoordenInOpsomming) {
 			return false;
 		}
-		return true;
+		if (this.opsommingJuisteAntwoord != other.opsommingJuisteAntwoord) {
+			if (Opsomming
+					.getLijstJuisteAntwoord(this.opsommingJuisteAntwoord.toLowerCase())
+					.containsAll(
+							Opsomming
+									.getLijstJuisteAntwoord(other.opsommingJuisteAntwoord.toLowerCase()))){
+				return true;
+			}
+			else {return false;}
+		}
+		else {return true;}
 	}
 
 	@Override
