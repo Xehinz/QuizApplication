@@ -9,9 +9,7 @@ import util.IDBeheerder;
  * @author Bert Neyt
  * @version 0.0
  */
-public class QuizOpdracht implements Comparable<QuizOpdracht> {
-
-	private static IDBeheerder idBeheerder = new IDBeheerder();
+public class QuizOpdracht implements Comparable<QuizOpdracht> {	
 
 	private int ID;
 	private Quiz quiz;
@@ -34,7 +32,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 		this.opdracht = opdracht;
 		this.maxScore = maxScore;
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
-		ID = idBeheerder.kenIDToe();
+		ID = this.hashCode();
 	}
 
 	public static void attachOpdrachtToQuiz(Quiz quiz, Opdracht opdracht, int maxScore) {

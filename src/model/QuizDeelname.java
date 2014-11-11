@@ -11,11 +11,9 @@ import util.datumWrapper.Datum;
  * @author Adriaan Kuipers, Ben Vandenberk
  * @version 29/10/2014
  */
-public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
+public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {	
 
-	private static IDBeheerder idBeheerder = new IDBeheerder();
-
-	private int ID;
+	private final int ID;
 	private final Leerling leerling;
 	private final Quiz quiz;
 	private final Datum datum;
@@ -34,7 +32,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		this.quiz = quiz;
 		this.leerling = leerling;
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
-		ID = idBeheerder.kenIDToe();
+		ID = this.hashCode();
 	}
 
 	/**
@@ -118,7 +116,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * geeft ovezicht van gestelde vragen met juiste antwoorden, gegeven antwoorden & behaalde score
 	 */
 	public String feedback() {
-		throw new UnsupportedOperationException("Method nog niet geÃ¯mplementeerd");
+		throw new UnsupportedOperationException("Method nog niet geïmplementeerd");
 	}
 
 	/**

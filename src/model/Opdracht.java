@@ -445,6 +445,22 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @return <code>true</code> als het meegegeven antwoord correct is
 	 */
 	public abstract boolean isJuisteAntwoord(String antwoord);
+	
+	/**
+	 * Zoekt naar een QuizOpdracht met een bepaalde ID. Geeft null terug als die voor deze Opdracht niet bestaat.
+	 * 
+	 * @param quizOpdrachtID de gewenste ID
+	 * @return de QuizOpdracht met matchende ID. Null als die niet gevonden wordt
+	 */
+	public QuizOpdracht getQuizOpdracht(int quizOpdrachtID) {
+		QuizOpdracht toReturn = null;
+		for (QuizOpdracht quizOpdracht : quizOpdrachten) {
+			if (quizOpdracht.getID() == quizOpdrachtID) {
+				toReturn = quizOpdracht;
+			}
+		}
+		return toReturn;
+	}
 
 	@Override
 	public String toString() {

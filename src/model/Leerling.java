@@ -159,6 +159,22 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		}
 		return deelgenomenAan;
 	}
+	
+	/**
+	 * Zoekt naar een QuizDeelname met een bepaalde ID. Geeft null terug als die voor deze Leerling niet bestaat.
+	 * 
+	 * @param quizDeelnameID de gewenste ID
+	 * @return de QuizDeelname met matchende ID. Null als die niet gevonden wordt
+	 */
+	public QuizDeelname getQuizDeelname(int quizDeelnameID) {
+		QuizDeelname toReturn = null;
+		for (QuizDeelname quizDeelname : quizDeelnames) {
+			if (quizDeelname.getID() == quizDeelnameID) {
+				toReturn = quizDeelname;
+			}
+		}
+		return toReturn;
+	}
 
 	/**
 	 * Geeft een String representatie terug van dit Leerling object van de vorm "Leerling [voornaam] [familienaam]"
