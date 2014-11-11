@@ -4,17 +4,15 @@ public class PseudoOpdrachtAntwoord {
 
 	private int quizDeelnameID, quizOpdrachtID;
 	private int aantalPogingen, antwoordTijd;
-	private String laatsteAntwoord;
-	private double behaaldeScore;
+	private String laatsteAntwoord;	
 
 	public PseudoOpdrachtAntwoord(int quizDeelnameID, int quizOpdrachtID, int aantalPogingen, int antwoordTijd,
-			String laatsteAntwoord, double behaaldeScore) {
+			String laatsteAntwoord) {
 		this.quizDeelnameID = quizDeelnameID;
 		this.quizOpdrachtID = quizOpdrachtID;
 		this.aantalPogingen = aantalPogingen;
 		this.antwoordTijd = antwoordTijd;
-		this.laatsteAntwoord = laatsteAntwoord;
-		this.behaaldeScore = behaaldeScore;
+		this.laatsteAntwoord = laatsteAntwoord;		
 	}
 
 	public int getQuizDeelnameID() {
@@ -35,9 +33,5 @@ public class PseudoOpdrachtAntwoord {
 
 	public String getLaatsteAntwoord() {
 		return laatsteAntwoord;
-	}
-
-	public double getBehaaldeScore() {
-		return behaaldeScore;
-	}
+	}	
 }

@@ -24,9 +24,9 @@ public class TxtLeerlingLeesSchrijf extends TxtTemplate {
 	@Override
 	protected Leerling maakObject(String[] fields) throws IOException {
 		try {
-			return new Leerling(fields[0], fields[1], Integer.parseInt(fields[2]));
+			return new Leerling(Integer.parseInt(fields[0]), fields[1], fields[2], Integer.parseInt(fields[3]));
 		} catch (NumberFormatException Nex) {
-			throw new IOException("Fout bij het parsen van het leerjaar", Nex);
+			throw new IOException("Fout bij het parsen van het leerjaar en/of ID", Nex);
 		} catch (IndexOutOfBoundsException Iex) {
 			throw new IOException("Een record bevatte te weinig velden om een Leerling aan te maken", Iex);
 		} catch (Exception ex) {
@@ -42,13 +42,13 @@ public class TxtLeerlingLeesSchrijf extends TxtTemplate {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen Leerling");
 		}
-		return String.format("%s;%s;%d", leerling.getLeerlingVoornaam(), leerling.getLeerlingFamilienaam(),
+		return String.format("%d;%s;%s;%d", leerling.getID(), leerling.getLeerlingVoornaam(), leerling.getLeerlingFamilienaam(),
 				leerling.getLeerjaar());
 	}
 
 	@Override
 	protected String getHeaderCSV() {
-		return "Voornaam;Familienaam;Leerjaar";
+		return "ID;Voornaam;Familienaam;Leerjaar";
 	}
 
 }

@@ -6,8 +6,8 @@ import util.IDBeheerder;
 
 /**
  *
- * Leerling modelleert de leerling die kan deelnemen aan de quizzen. De leerling heeft een voornaam en familienaam en
- * zit in een van de zes leerjaren
+ * Leerling modelleert de leerling die kan deelnemen aan de quizzen. De leerling
+ * heeft een voornaam en familienaam en zit in een van de zes leerjaren
  *
  * @author Ben Vandenberk
  * @version 25-10-2014
@@ -16,13 +16,14 @@ import util.IDBeheerder;
 public class Leerling implements Comparable<Leerling>, Cloneable {
 
 	private static IDBeheerder idBeheerder = new IDBeheerder();
-	
+
 	private String leerlingVoornaam, leerlingFamilienaam;
 	private int leerjaar, ID;
 	private ArrayList<QuizDeelname> quizDeelnames;
 
 	/**
-	 * Maakt een Leerling object aan op basis van de voornaam, familienaam en het leerjaar van de leerling
+	 * Maakt een Leerling object aan op basis van de voornaam, familienaam en
+	 * het leerjaar van de leerling
 	 *
 	 * @param voornaam
 	 *            de String die de voornaam voorstelt
@@ -37,6 +38,24 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		setLeerjaar(leerjaar);
 		quizDeelnames = new ArrayList<QuizDeelname>();
 		ID = idBeheerder.kenIDToe();
+	}
+
+	/**
+	 * Maakt een Leerling object aan dat al een ID toegewezen had. Gebruik deze
+	 * constructor alleen om een Leerling te maken uit opslag (tekst / DB)
+	 * 
+	 * @param ID
+	 *            de ID van de Leerling
+	 * @param voornaam
+	 *            de String die de voornaam voorstelt
+	 * @param familienaam
+	 *            de String die de familienaam voorstelt
+	 * @param leerjaar
+	 *            een integer van 1 tot en met 6 dat het leerjaar voorstelt
+	 */
+	public Leerling(int ID, String voornaam, String familienaam, int leerjaar) {
+		this(voornaam, familienaam, leerjaar);
+		this.ID = ID;
 	}
 
 	/**
@@ -69,25 +88,28 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	/**
 	 * Geeft de volledige naam van dit Leerling object terug
 	 *
-	 * @return een String die de volledige naam van dit Leerling object voorstelt
+	 * @return een String die de volledige naam van dit Leerling object
+	 *         voorstelt
 	 */
 	public String getNaam() {
 		return leerlingVoornaam + " " + leerlingFamilienaam;
 	}
 
-	public int getID(){
+	public int getID() {
 		return ID;
 	}
-	
+
 	/**
-	 * Zet het leerjaar field van dit Leerling object. Accepteert de integers 1 tot en met 6
+	 * Zet het leerjaar field van dit Leerling object. Accepteert de integers 1
+	 * tot en met 6
 	 *
 	 * @param leerjaar
 	 *            een integer van 1 tot en met 6 dat het leerjaar voorstelt
 	 */
 	public void setLeerjaar(int leerjaar) {
 		if (leerjaar < 1 || leerjaar > 6) {
-			throw new IllegalArgumentException("Leerjaar moet een waarde aannemen van 1 tot en met 6");
+			throw new IllegalArgumentException(
+					"Leerjaar moet een waarde aannemen van 1 tot en met 6");
 		}
 		this.leerjaar = leerjaar;
 	}
@@ -133,11 +155,12 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	}
 
 	/**
-	 * Geeft een kopie van de lijst van QuizDeelnames van deze leerling terug. De QuizDeelnames zijn geen clones omdat
-	 * aan een QuizDeelname toch niets gewijzigd kan worden
+	 * Geeft een kopie van de lijst van QuizDeelnames van deze leerling terug.
+	 * De QuizDeelnames zijn geen clones omdat aan een QuizDeelname toch niets
+	 * gewijzigd kan worden
 	 *
-	 * @return een ArrayList&lt;QuizDeelname&gt; dat een kopie is van de interne lijst met QuizDeelnames geassocieerd
-	 *         met deze Leerling
+	 * @return een ArrayList&lt;QuizDeelname&gt; dat een kopie is van de interne
+	 *         lijst met QuizDeelnames geassocieerd met deze Leerling
 	 */
 	public ArrayList<QuizDeelname> getQuizDeelnames() {
 		ArrayList<QuizDeelname> quizDeelnames = new ArrayList<QuizDeelname>();
@@ -148,9 +171,11 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	}
 
 	/**
-	 * Geeft een lijstje terug met kopies van de quizzen waaraan de Leerling reeds deelnam
+	 * Geeft een lijstje terug met kopies van de quizzen waaraan de Leerling
+	 * reeds deelnam
 	 *
-	 * @return een ArrayList&lt;Quiz&gt; met kopies van de quizzen waaraan de Leerling reeds deelnam
+	 * @return een ArrayList&lt;Quiz&gt; met kopies van de quizzen waaraan de
+	 *         Leerling reeds deelnam
 	 */
 	public ArrayList<Quiz> getDeelgenomenQuizzen() {
 		ArrayList<Quiz> deelgenomenAan = new ArrayList<Quiz>();
@@ -159,12 +184,15 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		}
 		return deelgenomenAan;
 	}
-	
+
 	/**
-	 * Zoekt naar een QuizDeelname met een bepaalde ID. Geeft null terug als die voor deze Leerling niet bestaat.
+	 * Zoekt naar een QuizDeelname met een bepaalde ID. Geeft null terug als die
+	 * voor deze Leerling niet bestaat.
 	 * 
-	 * @param quizDeelnameID de gewenste ID
-	 * @return de QuizDeelname met matchende ID. Null als die niet gevonden wordt
+	 * @param quizDeelnameID
+	 *            de gewenste ID
+	 * @return de QuizDeelname met matchende ID. Null als die niet gevonden
+	 *         wordt
 	 */
 	public QuizDeelname getQuizDeelname(int quizDeelnameID) {
 		QuizDeelname toReturn = null;
@@ -177,7 +205,8 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	}
 
 	/**
-	 * Geeft een String representatie terug van dit Leerling object van de vorm "Leerling [voornaam] [familienaam]"
+	 * Geeft een String representatie terug van dit Leerling object van de vorm
+	 * "Leerling [voornaam] [familienaam]"
 	 */
 	@Override
 	public String toString() {
@@ -185,19 +214,22 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	}
 
 	/**
-	 * Vergelijkt twee leerlingen op basis van hun familienaam. Hoofdletters of kleine letters spelen hierbij geen rol
+	 * Vergelijkt twee leerlingen op basis van hun familienaam. Hoofdletters of
+	 * kleine letters spelen hierbij geen rol
 	 *
 	 * @param leerling
 	 *            de Leerling waarmee dit Leerling object vergeleken wordt
 	 */
 	@Override
 	public int compareTo(Leerling leerling) {
-		return this.leerlingFamilienaam.compareToIgnoreCase(leerling.leerlingFamilienaam);
+		return this.leerlingFamilienaam
+				.compareToIgnoreCase(leerling.leerlingFamilienaam);
 	}
 
 	/**
-	 * Controleert dit Leerling object met het meegegeven Object op gelijkheid. Twee leerling zijn gelijk wanneer ze een
-	 * identieke naam hebben en in hetzelfde leerjaar zitten
+	 * Controleert dit Leerling object met het meegegeven Object op gelijkheid.
+	 * Twee leerling zijn gelijk wanneer ze een identieke naam hebben en in
+	 * hetzelfde leerjaar zitten
 	 *
 	 * @param obj
 	 *            het Object waarmee dit Leerling object vergeleken wordt
@@ -215,7 +247,8 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		}
 
 		Leerling leerling = (Leerling) obj;
-		return this.getNaam().equals(leerling.getNaam()) && this.leerjaar == leerling.leerjaar;
+		return this.getNaam().equals(leerling.getNaam())
+				&& this.leerjaar == leerling.leerjaar;
 	}
 
 	@Override
@@ -232,9 +265,11 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		Leerling clone = null;
 		try {
 			clone = (Leerling) super.clone();
-			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames.clone();
+			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames
+					.clone();
 		} catch (CloneNotSupportedException ex) {
-			// Leerling implementeert Cloneable, kan geen CloneNotSupportedException throwen
+			// Leerling implementeert Cloneable, kan geen
+			// CloneNotSupportedException throwen
 			ex.printStackTrace();
 		}
 		return clone;

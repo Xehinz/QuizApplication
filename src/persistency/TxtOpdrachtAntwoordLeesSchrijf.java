@@ -15,7 +15,7 @@ public class TxtOpdrachtAntwoordLeesSchrijf extends TxtTemplate {
 	protected PseudoOpdrachtAntwoord maakObject(String[] fields) throws IOException {
 		try {
 			return new PseudoOpdrachtAntwoord(Integer.parseInt(fields[0]), Integer.parseInt(fields[1]),
-					Integer.parseInt(fields[2]), Integer.parseInt(fields[3]), fields[4], Double.parseDouble(fields[5]));
+					Integer.parseInt(fields[2]), Integer.parseInt(fields[3]), fields[4]);
 		} catch (NumberFormatException Nex) {
 			throw new IOException("Fout bij het parsen vanuit tekstbestand", Nex);
 		} catch (IndexOutOfBoundsException Iex) {
@@ -33,14 +33,14 @@ public class TxtOpdrachtAntwoordLeesSchrijf extends TxtTemplate {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen OpdrachtAntwoord");
 		}
-		return String.format("%s;%s;%s;%s;%s;%s", opdrachtAntwoord.getQuizDeelname().getID(), opdrachtAntwoord.getQuizOpdracht()
+		return String.format("%s;%s;%s;%s;%s", opdrachtAntwoord.getQuizDeelname().getID(), opdrachtAntwoord.getQuizOpdracht()
 				.getID(), opdrachtAntwoord.getAantalPogingen(), opdrachtAntwoord.getAntwoordTijd(), opdrachtAntwoord
-				.getLaatsteAntwoord(), opdrachtAntwoord.getBehaaldeScore());
+				.getLaatsteAntwoord());
 	}
 
 	@Override
 	protected String getHeaderCSV() {
-		return "QuizDeelnameID;QuizOpdrachtID;AantalPogingen;AntwoordTijd;LaatsteAntwoord;BehaaldeScore";
+		return "QuizDeelnameID;QuizOpdrachtID;AantalPogingen;AntwoordTijd;LaatsteAntwoord";
 	}
 
 }
