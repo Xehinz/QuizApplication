@@ -13,26 +13,26 @@ import model.QuizOpdracht;
  * klasse die het gebruik van de Txt databank beheert.
  *
  * @author Adriaan Kuipers
- * @version 09/11/2014
+ * @version 12/11/2014
  *
  */
 
 public class TxtDB implements DBStrategy {
 	
-	TxtLeerlingLeesSchrijf txtLeerlingLeesSchrijf;
-	TxtOpdrachtAntwoordLeesSchrijf txtOpdrachtAntwoordLeesSchrijf;
-	TxtOpdrachtLeesSchrijf txtOpdrachtLeesSchrijf;
-	TxtQuizDeelnameLeesSchrijf txtQuizDeelnameLeesSchrijf;
-	TxtQuizLeesSchrijf txtQuizLeesSchrijf;
-	TxtQuizOpdrachtLeesSchrijf txtQuizOpdrachtLeesSchrijf;
+	private TxtLeerlingLeesSchrijf txtLeerlingLeesSchrijf;
+	private TxtOpdrachtAntwoordLeesSchrijf txtOpdrachtAntwoordLeesSchrijf;
+	private TxtOpdrachtLeesSchrijf txtOpdrachtLeesSchrijf;
+	private TxtQuizDeelnameLeesSchrijf txtQuizDeelnameLeesSchrijf;
+	private TxtQuizLeesSchrijf txtQuizLeesSchrijf;
+	private TxtQuizOpdrachtLeesSchrijf txtQuizOpdrachtLeesSchrijf;
 	
 	public TxtDB() {
-		txtLeerlingLeesSchrijf = new TxtLeerlingLeesSchrijf();
-		txtOpdrachtAntwoordLeesSchrijf = new TxtOpdrachtAntwoordLeesSchrijf();
-		txtOpdrachtLeesSchrijf = new TxtOpdrachtLeesSchrijf();
-		txtQuizDeelnameLeesSchrijf = new TxtQuizDeelnameLeesSchrijf();
-		txtQuizLeesSchrijf = new TxtQuizLeesSchrijf();
-		txtQuizOpdrachtLeesSchrijf = new TxtQuizOpdrachtLeesSchrijf();
+		this.txtLeerlingLeesSchrijf = new TxtLeerlingLeesSchrijf();
+		this.txtOpdrachtAntwoordLeesSchrijf = new TxtOpdrachtAntwoordLeesSchrijf();
+		this.txtOpdrachtLeesSchrijf = new TxtOpdrachtLeesSchrijf();
+		this.txtQuizDeelnameLeesSchrijf = new TxtQuizDeelnameLeesSchrijf();
+		this.txtQuizLeesSchrijf = new TxtQuizLeesSchrijf();
+		this.txtQuizOpdrachtLeesSchrijf = new TxtQuizOpdrachtLeesSchrijf();
 	}
 
 	@Override
