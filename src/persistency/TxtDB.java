@@ -26,7 +26,14 @@ public class TxtDB implements DBStrategy {
 	TxtQuizLeesSchrijf txtQuizLeesSchrijf;
 	TxtQuizOpdrachtLeesSchrijf txtQuizOpdrachtLeesSchrijf;
 	
-	
+	public TxtDB() {
+		txtLeerlingLeesSchrijf = new TxtLeerlingLeesSchrijf();
+		txtOpdrachtAntwoordLeesSchrijf = new TxtOpdrachtAntwoordLeesSchrijf();
+		txtOpdrachtLeesSchrijf = new TxtOpdrachtLeesSchrijf();
+		txtQuizDeelnameLeesSchrijf = new TxtQuizDeelnameLeesSchrijf();
+		txtQuizLeesSchrijf = new TxtQuizLeesSchrijf();
+		txtQuizOpdrachtLeesSchrijf = new TxtQuizOpdrachtLeesSchrijf();
+	}
 
 	@Override
 	public ArrayList<Opdracht> leesOpdrachten() {
