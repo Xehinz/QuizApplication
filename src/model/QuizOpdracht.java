@@ -2,8 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import util.IDBeheerder;
-
 /**
  *
  * @author Bert Neyt

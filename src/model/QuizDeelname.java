@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import util.IDBeheerder;
 import util.datumWrapper.Datum;
 
 /**

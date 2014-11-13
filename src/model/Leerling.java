@@ -2,8 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import util.IDBeheerder;
-
 /**
  *
  * Leerling modelleert de leerling die kan deelnemen aan de quizzen. De leerling
@@ -14,8 +12,6 @@ import util.IDBeheerder;
  *
  */
 public class Leerling implements Comparable<Leerling>, Cloneable {
-
-	private static IDBeheerder idBeheerder = new IDBeheerder();
 
 	private String leerlingVoornaam, leerlingFamilienaam;
 	private int leerjaar, ID;
@@ -36,8 +32,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		setLeerlingVoornaam(voornaam);
 		setLeerlingFamilienaam(familienaam);
 		setLeerjaar(leerjaar);
-		quizDeelnames = new ArrayList<QuizDeelname>();
-		ID = idBeheerder.kenIDToe();
+		quizDeelnames = new ArrayList<QuizDeelname>();		
 	}
 
 	/**

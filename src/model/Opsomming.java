@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import util.datumWrapper.Datum;
+
 /**
  * 
  * @author Bert Neyt
@@ -57,11 +59,11 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 		this.setAantalAntwoordenInOpsomming();
 	}
 
-	public Opsomming(int ID, String vraag, String juisteAntwoord,
+	public Opsomming(int ID, Datum aanmaakDatum, String vraag, String juisteAntwoord,
 			int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
 			boolean injuistevolgorde) {
-		super(ID, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie,
+		super(ID, aanmaakDatum, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie,
 				auteur);
 		this.opsommingJuisteAntwoord = juisteAntwoord;
 		this.inJuisteVolgorde = injuistevolgorde;

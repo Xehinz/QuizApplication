@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import util.IDBeheerder;
 import util.datumWrapper.Datum;
 
 /**
@@ -14,8 +13,6 @@ import util.datumWrapper.Datum;
 
 public class Quiz implements Comparable<Quiz>, Cloneable {
 
-	private static IDBeheerder idBeheerder = new IDBeheerder();
-	
 	private int ID;
 	private String onderwerp = "";
 	private boolean isTest = false;
@@ -35,7 +32,6 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	public Quiz(Leraar auteur) {
 		this(auteur, "", false);
-		ID = idBeheerder.kenIDToe();
 	}
 
 	/**
@@ -48,7 +44,6 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	public Quiz(Leraar auteur, String onderwerp) {
 		this(auteur, onderwerp, false);
-		ID = idBeheerder.kenIDToe();
 	}
 
 	/**
@@ -68,11 +63,36 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
 		quizDeelnames = new ArrayList<QuizDeelname>();
 		aanmaakDatum = new Datum();
-		ID = idBeheerder.kenIDToe();
 
 		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
 			zijnDoelLeerjaren[i] = true;
 		}
+	}
+
+	/**
+	 * Constructor om een Quiz aan te maken die al een ID, aanmaakDatum en
+	 * quizStatus had. Gebruik deze constructor alleen om een Quiz aan te maken
+	 * vanuit opslag (tekst / DB)
+	 * 
+	 * @param ID
+	 *            de ID van de Quiz
+	 * @param aanmaakDatum
+	 *            de Datum waarop de Quiz is aangemaakt
+	 * @param quizStatus
+	 *            de status waarin de Quiz zich bevindt
+	 * @param auteur
+	 *            de Leraar die de Quiz heeft aangemaakt
+	 * @param onderwerp
+	 *            het onderwerp van deze quiz
+	 * @param isUniekeDeelname
+	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
+	 */
+	public Quiz(int ID, Datum aanmaakDatum, QuizStatus quizStatus,
+			Leraar auteur, String onderwerp, boolean isUniekeDeelname) {
+		this(auteur, onderwerp, isUniekeDeelname);
+		this.ID = ID;
+		this.aanmaakDatum = aanmaakDatum;
+		this.quizStatus = quizStatus;
 	}
 
 	/**
@@ -103,7 +123,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Ophalen van de indicator of aan deze quiz slechts 1x mag deelgenomen worden
+	 * Ophalen van de indicator of aan deze quiz slechts 1x mag deelgenomen
+	 * worden
 	 *
 	 * @return
 	 */
@@ -112,7 +133,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Geeft een kopie van het Datum objectje terug dat de aanmaakdatum van deze quiz voorstelt
+	 * Geeft een kopie van het Datum objectje terug dat de aanmaakdatum van deze
+	 * quiz voorstelt
 	 *
 	 * @return de Datum van aanmaak van deze Quiz
 	 */
@@ -130,9 +152,11 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Geeft de som terug van de maximum te behalen scores van alle opdrachten van deze quiz
+	 * Geeft de som terug van de maximum te behalen scores van alle opdrachten
+	 * van deze quiz
 	 *
-	 * @return de som van de maximum te behalen scores van alle opdrachten van deze quiz
+	 * @return de som van de maximum te behalen scores van alle opdrachten van
+	 *         deze quiz
 	 */
 	public int getMaxScore() {
 		int maxScore = 0;
@@ -145,7 +169,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Geeft de gemiddelde van alle deelnames aan deze Quiz terug
 	 *
-	 * @return een double dat de gemiddelde score van alle deelnames aan deze Quiz voorstelt
+	 * @return een double dat de gemiddelde score van alle deelnames aan deze
+	 *         Quiz voorstelt
 	 */
 	public double getGemiddeldeScore() {
 		double somScores = 0;
@@ -155,17 +180,19 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		return somScores / this.quizDeelnames.size();
 	}
 
-	public int getID(){
+	public int getID() {
 		return ID;
 	}
-	
+
 	/**
-	 * Method om in te stellen voor welke leerjaren de quiz bedoeld is. Default is een quiz beschikbaar voor alle
-	 * leerjaren. Enkel de leerjaren die bij de láátste aanroep van deze method meegegeven zijn, bepalen voor welke
+	 * Method om in te stellen voor welke leerjaren de quiz bedoeld is. Default
+	 * is een quiz beschikbaar voor alle leerjaren. Enkel de leerjaren die bij
+	 * de láátste aanroep van deze method meegegeven zijn, bepalen voor welke
 	 * leerjaren de quiz beschikbaar is.
 	 *
 	 * @param doelLeerjaar
-	 *            1 of meerdere leerjaren waarvoor de quiz beschikbaar wordt gemaakt
+	 *            1 of meerdere leerjaren waarvoor de quiz beschikbaar wordt
+	 *            gemaakt
 	 */
 	public void setDoelLeerjaren(int... doelLeerjaar) {
 		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
@@ -204,7 +231,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 *
 	 * @param leerjaar
 	 *            het leerjaar om te testen
-	 * @return true als het meegegeven leerjaar een leerjaar is waarvoor de quiz beschikbaar is
+	 * @return true als het meegegeven leerjaar een leerjaar is waarvoor de quiz
+	 *         beschikbaar is
 	 */
 	public boolean isGeldigLeerjaar(int leerjaar) {
 		if (leerjaar < 1 || leerjaar > 6) {
@@ -223,12 +251,15 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Enkel wanneer een quiz zich in de status 'In constructie' of 'Afgewerkt' bevindt, is ze verwijderbaar
+	 * Enkel wanneer een quiz zich in de status 'In constructie' of 'Afgewerkt'
+	 * bevindt, is ze verwijderbaar
 	 *
-	 * @return true als de quiz de status 'In constructie' of 'Afgewerkt' heeft en dus verwijderbaar is
+	 * @return true als de quiz de status 'In constructie' of 'Afgewerkt' heeft
+	 *         en dus verwijderbaar is
 	 */
 	public boolean isVerwijderbaar() {
-		return this.quizStatus == QuizStatus.IN_CONSTRUCTIE || this.quizStatus == QuizStatus.AFGEWERKT;
+		return this.quizStatus == QuizStatus.IN_CONSTRUCTIE
+				|| this.quizStatus == QuizStatus.AFGEWERKT;
 	}
 
 	/**
@@ -255,12 +286,15 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * override toString --> levert 'onderwerp' af met Test(?), UniekeDeelname (?) en status
+	 * override toString --> levert 'onderwerp' af met Test(?), UniekeDeelname
+	 * (?) en status
 	 */
 	@Override
 	public String toString() {
-		return "Quiz met als onderwerp '" + this.getOnderwerp() + "' is " + (this.isTest ? "een" : "geen") + " test "
-				+ (this.isUniekeDeelname ? "met" : "zonder") + " unieke deelname.";
+		return "Quiz met als onderwerp '" + this.getOnderwerp() + "' is "
+				+ (this.isTest ? "een" : "geen") + " test "
+				+ (this.isUniekeDeelname ? "met" : "zonder")
+				+ " unieke deelname.";
 	}
 
 	/**
@@ -340,9 +374,11 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Ophalen van een kopie van de lijst van QuizOpdrachten geassocieerd aan deze Quiz
+	 * Ophalen van een kopie van de lijst van QuizOpdrachten geassocieerd aan
+	 * deze Quiz
 	 *
-	 * @return een een kopie van de lijst van QuizOpdrachten geassocieerd aan deze Quiz
+	 * @return een een kopie van de lijst van QuizOpdrachten geassocieerd aan
+	 *         deze Quiz
 	 */
 	public ArrayList<QuizOpdracht> getQuizOpdrachten() {
 		ArrayList<QuizOpdracht> kopieQuizOpdrachten = new ArrayList<QuizOpdracht>();
@@ -375,8 +411,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Ophalen van de list van leerlingen die reeds deelnamen aan deze quiz
 	 *
-	 * @return een ArrayList&lt;Leerling&gt; met alle Leerling objecten die een deelname relatie hebben met dit Quiz
-	 *         object
+	 * @return een ArrayList&lt;Leerling&gt; met alle Leerling objecten die een
+	 *         deelname relatie hebben met dit Quiz object
 	 */
 	public ArrayList<Leerling> getLeerlingenDieDeelnamen() {
 		ArrayList<Leerling> deelnemers = new ArrayList<Leerling>();
@@ -387,9 +423,11 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Ophalen van een kopie van de lijst van QuizDeelnames geassocieerd met deze Quiz
+	 * Ophalen van een kopie van de lijst van QuizDeelnames geassocieerd met
+	 * deze Quiz
 	 *
-	 * @return een kopie van de lijst met QuizDeelnames geassocieerd met deze Quiz
+	 * @return een kopie van de lijst met QuizDeelnames geassocieerd met deze
+	 *         Quiz
 	 */
 	public ArrayList<QuizDeelname> getQuizDeelnames() {
 		ArrayList<QuizDeelname> kopieQuizDeelnames = new ArrayList<QuizDeelname>();
@@ -402,8 +440,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Vergelijk deze quiz met een andere quiz
 	 *
-	 * @return een negatief nummer, een nul of een positief nummer als de quiz minder, hetzelfde aantal of meer
-	 *         opdrachten heeft
+	 * @return een negatief nummer, een nul of een positief nummer als de quiz
+	 *         minder, hetzelfde aantal of meer opdrachten heeft
 	 */
 	@Override
 	public int compareTo(Quiz aQuiz) {
@@ -427,8 +465,10 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 			clone = (Quiz) super.clone();
 			clone.aanmaakDatum = new Datum(aanmaakDatum);
 			clone.zijnDoelLeerjaren = this.zijnDoelLeerjaren.clone();
-			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames.clone();
-			clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten.clone();
+			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames
+					.clone();
+			clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten
+					.clone();
 		} catch (CloneNotSupportedException ex) {
 			// Quiz is Cloneable, kan geen CloneNotSupportedException throwen
 			ex.printStackTrace();

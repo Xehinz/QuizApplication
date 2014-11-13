@@ -1,5 +1,7 @@
 package model;
 
+import util.datumWrapper.Datum;
+
 public class KlassiekeOpdracht extends Opdracht {
 
 	private String juisteAntwoord;
@@ -32,9 +34,9 @@ public class KlassiekeOpdracht extends Opdracht {
 		this.juisteAntwoord = juisteAntwoord;
 	}
 
-	public KlassiekeOpdracht(int ID, String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
+	public KlassiekeOpdracht(int ID, Datum aanmaakDatum, String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
-		super(ID, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+		super(ID, aanmaakDatum, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
 		this.juisteAntwoord = juisteAntwoord;
 	}
 

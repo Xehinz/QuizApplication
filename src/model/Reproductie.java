@@ -1,5 +1,7 @@
 package model;
 
+import util.datumWrapper.Datum;
+
 public class Reproductie extends Opdracht {
 
 	public Reproductie(OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
@@ -26,6 +28,12 @@ public class Reproductie extends Opdracht {
 	public Reproductie(String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		super(vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+		// Juiste antwoord nog toewijzen
+	}
+	
+	public Reproductie(int ID, Datum aanmaakDatum, String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
+		super(ID, aanmaakDatum, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
 		// Juiste antwoord nog toewijzen
 	}
 

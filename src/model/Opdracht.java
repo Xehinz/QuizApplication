@@ -5,20 +5,25 @@ import java.util.ArrayList;
 import util.datumWrapper.Datum;
 
 /**
- * De Opdracht klasse modelleert een opdracht die gebruikt kan worden in meerdere quizzen. Het is een abstracte klasse.
- * Bij een opdracht horen volgende parameters:
+ * De Opdracht klasse modelleert een opdracht die gebruikt kan worden in
+ * meerdere quizzen. Het is een abstracte klasse. Bij een opdracht horen
+ * volgende parameters:
  *
  * <ul>
  * <li>De vraag waarop een antwoord moet gevonden worden (String)</li>
- * <li>De opdrachtcategorie (Enum OpdrachtCategorie: Aardrijkskunde, Nederlands, Wetenschappen, Wiskunde)</li>
+ * <li>De opdrachtcategorie (Enum OpdrachtCategorie: Aardrijkskunde, Nederlands,
+ * Wetenschappen, Wiskunde)</li>
  * <li>De auteur van de opdracht (Enum Leraar)</li>
  * <li>De datum waarop de opdracht is aangemaakt (Datum)</li>
- * <li>Een lijst met antwoordhints (ArrayList&lt;String&gt;). Deze lijst kan leeg zijn</li>
- * <li>Een lijst met QuizOpdrachten (ArrayList&lt;QuizOpdracht&gt;). De klasse QuizOpdracht linkt de opdracht aan 0, 1
- * of meerdere quizzen</li>
- * <li>[OPTIONEEL] Het maximum aantal toegestane antwoordpogingen (int). De default waarde is 1. Om een ongelimiteerd
- * aantal pogingen toe te laten op 0 zetten</li>
- * <li>[OPTIONEEL] De maximum toegestane antwoordtijd in seconden (int). Default is de antwoordtijd ongelimiteerd</li>
+ * <li>Een lijst met antwoordhints (ArrayList&lt;String&gt;). Deze lijst kan
+ * leeg zijn</li>
+ * <li>Een lijst met QuizOpdrachten (ArrayList&lt;QuizOpdracht&gt;). De klasse
+ * QuizOpdracht linkt de opdracht aan 0, 1 of meerdere quizzen</li>
+ * <li>[OPTIONEEL] Het maximum aantal toegestane antwoordpogingen (int). De
+ * default waarde is 1. Om een ongelimiteerd aantal pogingen toe te laten op 0
+ * zetten</li>
+ * <li>[OPTIONEEL] De maximum toegestane antwoordtijd in seconden (int). Default
+ * is de antwoordtijd ongelimiteerd</li>
  * </ul>
  *
  * @author Ben Vandenberk
@@ -36,7 +41,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	private OpdrachtCategorie opdrachtCategorie;
 	private final Leraar auteur;
 
-	private final Datum aanmaakDatum;
+	private Datum aanmaakDatum;
 
 	private ArrayList<String> antwoordHints;
 	private ArrayList<QuizOpdracht> quizOpdrachten;
@@ -45,7 +50,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * Maakt een Opdracht object aan met een opdrachtcategorie en een auteur.<br/>
 	 * <br/>
 	 *
-	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is 1 (Default waarden)
+	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is
+	 * 1 (Default waarden)
 	 *
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie
@@ -57,10 +63,12 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een antwoord, een opdrachtcategorie en een auteur.<br/>
+	 * Maakt een Opdracht object aan met een vraag, een antwoord, een
+	 * opdrachtcategorie en een auteur.<br/>
 	 * <br/>
 	 *
-	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is 1 (Default waarden)
+	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is
+	 * 1 (Default waarden)
 	 *
 	 * @param vraag
 	 *            de String die de vraag bevat
@@ -69,13 +77,14 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param auteur
 	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
-	public Opdracht(String vraag, OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
+	public Opdracht(String vraag, OpdrachtCategorie opdrachtCategorie,
+			Leraar auteur) {
 		this(vraag, 1, 0, opdrachtCategorie, auteur);
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een maximum aantal pogingen, een antwoord, een opdrachtcategorie en
-	 * een auteur.<br/>
+	 * Maakt een Opdracht object aan met een vraag, een maximum aantal pogingen,
+	 * een antwoord, een opdrachtcategorie en een auteur.<br/>
 	 * <br/>
 	 *
 	 * De antwoordtijd is ongelimiteerd (default)
@@ -89,13 +98,14 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param auteur
 	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
-	public Opdracht(String vraag, int maxAantalPogingen, Leraar auteur, OpdrachtCategorie opdrachtCategorie) {
+	public Opdracht(String vraag, int maxAantalPogingen, Leraar auteur,
+			OpdrachtCategorie opdrachtCategorie) {
 		this(vraag, maxAantalPogingen, 0, opdrachtCategorie, auteur);
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximale antwoordtijd, een opdrachtcategorie en
-	 * een auteur.<br/>
+	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximale
+	 * antwoordtijd, een opdrachtcategorie en een auteur.<br/>
 	 * <br/>
 	 *
 	 * Het maximaal aantal antwoordpogingen is 1 (default)
@@ -109,13 +119,15 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param auteur
 	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
-	public Opdracht(String vraag, int maxAntwoordTijd, OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
+	public Opdracht(String vraag, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		this(vraag, 1, maxAntwoordTijd, opdrachtCategorie, auteur);
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximum aantal pogingen, een maximale
-	 * antwoordtijd, een opdrachtcategorie en een auteur
+	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximum
+	 * aantal pogingen, een maximale antwoordtijd, een opdrachtcategorie en een
+	 * auteur
 	 *
 	 * @param vraag
 	 *            de String die de vraag bevat
@@ -128,7 +140,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param auteur
 	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
-	public Opdracht(String vraag, int maxAantalPogingen, int maxAntwoordTijd, OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
+	public Opdracht(String vraag, int maxAantalPogingen, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		this.auteur = auteur;
 		antwoordHints = new ArrayList<String>();
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
@@ -139,18 +152,21 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 			setMaxAntwoordTijd(maxAntwoordTijd);
 			setOpdrachtCategorie(opdrachtCategorie);
 		} catch (UnsupportedOperationException ex) {
-			// Bij het aanmaken van een Opdracht zal de Opdracht steeds aanpasbaar zijn. De Exception zal zich nooit
+			// Bij het aanmaken van een Opdracht zal de Opdracht steeds
+			// aanpasbaar zijn. De Exception zal zich nooit
 			// voordoen
 			ex.printStackTrace();
 		}
 	}
 
 	/**
-	 * Maakt een Opdracht object aan dat al een ID toegewezen had. Gebruik deze constructor alleen om een Opdracht te
-	 * maken uit opslag (tekst / DB)
+	 * Maakt een Opdracht object aan dat al een ID en een datum van aanmaak toegewezen had. Gebruik deze
+	 * constructor alleen om een Opdracht te maken uit opslag (tekst / DB)
 	 *
 	 * @param ID
 	 *            de ID van de Opdracht
+	 * @param aanmaakDatum
+	 *            de Datum waarop de Opdracht is aangemaakt
 	 * @param vraag
 	 *            de String die de vraag bevat
 	 * @param maxAantalPogingen
@@ -162,10 +178,13 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param auteur
 	 *            de Leraar die de Opdracht gecreëerd heeft
 	 */
-	public Opdracht(int ID, String vraag, int maxAantalPogingen, int maxAntwoordTijd, OpdrachtCategorie opdrachtCategorie,
-			Leraar auteur) {
-		this(vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+	public Opdracht(int ID, Datum aanmaakDatum, String vraag,
+			int maxAantalPogingen, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
+		this(vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie,
+				auteur);
 		this.ID = ID;
+		this.aanmaakDatum = aanmaakDatum;
 	}
 
 	/**
@@ -194,8 +213,9 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Haalt het maximum aantal antwoordpogingen op. Geeft 9999 terug wanneer het het maximum aantal pogingen
-	 * ongelimiteerd is. Dit is om fouten te vermijden; Gebruik de method heeftPogingsBeperking() om te testen op een
+	 * Haalt het maximum aantal antwoordpogingen op. Geeft 9999 terug wanneer
+	 * het het maximum aantal pogingen ongelimiteerd is. Dit is om fouten te
+	 * vermijden; Gebruik de method heeftPogingsBeperking() om te testen op een
 	 * beperkt aantal pogingen
 	 *
 	 * @return het maximum aantal antwoordpogingen
@@ -212,20 +232,23 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @throws UnsupportedOperationException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setMaxAantalPogingen(int maxAantalPogingen) throws UnsupportedOperationException {
+	public void setMaxAantalPogingen(int maxAantalPogingen)
+			throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
 			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		if (maxAantalPogingen < 0) {
-			throw new IllegalArgumentException("Het aantal pogingen moet minstens 0 (= ongelimiteerd) zijn");
+			throw new IllegalArgumentException(
+					"Het aantal pogingen moet minstens 0 (= ongelimiteerd) zijn");
 		}
 		this.maxAantalPogingen = maxAantalPogingen;
 	}
 
 	/**
-	 * Haalt de maximum toegestane antwoordtijd op. Geeft 9999 terug wanneer de antwoordtijd ongelimiteerd is. Dit is om
-	 * fouten te vermijden; Gebruik de method heeftTijdsbeperking() om te testen op een tijdsbeperking
+	 * Haalt de maximum toegestane antwoordtijd op. Geeft 9999 terug wanneer de
+	 * antwoordtijd ongelimiteerd is. Dit is om fouten te vermijden; Gebruik de
+	 * method heeftTijdsbeperking() om te testen op een tijdsbeperking
 	 *
 	 * @return de maximum toegestane antwoordtijd
 	 */
@@ -241,13 +264,15 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @throws UnsupportedOperationException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setMaxAntwoordTijd(int maxAntwoordTijd) throws UnsupportedOperationException {
+	public void setMaxAntwoordTijd(int maxAntwoordTijd)
+			throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
 			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		if (maxAntwoordTijd < 0) {
-			throw new IllegalArgumentException("De antwoordtijd moet positief zijn");
+			throw new IllegalArgumentException(
+					"De antwoordtijd moet positief zijn");
 		}
 		this.maxAntwoordTijd = maxAntwoordTijd;
 	}
@@ -269,7 +294,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @throws UnsupportedOperationException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie) throws UnsupportedOperationException {
+	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie)
+			throws UnsupportedOperationException {
 		if (!isAanpasbaar()) {
 			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
@@ -287,7 +313,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Geeft een kopie van het Datum objectje terug dat de aanmaakdatum van deze opdracht voorstelt
+	 * Geeft een kopie van het Datum objectje terug dat de aanmaakdatum van deze
+	 * opdracht voorstelt
 	 *
 	 * @return de Datum van aanmaak van deze opdracht
 	 */
@@ -305,7 +332,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Geeft een boolean terug om aan te geven of er voor de Opdracht slechts een beperkt aantal pogingen is toegestaan
+	 * Geeft een boolean terug om aan te geven of er voor de Opdracht slechts
+	 * een beperkt aantal pogingen is toegestaan
 	 *
 	 * @return true als het aantal pogingen beperkt is
 	 */
@@ -314,8 +342,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Wanneer een opdracht in een quiz is opgenomen die al door een leerling is gemaakt, mag de opdracht niet meer
-	 * gewijzigd worden
+	 * Wanneer een opdracht in een quiz is opgenomen die al door een leerling is
+	 * gemaakt, mag de opdracht niet meer gewijzigd worden
 	 *
 	 * @return true als de opdracht nog niet is opgelost in een actieve quiz
 	 */
@@ -330,16 +358,19 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Wanneer een opdracht in een quiz is opgenomen kan ze niet meer verwijderd worden
+	 * Wanneer een opdracht in een quiz is opgenomen kan ze niet meer verwijderd
+	 * worden
 	 *
-	 * @return true als de opdracht nog niet gelinkt is en dus verwijderd kan worden
+	 * @return true als de opdracht nog niet gelinkt is en dus verwijderd kan
+	 *         worden
 	 */
 	public boolean isVerwijderbaar() {
 		return this.quizOpdrachten.size() == 0;
 	}
 
 	/**
-	 * Voegt een QuizOpdracht toe aan de lijst van QuizOpdrachten teneinde de Opdracht te linken aan een Quiz
+	 * Voegt een QuizOpdracht toe aan de lijst van QuizOpdrachten teneinde de
+	 * Opdracht te linken aan een Quiz
 	 *
 	 * @param quizOpdracht
 	 *            de QuizOpdracht om toe te voegen
@@ -359,7 +390,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Method die door de container klasse gebruikt kan worden om de ID van deze Opdracht te zetten
+	 * Method die door de container klasse gebruikt kan worden om de ID van deze
+	 * Opdracht te zetten
 	 *
 	 * @param id
 	 *            de ID van deze Opdracht
@@ -378,10 +410,12 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Geeft een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht terug. De QuizOpdrachten in de
-	 * teruggegeven lijst zijn geen kopies omdat aan een QuizOpdracht toch niets gewijzigd kan worden
+	 * Geeft een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht
+	 * terug. De QuizOpdrachten in de teruggegeven lijst zijn geen kopies omdat
+	 * aan een QuizOpdracht toch niets gewijzigd kan worden
 	 *
-	 * @return een kopie van de lijst met QuizOpdrachten gelinkt aan deze Opdracht
+	 * @return een kopie van de lijst met QuizOpdrachten gelinkt aan deze
+	 *         Opdracht
 	 */
 	public ArrayList<QuizOpdracht> getQuizOpdrachten() {
 		ArrayList<QuizOpdracht> kopie = new ArrayList<QuizOpdracht>();
@@ -438,19 +472,23 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Controleert of het meegegeven antwoord de correcte oplossing is van de vraag van deze Opdracht
+	 * Controleert of het meegegeven antwoord de correcte oplossing is van de
+	 * vraag van deze Opdracht
 	 *
 	 * @param antwoord
 	 *            de String met het te testen antwoord
 	 * @return <code>true</code> als het meegegeven antwoord correct is
 	 */
 	public abstract boolean isJuisteAntwoord(String antwoord);
-	
+
 	/**
-	 * Zoekt naar een QuizOpdracht met een bepaalde ID. Geeft null terug als die voor deze Opdracht niet bestaat.
+	 * Zoekt naar een QuizOpdracht met een bepaalde ID. Geeft null terug als die
+	 * voor deze Opdracht niet bestaat.
 	 * 
-	 * @param quizOpdrachtID de gewenste ID
-	 * @return de QuizOpdracht met matchende ID. Null als die niet gevonden wordt
+	 * @param quizOpdrachtID
+	 *            de gewenste ID
+	 * @return de QuizOpdracht met matchende ID. Null als die niet gevonden
+	 *         wordt
 	 */
 	public QuizOpdracht getQuizOpdracht(int quizOpdrachtID) {
 		QuizOpdracht toReturn = null;
@@ -464,9 +502,18 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 
 	@Override
 	public String toString() {
-		return "Opdracht [ID=" + ID + "] - aangemaakt: " + aanmaakDatum + " - auteur: " + auteur + "\nCategorie: "
-				+ opdrachtCategorie + "\nAntwoordtijd: " + (maxAntwoordTijd == 0 ? "ongelimiteerd" : maxAntwoordTijd)
-				+ " - Aantal toegestane pogingen: " + (maxAantalPogingen == 0 ? "ongelimiteerd" : maxAantalPogingen)
+		return "Opdracht [ID="
+				+ ID
+				+ "] - aangemaakt: "
+				+ aanmaakDatum
+				+ " - auteur: "
+				+ auteur
+				+ "\nCategorie: "
+				+ opdrachtCategorie
+				+ "\nAntwoordtijd: "
+				+ (maxAntwoordTijd == 0 ? "ongelimiteerd" : maxAntwoordTijd)
+				+ " - Aantal toegestane pogingen: "
+				+ (maxAantalPogingen == 0 ? "ongelimiteerd" : maxAantalPogingen)
 				+ "\nVraag: " + vraag + "\nAntwoord: ";
 	}
 
@@ -507,7 +554,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 
 	@Override
 	public int hashCode() {
-		String hashString = aanmaakDatum.toString() + auteur + vraag + opdrachtCategorie;
+		String hashString = aanmaakDatum.toString() + auteur + vraag
+				+ opdrachtCategorie;
 		long hash = hashString.hashCode();
 		hash = hash * 13 + maxAntwoordTijd;
 		hash = hash * 23 + maxAantalPogingen;
@@ -517,13 +565,16 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Vergelijkt twee opdrachten alfabetisch, eerst op de opdrachtcategorie, dan op de vraag
+	 * Vergelijkt twee opdrachten alfabetisch, eerst op de opdrachtcategorie,
+	 * dan op de vraag
 	 */
 	@Override
 	public int compareTo(Opdracht opdracht) {
-		if (this.opdrachtCategorie.toString().compareToIgnoreCase(opdracht.opdrachtCategorie.toString()) == 0) {
+		if (this.opdrachtCategorie.toString().compareToIgnoreCase(
+				opdracht.opdrachtCategorie.toString()) == 0) {
 			return this.vraag.compareToIgnoreCase(opdracht.vraag);
-		} else if (this.opdrachtCategorie.toString().compareToIgnoreCase(opdracht.opdrachtCategorie.toString()) < 0) {
+		} else if (this.opdrachtCategorie.toString().compareToIgnoreCase(
+				opdracht.opdrachtCategorie.toString()) < 0) {
 			return -1;
 		} else {
 			return 1;
@@ -535,10 +586,13 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		Opdracht clone = null;
 		try {
 			clone = (Opdracht) super.clone();
-			clone.antwoordHints = (ArrayList<String>) this.antwoordHints.clone();
-			clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten.clone();
+			clone.antwoordHints = (ArrayList<String>) this.antwoordHints
+					.clone();
+			clone.quizOpdrachten = (ArrayList<QuizOpdracht>) this.quizOpdrachten
+					.clone();
 		} catch (CloneNotSupportedException ex) {
-			// Opdracht is Cloneable, kan geen CloneNotSupportedException throwen
+			// Opdracht is Cloneable, kan geen CloneNotSupportedException
+			// throwen
 			ex.printStackTrace();
 		}
 		return clone;

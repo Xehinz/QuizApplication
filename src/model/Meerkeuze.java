@@ -1,5 +1,7 @@
 package model;
 
+import util.datumWrapper.Datum;
+
 public class Meerkeuze extends Opdracht implements Valideerbaar {
 
 	public Meerkeuze(OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
@@ -25,6 +27,12 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 	public Meerkeuze(String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		super(vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
+		// Juiste antwoord nog toewijzen
+	}
+	
+	public Meerkeuze(int ID, Datum aanmaakDatum, String vraag, String juisteAntwoord, int maxAantalPogingen, int maxAntwoordTijd,
+			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
+		super(ID, aanmaakDatum, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie, auteur);
 		// Juiste antwoord nog toewijzen
 	}
 
