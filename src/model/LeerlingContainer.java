@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Comparable<LeerlingContainer> {
@@ -12,6 +13,10 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 	 */
 	public LeerlingContainer() {
 		leerlingen = new ArrayList<Leerling>();
+	}
+	
+	public LeerlingContainer(Collection<Leerling> leerlingen) {
+		this.leerlingen = new ArrayList<Leerling>(leerlingen);
 	}
 
 	/**

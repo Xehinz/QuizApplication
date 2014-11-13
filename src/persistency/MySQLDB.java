@@ -11,6 +11,10 @@ import model.QuizOpdracht;
 
 public class MySQLDB implements DBStrategy {
 
+	public MySQLDB() {
+		
+	}
+	
 	@Override
 	public ArrayList<Opdracht> leesOpdrachten() {
 		// TODO Auto-generated method stub
