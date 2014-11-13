@@ -2,8 +2,11 @@ package persistency;
 
 import java.io.IOException;
 
-import model.Leerling;
 import model.Opdracht;
+import model.KlassiekeOpdracht;
+import model.Reproductie;
+import model.Opsomming;
+import model.Meerkeuze;
 
 /**
  * Klasse om Opdracht objecten weg te schrijven of in te lezen in tekstformaat
