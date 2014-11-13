@@ -18,14 +18,15 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	public Opsomming(OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		super(opdrachtCategorie, auteur);
-		this.opsommingJuisteAntwoord = "";
+		this.setJuisteAntwoord("");
+		this.setAantalAntwoordenInOpsomming();
 	}
 
 	public Opsomming(String vraag, String juisteAntwoord,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
 			boolean injuistevolgorde) {
 		super(vraag, opdrachtCategorie, auteur);
-		this.opsommingJuisteAntwoord = juisteAntwoord;
+		this.setJuisteAntwoord(juisteAntwoord);
 		this.inJuisteVolgorde = injuistevolgorde;
 		this.setAantalAntwoordenInOpsomming();
 	}
@@ -34,7 +35,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 			String juisteAntwoord, OpdrachtCategorie opdrachtCategorie,
 			Leraar auteur, boolean injuistevolgorde) {
 		super(vraag, maxAantalPogingen, 0, opdrachtCategorie, auteur);
-		this.opsommingJuisteAntwoord = juisteAntwoord;
+		this.setJuisteAntwoord(juisteAntwoord);
 		this.inJuisteVolgorde = injuistevolgorde;
 		this.setAantalAntwoordenInOpsomming();
 	}
@@ -43,7 +44,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur,
 			boolean injuistevolgorde) {
 		super(vraag, maxAntwoordTijd, opdrachtCategorie, auteur);
-		this.opsommingJuisteAntwoord = juisteAntwoord;
+		this.setJuisteAntwoord(juisteAntwoord);
 		this.inJuisteVolgorde = injuistevolgorde;
 		this.setAantalAntwoordenInOpsomming();
 	}
@@ -54,7 +55,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 			boolean injuistevolgorde) {
 		super(vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie,
 				auteur);
-		this.opsommingJuisteAntwoord = juisteAntwoord;
+		this.setJuisteAntwoord(juisteAntwoord);
 		this.inJuisteVolgorde = injuistevolgorde;
 		this.setAantalAntwoordenInOpsomming();
 	}
@@ -65,7 +66,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 			boolean injuistevolgorde) {
 		super(ID, aanmaakDatum, vraag, maxAantalPogingen, maxAntwoordTijd, opdrachtCategorie,
 				auteur);
-		this.opsommingJuisteAntwoord = juisteAntwoord;
+		this.setJuisteAntwoord(juisteAntwoord);
 		this.inJuisteVolgorde = injuistevolgorde;
 		this.setAantalAntwoordenInOpsomming();
 	}
@@ -85,7 +86,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 			throw new UnsupportedOperationException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
-		this.opsommingJuisteAntwoord = opsommingjuisteantwoord;
+		this.opsommingJuisteAntwoord = opsommingjuisteantwoord.trim();
 	}
 
 	public static ArrayList<String> getLijstJuisteAntwoord(String antwoord) {
