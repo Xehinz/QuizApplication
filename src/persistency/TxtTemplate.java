@@ -43,7 +43,7 @@ public abstract class TxtTemplate {
 
 			while (scanner.hasNextLine()) {
 				record = scanner.nextLine();
-				String[] fields = record.split(";");
+				String[] fields = record.split("\t");
 				objecten.add((T) maakObject(fields));
 			}
 			scanner.close();

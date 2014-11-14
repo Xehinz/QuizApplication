@@ -38,13 +38,13 @@ public class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
 			throw new IOException(
 					"Het object om weg te schrijven is geen QuizDeelname");
 		}
-		return String.format("%s;%s;%s", quizdeelname.getID(),
+		return String.format("%s\t%s\t%s", quizdeelname.getID(),
 				quizdeelname.getQuiz().getID(), quizdeelname.getLeerling().getID());
 	}
 
 	@Override
 	protected String getHeaderCSV() {
-		return "QuizDeelnameID;QuizID;LeerlingID";
+		return "QuizDeelnameID\tQuizID\tLeerlingID";
 	}
 
 }

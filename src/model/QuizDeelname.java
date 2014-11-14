@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import util.datumWrapper.Datum;
 
 /**
- * Klasse die een Quiz aan een Leerling verbindt. Houdt, naast de Leerling en de Quiz, ook de datum van deelname bij
+ * Klasse die een Quiz aan een Leerling verbindt. Houdt, naast de Leerling en de
+ * Quiz, ook de datum van deelname bij
  *
  * @author Adriaan Kuipers, Ben Vandenberk
  * @version 29/10/2014
  */
-public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {	
+public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 
 	private final int ID;
 	private final Leerling leerling;
@@ -53,7 +54,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * Haalt de datum van deelname op. Dit is een kopie van het interne Datum objectje
+	 * Haalt de datum van deelname op. Dit is een kopie van het interne Datum
+	 * objectje
 	 *
 	 * @return de Datum die de datum van deelname voorstelt
 	 */
@@ -62,8 +64,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * Geeft de score terug die voor deze quizdeelname behaald werd. De score staat op 10 en is afgerond tot op het
-	 * gehele getal
+	 * Geeft de score terug die voor deze quizdeelname behaald werd. De score
+	 * staat op 10 en is afgerond tot op het gehele getal
 	 *
 	 * @return de score op 10 voor deze quizdeelname
 	 */
@@ -86,25 +88,35 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * Legt de relatie tussen een Leerling en een Quiz. Roep deze method aan om een Leerling te laten deelnemen aan een
-	 * Quiz
+	 * Legt de relatie tussen een Leerling en een Quiz. Roep deze method aan om
+	 * een Leerling te laten deelnemen aan een Quiz. Zet uitStorage op true om een koppeling vanuit storage (tekst / DB) te maken
 	 *
 	 * @param quiz
 	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
 	 *            de deelnemende Leerling
+	 * @param uitStorage
+	 *            zet op true om een koppeling vanuit storage (tekst / DB) te maken
 	 * @throws IllegalStateException
-	 *             wanneer de status van de Quiz geen deelnames toelaat of wanneer de Leerling niet in het juiste
-	 *             leerjaar zit om deel te nemen
+	 *             wanneer de status van de Quiz geen deelnames toelaat of
+	 *             wanneer de Leerling niet in het juiste leerjaar zit om deel
+	 *             te nemen
 	 */
-	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) throws IllegalStateException {
-		if (!quiz.isDeelnameMogelijk()) {
-			throw new IllegalStateException(String.format(
-					"De status van de quiz(%s) laat niet toe aan de quiz deel te nemen", quiz.getQuizStatus()));
+	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling,
+			boolean uitStorage) throws IllegalStateException {
+		if (!uitStorage) {
+			if (!quiz.isDeelnameMogelijk()) {
+				throw new IllegalStateException(
+						String.format(
+								"De status van de quiz(%s) laat niet toe aan de quiz deel te nemen",
+								quiz.getQuizStatus()));
+			}
 		}
 		if (!quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
-			throw new IllegalStateException(String.format(
-					"De quiz is niet opengesteld voor het leerjaar waarin de leerling zich bevindt (%d)", leerling.getLeerjaar()));
+			throw new IllegalStateException(
+					String.format(
+							"De quiz is niet opengesteld voor het leerjaar waarin de leerling zich bevindt (%d)",
+							leerling.getLeerjaar()));
 		}
 		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling);
 		leerling.addQuizDeelname(quizDeelname);
@@ -112,10 +124,30 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * geeft ovezicht van gestelde vragen met juiste antwoorden, gegeven antwoorden & behaalde score
+	 * Legt de relatie tussen een Leerling en een Quiz. Roep deze method aan om
+	 * een Leerling te laten deelnemen aan een Quiz
+	 *
+	 * @param quiz
+	 *            de Quiz waaraan de Leerling deelneemt
+	 * @param leerling
+	 *            de deelnemende Leerling
+	 * @throws IllegalStateException
+	 *             wanneer de status van de Quiz geen deelnames toelaat of
+	 *             wanneer de Leerling niet in het juiste leerjaar zit om deel
+	 *             te nemen
+	 */
+	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling)
+			throws IllegalStateException {
+		koppelQuizAanLeerling(quiz, leerling, false);
+	}
+
+	/**
+	 * geeft ovezicht van gestelde vragen met juiste antwoorden, gegeven
+	 * antwoorden & behaalde score
 	 */
 	public String feedback() {
-		throw new UnsupportedOperationException("Method nog niet geïmplementeerd");
+		throw new UnsupportedOperationException(
+				"Method nog niet geïmplementeerd");
 	}
 
 	/**
@@ -129,9 +161,11 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * Geeft een shallow copy van de lijst met OpdrachtAntwoorden van deze QuizDeelname terug.
+	 * Geeft een shallow copy van de lijst met OpdrachtAntwoorden van deze
+	 * QuizDeelname terug.
 	 *
-	 * @return een shallow copy van de ArrayList&lt;OpdrachtAntwoord&gt; van deze QuizDeelname
+	 * @return een shallow copy van de ArrayList&lt;OpdrachtAntwoord&gt; van
+	 *         deze QuizDeelname
 	 */
 	public ArrayList<OpdrachtAntwoord> getOpdrachtAntwoorden() {
 		ArrayList<OpdrachtAntwoord> kopie = new ArrayList<OpdrachtAntwoord>();
@@ -146,16 +180,19 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Deelname van %s aan quiz: %s op %s", this.leerling.getNaam(), this.quiz.getOnderwerp(),
+		return String.format("Deelname van %s aan quiz: %s op %s",
+				this.leerling.getNaam(), this.quiz.getOnderwerp(),
 				this.datum.getDatumInEuropeesFormaat());
 	}
 
 	/**
-	 * Override van equals: controle of deze quizdeelname dezelfde is als de andere
+	 * Override van equals: controle of deze quizdeelname dezelfde is als de
+	 * andere
 	 *
 	 * @param aQuizDeelname
 	 *            een quizdeelname waarmee we gaan vergelijken
-	 * @return true als de meegegeven QuizDeelname hetzelfde is als deze QuizDeelname
+	 * @return true als de meegegeven QuizDeelname hetzelfde is als deze
+	 *         QuizDeelname
 	 */
 	@Override
 	public boolean equals(Object aQuizDeelname) {
@@ -179,10 +216,12 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * Vergelijkt deze QuizDeelname met een andere op basis van de Leerling (alfabetisch) en dan op datum van deelname
+	 * Vergelijkt deze QuizDeelname met een andere op basis van de Leerling
+	 * (alfabetisch) en dan op datum van deelname
 	 *
-	 * @return een negatief nummer, nul of een positief nummer als de quizdeelname voor, op dezelfde plaats of na de
-	 *         andere QuizDeelname komt
+	 * @return een negatief nummer, nul of een positief nummer als de
+	 *         quizdeelname voor, op dezelfde plaats of na de andere
+	 *         QuizDeelname komt
 	 */
 	@Override
 	public int compareTo(QuizDeelname aQuizDeelname) {
@@ -208,9 +247,11 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		QuizDeelname clone = null;
 		try {
 			clone = (QuizDeelname) super.clone();
-			clone.opdrachtAntwoorden = (ArrayList<OpdrachtAntwoord>) this.opdrachtAntwoorden.clone();
+			clone.opdrachtAntwoorden = (ArrayList<OpdrachtAntwoord>) this.opdrachtAntwoorden
+					.clone();
 		} catch (CloneNotSupportedException ex) {
-			// QuizDeelname implementeert Cloneable, mag geen CloneNotSupportedException throwen
+			// QuizDeelname implementeert Cloneable, mag geen
+			// CloneNotSupportedException throwen
 			ex.printStackTrace();
 		}
 		return clone;

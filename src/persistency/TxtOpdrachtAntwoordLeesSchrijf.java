@@ -33,14 +33,14 @@ public class TxtOpdrachtAntwoordLeesSchrijf extends TxtTemplate {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen OpdrachtAntwoord");
 		}
-		return String.format("%s;%s;%s;%s;%s", opdrachtAntwoord.getQuizDeelname().getID(), opdrachtAntwoord.getQuizOpdracht()
+		return String.format("%s\t%s\t%s\t%s\t%s", opdrachtAntwoord.getQuizDeelname().getID(), opdrachtAntwoord.getQuizOpdracht()
 				.getID(), opdrachtAntwoord.getAantalPogingen(), opdrachtAntwoord.getAntwoordTijd(), opdrachtAntwoord
 				.getLaatsteAntwoord());
 	}
 
 	@Override
 	protected String getHeaderCSV() {
-		return "QuizDeelnameID;QuizOpdrachtID;AantalPogingen;AntwoordTijd;LaatsteAntwoord";
+		return "QuizDeelnameID\tQuizOpdrachtID\tAantalPogingen\tAntwoordTijd\tLaatsteAntwoord";
 	}
 
 }

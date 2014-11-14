@@ -42,13 +42,13 @@ public class TxtLeerlingLeesSchrijf extends TxtTemplate {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen Leerling");
 		}
-		return String.format("%d;%s;%s;%d", leerling.getID(), leerling.getLeerlingVoornaam(), leerling.getLeerlingFamilienaam(),
+		return String.format("%d\t%s\t%s\t%d", leerling.getID(), leerling.getLeerlingVoornaam(), leerling.getLeerlingFamilienaam(),
 				leerling.getLeerjaar());
 	}
 
 	@Override
 	protected String getHeaderCSV() {
-		return "ID;Voornaam;Familienaam;Leerjaar";
+		return "ID\tVoornaam\tFamilienaam\tLeerjaar";
 	}
 
 }
