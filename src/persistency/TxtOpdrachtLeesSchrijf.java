@@ -3,6 +3,7 @@ package persistency;
 import java.io.IOException;
 
 import model.Opdracht;
+import model.QuizOpdracht;
 import model.KlassiekeOpdracht;
 import model.Reproductie;
 import model.Opsomming;
@@ -44,11 +45,19 @@ public class TxtOpdrachtLeesSchrijf extends TxtTemplate {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen opdracht");
 		}
-		return String.format("%s;%s", "", "");
+		String hints = new String();
+		for (String s : opdracht.getHints()) {
+			hints += String.format("%s|", s);			
+		}
+		String quizOpdrachten = new String();
+		for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
+			quizOpdrachten += String.format("%s|", qo.getID());
+		}
+		return String.format("%d\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s",opdracht.getID(),opdracht.getAuteur(),(opdracht.getAanmaakDatum()).getDatumInEuropeesFormaat(),opdracht.getVraag(),(opdracht.getOpdrachtCategorie()).toString(),opdracht.getMaxAantalPogingen(), opdracht.getMaxAntwoordTijd(),hints,quizOpdrachten);
 	}
 
 	@Override
 	protected String getHeaderCSV() {
-		return "header";
+		return "ID\tAuteur\tDatum\tVraag\tCategorie\tMax pogingen\tMax Tijd\tHints\tQuizOpdrachten";
 	}
 }
