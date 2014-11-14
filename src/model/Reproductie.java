@@ -68,6 +68,10 @@ public class Reproductie extends Opdracht {
 	public String getJuisteTrefwoorden() {
 		return juisteTrefwoorden;
 	}
+	
+	public int getMinimumAantalTrefwoorden() {
+		return minimumAantalTrefwoorden;
+	}
 
 	public void setJuisteAntwoord(String juisteAntwoord)
 			throws UnsupportedOperationException {
