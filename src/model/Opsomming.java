@@ -74,6 +74,14 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 	public String getJuisteAntwoord() {
 		return opsommingJuisteAntwoord;
 	}
+	
+	public boolean getInJuisteVolgorde() {
+		return inJuisteVolgorde;
+	}
+	
+	public int getAantalAntwoordenInOpsomming() {
+		return aantalAntwoordenInOpsomming;
+	}
 
 	public void setAantalAntwoordenInOpsomming() {
 		this.aantalAntwoordenInOpsomming = Opsomming.getLijstJuisteAntwoord(
