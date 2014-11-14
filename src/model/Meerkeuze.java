@@ -59,12 +59,12 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 		}
 		if (this.getAantalOpties() > 0) {
 			//verificatie of het meegegeven antwoord wel als optie beschikbaar is
-			if (!this.getOpties().contains(juisteAntwoord)) {
+			if (!this.getOpties().contains(juisteAntwoord.trim())) {
 				throw new IllegalArgumentException(
 						"Deze optie kan niet als juiste antwoord ingesteld worden. Dit juiste antwoord is niet als optie beschikbaar in de meerkeuzen.");
 			}
 		}
-		this.juisteOptie = juisteAntwoord;			
+		this.juisteOptie = juisteAntwoord.trim();			
 	}	
 	
 	public ArrayList<String> getOpties() {
@@ -77,7 +77,7 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 		return newList;
 	}
 	
-	public void setOpties(String opties) throws IllegalArgumentException {
+	public void setOpties(String opties) throws IllegalArgumentException {		
 		this.meerkeuzeOpties = opties;
 		//verificatie of de meegegeven opties ook wel het juiste antwoord bevatten
 		if (this.juisteOptie!="") {
@@ -85,7 +85,7 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 				throw new IllegalArgumentException(
 						"Deze opties kunnen niet als meerkeuzen ingesteld worden. Het juiste antwoord is niet beschikbaar in deze lijst met meerkeuzen.");				
 			}
-		}
+		}		
 	}
 	
 	public int getAantalOpties() {
@@ -99,17 +99,17 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 
 	@Override
 	public String getValideerTekst() {
-		return "Typ je de meerkeuze-optie uit de lijst met meerkeuze-opties.";
+		return "Typ je meerkeuze-optie uit de lijst met meerkeuze-opties.";
 }
 
 	@Override
 	public boolean isJuisteAntwoord(String antwoord) {
-		return (antwoord.toUpperCase() == this.juisteOptie.toUpperCase());
+		return (antwoord.toUpperCase().equals(this.juisteOptie.toUpperCase()));
 	}
 
 	@Override
 	public String toString() {
-		return super.toString() + ", kies een geldige optie uit de meerkeuzelijst."; 
+		return "Meerkeuze " + super.toString() + ", kies een geldige optie uit de meerkeuzelijst."; 
 	}
 
 	@Override
