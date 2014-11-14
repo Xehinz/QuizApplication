@@ -57,4 +57,9 @@ public class OpsommingTest {
 	public void testIsValide_JuisteAantalAntwoorden_GeeftTrue() {
 		assertTrue(opdrachtInVolgorde.isValide("maandag;dinsdag;woensdag;donderdag;vrijdag"));
 	}
+	
+	@Test
+	public void testEquals_CloneAlsArgument_GeeftTrue() {
+		assertTrue(opdrachtInVolgorde.equals(opdrachtInVolgorde.clone()));
+	}
 }

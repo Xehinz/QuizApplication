@@ -52,15 +52,15 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 		return juisteOptie;
 	}
 
-	public void setJuisteAntwoord(String juisteAntwoord) throws UnsupportedOperationException {
+	public void setJuisteAntwoord(String juisteAntwoord) throws IllegalStateException, IllegalArgumentException {
 		if (!isAanpasbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		if (this.getAantalOpties() > 0) {
 			//verificatie of het meegegeven antwoord wel als optie beschikbaar is
 			if (!this.getOpties().contains(juisteAntwoord)) {
-				throw new UnsupportedOperationException(
+				throw new IllegalArgumentException(
 						"Deze optie kan niet als juiste antwoord ingesteld worden. Dit juiste antwoord is niet als optie beschikbaar in de meerkeuzen.");
 			}
 		}
@@ -77,12 +77,12 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 		return newList;
 	}
 	
-	public void setOpties(String opties) throws UnsupportedOperationException {
+	public void setOpties(String opties) throws IllegalArgumentException {
 		this.meerkeuzeOpties = opties;
 		//verificatie of de meegegeven opties ook wel het juiste antwoord bevatten
 		if (this.juisteOptie!="") {
 			if (!this.getOpties().contains(this.juisteOptie)) {
-				throw new UnsupportedOperationException(
+				throw new IllegalArgumentException(
 						"Deze opties kunnen niet als meerkeuzen ingesteld worden. Het juiste antwoord is niet beschikbaar in deze lijst met meerkeuzen.");				
 			}
 		}

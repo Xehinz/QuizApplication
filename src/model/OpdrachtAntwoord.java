@@ -137,18 +137,18 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	 *            de String met het definitieve antwoord van de Leerling
 	 * @throws IllegalArgumentException
 	 *             als de quizDeelname of de quizOpdracht null is
-	 * @throws UnsupportedOperationException
+	 * @throws IllegalStateException
 	 *             als er al een OpdrachtAntwoord bestaat voor deze QuizDeelname en QuizOpdracht
 	 */
 	public static OpdrachtAntwoord koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
 			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) throws IllegalArgumentException,
-			UnsupportedOperationException {
+			IllegalStateException {
 		if (quizDeelname == null || quizOpdracht == null) {
 			throw new IllegalArgumentException("De QuizDeelname en de QuizOpdracht moeten verwijzen naar een bestaand object");
 		}
 		for (OpdrachtAntwoord antwoord : quizDeelname.getOpdrachtAntwoorden()) {
 			if (antwoord.getQuizOpdracht().equals(quizOpdracht)) {
-				throw new UnsupportedOperationException(
+				throw new IllegalStateException(
 						"Binnen deze QuizDeelname is er al een OpdrachtAntwoord voor deze QuizOpdracht");
 			}
 		}

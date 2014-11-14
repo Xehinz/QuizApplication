@@ -65,13 +65,13 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	 *
 	 * @param O
 	 *            de te verwijderen Opdracht
-	 * @throws UnsupportedOperationException
+	 * @throws IllegalStateException
 	 *             als de opdracht reeds gelinkt is aan een quiz
 	 */
 
-	public void removeOpdracht(Opdracht O) throws UnsupportedOperationException {
+	public void removeOpdracht(Opdracht O) throws IllegalStateException {
 		if (!O.isVerwijderbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"De opdracht kan niet verwijderd worden omdat ze reeds gelinkt is aan een quiz");
 		}
 		if (O.getID() == hoogsteID) {

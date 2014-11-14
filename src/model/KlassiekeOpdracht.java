@@ -44,9 +44,9 @@ public class KlassiekeOpdracht extends Opdracht {
 		return juisteAntwoord;
 	}
 
-	public void setJuisteAntwoord(String juisteAntwoord) throws UnsupportedOperationException {
+	public void setJuisteAntwoord(String juisteAntwoord) throws IllegalStateException {
 		if (!isAanpasbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		this.juisteAntwoord = juisteAntwoord.trim();

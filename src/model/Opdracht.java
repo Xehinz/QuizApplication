@@ -146,22 +146,16 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		antwoordHints = new ArrayList<String>();
 		quizOpdrachten = new ArrayList<QuizOpdracht>();
 		aanmaakDatum = new Datum();
-		try {
-			setVraag(vraag);
-			setMaxAantalPogingen(maxAantalPogingen);
-			setMaxAntwoordTijd(maxAntwoordTijd);
-			setOpdrachtCategorie(opdrachtCategorie);
-		} catch (UnsupportedOperationException ex) {
-			// Bij het aanmaken van een Opdracht zal de Opdracht steeds
-			// aanpasbaar zijn. De Exception zal zich nooit
-			// voordoen
-			ex.printStackTrace();
-		}
+		setVraag(vraag);
+		setMaxAantalPogingen(maxAantalPogingen);
+		setMaxAntwoordTijd(maxAntwoordTijd);
+		setOpdrachtCategorie(opdrachtCategorie);
 	}
 
 	/**
-	 * Maakt een Opdracht object aan dat al een ID en een datum van aanmaak toegewezen had. Gebruik deze
-	 * constructor alleen om een Opdracht te maken uit opslag (tekst / DB)
+	 * Maakt een Opdracht object aan dat al een ID en een datum van aanmaak
+	 * toegewezen had. Gebruik deze constructor alleen om een Opdracht te maken
+	 * uit opslag (tekst / DB)
 	 *
 	 * @param ID
 	 *            de ID van de Opdracht
@@ -201,12 +195,12 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param vraag
 	 *            de String die de vraag bevat
-	 * @throws UnsupportedOperationException
+	 * @throws IllegalStateException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
-	public void setVraag(String vraag) throws UnsupportedOperationException {
+	public void setVraag(String vraag) throws IllegalStateException {
 		if (!isAanpasbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		this.vraag = vraag;
@@ -229,13 +223,15 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param maxAantalPogingen
 	 *            het maximum aantal antwoordpogingen
-	 * @throws UnsupportedOperationException
+	 * @throws IllegalStateException
 	 *             als de Opdracht niet meer aanpasbaar is
+	 * @throws IllegalArgumentException
+	 *             als het argument negatief is
 	 */
 	public void setMaxAantalPogingen(int maxAantalPogingen)
-			throws UnsupportedOperationException {
+			throws IllegalStateException, IllegalArgumentException {
 		if (!isAanpasbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		if (maxAantalPogingen < 0) {
@@ -261,13 +257,15 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param maxAntwoordTijd
 	 *            de maximum toegestane antwoordtijd
-	 * @throws UnsupportedOperationException
+	 * @throws IllegalStateException
 	 *             als de Opdracht niet meer aanpasbaar is
+	 * @throws IllegalArgumentException
+	 *             als het argument negatief is
 	 */
 	public void setMaxAntwoordTijd(int maxAntwoordTijd)
-			throws UnsupportedOperationException {
+			throws IllegalStateException, IllegalArgumentException {
 		if (!isAanpasbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		if (maxAntwoordTijd < 0) {
@@ -291,13 +289,13 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie waartoe de Opdracht zal behoren
-	 * @throws UnsupportedOperationException
+	 * @throws IllegalStateException
 	 *             als de Opdracht niet meer aanpasbaar is
 	 */
 	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie)
-			throws UnsupportedOperationException {
+			throws IllegalStateException {
 		if (!isAanpasbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		this.opdrachtCategorie = opdrachtCategorie;

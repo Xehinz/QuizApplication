@@ -74,21 +74,21 @@ public class Reproductie extends Opdracht {
 	}
 
 	public void setJuisteAntwoord(String juisteAntwoord)
-			throws UnsupportedOperationException {
+			throws IllegalStateException {
 		if (!isAanpasbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
-		this.juisteTrefwoorden = juisteAntwoord.trim();
+		this.juisteTrefwoorden = juisteAntwoord.trim().toLowerCase();
 	}
 
 	public void setMinimumAantalTrefwoorden(int minimumAantalTrefwoorden)
-			throws UnsupportedOperationException {
+			throws IllegalArgumentException {
 		if (Reproductie.getLijstJuisteTrefwoorden(this.juisteTrefwoorden)
 				.size() >= minimumAantalTrefwoorden) {
 			this.minimumAantalTrefwoorden = minimumAantalTrefwoorden;
 		} else {
-			throw new UnsupportedOperationException(
+			throw new IllegalArgumentException(
 					"Minimum aantal trefwoorden nodig voor een juist antwoord mag niet meer zijn dan het aantal juiste trefwoorden");
 		}
 	}
@@ -109,7 +109,7 @@ public class Reproductie extends Opdracht {
 		String antw = antwoord.toLowerCase();
 		int aantalJuisteAntwoorden = 0;
 		ArrayList<String> lijst = Reproductie
-				.getLijstJuisteTrefwoorden(this.juisteTrefwoorden.toLowerCase());
+				.getLijstJuisteTrefwoorden(this.juisteTrefwoorden);
 		for (String A : lijst) {
 			if (antw.contains(A)) {
 				aantalJuisteAntwoorden++;
@@ -124,7 +124,7 @@ public class Reproductie extends Opdracht {
 
 	@Override
 	public String toString() {
-		return super.toString() + juisteTrefwoorden + " met minimum "
+		return "Reproductie " + super.toString() + juisteTrefwoorden + " met minimum "
 				+ minimumAantalTrefwoorden
 				+ " aantal trefwoorden die juist moeten zijn.";
 	}
@@ -136,11 +136,11 @@ public class Reproductie extends Opdracht {
 		}
 		Reproductie other = (Reproductie) obj;
 		if (Reproductie.getLijstJuisteTrefwoorden(
-				this.juisteTrefwoorden.toLowerCase()).containsAll(
+				this.juisteTrefwoorden).containsAll(
 				Reproductie.getLijstJuisteTrefwoorden(other.juisteTrefwoorden
-						.toLowerCase()))) {
+						))) {
 			if (this.minimumAantalTrefwoorden != other.minimumAantalTrefwoorden) {
-				return false;
+				return false; 
 			} else {
 				return true;
 			}

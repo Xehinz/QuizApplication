@@ -93,17 +93,17 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
 	 *            de deelnemende Leerling
-	 * @throws UnsupportedOperationException
+	 * @throws IllegalStateException
 	 *             wanneer de status van de Quiz geen deelnames toelaat of wanneer de Leerling niet in het juiste
 	 *             leerjaar zit om deel te nemen
 	 */
-	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) throws UnsupportedOperationException {
+	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling) throws IllegalStateException {
 		if (!quiz.isDeelnameMogelijk()) {
-			throw new UnsupportedOperationException(String.format(
+			throw new IllegalStateException(String.format(
 					"De status van de quiz(%s) laat niet toe aan de quiz deel te nemen", quiz.getQuizStatus()));
 		}
 		if (!quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
-			throw new UnsupportedOperationException(String.format(
+			throw new IllegalStateException(String.format(
 					"De quiz is niet opengesteld voor het leerjaar waarin de leerling zich bevindt (%d)", leerling.getLeerjaar()));
 		}
 		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling);

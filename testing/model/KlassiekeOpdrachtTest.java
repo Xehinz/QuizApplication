@@ -33,5 +33,10 @@ public class KlassiekeOpdrachtTest {
 	public void testIsJuisteAntwoord_FouteAntwoord_GeeftFalse() {
 		assertFalse("Foute antwoord wordt afgekeurd", opdracht.isJuisteAntwoord("Blussel"));
 	}
+	
+	@Test
+	public void testEquals_CloneAlsArgument_GeeftTrue() {
+		assertTrue(opdracht.equals(opdracht.clone()));
+	}
 
 }

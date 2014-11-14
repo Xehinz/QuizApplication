@@ -89,9 +89,9 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 	}
 
 	public void setJuisteAntwoord(String opsommingjuisteantwoord)
-			throws UnsupportedOperationException {
+			throws IllegalStateException {
 		if (!isAanpasbaar()) {
-			throw new UnsupportedOperationException(
+			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
 		this.opsommingJuisteAntwoord = opsommingjuisteantwoord.trim();

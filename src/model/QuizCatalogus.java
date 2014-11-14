@@ -78,14 +78,14 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *
 	 * @param Q
 	 *            de te verwijderen Quiz
-	 * @throws UnsupportedOperationException
+	 * @throws IllegalStateException
 	 *             als de quiz zich niet in de status 'In constructie' of 'Afgewerkt' bevindt en dus niet verwijderbaar
 	 *             is
 	 */
 
-	public void removeQuiz(Quiz Q) throws UnsupportedOperationException {
+	public void removeQuiz(Quiz Q) throws IllegalStateException {
 		if (!Q.isVerwijderbaar()) {
-			throw new UnsupportedOperationException(String.format(
+			throw new IllegalStateException(String.format(
 					"De quiz bevindt zich in de status %s en is dus niet verwijderbaar", Q.getQuizStatus().toString()));
 		}
 		this.quizcatalogus.remove(Q);
