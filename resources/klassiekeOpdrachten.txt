@@ -1,1 +1,1 @@
-4	15/11/2014	Wat is de hoofdstad van Frankrijk	1	15	Aardrijkskunde	Charlotte Neven	hint|	Parijs
+4	15/11/2014	Wat is de hoofdstad van Frankrijk	1	15	AARDRIJKSKUNDE	CHARLOTTE_NEVEN	... - Dakar|	Parijs

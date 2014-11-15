@@ -39,7 +39,7 @@ public abstract class TxtOpdrachtLeesSchrijf extends TxtTemplate {
 		for (String s : opdracht.getHints()) {
 			hints += String.format("%s|", s);			
 		}
-		return String.format("%d\t%s\t%s\t%d\t%d\t%s\t%s\t%s",opdracht.getID(),(opdracht.getAanmaakDatum()).getDatumInEuropeesFormaat(),opdracht.getVraag(),opdracht.getMaxAantalPogingen(), opdracht.getMaxAntwoordTijd(),(opdracht.getOpdrachtCategorie()).toString(),opdracht.getAuteur(),hints);
+		return String.format("%d\t%s\t%s\t%d\t%d\t%s\t%s\t%s",opdracht.getID(),(opdracht.getAanmaakDatum()).getDatumInEuropeesFormaat(),opdracht.getVraag(),opdracht.getMaxAantalPogingen(), opdracht.getMaxAntwoordTijd(),(opdracht.getOpdrachtCategorie()).name(),(opdracht.getAuteur()).name(),hints);
 	}
 	
 }

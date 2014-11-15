@@ -26,9 +26,9 @@ public class TxtMeerkeuzeLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 	@Override
 	protected Opdracht maakObject(String[] fields) throws IOException {
 		try {
-			Meerkeuze opdracht = new Meerkeuze(Integer.parseInt(fields[0]), new Datum(fields[1]), fields[2], fields[8], Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), OpdrachtCategorie.valueOf(fields[5]), Leraar.valueOf(fields[6]));
+			Meerkeuze opdracht = new Meerkeuze(Integer.parseInt(fields[0]), new Datum(fields[1]), fields[2], fields[9], Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), OpdrachtCategorie.valueOf(fields[5]), Leraar.valueOf(fields[6]));
 			voegHintsToe(opdracht, fields[7]);
-			opdracht.setOpties(fields[9]);
+			opdracht.setOpties(fields[8]);
 			return opdracht;
 		} catch (NumberFormatException Nex) {
 			throw new IOException("Fout bij het parsen van het ID / Max pogingen of Max tijd", Nex);

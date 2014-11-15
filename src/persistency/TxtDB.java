@@ -8,6 +8,10 @@ import model.OpdrachtAntwoord;
 import model.Quiz;
 import model.QuizDeelname;
 import model.QuizOpdracht;
+import model.KlassiekeOpdracht;
+import model.Meerkeuze;
+import model.Opsomming;
+import model.Reproductie;
 
 /**
  * klasse die het gebruik van de Txt databank beheert.
@@ -18,29 +22,27 @@ import model.QuizOpdracht;
  */
 
 public class TxtDB implements DBStrategy {
-	
+
 	private TxtLeerlingLeesSchrijf txtLeerlingLeesSchrijf;
 	private TxtOpdrachtAntwoordLeesSchrijf txtOpdrachtAntwoordLeesSchrijf;
 	private TxtQuizDeelnameLeesSchrijf txtQuizDeelnameLeesSchrijf;
 	private TxtQuizLeesSchrijf txtQuizLeesSchrijf;
 	private TxtQuizOpdrachtLeesSchrijf txtQuizOpdrachtLeesSchrijf;
-	private TxtOpdrachtLeesSchrijf txtOpdrachtLeesSchrijf;
 	private TxtKlassiekeOpdrachtLeesSchrijf txtKlassiekeOpdrachtLeesSchrijf;
 	private TxtReproductieLeesSchrijf txtReproductieLeesSchrijf;
 	private TxtMeerkeuzeLeesSchrijf txtMeerkeuzeLeesSchrijf;
 	private TxtOpsommingLeesSchrijf txtOpsommingLeesSchrijf;
-	
+
 	public TxtDB() {
 		this.txtLeerlingLeesSchrijf = new TxtLeerlingLeesSchrijf();
 		this.txtOpdrachtAntwoordLeesSchrijf = new TxtOpdrachtAntwoordLeesSchrijf();
 		this.txtQuizDeelnameLeesSchrijf = new TxtQuizDeelnameLeesSchrijf();
 		this.txtQuizLeesSchrijf = new TxtQuizLeesSchrijf();
 		this.txtQuizOpdrachtLeesSchrijf = new TxtQuizOpdrachtLeesSchrijf();
-		this.txtKlassiekeOpdrachtLeesSchrijf=  new TxtKlassiekeOpdrachtLeesSchrijf();
+		this.txtKlassiekeOpdrachtLeesSchrijf = new TxtKlassiekeOpdrachtLeesSchrijf();
 		this.txtReproductieLeesSchrijf = new TxtReproductieLeesSchrijf();
 		this.txtMeerkeuzeLeesSchrijf = new TxtMeerkeuzeLeesSchrijf();
 		this.txtOpsommingLeesSchrijf = new TxtOpsommingLeesSchrijf();
-		//this.txtOpdrachtLeesSchrijf = new TxtOpdrachtLeesSchrijf();
 	}
 
 	@Override
@@ -52,7 +54,7 @@ public class TxtDB implements DBStrategy {
 		opdrachtObjecten.addAll(txtOpsommingLeesSchrijf.lees());
 		ArrayList<Opdracht> opdrachten = new ArrayList<Opdracht>();
 		for (Object opdracht : opdrachtObjecten) {
-			opdrachten.add((Opdracht)opdracht);
+			opdrachten.add((Opdracht) opdracht);
 		}
 		return opdrachten;
 	}
@@ -84,8 +86,28 @@ public class TxtDB implements DBStrategy {
 
 	@Override
 	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) {
-		//txtOpdrachtLeesSchrijf.schrijf(opdrachten);
-		txtKlassiekeOpdrachtLeesSchrijf.schrijf(opdrachten);
+		ArrayList<Opdracht> klassiekeopdrachten = new ArrayList<Opdracht>();
+		ArrayList<Opdracht> meerkeuzeopdrachten = new ArrayList<Opdracht>();
+		ArrayList<Opdracht> opsommingsopdrachten = new ArrayList<Opdracht>();
+		ArrayList<Opdracht> reproductieopdrachten = new ArrayList<Opdracht>();
+		for (Opdracht opdracht : opdrachten) {
+			if (opdracht instanceof KlassiekeOpdracht) {
+				klassiekeopdrachten.add(opdracht);
+			}
+			if (opdracht instanceof Meerkeuze) {
+				meerkeuzeopdrachten.add(opdracht);
+			}
+			if (opdracht instanceof Opsomming) {
+				opsommingsopdrachten.add(opdracht);
+			}
+			if (opdracht instanceof Reproductie) {
+				reproductieopdrachten.add(opdracht);
+			}
+		}
+		txtKlassiekeOpdrachtLeesSchrijf.schrijf(klassiekeopdrachten);
+		txtMeerkeuzeLeesSchrijf.schrijf(meerkeuzeopdrachten);
+		txtOpsommingLeesSchrijf.schrijf(opsommingsopdrachten);
+		txtReproductieLeesSchrijf.schrijf(reproductieopdrachten);
 	}
 
 	@Override
@@ -109,7 +131,8 @@ public class TxtDB implements DBStrategy {
 	}
 
 	@Override
-	public void schrijfOpdrachtAntwoorden(ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) {
+	public void schrijfOpdrachtAntwoorden(
+			ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) {
 		txtOpdrachtAntwoordLeesSchrijf.schrijf(opdrachtAntwoorden);
 	}
 
