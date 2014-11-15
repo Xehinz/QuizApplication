@@ -7,7 +7,7 @@ import util.datumWrapper.Datum;
 /**
  * De Opdracht klasse modelleert een opdracht die gebruikt kan worden in
  * meerdere quizzen. Het is een abstracte klasse. Bij een opdracht horen
- * volgende parameters:
+ * volgende fields:
  *
  * <ul>
  * <li>De vraag waarop een antwoord moet gevonden worden (String)</li>
@@ -24,6 +24,7 @@ import util.datumWrapper.Datum;
  * zetten</li>
  * <li>[OPTIONEEL] De maximum toegestane antwoordtijd in seconden (int). Default
  * is de antwoordtijd ongelimiteerd</li>
+ * <li>Een unieke ID. Deze ID wordt toegewezen door de OpdrachtCatalogus</li>
  * </ul>
  *
  * @author Ben Vandenberk
@@ -56,15 +57,15 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie
 	 * @param auteur
-	 *            de Leraar die de Opdracht gecreëerd heeft
+	 *            de Leraar die de Opdracht gecre&euml;erd heeft
 	 */
 	public Opdracht(OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		this("", 1, 0, opdrachtCategorie, auteur);
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een antwoord, een
-	 * opdrachtcategorie en een auteur.<br/>
+	 * Maakt een Opdracht object aan met een vraag, een opdrachtcategorie en een
+	 * auteur.<br/>
 	 * <br/>
 	 *
 	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is
@@ -75,7 +76,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie
 	 * @param auteur
-	 *            de Leraar die de Opdracht gecreëerd heeft
+	 *            de Leraar die de Opdracht gecre&euml;erd heeft
 	 */
 	public Opdracht(String vraag, OpdrachtCategorie opdrachtCategorie,
 			Leraar auteur) {
@@ -84,7 +85,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 
 	/**
 	 * Maakt een Opdracht object aan met een vraag, een maximum aantal pogingen,
-	 * een antwoord, een opdrachtcategorie en een auteur.<br/>
+	 * een opdrachtcategorie en een auteur.<br/>
 	 * <br/>
 	 *
 	 * De antwoordtijd is ongelimiteerd (default)
@@ -96,7 +97,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie
 	 * @param auteur
-	 *            de Leraar die de Opdracht gecreëerd heeft
+	 *            de Leraar die de Opdracht gecre&euml;erd heeft
 	 */
 	public Opdracht(String vraag, int maxAantalPogingen, Leraar auteur,
 			OpdrachtCategorie opdrachtCategorie) {
@@ -104,7 +105,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximale
+	 * Maakt een Opdracht object aan met een vraag, een maximale
 	 * antwoordtijd, een opdrachtcategorie en een auteur.<br/>
 	 * <br/>
 	 *
@@ -117,7 +118,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie
 	 * @param auteur
-	 *            de Leraar die de Opdracht gecreëerd heeft
+	 *            de Leraar die de Opdracht gecre&euml;erd heeft
 	 */
 	public Opdracht(String vraag, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
@@ -125,7 +126,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een antwoord, een maximum
+	 * Maakt een Opdracht object aan met een vraag, een maximum
 	 * aantal pogingen, een maximale antwoordtijd, een opdrachtcategorie en een
 	 * auteur
 	 *
@@ -138,7 +139,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie
 	 * @param auteur
-	 *            de Leraar die de Opdracht gecreëerd heeft
+	 *            de Leraar die de Opdracht gecre&euml;erd heeft
 	 */
 	public Opdracht(String vraag, int maxAantalPogingen, int maxAntwoordTijd,
 			OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
@@ -170,7 +171,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie
 	 * @param auteur
-	 *            de Leraar die de Opdracht gecreëerd heeft
+	 *            de Leraar die de Opdracht gecre&euml;erd heeft
 	 */
 	public Opdracht(int ID, Datum aanmaakDatum, String vraag,
 			int maxAantalPogingen, int maxAntwoordTijd,
@@ -544,9 +545,6 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		if (opdracht.maxAntwoordTijd != this.maxAntwoordTijd) {
 			return false;
 		}
-		if (opdracht.ID != this.ID) {
-			return false;
-		}
 		return true;
 	}
 
@@ -557,7 +555,6 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		long hash = hashString.hashCode();
 		hash = hash * 13 + maxAntwoordTijd;
 		hash = hash * 23 + maxAantalPogingen;
-		hash = hash * 29 + ID;
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}

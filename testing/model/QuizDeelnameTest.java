@@ -97,7 +97,7 @@ public class QuizDeelnameTest {
 	 * test het koppelen van een quiz in constructie aan een leerling
 	 */
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test(expected = IllegalStateException.class)
 	public void testKoppelQuizAanLeerling_QuizEnLeerling_StatusLaatDeelnameNietToe() {
 		QuizDeelname.koppelQuizAanLeerling(quiz2, leerling);
 	}
@@ -106,7 +106,7 @@ public class QuizDeelnameTest {
 	 * test het koppelen van een quiz aan een leerling van een foutief leerjaar
 	 */
 
-	@Test(expected = UnsupportedOperationException.class)
+	@Test(expected = IllegalStateException.class)
 	public void testKoppelQuizAanLeerling_QuizEnLeerling_LeerjaarLaatDeelnameNietToe() {
 		QuizDeelname.koppelQuizAanLeerling(quiz3, leerling);
 	}

@@ -103,8 +103,8 @@ public class OpdrachtAntwoordTest {
 		OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, null, 1, 10, "");
 	}
 
-	@Test(expected = UnsupportedOperationException.class)
-	public void testKoppelQuizDeelnameAanQuizOpdracht_TweeAntwoordenVoorZelfdeOpdracht_ThrowsUnsupportedOperationException() {
+	@Test(expected = IllegalStateException.class)
+	public void testKoppelQuizDeelnameAanQuizOpdracht_TweeAntwoordenVoorZelfdeOpdracht_IllegalStateException() {
 		OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdrachtOpTijdZonderPogingen, 1, 10, "Athene");
 		OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdrachtOpTijdZonderPogingen, 2, 15, "Ouagadougou");
 	}
