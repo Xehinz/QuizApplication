@@ -29,10 +29,10 @@ public class Reproductie extends Opdracht {
 	/**
 	 * Maakt een Reproductie object aan met een opdrachtcategorie en een auteur.<br/>
 	 * <br/>
-	 *
+	 * 
 	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is
 	 * 1 (Default waarden)
-	 *
+	 * 
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie
 	 * @param auteur
@@ -48,10 +48,10 @@ public class Reproductie extends Opdracht {
 	 * Maakt een Reproductie object aan met een vraag, een antwoord, het minimum
 	 * aantal te vinden trefwoorden, een opdrachtcategorie en een auteur.<br/>
 	 * <br/>
-	 *
+	 * 
 	 * De antwoordtijd is ongelimiteerd. Het maximum aantal antwoordpogingen is
 	 * 1 (Default waarden)
-	 *
+	 * 
 	 * @param vraag
 	 *            de String die de vraag bevat
 	 * @param juisteAntwoord
@@ -76,9 +76,9 @@ public class Reproductie extends Opdracht {
 	 * pogingen, een antwoord, het minimum aantal te vinden trefwoorden, een
 	 * opdrachtcategorie en een auteur.<br/>
 	 * <br/>
-	 *
+	 * 
 	 * De antwoordtijd is ongelimiteerd (default)
-	 *
+	 * 
 	 * @param vraag
 	 *            de String die de vraag bevat
 	 * @param maxAantalPogingen
@@ -105,9 +105,9 @@ public class Reproductie extends Opdracht {
 	 * aantal te vinden trefwoorden, een maximale antwoordtijd, een
 	 * opdrachtcategorie en een auteur.<br/>
 	 * <br/>
-	 *
+	 * 
 	 * Het maximaal aantal antwoordpogingen is 1 (default)
-	 *
+	 * 
 	 * @param vraag
 	 *            de String die de vraag bevat
 	 * @param juisteAntwoord
@@ -133,7 +133,7 @@ public class Reproductie extends Opdracht {
 	 * Maakt een Reproductie object aan met een vraag, een antwoord, het minimum
 	 * aantal te vinden trefwoorden, een maximum aantal pogingen, een maximale
 	 * antwoordtijd, een opdrachtcategorie en een auteur.
-	 *
+	 * 
 	 * @param vraag
 	 *            de String die de vraag bevat
 	 * @param juisteAntwoord
@@ -163,7 +163,7 @@ public class Reproductie extends Opdracht {
 	 * Maakt een Reproductie object aan dat al een ID en een datum van aanmaak
 	 * toegewezen had. Gebruik deze constructor alleen om een Opdracht te maken
 	 * uit opslag (tekst / DB)
-	 *
+	 * 
 	 * @param ID
 	 *            de ID van de Opdracht
 	 * @param aanmaakDatum
@@ -225,11 +225,21 @@ public class Reproductie extends Opdracht {
 	 */
 	public void setJuisteAntwoord(String juisteAntwoord)
 			throws IllegalStateException {
+		ArrayList<String> lijst = new ArrayList<String>(
+				Arrays.asList(juisteAntwoord.split(";")));
 		if (!isAanpasbaar()) {
 			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
+		if (juisteAntwoord == "") {
+			throw new IllegalArgumentException("Minimum 1 trefwoord nodig");
+		}
+		if (lijst.size() < this.minimumAantalTrefwoorden) {
+			throw new IllegalArgumentException("Minimum "
+					+ this.minimumAantalTrefwoorden + " trefwoorden nodig");
+		}
 		this.juisteTrefwoorden = juisteAntwoord.trim().toLowerCase();
+
 	}
 
 	/**
@@ -252,7 +262,11 @@ public class Reproductie extends Opdracht {
 			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
-		if (Reproductie.getLijstJuisteTrefwoorden(this.juisteTrefwoorden)
+		if (minimumAantalTrefwoorden <= 0) {
+			throw new IllegalArgumentException(
+					"Minimum aantal trefwoorden moet groter zijn dan 0");
+		}
+		if (this.getLijstJuisteTrefwoorden()
 				.size() >= minimumAantalTrefwoorden) {
 			this.minimumAantalTrefwoorden = minimumAantalTrefwoorden;
 		} else {
@@ -271,9 +285,9 @@ public class Reproductie extends Opdracht {
 	 * @return een ArrayList&lt;String&gt; met de juiste trefwoorden in het
 	 *         meegegeven antwoord
 	 */
-	public static ArrayList<String> getLijstJuisteTrefwoorden(String antwoord) {
+	public ArrayList<String> getLijstJuisteTrefwoorden() {
 		ArrayList<String> checkList = new ArrayList<String>(
-				Arrays.asList(antwoord.split(";")));
+				Arrays.asList(this.juisteTrefwoorden.split(";")));
 		ArrayList<String> newList = new ArrayList<String>();
 		for (String A : checkList) {
 			String B = A.trim();
@@ -286,8 +300,7 @@ public class Reproductie extends Opdracht {
 	public boolean isJuisteAntwoord(String antwoord) {
 		String antw = antwoord.toLowerCase();
 		int aantalJuisteAntwoorden = 0;
-		ArrayList<String> lijst = Reproductie
-				.getLijstJuisteTrefwoorden(this.juisteTrefwoorden);
+		ArrayList<String> lijst = this.getLijstJuisteTrefwoorden();
 		for (String A : lijst) {
 			if (antw.contains(A)) {
 				aantalJuisteAntwoorden++;
@@ -313,11 +326,10 @@ public class Reproductie extends Opdracht {
 			return false;
 		}
 		Reproductie other = (Reproductie) obj;
-		if (Reproductie
-				.getLijstJuisteTrefwoorden(this.juisteTrefwoorden)
-				.containsAll(
-						Reproductie
-								.getLijstJuisteTrefwoorden(other.juisteTrefwoorden))) {
+		if (this.getLijstJuisteTrefwoorden().containsAll(
+				other.getLijstJuisteTrefwoorden())
+				&& other.getLijstJuisteTrefwoorden().containsAll(
+						this.getLijstJuisteTrefwoorden())) {
 			if (this.minimumAantalTrefwoorden != other.minimumAantalTrefwoorden) {
 				return false;
 			} else {

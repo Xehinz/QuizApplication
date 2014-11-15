@@ -78,7 +78,7 @@ public class ReproductieTest {
 	@Test
 	public void testEquals_TweeDezelfdeOpJuisteTrefwoordenNa_GeeftFalse() {
 		Reproductie clone = opdracht5TrefWoordenNodig.clone();
-		clone.setJuisteAntwoord("zon;aarde");
+		clone.setJuisteAntwoord("neptunus;komeet;kometen;planeten;planeet;ster");
 		assertFalse(opdracht5TrefWoordenNodig.equals(clone));
 	}
 	
