@@ -4,47 +4,68 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Comparable<LeerlingContainer> {
+/**
+ * De LeerlingContainer klasse encapsuleert een interne Collection van Leerling
+ * objecten. Ze voorziet in methods om de interne Collection te manipuleren.
+ * LeerlingContainer is ook verantwoordelijk om aan elke toegevoegde Leerling
+ * een unieke ID toe te kennen. Deze ID's worden gebruikt om Leerling objecten
+ * en hun relaties persistent te maken over verschillende gebruikerssessies
+ * heen.
+ * 
+ * @author Jef Bellens
+ *
+ */
+public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
+		Comparable<LeerlingContainer> {
 
 	private ArrayList<Leerling> leerlingen;
 
 	/**
-	 * Maakt een LeerlingContainer aan
+	 * Maakt een lege LeerlingContainer aan
 	 */
 	public LeerlingContainer() {
 		leerlingen = new ArrayList<Leerling>();
 	}
-	
+
+	/**
+	 * Maakt een LeerlingContainer aan op basis van een Collection van Leerling
+	 * objecten
+	 * 
+	 * @param leerlingen
+	 *            de Collection&lt;Leerling&gt; die de aangemaakte
+	 *            LeerlingContainer zal bevatten
+	 */
 	public LeerlingContainer(Collection<Leerling> leerlingen) {
 		this.leerlingen = new ArrayList<Leerling>(leerlingen);
 	}
 
 	/**
-	 * Voegt een Leerling toe aan de interne collectie van Leerlingen. Laat niet toe om dezelfde Leerling tweemaal toe
-	 * te voegen
+	 * Voegt een Leerling toe aan de interne collectie van Leerlingen. Laat niet
+	 * toe om dezelfde Leerling tweemaal toe te voegen
 	 *
-	 * @param l
+	 * @param leerling
 	 *            de Leerling om toe te voegen
 	 */
-	public void addLeerling(Leerling l) {
-		if (!leerlingen.contains(l)) {
-			leerlingen.add(l);
-		}		
+	public void addLeerling(Leerling leerling) {
+		if (!leerlingen.contains(leerling)) {
+			leerlingen.add(leerling);
+		}
 	}
 
 	/**
 	 * Verwijdert een Leerling van de interne collectie van Leerlingen
 	 *
-	 * @param l
+	 * @param leerling
 	 *            de Leerling om te verwijderen
 	 */
-	public void removeLeerling(Leerling l) {
-		leerlingen.remove(l);
+	public void removeLeerling(Leerling leerling) {
+		leerlingen.remove(leerling);
 	}
 
 	/**
-	 * Geeft een kopie van de lijst met Leerlingen terug. De referenties naar de Leerlingen wijzen naar dezelfde
-	 * Leerling objecten als de referenties in deze LeerlingContainer
+	 * Geeft een kopie van de lijst met Leerlingen terug. De referenties naar de
+	 * Leerlingen wijzen naar dezelfde Leerling objecten als de referenties in
+	 * deze LeerlingContainer
 	 *
 	 * @return een ArrayList&lt;Leerling&gt; met Leerlingen
 	 */
@@ -64,13 +85,16 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 	public int count() {
 		return leerlingen.size();
 	}
-	
+
 	/**
 	 * Haalt de Leerling met een bepaald ID op uit de LeerlingContainer
 	 * 
-	 * @param leerlingID de ID van de gewenste Leerling
+	 * @param leerlingID
+	 *            de ID van de gewenste Leerling
 	 * @return de Leerling met matchende ID
-	 * @throws IllegalArgumentException wanneer er geen Leerling object gevonden wordt met de meegegeven ID
+	 * @throws IllegalArgumentException
+	 *             wanneer er geen Leerling object gevonden wordt met de
+	 *             meegegeven ID
 	 */
 	public Leerling getLeerling(int leerlingID) throws IllegalArgumentException {
 		for (Leerling leerling : this) {
@@ -78,13 +102,15 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 				return leerling;
 			}
 		}
-		throw new IllegalArgumentException("De LeerlingContainer bevat geen leerling met ID=" + leerlingID);
+		throw new IllegalArgumentException(
+				"De LeerlingContainer bevat geen leerling met ID=" + leerlingID);
 	}
-	
+
 	/**
 	 * Haalt een lijstje op van alle QuizDeelnames, van alle Leerlingen
 	 * 
-	 * @return een ArrayList&lt;QuizDeelname&gt; van alle QuizDeelnames, van alle Leerlingen
+	 * @return een ArrayList&lt;QuizDeelname&gt; van alle QuizDeelnames, van
+	 *         alle Leerlingen
 	 */
 	public ArrayList<QuizDeelname> getAlleQuizDeelnames() {
 		ArrayList<QuizDeelname> alleQuizDeelnames = new ArrayList<QuizDeelname>();
@@ -93,11 +119,13 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 		}
 		return alleQuizDeelnames;
 	}
-	
+
 	/**
-	 * Haalt een lijstje op van alle OpdrachtAntwoorden, van alle Leerlingen, in alle Quizzen
+	 * Haalt een lijstje op van alle OpdrachtAntwoorden, van alle Leerlingen, in
+	 * alle Quizzen
 	 * 
-	 * @return een ArrayList&lt;OpdrachtAntwoord&gt;, van alle Leerlingen, in alle Quizzen
+	 * @return een ArrayList&lt;OpdrachtAntwoord&gt;, van alle Leerlingen, in
+	 *         alle Quizzen
 	 */
 	public ArrayList<OpdrachtAntwoord> getAlleOpdrachtAntwoorden() {
 		ArrayList<OpdrachtAntwoord> alleOpdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
@@ -135,7 +163,8 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 				clone.leerlingen.add(leerling.clone());
 			}
 		} catch (CloneNotSupportedException ex) {
-			// LeerlingContainer implementeert Cloneable dus kan geen CloneNotSupportedException throwen
+			// LeerlingContainer implementeert Cloneable dus kan geen
+			// CloneNotSupportedException throwen
 			ex.printStackTrace();
 		}
 		return clone;
@@ -153,7 +182,8 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 	}
 
 	/**
-	 * Vergelijkt een LeerlingContainer met een andere LeerlingContainer op basis van de hoeveelheid Leerlingen
+	 * Vergelijkt een LeerlingContainer met een andere LeerlingContainer op
+	 * basis van de hoeveelheid Leerlingen
 	 */
 	@Override
 	public int compareTo(LeerlingContainer leerlingContainer) {
@@ -171,13 +201,14 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 
 	@Override
 	public String toString() {
-		String result = String.format("LeerlingContainer met %d leerlingen:\n\n", count());
+		String result = String.format(
+				"LeerlingContainer met %d leerlingen:\n\n", count());
 		for (Leerling leerling : this) {
 			result += leerling + scheiding();
 		}
 		return result;
 	}
-	
+
 	private String scheiding() {
 		return "\n----------------------------------------------------------------------------------------------------\n";
 	}

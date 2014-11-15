@@ -4,8 +4,8 @@ package model;
  * Klasse die een QuizDeelname aan een QuizOpdracht verbindt. Eenmaal er een
  * instantie van OpdrachtAntwoord is aangemaakt, is het antwoord van de Leerling
  * op de Opdracht binnen de QuizDeelname definitief. Het OpdrachtAntwoord object
- * houdt gegevens bij over het antwoord op één vraag binnen één
- * quizdeelname. Volgende zaken worden bijgehouden:
+ * houdt gegevens bij over het antwoord op &eacute;&eacute;n vraag binnen
+ * &eacute;&eacute;n quizdeelname. Volgende zaken worden bijgehouden:
  * <ul>
  * <li>Het definitieve (laatste) antwoord (String)</li>
  * <li>Het aantal pogingen om tot dit antwoord te komen (int)</li>
@@ -13,8 +13,8 @@ package model;
  * <li>De behaalde score</li>
  * </ul>
  *
- * Het algoritme om tot dit antwoord te komen is voorlopig hard-coded opgenomen
- * in deze klasse. Wanneer we het Strategy pattern gaan implementeren, is het de
+ * Het algoritme om tot deze score te komen is voorlopig hard-coded opgenomen in
+ * deze klasse. Wanneer we het Strategy pattern gaan implementeren, is het de
  * bedoeling om de scoreberekening met behulp van klasses flexibeler te maken.
  *
  * @author Tim Cool, Ben Vandenberk
@@ -23,12 +23,32 @@ package model;
  */
 public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 		Cloneable {
+
 	private final QuizDeelname quizDeelname;
 	private final QuizOpdracht quizOpdracht;
 	private final String laatsteAntwoord;
 	private final int aantalPogingen;
 	private final int antwoordTijd;
 	private final double behaaldeScore;
+
+	private OpdrachtAntwoord(QuizDeelname quizDeelname,
+			QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
+			String laatsteAntwoord) {
+		if (aantalPogingen < 1) {
+			throw new IllegalArgumentException(
+					"Het aantal pogingen kan niet kleiner zijn dan 1");
+		}
+		if (antwoordTijd < 0) {
+			throw new IllegalArgumentException(
+					"De antwoordtijd moet positief zijn");
+		}
+		this.quizDeelname = quizDeelname;
+		this.quizOpdracht = quizOpdracht;
+		this.aantalPogingen = aantalPogingen;
+		this.antwoordTijd = antwoordTijd;
+		this.laatsteAntwoord = laatsteAntwoord;
+		behaaldeScore = berekenScore();
+	}
 
 	/**
 	 * Haalt de QuizDeelname gelinkt aan dit object op
@@ -82,55 +102,6 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 	 */
 	public double getBehaaldeScore() {
 		return behaaldeScore;
-	}
-
-	private OpdrachtAntwoord(QuizDeelname quizDeelname,
-			QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
-			String laatsteAntwoord) {
-		if (aantalPogingen < 1) {
-			throw new IllegalArgumentException(
-					"Het aantal pogingen kan niet kleiner zijn dan 1");
-		}
-		if (antwoordTijd < 0) {
-			throw new IllegalArgumentException(
-					"De antwoordtijd moet positief zijn");
-		}
-		this.quizDeelname = quizDeelname;
-		this.quizOpdracht = quizOpdracht;
-		this.aantalPogingen = aantalPogingen;
-		this.antwoordTijd = antwoordTijd;
-		this.laatsteAntwoord = laatsteAntwoord;
-		behaaldeScore = berekenScore();
-	}
-
-	/**
-	 * Uitwerking van het scoreberekeningsalgoritme op pagina 5 van de opgave
-	 */
-	private double berekenScore() {
-		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) { // FOUT
-																				// ANTWOORD
-			return 0.0;
-		} else { // JUIST ANTWOORD
-			if (quizOpdracht.getOpdracht().heeftTijdsbeperking()
-					&& antwoordTijd > quizOpdracht.getOpdracht()
-							.getMaxAntwoordTijd()) { // TE VEEL TIJD GEBRUIKT
-				return 0.0;
-			} else { // TIJD OKE
-				if (aantalPogingen == 1) {
-					return quizOpdracht.getMaxScore();
-				} else {
-					if (!quizOpdracht.getOpdracht().heeftPogingBeperking()) { // ONBEPERKT
-																				// AANTAL
-																				// POGINGEN
-						return quizOpdracht.getMaxScore() / 2.0;
-					} else { // BEPERKT AANTAL POGINGEN
-						return aantalPogingen <= quizOpdracht.getOpdracht()
-								.getMaxAantalPogingen() ? quizOpdracht
-								.getMaxScore() / 2.0 : 0.0;
-					}
-				}
-			}
-		}
 	}
 
 	/**
@@ -272,4 +243,33 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 		return clone;
 	}
 
+	/**
+	 * Uitwerking van het scoreberekeningsalgoritme op pagina 5 van de opgave
+	 */
+	private double berekenScore() {
+		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) { // FOUT
+																				// ANTWOORD
+			return 0.0;
+		} else { // JUIST ANTWOORD
+			if (quizOpdracht.getOpdracht().heeftTijdsbeperking()
+					&& antwoordTijd > quizOpdracht.getOpdracht()
+							.getMaxAntwoordTijd()) { // TE VEEL TIJD GEBRUIKT
+				return 0.0;
+			} else { // TIJD OKE
+				if (aantalPogingen == 1) {
+					return quizOpdracht.getMaxScore();
+				} else {
+					if (!quizOpdracht.getOpdracht().heeftPogingBeperking()) { // ONBEPERKT
+																				// AANTAL
+																				// POGINGEN
+						return quizOpdracht.getMaxScore() / 2.0;
+					} else { // BEPERKT AANTAL POGINGEN
+						return aantalPogingen <= quizOpdracht.getOpdracht()
+								.getMaxAantalPogingen() ? quizOpdracht
+								.getMaxScore() / 2.0 : 0.0;
+					}
+				}
+			}
+		}
+	}
 }

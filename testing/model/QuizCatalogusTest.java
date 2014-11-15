@@ -66,12 +66,6 @@ public class QuizCatalogusTest {
 	}
 
 	@Test
-	public void testQuizCatalogus_toString_IsOK() {
-		assertEquals("De toString is hetzelfde", "Quizcatalogus met " + quizCatalogusBasis.count() + " quizzen",
-				quizCatalogusBasis.toString());
-	}
-
-	@Test
 	public void testQuizCatalogus_CountVanQuizCatalogusEnCountVanClone_IsOK() {
 		assertEquals("De count van origineel en clone is hetzelfde", quizCatalogusBasis.clone().count(),
 				quizCatalogusBasis.count());

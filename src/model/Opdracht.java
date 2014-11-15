@@ -94,10 +94,10 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *            de String die de vraag bevat
 	 * @param maxAantalPogingen
 	 *            het maximaal aantal toegelaten antwoordpogingen
-	 * @param opdrachtCategorie
-	 *            de OpdrachtCategorie
 	 * @param auteur
 	 *            de Leraar die de Opdracht gecre&euml;erd heeft
+	 * @param opdrachtCategorie
+	 *            de OpdrachtCategorie
 	 */
 	public Opdracht(String vraag, int maxAantalPogingen, Leraar auteur,
 			OpdrachtCategorie opdrachtCategorie) {
@@ -105,8 +105,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een maximale
-	 * antwoordtijd, een opdrachtcategorie en een auteur.<br/>
+	 * Maakt een Opdracht object aan met een vraag, een maximale antwoordtijd,
+	 * een opdrachtcategorie en een auteur.<br/>
 	 * <br/>
 	 *
 	 * Het maximaal aantal antwoordpogingen is 1 (default)
@@ -126,9 +126,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Maakt een Opdracht object aan met een vraag, een maximum
-	 * aantal pogingen, een maximale antwoordtijd, een opdrachtcategorie en een
-	 * auteur
+	 * Maakt een Opdracht object aan met een vraag, een maximum aantal pogingen,
+	 * een maximale antwoordtijd, een opdrachtcategorie en een auteur
 	 *
 	 * @param vraag
 	 *            de String die de vraag bevat
@@ -209,7 +208,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 
 	/**
 	 * Haalt het maximum aantal antwoordpogingen op. Geeft 9999 terug wanneer
-	 * het het maximum aantal pogingen ongelimiteerd is. Dit is om fouten te
+	 * het maximum aantal pogingen ongelimiteerd is. Dit is om fouten te
 	 * vermijden; Gebruik de method heeftPogingsBeperking() om te testen op een
 	 * beperkt aantal pogingen
 	 *
@@ -259,7 +258,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param maxAntwoordTijd
 	 *            de maximum toegestane antwoordtijd
 	 * @throws IllegalStateException
-	 *             als de Opdracht niet meer aanpasbaar is
+	 *             als de Opdracht niet meer aanpasbaar is omdat er al
+	 *             leerlingen deze opdracht hebben opgelost
 	 * @throws IllegalArgumentException
 	 *             als het argument negatief is
 	 */
@@ -291,7 +291,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param opdrachtCategorie
 	 *            de OpdrachtCategorie waartoe de Opdracht zal behoren
 	 * @throws IllegalStateException
-	 *             als de Opdracht niet meer aanpasbaar is
+	 *             als de Opdracht niet meer aanpasbaar is omdat er al
+	 *             leerlingen deze opdracht hebben opgelost
 	 */
 	public void setOpdrachtCategorie(OpdrachtCategorie opdrachtCategorie)
 			throws IllegalStateException {
@@ -303,16 +304,16 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Haalt de leraar op die de opdracht gecreëerd heeft
+	 * Haalt de leraar op die de opdracht gecre&euml;erd heeft
 	 *
-	 * @return de Leraar die de Opdracht gecreëerd heeft
+	 * @return de Leraar die de Opdracht gecre&euml;erd heeft
 	 */
 	public Leraar getAuteur() {
 		return auteur;
 	}
 
 	/**
-	 * Geeft een kopie van het Datum objectje terug dat de aanmaakdatum van deze
+	 * Geeft een kopie van het Datum object terug dat de aanmaakdatum van deze
 	 * opdracht voorstelt
 	 *
 	 * @return de Datum van aanmaak van deze opdracht
@@ -450,9 +451,9 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @param volgnr
 	 *            het volgnummer van de hint, beginnende bij 1
 	 */
-	public void removeHint(int volgnr) {
+	public void removeHint(int volgnr) throws IllegalArgumentException {
 		if (volgnr < 0 || volgnr > antwoordHints.size() - 1) {
-			return;
+			throw new IllegalArgumentException("De hint met volgnummer " + volgnr + " bestaat niet");
 		}
 		antwoordHints.remove(volgnr - 1);
 	}
@@ -513,8 +514,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 				+ (heeftTijdsbeperking() ? maxAntwoordTijd : "ongelimiteerd")
 				+ " - Aantal toegestane pogingen: "
 				+ (heeftPogingBeperking() ? maxAantalPogingen : "ongelimiteerd")
-				+ "\nHints: " + hintsString()
-				+ "\nVraag: " + vraag + "\nAntwoord: ";
+				+ "\nHints: " + hintsString() + "\nVraag: " + vraag
+				+ "\nAntwoord: ";
 	}
 
 	@Override
@@ -593,7 +594,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		}
 		return clone;
 	}
-	
+
 	private String hintsString() {
 		if (antwoordHints.size() == 0) {
 			return "geen";
@@ -601,12 +602,11 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		String hintsString = "";
 		for (int i = 0; i < antwoordHints.size(); i++) {
 			if (i < antwoordHints.size() - 1) {
-			hintsString += antwoordHints.get(i) + " | ";
-			}
-			else {
+				hintsString += antwoordHints.get(i) + " | ";
+			} else {
 				hintsString += antwoordHints.get(i);
-			}				
-		}		
+			}
+		}
 		return hintsString;
 	}
 }

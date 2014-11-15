@@ -90,6 +90,11 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		return leerlingVoornaam + " " + leerlingFamilienaam;
 	}
 
+	/**
+	 * Haalt de ID van de Leerling op
+	 * 
+	 * @return de ID van de Leerling
+	 */
 	public int getID() {
 		return ID;
 	}

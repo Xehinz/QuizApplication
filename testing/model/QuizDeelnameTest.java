@@ -131,16 +131,6 @@ public class QuizDeelnameTest {
 	}
 
 	/**
-	 * test de toString methode
-	 */
-
-	@Test
-	public void testToString_NoParam_IsOk() {
-		assertEquals("Deelname van Bram Verhelst aan quiz: Onderwerp 1 op " + datum.getDatumInEuropeesFormaat(),
-				quizdeelname.toString());
-	}
-
-	/**
 	 * test de equals methode voor een deelname van dezelfde leerling aan dezelfde quiz
 	 */
 

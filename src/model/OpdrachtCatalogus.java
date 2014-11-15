@@ -6,14 +6,19 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * De OpdrachtCatalogus klasse, met 1 field: Een lijst met alle aangemaakte opdrachten
+ * De OpdrachtCatalogus klasse, met 1 field: Een lijst met alle aangemaakte
+ * opdrachten. De OpdrachtCatalogus is verantwoordelijk voor het toekennen van
+ * unieke ID's aan de Opdracht objecten die eraan toegevoegd worden. Deze ID's
+ * worden gebruikt om Opdracht objecten en hun relaties persistent te maken over
+ * verschillende gebruikerssessies heen.
  *
  * @author Bert Neyt
  * @version 26/10/2014
  *
  */
 
-public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneable, Iterable<Opdracht> {
+public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
+		Cloneable, Iterable<Opdracht> {
 	private HashSet<Opdracht> opdrachtcatalogus;
 	private int hoogsteID;
 
@@ -27,7 +32,8 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	}
 
 	/**
-	 * Maakt een nieuwe OpdrachtCatalogus aan van een reeds bestaande lijst van opdrachten
+	 * Maakt een nieuwe OpdrachtCatalogus aan van een reeds bestaande lijst van
+	 * opdrachten
 	 *
 	 * @param oc
 	 *            een lijst van opdrachten
@@ -42,46 +48,45 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	}
 
 	/**
-	 * voegt een opdracht toe
+	 * Voegt een opdracht toe
 	 *
-	 * @param O
+	 * @param opdracht
 	 *            de toe te voegen Opdracht
 	 */
 
-	public void addOpdracht(Opdracht O) {
-		this.opdrachtcatalogus.add(O);
-		if (O.getID() == 0) {
-			O.setID(++hoogsteID);
-		}
-		else {
-			if (O.getID() > hoogsteID) {
-				hoogsteID = O.getID();
+	public void addOpdracht(Opdracht opdracht) {		
+		if (opdracht.getID() == 0) {
+			opdracht.setID(++hoogsteID);
+		} else {
+			if (opdracht.getID() > hoogsteID) {
+				hoogsteID = opdracht.getID();
 			}
 		}
+		this.opdrachtcatalogus.add(opdracht);
 	}
 
 	/**
-	 * verwijdert een opdracht
+	 * Verwijdert een opdracht
 	 *
-	 * @param O
+	 * @param opdracht
 	 *            de te verwijderen Opdracht
 	 * @throws IllegalStateException
 	 *             als de opdracht reeds gelinkt is aan een quiz
 	 */
 
-	public void removeOpdracht(Opdracht O) throws IllegalStateException {
-		if (!O.isVerwijderbaar()) {
+	public void removeOpdracht(Opdracht opdracht) throws IllegalStateException {
+		if (!opdracht.isVerwijderbaar()) {
 			throw new IllegalStateException(
 					"De opdracht kan niet verwijderd worden omdat ze reeds gelinkt is aan een quiz");
 		}
-		if (O.getID() == hoogsteID) {
+		if (opdracht.getID() == hoogsteID) {
 			hoogsteID--;
 		}
-		this.opdrachtcatalogus.remove(O);
+		this.opdrachtcatalogus.remove(opdracht);
 	}
 
 	/**
-	 * check of de catalogus een bepaalde opdracht bevat
+	 * Check of de catalogus een bepaalde opdracht bevat
 	 *
 	 * @param opdracht
 	 *            de te zoeken opdracht
@@ -105,7 +110,8 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 	/**
 	 * Geeft een kopie van de interne lijst van Opdrachten terug
 	 *
-	 * @return een ArrayList&lt;Opdracht&gt; met een kopie van de interne lijst van Opdrachten
+	 * @return een ArrayList&lt;Opdracht&gt; met een kopie van de interne lijst
+	 *         van Opdrachten
 	 */
 	public ArrayList<Opdracht> getOpdrachten() {
 		ArrayList<Opdracht> opdrachten = new ArrayList<Opdracht>();
@@ -114,27 +120,32 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		}
 		return opdrachten;
 	}
-	
+
 	/**
 	 * Haalt de Opdracht op uit de OpdrachtCatalogus met een bepaalde ID
 	 * 
-	 * @param opdrachtID de ID van de gewenste Opdracht
+	 * @param opdrachtID
+	 *            de ID van de gewenste Opdracht
 	 * @return de Opdracht met matchende ID
-	 * @throws IllegalArgumentException wanneer er geen Opdracht object gevonden wordt met de meegegeven ID
+	 * @throws IllegalArgumentException
+	 *             wanneer er geen Opdracht object gevonden wordt met de
+	 *             meegegeven ID
 	 */
 	public Opdracht getOpdracht(int opdrachtID) throws IllegalArgumentException {
 		for (Opdracht opdracht : this) {
 			if (opdracht.getID() == opdrachtID) {
 				return opdracht;
 			}
-		} 
-		throw new IllegalArgumentException("De OpdrachtCatalogus bevat geen Opdracht met ID=" + opdrachtID);
+		}
+		throw new IllegalArgumentException(
+				"De OpdrachtCatalogus bevat geen Opdracht met ID=" + opdrachtID);
 	}
-	
+
 	/**
 	 * Haalt een lijstje op van alle QuizOpdrachten, over alle opdrachten heen
 	 * 
-	 * @return een ArrayList&lt;QuizOpdracht&gt; van alle QuizOpdrachten, over alle opdrachten heen
+	 * @return een ArrayList&lt;QuizOpdracht&gt; van alle QuizOpdrachten, over
+	 *         alle opdrachten heen
 	 */
 	public ArrayList<QuizOpdracht> getAlleQuizOpdrachten() {
 		ArrayList<QuizOpdracht> alleQuizOpdrachten = new ArrayList<QuizOpdracht>();
@@ -150,7 +161,8 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 
 	@Override
 	public String toString() {
-		String result = "Opdrachtcatalogus met " + this.count() + " opdrachten:\n\n";
+		String result = "Opdrachtcatalogus met " + this.count()
+				+ " opdrachten:\n\n";
 		for (Opdracht opdracht : this) {
 			result += opdracht + scheiding();
 		}
@@ -209,7 +221,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}
-	
+
 	/**
 	 * Kloont OpdrachtCatalogus
 	 *
@@ -230,7 +242,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		}
 		return clone;
 	}
-	
+
 	private String scheiding() {
 		return "\n----------------------------------------------------------------------------------------------------\n";
 	}

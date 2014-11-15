@@ -134,7 +134,7 @@ public class LeerlingTest {
 
 	@Test
 	public void testToString_NoParam_IsOK() {
-		assertEquals("Leerling Marie Vandamme uit leerjaar 3", leerling.toString());
+		assertEquals("Leerling [ID=0] Marie Vandamme uit leerjaar 3", leerling.toString());
 	}
 
 	/**
