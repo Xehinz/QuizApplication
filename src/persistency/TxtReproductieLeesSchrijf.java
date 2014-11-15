@@ -26,7 +26,7 @@ public class TxtReproductieLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 	@Override
 	protected Opdracht maakObject(String[] fields) throws IOException {
 		try {
-			Reproductie opdracht = new Reproductie(Integer.parseInt(fields[0]), new Datum(fields[1]), fields[2], Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), OpdrachtCategorie.valueOf(fields[5]), Leraar.valueOf(fields[6]), fields[8], Integer.parseInt(fields[9]));
+			Reproductie opdracht = new Reproductie(Integer.parseInt(fields[0]), new Datum(fields[1]), fields[2], fields[8], Integer.parseInt(fields[9]), Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), OpdrachtCategorie.valueOf(fields[5]), Leraar.valueOf(fields[6]));
 			voegHintsToe(opdracht, fields[7]);
 			return opdracht;
 		} catch (NumberFormatException Nex) {

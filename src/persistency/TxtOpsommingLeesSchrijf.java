@@ -26,7 +26,7 @@ public class TxtOpsommingLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 	@Override
 	protected Opdracht maakObject(String[] fields) throws IOException {
 		try {
-			Opsomming opdracht = new Opsomming(Integer.parseInt(fields[0]), new Datum(fields[1]), fields[2], Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), OpdrachtCategorie.valueOf(fields[5]), Leraar.valueOf(fields[6]), fields[8], Boolean.parseBoolean(fields[9]));
+			Opsomming opdracht = new Opsomming(Integer.parseInt(fields[0]), new Datum(fields[1]), fields[2], fields[8], Integer.parseInt(fields[3]), Integer.parseInt(fields[4]), OpdrachtCategorie.valueOf(fields[5]), Leraar.valueOf(fields[6]), Boolean.parseBoolean(fields[9]));
 			voegHintsToe(opdracht, fields[7]);
 			return opdracht;
 		} catch (NumberFormatException Nex) {
