@@ -12,7 +12,7 @@ import model.Leraar;
  * Klasse om Reproductie objecten weg te schrijven of in te lezen in tekstformaat
  *
  * @author Adriaan Kuipers
- * @version 14/11/2014
+ * @version 15/11/2014
  *
  */
 
@@ -46,7 +46,7 @@ public class TxtReproductieLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen Reproductie");
 		}		
-		return String.format("%s\t%s\t%d", super.maakStringRecord(object), reproductie.getJuisteTrefwoorden(), reproductie.getMinimumAantalTrefwoorden());	
+		return String.format("%s\t%s\t%d", this.maakBasisOpdrachtString(reproductie), reproductie.getJuisteTrefwoorden(), reproductie.getMinimumAantalTrefwoorden());	
 	}
 
 	@Override

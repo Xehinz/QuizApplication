@@ -12,7 +12,7 @@ import model.Leraar;
  * Klasse om Opsomming objecten weg te schrijven of in te lezen in tekstformaat
  *
  * @author Adriaan Kuipers
- * @version 14/11/2014
+ * @version 15/11/2014
  *
  */
 
@@ -46,7 +46,7 @@ public class TxtOpsommingLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen Opsomming");
 		}
-		return String.format("%s\t%s\t%s", super.maakStringRecord(object), opsomming.getJuisteAntwoord(), opsomming.getInJuisteVolgorde());		
+		return String.format("%s\t%s\t%s", this.maakBasisOpdrachtString(opsomming), opsomming.getJuisteAntwoord(), opsomming.getInJuisteVolgorde());		
 	}
 
 	@Override

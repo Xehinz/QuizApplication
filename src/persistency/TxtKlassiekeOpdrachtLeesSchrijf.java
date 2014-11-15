@@ -12,7 +12,7 @@ import model.OpdrachtCategorie;
  * Klasse om KlassiekeOpdracht objecten weg te schrijven of in te lezen in tekstformaat
  *
  * @author Adriaan Kuipers
- * @version 14/11/2014
+ * @version 15/11/2014
  *
  */
 
@@ -46,7 +46,7 @@ public class TxtKlassiekeOpdrachtLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen KlassiekeOpdracht");
 		}
-		return String.format("%s\t%s", super.maakStringRecord(object), klassiekeOpdracht.getJuisteAntwoord());		
+		return String.format("%s\t%s", this.maakBasisOpdrachtString(klassiekeOpdracht), klassiekeOpdracht.getJuisteAntwoord());		
 	}
 
 	@Override

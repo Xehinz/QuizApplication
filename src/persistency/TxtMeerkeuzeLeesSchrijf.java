@@ -12,7 +12,7 @@ import model.OpdrachtCategorie;
  * Klasse om Meerkeuze objecten weg te schrijven of in te lezen in tekstformaat
  *
  * @author Adriaan Kuipers
- * @version 14/11/2014
+ * @version 15/11/2014
  *
  */
 
@@ -51,7 +51,7 @@ public class TxtMeerkeuzeLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 		for (String s : meerkeuze.getOpties()) {
 			opties += String.format("%s;", s);
 		}
-		return String.format("%s\t%s\t%s", super.maakStringRecord(object), opties, meerkeuze.getJuisteAntwoord());
+		return String.format("%s\t%s\t%s", this.maakBasisOpdrachtString(meerkeuze), opties, meerkeuze.getJuisteAntwoord());
 	}
 
 	@Override

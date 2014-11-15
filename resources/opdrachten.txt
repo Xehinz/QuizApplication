@@ -1,4 +1,0 @@
-1	Charlotte Neven	15/11/2014	Waarom zijn de bananen krom?	NEDERLANDS	1	20	Denk niet te ver!|Wat zouden je ouders antwoorden?|	377715457|
-4	Maria Aerts	15/11/2014	Hoe maak je een croque monsieur?	WETENSCHAPPEN	1	60	Om in een pan te ... heb je ... nodig|	659309315|
-2	Steven Opdebeek	15/11/2014	Geef de 5 kleinste priemgetallen in volgorde	WISKUNDE	2	25	1 is geen priemgetal!|	1077141507|
-3	Jos Verbeek	15/11/2014	Welke stad ligt niet in Vlaanderen?	AARDRIJKSKUNDE	1	10		1006088929|

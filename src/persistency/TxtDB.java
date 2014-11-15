@@ -13,7 +13,7 @@ import model.QuizOpdracht;
  * klasse die het gebruik van de Txt databank beheert.
  *
  * @author Adriaan Kuipers
- * @version 14/11/2014
+ * @version 15/11/2014
  *
  */
 
@@ -40,16 +40,20 @@ public class TxtDB implements DBStrategy {
 		this.txtReproductieLeesSchrijf = new TxtReproductieLeesSchrijf();
 		this.txtMeerkeuzeLeesSchrijf = new TxtMeerkeuzeLeesSchrijf();
 		this.txtOpsommingLeesSchrijf = new TxtOpsommingLeesSchrijf();
-		this.txtOpdrachtLeesSchrijf = new TxtOpdrachtLeesSchrijf();
+		//this.txtOpdrachtLeesSchrijf = new TxtOpdrachtLeesSchrijf();
 	}
 
 	@Override
 	public ArrayList<Opdracht> leesOpdrachten() {
+		ArrayList<Object> opdrachtObjecten = new ArrayList<Object>();
+		opdrachtObjecten.addAll(txtKlassiekeOpdrachtLeesSchrijf.lees());
+		opdrachtObjecten.addAll(txtReproductieLeesSchrijf.lees());
+		opdrachtObjecten.addAll(txtMeerkeuzeLeesSchrijf.lees());
+		opdrachtObjecten.addAll(txtOpsommingLeesSchrijf.lees());
 		ArrayList<Opdracht> opdrachten = new ArrayList<Opdracht>();
-		opdrachten.add(txtKlassiekeOpdrachtLeesSchrijf.lees());
-		opdrachten.add(txtReproductieLeesSchrijf.lees());
-		opdrachten.add(txtMeerkeuzeLeesSchrijf.lees());
-		opdrachten.add(txtOpsommingLeesSchrijf.lees());
+		for (Object opdracht : opdrachtObjecten) {
+			opdrachten.add((Opdracht)opdracht);
+		}
 		return opdrachten;
 	}
 
@@ -80,7 +84,8 @@ public class TxtDB implements DBStrategy {
 
 	@Override
 	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) {
-		txtOpdrachtLeesSchrijf.schrijf(opdrachten);
+		//txtOpdrachtLeesSchrijf.schrijf(opdrachten);
+		txtKlassiekeOpdrachtLeesSchrijf.schrijf(opdrachten);
 	}
 
 	@Override
