@@ -298,11 +298,11 @@ public class Reproductie extends Opdracht {
 
 	@Override
 	public boolean isJuisteAntwoord(String antwoord) {
-		String antw = antwoord.toLowerCase();
+		ArrayList<String> antwLijst = new ArrayList<String>(Arrays.asList(antwoord.toLowerCase().split("[\\s,.?!]+")));
 		int aantalJuisteAntwoorden = 0;
 		ArrayList<String> lijst = this.getLijstJuisteTrefwoorden();
 		for (String A : lijst) {
-			if (antw.contains(A)) {
+			if (antwLijst.contains(A)) {
 				aantalJuisteAntwoorden++;
 			}
 		}
