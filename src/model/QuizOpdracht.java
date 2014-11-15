@@ -33,13 +33,14 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 		ID = this.hashCode();
 	}
 
-	public static void attachOpdrachtToQuiz(Quiz quiz, Opdracht opdracht, int maxScore) {
+	public static QuizOpdracht koppelOpdrachtAanQuiz(Quiz quiz, Opdracht opdracht, int maxScore) {
 		QuizOpdracht quizOpdracht = new QuizOpdracht(quiz, opdracht, maxScore);
 		quiz.addQuizOpdracht(quizOpdracht);
 		opdracht.addQuizOpdracht(quizOpdracht);
+		return quizOpdracht;
 	}
 
-	public void detachOpdrachtFromQuiz() {
+	public void ontkoppelOpdrachtVanQuiz() {
 		quiz.removeQuizOpdracht(this);
 		opdracht.removeQuizOpdracht(this);
 	}
@@ -151,9 +152,10 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	@Override
 	public String toString() {
-		return "Quiz met onderwerp " + this.quiz.getOnderwerp() + " gemaakt door " + this.quiz.getAuteur() + " op "
-				+ this.quiz.getAanmaakDatum() + "\nbevat\nOpdracht met als vraag " + this.opdracht.getVraag()
-				+ " uit de opdrachtcategorie " + this.opdracht.getOpdrachtCategorie() + "\nmet maximale score " + this.maxScore;
+		String result = "QuizOpdracht [ID=" + ID + "] - Maximale score: " + maxScore;
+		result += "\nDIE\n" + opdracht.toString().replaceAll("(?m)^", "\t");;
+		result += "\nKOPPELT AAN\n" + quiz.toString().replaceAll("(?m)^", "\t");;
+		return result;
 	}
 
 }

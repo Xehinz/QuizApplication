@@ -130,6 +130,19 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 		} 
 		throw new IllegalArgumentException("De OpdrachtCatalogus bevat geen Opdracht met ID=" + opdrachtID);
 	}
+	
+	/**
+	 * Haalt een lijstje op van alle QuizOpdrachten, over alle opdrachten heen
+	 * 
+	 * @return een ArrayList&lt;QuizOpdracht&gt; van alle QuizOpdrachten, over alle opdrachten heen
+	 */
+	public ArrayList<QuizOpdracht> getAlleQuizOpdrachten() {
+		ArrayList<QuizOpdracht> alleQuizOpdrachten = new ArrayList<QuizOpdracht>();
+		for (Opdracht opdracht : this) {
+			alleQuizOpdrachten.addAll(opdracht.getQuizOpdrachten());
+		}
+		return alleQuizOpdrachten;
+	}
 
 	/**
 	 * Override van de toString methode
@@ -137,7 +150,11 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 
 	@Override
 	public String toString() {
-		return "Opdrachtcatalogus met " + this.count() + " opdrachten";
+		String result = "Opdrachtcatalogus met " + this.count() + " opdrachten:\n\n";
+		for (Opdracht opdracht : this) {
+			result += opdracht + scheiding();
+		}
+		return result;
 	}
 
 	/**
@@ -212,5 +229,9 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>, Cloneab
 			ex.printStackTrace();
 		}
 		return clone;
+	}
+	
+	private String scheiding() {
+		return "\n----------------------------------------------------------------------------------------------------\n";
 	}
 }

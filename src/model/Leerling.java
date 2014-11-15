@@ -198,6 +198,19 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		}
 		return toReturn;
 	}
+	
+	/**
+	 * Haalt een lijstje op van alle OpdrachtAntwoorden van deze Leerling
+	 * 
+	 * @return een ArrayList&lt;OpdrachtAntwoord&gt; van alle OpdrachtAntwoorden van deze Leerling
+	 */
+	public ArrayList<OpdrachtAntwoord> getAlleOpdrachtAntwoorden() {
+		ArrayList<OpdrachtAntwoord> alleOpdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
+		for (QuizDeelname quizDeelname : quizDeelnames) {
+			alleOpdrachtAntwoorden.addAll(quizDeelname.getOpdrachtAntwoorden());
+		}
+		return alleOpdrachtAntwoorden;
+	}
 
 	/**
 	 * Geeft een String representatie terug van dit Leerling object van de vorm
@@ -205,7 +218,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return "Leerling " + getNaam() + " uit leerjaar " + getLeerjaar();
+		return "Leerling [ID=" + ID + "] " + getNaam() + " uit leerjaar " + getLeerjaar();
 	}
 
 	/**

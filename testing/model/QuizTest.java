@@ -62,8 +62,8 @@ public class QuizTest {
 		Quiz anotherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "another quiz");
 		Opdracht aOpdracht = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
 
-		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 5);
-		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, aOpdracht, 5);
+		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, aOpdracht, 10);
 		// QuizOpdracht aQuizOpdracht = new QuizOpdracht(aQuiz, aOpdracht, 5);
 		// QuizOpdracht anotherQuizOpdracht = new QuizOpdracht(aQuiz, aOpdracht,
 		// 10);
@@ -83,15 +83,15 @@ public class QuizTest {
 		Quiz anotherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "another quiz");
 		Opdracht aOpdracht = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
 
-		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 5);
-		QuizOpdracht.attachOpdrachtToQuiz(aQuiz, aOpdracht, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, aOpdracht, 5);
+		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, aOpdracht, 10);
 		// QuizOpdracht aQuizOpdracht = new QuizOpdracht(aQuiz, aOpdracht, 5);
 		// QuizOpdracht anotherQuizOpdracht = new QuizOpdracht(aQuiz, aOpdracht,
 		// 10);
 		// aQuiz.addQuizOpdracht(aQuizOpdracht);
 		// aQuiz.addQuizOpdracht(anotherQuizOpdracht);
 
-		QuizOpdracht.attachOpdrachtToQuiz(anotherQuiz, aOpdracht, 7);
+		QuizOpdracht.koppelOpdrachtAanQuiz(anotherQuiz, aOpdracht, 7);
 		// aQuizOpdracht = new QuizOpdracht(anotherQuiz, aOpdracht, 7);
 		// anotherQuiz.addQuizOpdracht(aQuizOpdracht);
 

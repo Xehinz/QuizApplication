@@ -47,9 +47,9 @@ public class DBHandler {
 		dbStrategy.schrijfOpdrachten(opdrachtCatalogus.getOpdrachten());
 		dbStrategy.schrijfLeerlingen(leerlingContainer.getLeerlingen());
 		dbStrategy.schrijfQuizzen(quizCatalogus.getQuizzen());
-		dbStrategy.schrijfQuizOpdrachten(quizOpdrachten());
-		dbStrategy.schrijfQuizDeelnames(quizDeelnames());
-		dbStrategy.schrijfOpdrachtAntwoorden(opdrachtAntwoorden());
+		dbStrategy.schrijfQuizOpdrachten(opdrachtCatalogus.getAlleQuizOpdrachten());
+		dbStrategy.schrijfQuizDeelnames(leerlingContainer.getAlleQuizDeelnames());
+		dbStrategy.schrijfOpdrachtAntwoorden(leerlingContainer.getAlleOpdrachtAntwoorden());
 	}
 	
 	public void setDBStrategy(StorageStrategy storageStrategy) {
@@ -122,30 +122,4 @@ public class DBHandler {
 			huidigeQuizOpdracht = null;
 		}
 	}
-	
-	private ArrayList<QuizOpdracht> quizOpdrachten() {
-		ArrayList<QuizOpdracht> quizOpdrachten = new ArrayList<QuizOpdracht>();
-		for (Opdracht opdracht : opdrachtCatalogus) {
-			quizOpdrachten.addAll(opdracht.getQuizOpdrachten());
-		}
-		return quizOpdrachten;
-	}
-	
-	private ArrayList<QuizDeelname> quizDeelnames() {
-		ArrayList<QuizDeelname> quizDeelnames = new ArrayList<QuizDeelname>();
-		for (Quiz quiz : quizCatalogus) {
-			quizDeelnames.addAll(quiz.getQuizDeelnames());
-		}
-		return quizDeelnames;
-	}
-	
-	private ArrayList<OpdrachtAntwoord> opdrachtAntwoorden() {
-		ArrayList<OpdrachtAntwoord> opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
-		ArrayList<QuizDeelname> quizDeelnames = quizDeelnames();
-		for (QuizDeelname quizDeelname : quizDeelnames) {
-			opdrachtAntwoorden.addAll(quizDeelname.getOpdrachtAntwoorden());
-		}
-		return opdrachtAntwoorden;
-	}
-
 }

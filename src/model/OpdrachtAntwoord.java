@@ -1,9 +1,11 @@
 package model;
 
 /**
- * Klasse die een QuizDeelname aan een QuizOpdracht verbindt. Eenmaal er een instantie van OpdrachtAntwoord is
- * aangemaakt, is het antwoord van de Leerling op de Opdracht binnen de QuizDeelname definitief. Het OpdrachtAntwoord
- * object houdt gegevens bij over het antwoord op één vraag binnen één quizdeelname. Volgende zaken worden bijgehouden:
+ * Klasse die een QuizDeelname aan een QuizOpdracht verbindt. Eenmaal er een
+ * instantie van OpdrachtAntwoord is aangemaakt, is het antwoord van de Leerling
+ * op de Opdracht binnen de QuizDeelname definitief. Het OpdrachtAntwoord object
+ * houdt gegevens bij over het antwoord op één vraag binnen één
+ * quizdeelname. Volgende zaken worden bijgehouden:
  * <ul>
  * <li>Het definitieve (laatste) antwoord (String)</li>
  * <li>Het aantal pogingen om tot dit antwoord te komen (int)</li>
@@ -11,14 +13,16 @@ package model;
  * <li>De behaalde score</li>
  * </ul>
  *
- * Het algoritme om tot dit antwoord te komen is voorlopig hard-coded opgenomen in deze klasse. Wanneer we het Strategy
- * pattern gaan implementeren, is het de bedoeling om de scoreberekening met behulp van klasses flexibeler te maken.
+ * Het algoritme om tot dit antwoord te komen is voorlopig hard-coded opgenomen
+ * in deze klasse. Wanneer we het Strategy pattern gaan implementeren, is het de
+ * bedoeling om de scoreberekening met behulp van klasses flexibeler te maken.
  *
  * @author Tim Cool, Ben Vandenberk
  * @version 01/11/2014
  *
  */
-public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable {
+public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
+		Cloneable {
 	private final QuizDeelname quizDeelname;
 	private final QuizOpdracht quizOpdracht;
 	private final String laatsteAntwoord;
@@ -80,13 +84,16 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 		return behaaldeScore;
 	}
 
-	private OpdrachtAntwoord(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
+	private OpdrachtAntwoord(QuizDeelname quizDeelname,
+			QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
 			String laatsteAntwoord) {
 		if (aantalPogingen < 1) {
-			throw new IllegalArgumentException("Het aantal pogingen kan niet kleiner zijn dan 1");
+			throw new IllegalArgumentException(
+					"Het aantal pogingen kan niet kleiner zijn dan 1");
 		}
 		if (antwoordTijd < 0) {
-			throw new IllegalArgumentException("De antwoordtijd moet positief zijn");
+			throw new IllegalArgumentException(
+					"De antwoordtijd moet positief zijn");
 		}
 		this.quizDeelname = quizDeelname;
 		this.quizOpdracht = quizOpdracht;
@@ -100,21 +107,26 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	 * Uitwerking van het scoreberekeningsalgoritme op pagina 5 van de opgave
 	 */
 	private double berekenScore() {
-		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) { // FOUT ANTWOORD
+		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) { // FOUT
+																				// ANTWOORD
 			return 0.0;
 		} else { // JUIST ANTWOORD
 			if (quizOpdracht.getOpdracht().heeftTijdsbeperking()
-					&& antwoordTijd > quizOpdracht.getOpdracht().getMaxAntwoordTijd()) { // TE VEEL TIJD GEBRUIKT
+					&& antwoordTijd > quizOpdracht.getOpdracht()
+							.getMaxAntwoordTijd()) { // TE VEEL TIJD GEBRUIKT
 				return 0.0;
 			} else { // TIJD OKE
 				if (aantalPogingen == 1) {
 					return quizOpdracht.getMaxScore();
 				} else {
-					if (!quizOpdracht.getOpdracht().heeftPogingBeperking()) { // ONBEPERKT AANTAL POGINGEN
+					if (!quizOpdracht.getOpdracht().heeftPogingBeperking()) { // ONBEPERKT
+																				// AANTAL
+																				// POGINGEN
 						return quizOpdracht.getMaxScore() / 2.0;
 					} else { // BEPERKT AANTAL POGINGEN
-						return aantalPogingen <= quizOpdracht.getOpdracht().getMaxAantalPogingen() ? quizOpdracht.getMaxScore() / 2.0
-								: 0.0;
+						return aantalPogingen <= quizOpdracht.getOpdracht()
+								.getMaxAantalPogingen() ? quizOpdracht
+								.getMaxScore() / 2.0 : 0.0;
 					}
 				}
 			}
@@ -122,11 +134,13 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	}
 
 	/**
-	 * Legt de relatie tussen een QuizDeelname en een QuizOpdracht. Eenmaal dat deze method gecalled is, is het antwoord
-	 * van de Leerling op de Opdracht binnen de QuizDeelname definitief
+	 * Legt de relatie tussen een QuizDeelname en een QuizOpdracht. Eenmaal dat
+	 * deze method gecalled is, is het antwoord van de Leerling op de Opdracht
+	 * binnen de QuizDeelname definitief
 	 *
 	 * @param quizDeelname
-	 *            de QuizDeelname die de Leerling met de Quiz die hij aan het maken is verbindt
+	 *            de QuizDeelname die de Leerling met de Quiz die hij aan het
+	 *            maken is verbindt
 	 * @param quizOpdracht
 	 *            de QuizOpdracht waarop de Leerling antwoord
 	 * @param aantalPogingen
@@ -138,13 +152,16 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	 * @throws IllegalArgumentException
 	 *             als de quizDeelname of de quizOpdracht null is
 	 * @throws IllegalStateException
-	 *             als er al een OpdrachtAntwoord bestaat voor deze QuizDeelname en QuizOpdracht
+	 *             als er al een OpdrachtAntwoord bestaat voor deze QuizDeelname
+	 *             en QuizOpdracht
 	 */
-	public static OpdrachtAntwoord koppelQuizDeelnameAanQuizOpdracht(QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
-			int aantalPogingen, int antwoordTijd, String laatsteAntwoord) throws IllegalArgumentException,
-			IllegalStateException {
+	public static OpdrachtAntwoord koppelQuizDeelnameAanQuizOpdracht(
+			QuizDeelname quizDeelname, QuizOpdracht quizOpdracht,
+			int aantalPogingen, int antwoordTijd, String laatsteAntwoord)
+			throws IllegalArgumentException, IllegalStateException {
 		if (quizDeelname == null || quizOpdracht == null) {
-			throw new IllegalArgumentException("De QuizDeelname en de QuizOpdracht moeten verwijzen naar een bestaand object");
+			throw new IllegalArgumentException(
+					"De QuizDeelname en de QuizOpdracht moeten verwijzen naar een bestaand object");
 		}
 		for (OpdrachtAntwoord antwoord : quizDeelname.getOpdrachtAntwoorden()) {
 			if (antwoord.getQuizOpdracht().equals(quizOpdracht)) {
@@ -152,8 +169,8 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 						"Binnen deze QuizDeelname is er al een OpdrachtAntwoord voor deze QuizOpdracht");
 			}
 		}
-		OpdrachtAntwoord opdrachtAntwoord = new OpdrachtAntwoord(quizDeelname, quizOpdracht, aantalPogingen, antwoordTijd,
-				laatsteAntwoord);
+		OpdrachtAntwoord opdrachtAntwoord = new OpdrachtAntwoord(quizDeelname,
+				quizOpdracht, aantalPogingen, antwoordTijd, laatsteAntwoord);
 		quizDeelname.addOpdrachtAntwoord(opdrachtAntwoord);
 		quizOpdracht.addOpdrachtAntwoord(opdrachtAntwoord);
 		return opdrachtAntwoord;
@@ -165,9 +182,12 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 		long result = 1;
 		result = PRIME * result + aantalPogingen;
 		result = PRIME * result + antwoordTijd;
-		result = PRIME * result + ((laatsteAntwoord == null) ? 0 : laatsteAntwoord.hashCode());
-		result = PRIME * result + ((quizDeelname == null) ? 0 : quizDeelname.hashCode());
-		result = PRIME * result + ((quizOpdracht == null) ? 0 : quizOpdracht.hashCode());
+		result = PRIME * result
+				+ ((laatsteAntwoord == null) ? 0 : laatsteAntwoord.hashCode());
+		result = PRIME * result
+				+ ((quizDeelname == null) ? 0 : quizDeelname.hashCode());
+		result = PRIME * result
+				+ ((quizOpdracht == null) ? 0 : quizOpdracht.hashCode());
 		result %= Integer.MAX_VALUE;
 		return (int) result;
 	}
@@ -213,9 +233,10 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 
 	@Override
 	public String toString() {
-		String result = "";
-		result += String
-				.format("OpdrachtAntwoord dat\n\t%s\nen\n\t%s\nmet elkaar verbindt", this.quizDeelname, this.quizOpdracht);
+		String result = "OpdrachtAntwoord" + "\nDAT\n";
+		result += quizDeelname.toString().replaceAll("(?m)^", "\t");
+		result += "\nKOPPELT AAN\n";
+		result += quizOpdracht.toString().replaceAll("(?m)^", "\t");
 		result += "\n\nDefinitieve antwoord: " + laatsteAntwoord;
 		result += "\nAantal pogingen: " + aantalPogingen;
 		result += "\nGebruikte tijd (s): " + antwoordTijd;
@@ -224,7 +245,8 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>, Cloneable
 	}
 
 	/**
-	 * Vergelijkt dit OpdrachtAntwoord met een ander OpdrachtAntwoord, eerst op QuizDeelname, dan op QuizOpdracht
+	 * Vergelijkt dit OpdrachtAntwoord met een ander OpdrachtAntwoord, eerst op
+	 * QuizDeelname, dan op QuizOpdracht
 	 *
 	 * @param opdrachtAntwoord
 	 *            het OpdrachtAntwoord om mee te vergelijken

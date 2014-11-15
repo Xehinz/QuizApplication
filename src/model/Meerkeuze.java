@@ -271,7 +271,7 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 	@Override
 	public String toString() {
 		return "Meerkeuze " + super.toString()
-				+ ", kies een geldige optie uit de meerkeuzelijst.";
+				+ juisteOptie + ", kies een geldige optie uit: " + meerkeuzeOpties;
 	}
 
 	@Override

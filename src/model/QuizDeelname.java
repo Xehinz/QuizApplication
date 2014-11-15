@@ -89,21 +89,24 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 
 	/**
 	 * Legt de relatie tussen een Leerling en een Quiz. Roep deze method aan om
-	 * een Leerling te laten deelnemen aan een Quiz. Zet uitStorage op true om een koppeling vanuit storage (tekst / DB) te maken
+	 * een Leerling te laten deelnemen aan een Quiz. Zet uitStorage op true om
+	 * een koppeling vanuit storage (tekst / DB) te maken
 	 *
 	 * @param quiz
 	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
 	 *            de deelnemende Leerling
 	 * @param uitStorage
-	 *            zet op true om een koppeling vanuit storage (tekst / DB) te maken
+	 *            zet op true om een koppeling vanuit storage (tekst / DB) te
+	 *            maken
+	 * @return de resulterende QuizDeelname
 	 * @throws IllegalStateException
 	 *             wanneer de status van de Quiz geen deelnames toelaat of
 	 *             wanneer de Leerling niet in het juiste leerjaar zit om deel
 	 *             te nemen
 	 */
-	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling,
-			boolean uitStorage) throws IllegalStateException {
+	public static QuizDeelname koppelQuizAanLeerling(Quiz quiz,
+			Leerling leerling, boolean uitStorage) throws IllegalStateException {
 		if (!uitStorage) {
 			if (!quiz.isDeelnameMogelijk()) {
 				throw new IllegalStateException(
@@ -121,6 +124,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling);
 		leerling.addQuizDeelname(quizDeelname);
 		quiz.addQuizDeelname(quizDeelname);
+		return quizDeelname;
 	}
 
 	/**
@@ -131,14 +135,15 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
 	 *            de deelnemende Leerling
+	 * @return de resulterende QuizDeelname
 	 * @throws IllegalStateException
 	 *             wanneer de status van de Quiz geen deelnames toelaat of
 	 *             wanneer de Leerling niet in het juiste leerjaar zit om deel
 	 *             te nemen
 	 */
-	public static void koppelQuizAanLeerling(Quiz quiz, Leerling leerling)
-			throws IllegalStateException {
-		koppelQuizAanLeerling(quiz, leerling, false);
+	public static QuizDeelname koppelQuizAanLeerling(Quiz quiz,
+			Leerling leerling) throws IllegalStateException {
+		return koppelQuizAanLeerling(quiz, leerling, false);
 	}
 
 	/**
@@ -180,9 +185,10 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Deelname van %s aan quiz: %s op %s",
-				this.leerling.getNaam(), this.quiz.getOnderwerp(),
-				this.datum.getDatumInEuropeesFormaat());
+		String result = "QuizDeelname [ID=" + ID + "] - Datum: " + datum;
+		result += "\nDIE\n" + leerling.toString().replaceAll("(?m)^", "\t");;
+		result += "\nKOPPELT AAN\n" + quiz.toString().replaceAll("(?m)^", "\t");;
+		return result;
 	}
 
 	/**

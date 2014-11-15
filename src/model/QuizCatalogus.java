@@ -148,7 +148,11 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 
 	@Override
 	public String toString() {
-		return "Quizcatalogus met " + this.count() + " quizzen";
+		String result = "Quizcatalogus met " + this.count() + " quizzen:\n\n";
+		for (Quiz quiz : this) {
+			result += quiz + scheiding();
+		}
+		return result;
 	}
 
 	/**
@@ -253,5 +257,9 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 		}
 
 		return result;
+	}
+	
+	private String scheiding() {
+		return "\n----------------------------------------------------------------------------------------------------\n";
 	}
 }

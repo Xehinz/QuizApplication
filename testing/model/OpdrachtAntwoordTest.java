@@ -51,15 +51,15 @@ public class OpdrachtAntwoordTest {
 		leerling = new Leerling("Karel", "Boghen", 3);
 		kleinereLeerling = new Leerling("Laura", "Aaltert", 4);
 
-		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdrachtZonderTijdZonderPogingen, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtZonderTijdZonderPogingen, 10);
 		quizOpdrachtZonderTijdZonderPogingen = quiz.getQuizOpdrachten().get(0);
-		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdrachtOpTijdZonderPogingen, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtOpTijdZonderPogingen, 10);
 		quizOpdrachtOpTijdZonderPogingen = quiz.getQuizOpdrachten().get(1);
-		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdrachtZonderTijd1Poging, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtZonderTijd1Poging, 10);
 		quizOpdrachtZonderTijd1Poging = quiz.getQuizOpdrachten().get(2);
 
 		// De QuizOpdracht is kleiner omdat de Quiz kleiner is (minder opdrachten)
-		QuizOpdracht.attachOpdrachtToQuiz(kleinereQuiz, opdrachtZonderTijdZonderPogingen, 5);
+		QuizOpdracht.koppelOpdrachtAanQuiz(kleinereQuiz, opdrachtZonderTijdZonderPogingen, 5);
 		kleinereQuizOpdracht = kleinereQuiz.getQuizOpdrachten().get(0);
 
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);

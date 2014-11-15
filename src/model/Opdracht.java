@@ -510,9 +510,10 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 				+ "\nCategorie: "
 				+ opdrachtCategorie
 				+ "\nAntwoordtijd: "
-				+ (maxAntwoordTijd == 0 ? "ongelimiteerd" : maxAntwoordTijd)
+				+ (heeftTijdsbeperking() ? maxAntwoordTijd : "ongelimiteerd")
 				+ " - Aantal toegestane pogingen: "
-				+ (maxAantalPogingen == 0 ? "ongelimiteerd" : maxAantalPogingen)
+				+ (heeftPogingBeperking() ? maxAantalPogingen : "ongelimiteerd")
+				+ "\nHints: " + hintsString()
 				+ "\nVraag: " + vraag + "\nAntwoord: ";
 	}
 
@@ -591,5 +592,21 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 			ex.printStackTrace();
 		}
 		return clone;
+	}
+	
+	private String hintsString() {
+		if (antwoordHints.size() == 0) {
+			return "geen";
+		}
+		String hintsString = "";
+		for (int i = 0; i < antwoordHints.size(); i++) {
+			if (i < antwoordHints.size() - 1) {
+			hintsString += antwoordHints.get(i) + " | ";
+			}
+			else {
+				hintsString += antwoordHints.get(i);
+			}				
+		}		
+		return hintsString;
 	}
 }

@@ -80,6 +80,32 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 		}
 		throw new IllegalArgumentException("De LeerlingContainer bevat geen leerling met ID=" + leerlingID);
 	}
+	
+	/**
+	 * Haalt een lijstje op van alle QuizDeelnames, van alle Leerlingen
+	 * 
+	 * @return een ArrayList&lt;QuizDeelname&gt; van alle QuizDeelnames, van alle Leerlingen
+	 */
+	public ArrayList<QuizDeelname> getAlleQuizDeelnames() {
+		ArrayList<QuizDeelname> alleQuizDeelnames = new ArrayList<QuizDeelname>();
+		for (Leerling leerling : this) {
+			alleQuizDeelnames.addAll(leerling.getQuizDeelnames());
+		}
+		return alleQuizDeelnames;
+	}
+	
+	/**
+	 * Haalt een lijstje op van alle OpdrachtAntwoorden, van alle Leerlingen, in alle Quizzen
+	 * 
+	 * @return een ArrayList&lt;OpdrachtAntwoord&gt;, van alle Leerlingen, in alle Quizzen
+	 */
+	public ArrayList<OpdrachtAntwoord> getAlleOpdrachtAntwoorden() {
+		ArrayList<OpdrachtAntwoord> alleOpdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
+		for (Leerling leerling : this) {
+			alleOpdrachtAntwoorden.addAll(leerling.getAlleOpdrachtAntwoorden());
+		}
+		return alleOpdrachtAntwoorden;
+	}
 
 	@Override
 	public Iterator<Leerling> iterator() {
@@ -145,6 +171,14 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable, Compara
 
 	@Override
 	public String toString() {
-		return String.format("LeerlingContainer met %d leerlingen", count());
+		String result = String.format("LeerlingContainer met %d leerlingen:\n\n", count());
+		for (Leerling leerling : this) {
+			result += leerling + scheiding();
+		}
+		return result;
+	}
+	
+	private String scheiding() {
+		return "\n----------------------------------------------------------------------------------------------------\n";
 	}
 }

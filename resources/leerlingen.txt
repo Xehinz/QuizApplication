@@ -1,2 +1,5 @@
-1;Jos;Verbeek;3
-2;Maria;Ratel;5
+0	Ben	Vandenberk	1
+0	Bert	Neyt	2
+0	Adriaan	Kuipers	6
+0	Jef	Bellens	4
+0	Johan	Boogers	5

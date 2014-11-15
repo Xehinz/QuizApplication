@@ -309,8 +309,8 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	@Override
 	public String toString() {
-		return super.toString() + opsommingJuisteAntwoord + " met de volgorde "
-				+ (inJuisteVolgorde ? "" : "niet") + " belangrijk.";
+		return "Opsomming " + super.toString() + opsommingJuisteAntwoord + " met de volgorde "
+				+ (inJuisteVolgorde ? "" : "niet ") + "belangrijk.";
 	}
 
 	@Override

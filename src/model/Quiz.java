@@ -64,6 +64,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		quizDeelnames = new ArrayList<QuizDeelname>();
 		aanmaakDatum = new Datum();
 
+		// Default kunnen leerlingen uit alle leerjaren meedoen aan de Quiz
 		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
 			zijnDoelLeerjaren[i] = true;
 		}
@@ -205,6 +206,21 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 			zijnDoelLeerjaren[leerjaar] = true;
 		}
 	}
+	
+	/**
+	 * Haalt een lijstje op met de leerjaren waarvoor de Quiz bedoeld is
+	 * 
+	 * @return een ArrayList&lt;Integer&gt; met de leerjaren waarvoor de Quiz bedoeld is
+	 */
+	public ArrayList<Integer> getDoelLeerjaren() {
+		ArrayList<Integer> doelLeerjaren = new ArrayList<Integer>();
+		for(int i = 1; i < zijnDoelLeerjaren.length; i++) {
+			if (zijnDoelLeerjaren[i]) {
+				doelLeerjaren.add(i);
+			}
+		}
+		return doelLeerjaren;
+	}
 
 	/**
 	 * Instellen van het onderwerp van de quiz
@@ -291,10 +307,14 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return "Quiz met als onderwerp '" + this.getOnderwerp() + "' is "
+		return "Quiz [ID=" + ID + "] met als onderwerp '" + this.getOnderwerp() + "' is "
 				+ (this.isTest ? "een" : "geen") + " test "
 				+ (this.isUniekeDeelname ? "met" : "zonder")
-				+ " unieke deelname.";
+				+ " unieke deelname."
+				+ "\nDatum van aanmaak: " + aanmaakDatum
+				+ ", auteur: " + auteur
+				+ "\nStatus: " + quizStatus
+				+ "\nGeldig voor leerjaren: " + doelLeerjarenString();
 	}
 
 	/**
@@ -494,6 +514,22 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		}
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
+	}
+	
+	private String doelLeerjarenString() {
+		if (getDoelLeerjaren().size() == 0) {
+			return "geen enkel";
+		}
+		String doelLeerjarenString = "";
+		for (int i = 0; i < getDoelLeerjaren().size(); i++) {
+			if (i < getDoelLeerjaren().size() - 1) {
+				doelLeerjarenString += getDoelLeerjaren().get(i) + ", ";
+			}
+			else {
+				doelLeerjarenString += getDoelLeerjaren().get(i);
+			}
+		}
+		return doelLeerjarenString;
 	}
 
 }

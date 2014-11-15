@@ -60,8 +60,8 @@ public class QuizDeelnameTest {
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.JOS_VERBEEK);
 		opdracht2 = new KlassiekeOpdracht("Hoeveel is 2 maal 2", "4", 1, 10, OpdrachtCategorie.WISKUNDE, Leraar.MIEKE_WITTEMANS);
 
-		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdracht1, 5);
-		QuizOpdracht.attachOpdrachtToQuiz(quiz, opdracht2, 5);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdracht1, 5);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdracht2, 5);
 		quizopdracht1 = quiz.getQuizOpdrachten().get(0);
 		quizopdracht2 = quiz.getQuizOpdrachten().get(1);
 
