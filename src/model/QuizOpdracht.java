@@ -35,6 +35,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	public static QuizOpdracht koppelOpdrachtAanQuiz(Quiz quiz, Opdracht opdracht, int maxScore) {
 		QuizOpdracht quizOpdracht = new QuizOpdracht(quiz, opdracht, maxScore);
+		//qOpdracht = new QuizOpdracht(quiz, opdracht, maxScore);
 		quiz.addQuizOpdracht(quizOpdracht);
 		opdracht.addQuizOpdracht(quizOpdracht);
 		return quizOpdracht;
