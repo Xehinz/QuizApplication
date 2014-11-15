@@ -21,10 +21,10 @@ public class TxtDB implements DBStrategy {
 	
 	private TxtLeerlingLeesSchrijf txtLeerlingLeesSchrijf;
 	private TxtOpdrachtAntwoordLeesSchrijf txtOpdrachtAntwoordLeesSchrijf;
-	private TxtOpdrachtLeesSchrijf txtOpdrachtLeesSchrijf;
 	private TxtQuizDeelnameLeesSchrijf txtQuizDeelnameLeesSchrijf;
 	private TxtQuizLeesSchrijf txtQuizLeesSchrijf;
 	private TxtQuizOpdrachtLeesSchrijf txtQuizOpdrachtLeesSchrijf;
+	private TxtOpdrachtLeesSchrijf txtOpdrachtLeesSchrijf;
 	private TxtKlassiekeOpdrachtLeesSchrijf txtKlassiekeOpdrachtLeesSchrijf;
 	private TxtReproductieLeesSchrijf txtReproductieLeesSchrijf;
 	private TxtMeerkeuzeLeesSchrijf txtMeerkeuzeLeesSchrijf;
@@ -33,7 +33,6 @@ public class TxtDB implements DBStrategy {
 	public TxtDB() {
 		this.txtLeerlingLeesSchrijf = new TxtLeerlingLeesSchrijf();
 		this.txtOpdrachtAntwoordLeesSchrijf = new TxtOpdrachtAntwoordLeesSchrijf();
-		this.txtOpdrachtLeesSchrijf = new TxtOpdrachtLeesSchrijf();
 		this.txtQuizDeelnameLeesSchrijf = new TxtQuizDeelnameLeesSchrijf();
 		this.txtQuizLeesSchrijf = new TxtQuizLeesSchrijf();
 		this.txtQuizOpdrachtLeesSchrijf = new TxtQuizOpdrachtLeesSchrijf();
@@ -41,12 +40,12 @@ public class TxtDB implements DBStrategy {
 		this.txtReproductieLeesSchrijf = new TxtReproductieLeesSchrijf();
 		this.txtMeerkeuzeLeesSchrijf = new TxtMeerkeuzeLeesSchrijf();
 		this.txtOpsommingLeesSchrijf = new TxtOpsommingLeesSchrijf();
+		this.txtOpdrachtLeesSchrijf = new TxtOpdrachtLeesSchrijf();
 	}
 
 	@Override
 	public ArrayList<Opdracht> leesOpdrachten() {
 		ArrayList<Opdracht> opdrachten = new ArrayList<Opdracht>();
-		opdrachten.addAll(txtOpdrachtLeesSchrijf.lees());
 		opdrachten.add(txtKlassiekeOpdrachtLeesSchrijf.lees());
 		opdrachten.add(txtReproductieLeesSchrijf.lees());
 		opdrachten.add(txtMeerkeuzeLeesSchrijf.lees());

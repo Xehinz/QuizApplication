@@ -1,13 +1,7 @@
 package persistency;
 
 import java.io.IOException;
-
 import model.Opdracht;
-import model.QuizOpdracht;
-import model.KlassiekeOpdracht;
-import model.Reproductie;
-import model.Opsomming;
-import model.Meerkeuze;
 
 /**
  * Klasse om Opdracht objecten weg te schrijven of in te lezen in tekstformaat
@@ -17,25 +11,13 @@ import model.Meerkeuze;
  *
  */
 
-public class TxtOpdrachtLeesSchrijf extends TxtTemplate {
+public abstract class TxtOpdrachtLeesSchrijf extends TxtTemplate {
 	
-	public TxtOpdrachtLeesSchrijf() {
-	}
+	@Override
+	protected abstract String getBestandsnaam();
 
 	@Override
-	protected String getBestandsnaam() {
-		return useCSV ? "resources/opdrachten.csv" : "resources/opdrachten.txt";
-	}
-
-	@Override
-	protected Opdracht maakObject(String[] fields) throws IOException {
-		try {
-			//return new Opdracht();
-			return null;
-		} catch (Exception ex) {
-			throw new IOException("Fout: " + ex.getMessage(), ex);
-		}
-	}
+	protected abstract Opdracht maakObject(String[] fields) throws IOException;
 
 	@Override
 	protected String maakStringRecord(Object object) throws IOException {
@@ -49,15 +31,19 @@ public class TxtOpdrachtLeesSchrijf extends TxtTemplate {
 		for (String s : opdracht.getHints()) {
 			hints += String.format("%s|", s);			
 		}
-		String quizOpdrachten = new String();
-		for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
-			quizOpdrachten += String.format("%s|", qo.getID());
-		}
-		return String.format("%d\t%s\t%s\t%s\t%s\t%d\t%d\t%s\t%s",opdracht.getID(),opdracht.getAuteur(),(opdracht.getAanmaakDatum()).getDatumInEuropeesFormaat(),opdracht.getVraag(),(opdracht.getOpdrachtCategorie()).toString(),opdracht.getMaxAantalPogingen(), opdracht.getMaxAntwoordTijd(),hints,quizOpdrachten);
+		return String.format("%d\t%s\t%s\t%d\t%d\t%s\t%s\t%s",opdracht.getID(),(opdracht.getAanmaakDatum()).getDatumInEuropeesFormaat(),opdracht.getVraag(),opdracht.getMaxAantalPogingen(),(opdracht.getOpdrachtCategorie()).toString(),opdracht.getAuteur(), opdracht.getMaxAntwoordTijd(),hints);
 	}
 
 	@Override
 	protected String getHeaderCSV() {
-		return "ID\tAuteur\tDatum\tVraag\tCategorie\tMax pogingen\tMax Tijd\tHints\tQuizOpdrachten";
+		return "ID\tDatum\tVraag\tMax pogingen\tMax Tijd\tCategorie\tAuteur\tHints";
 	}
+	
+	protected void voegHintsToe(Opdracht opdracht, String hintsLijst) {
+		String[] hints = hintsLijst.split("|");
+		for (String hint : hints) {
+			opdracht.addHint(hint);
+		}
+	}
+	
 }
