@@ -25,6 +25,7 @@ public class OpdrachtTest {
 	Opdracht opTijd, nietOpTijd;
 	Opdracht beperktePogingen, nietBeperktePogingen;
 	Opdracht gelinkteOpdracht, nietGelinkteOpdracht;
+	Opdracht referentie, zelfdeCategorieKleinereVraag, kleinereCategorie;
 
 	QuizOpdracht gelinkteOpdrachtQuizOpdracht, toeTeVoegenQuizOpdracht;
 
@@ -55,6 +56,11 @@ public class OpdrachtTest {
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.MIEKE_WITTEMANS);
 		nietGelinkteOpdracht = new KlassiekeOpdracht(
 				OpdrachtCategorie.NEDERLANDS, Leraar.JOS_VERBEEK);
+		
+		// om de compareTo te testen
+		referentie = new KlassiekeOpdracht("VraagB", "antwoord", OpdrachtCategorie.NEDERLANDS, Leraar.CHARLOTTE_NEVEN);
+		zelfdeCategorieKleinereVraag = new KlassiekeOpdracht("VraagA", "antwoord", OpdrachtCategorie.NEDERLANDS, Leraar.CHARLOTTE_NEVEN);
+		kleinereCategorie = new KlassiekeOpdracht("VraagB", "antwoord", OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
 
 		// nietAanpasbareOpdracht daadwerkelijk niet aanpasbaar maken door een
 		// Leerling te laten deelnemen aan een quiz met de opdracht
@@ -285,6 +291,31 @@ public class OpdrachtTest {
 	@Test
 	public void testHeeftPogingsBeperking_OpdrachtNietBeperktePogingen_GeeftFalse() {
 		assertFalse(nietBeperktePogingen.heeftPogingBeperking());
+	}
+	
+	@Test
+	public void testCompareTo_ZelfdeOpdracht_Geeft0() {
+		assertEquals(0, referentie.compareTo(referentie));
+	}
+	
+	@Test
+	public void testCompareTo_ZelfdeCategorieKleinereVraag_GeeftPositief() {
+		assertTrue(referentie.compareTo(zelfdeCategorieKleinereVraag) > 0);
+	}
+	
+	@Test
+	public void testCompareTo_KleinereCategorie_GeeftPositief() {
+		assertTrue(referentie.compareTo(kleinereCategorie) > 0);
+	}
+	
+	@Test
+	public void testCompareTo_ZelfdeCategorieGrotereVraag_GeeftNegatief() {
+		assertTrue(zelfdeCategorieKleinereVraag.compareTo(referentie) < 0);
+	}
+	
+	@Test
+	public void testCompareTo_KleinerCategorie_GeeftNegatief() {
+		assertTrue(kleinereCategorie.compareTo(referentie) < 0);
 	}
 
 }

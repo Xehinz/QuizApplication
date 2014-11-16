@@ -572,6 +572,9 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		if (opdracht.maxAntwoordTijd != this.maxAntwoordTijd) {
 			return false;
 		}
+		if (!opdracht.hintsString().equals(this.hintsString())) {
+			return false;
+		}
 		return true;
 	}
 
@@ -582,6 +585,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		long hash = hashString.hashCode();
 		hash = hash * 13 + maxAntwoordTijd;
 		hash = hash * 23 + maxAantalPogingen;
+		hash = hash * 41 + hintsString().hashCode();
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}

@@ -5,8 +5,30 @@ import java.util.ArrayList;
 import util.datumWrapper.Datum;
 
 /**
- *
- * @author johan, ben (constructor, zijnDoelLeerjaren)
+ * De Quiz klasse modelleert een quiz. Een Quiz wordt beschreven door volgende
+ * fields:
+ * 
+ * <ul>
+ * <li>Het onderwerp van de quiz (String)</li>
+ * <li>De datum van aanmaak van de quiz (Datum)</li>
+ * <li>De auteur van de quiz (enum: Leraar)</li>
+ * <li>De leerjaren waarvoor de quiz bedoeld is. In te stellen met
+ * setDoelLeerjaren(int...). Op te vragen met getDoelLeerjaren:
+ * ArrayList&lt;Integer&gt;</li>
+ * <li>Een indicator of aan de quiz maar 1 keer mag deelgenomen worden
+ * (isUniekeDeelname - boolean)</li>
+ * <li>Een indicator of de quiz een test is (isTest - boolean)</li>
+ * <li>De status van de Quiz (enum: QuizStatus). De verschillende statussen van
+ * een quiz zijn IN_CONSTRUCTIE, AFGEWERKT, OPENGESTELD, LAATSTE_KANS en
+ * AFGESLOTEN</li>
+ * <li>Een unieke ID (int). De ID wordt ingesteld door de QuizCatalogus, wanneer
+ * de Quiz aan een QuizCatalogus wordt toegevoegd</li>
+ * </ul>
+ * 
+ * Een Quiz object heeft relaties met Leerlingen via QuizDeelname en met
+ * Opdrachten via QuizOpdracht.
+ * 
+ * @author Johan Boogers, Ben Vandenberk (constructor, zijnDoelLeerjaren)
  * @version 2014.10.28
  *
  */
@@ -99,7 +121,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Ophalen van het onderwerp van de quiz
 	 *
-	 * @return
+	 * @return de String met het onderwerp
 	 */
 	public String getOnderwerp() {
 		return this.onderwerp;
@@ -108,7 +130,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Ophalen van de status van de quiz
 	 *
-	 * @return
+	 * @return de QuizStatus van de Quiz
 	 */
 	public QuizStatus getQuizStatus() {
 		return this.quizStatus;
@@ -117,7 +139,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Ophalen van de indicator of deze quiz een test is of niet
 	 *
-	 * @return
+	 * @return true als deze Quiz een test is
 	 */
 	public boolean getIsTest() {
 		return this.isTest;
@@ -127,14 +149,14 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Ophalen van de indicator of aan deze quiz slechts 1x mag deelgenomen
 	 * worden
 	 *
-	 * @return
+	 * @return true als aan deze Quiz slechts eenmaal mag deelgenomen worden
 	 */
 	public boolean getIsUniekeDeelname() {
 		return this.isUniekeDeelname;
 	}
 
 	/**
-	 * Geeft een kopie van het Datum objectje terug dat de aanmaakdatum van deze
+	 * Geeft een kopie van het Datum object terug dat de aanmaakdatum van deze
 	 * quiz voorstelt
 	 *
 	 * @return de Datum van aanmaak van deze Quiz
@@ -168,7 +190,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Geeft de gemiddelde van alle deelnames aan deze Quiz terug
+	 * Geeft de gemiddelde score van alle deelnames aan deze Quiz terug
 	 *
 	 * @return een double dat de gemiddelde score van alle deelnames aan deze
 	 *         Quiz voorstelt
@@ -191,13 +213,13 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	protected void setID(int id) {
 		ID = id;
 	}
-	
+
 	/**
 	 * Haalt de ID van de Opdracht op
 	 *
 	 * @return de ID van de Opdracht
 	 */
-	
+
 	public int getID() {
 		return ID;
 	}
@@ -205,8 +227,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Method om in te stellen voor welke leerjaren de quiz bedoeld is. Default
 	 * is een quiz beschikbaar voor alle leerjaren. Enkel de leerjaren die bij
-	 * de láátste aanroep van deze method meegegeven zijn, bepalen voor welke
-	 * leerjaren de quiz beschikbaar is.
+	 * de l&aacute;&aacute;tste aanroep van deze method meegegeven zijn, bepalen
+	 * voor welke leerjaren de quiz beschikbaar is.
 	 *
 	 * @param doelLeerjaar
 	 *            1 of meerdere leerjaren waarvoor de quiz beschikbaar wordt
@@ -223,15 +245,16 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 			zijnDoelLeerjaren[leerjaar] = true;
 		}
 	}
-	
+
 	/**
 	 * Haalt een lijstje op met de leerjaren waarvoor de Quiz bedoeld is
 	 * 
-	 * @return een ArrayList&lt;Integer&gt; met de leerjaren waarvoor de Quiz bedoeld is
+	 * @return een ArrayList&lt;Integer&gt; met de leerjaren waarvoor de Quiz
+	 *         bedoeld is
 	 */
 	public ArrayList<Integer> getDoelLeerjaren() {
 		ArrayList<Integer> doelLeerjaren = new ArrayList<Integer>();
-		for(int i = 1; i < zijnDoelLeerjaren.length; i++) {
+		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
 			if (zijnDoelLeerjaren[i]) {
 				doelLeerjaren.add(i);
 			}
@@ -253,7 +276,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Instellen van de status van de quiz
 	 *
 	 * @param quizStatus
-	 *            de status van de quiz *
+	 *            de status van de quiz
 	 */
 	public void setQuizStatus(QuizStatus quizStatus) {
 		this.quizStatus = quizStatus;
@@ -299,7 +322,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Instellen van de indicator of deze quiz een test is of niet
 	 *
 	 * @param isTest
-	 *            indicator of deze quiz een test is of niet *
+	 *            indicator of deze quiz een test is of niet
 	 */
 	public void setIsTest(boolean isTest) {
 		this.isTest = isTest;
@@ -312,34 +335,28 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Instellen van de indicator of je aan deze quiz slechts 1x mag deelnemen
 	 *
 	 * @param isUniekeDeelname
-	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden *
+	 *            indicator of aan deze quiz slechts 1x mag deelgenomen worden
 	 */
 	public void setIsUniekeDeelname(boolean isUniekeDeelname) {
 		this.isUniekeDeelname = isUniekeDeelname;
 	}
 
-	/**
-	 * override toString --> levert 'onderwerp' af met Test(?), UniekeDeelname
-	 * (?) en status
-	 */
 	@Override
 	public String toString() {
-		return "Quiz [ID=" + ID + "] met als onderwerp '" + this.getOnderwerp() + "' is "
-				+ (this.isTest ? "een" : "geen") + " test "
+		return "Quiz [ID=" + ID + "] met als onderwerp '" + this.getOnderwerp()
+				+ "' is " + (this.isTest ? "een" : "geen") + " test "
 				+ (this.isUniekeDeelname ? "met" : "zonder")
-				+ " unieke deelname."
-				+ "\nDatum van aanmaak: " + aanmaakDatum
-				+ ", auteur: " + auteur
-				+ "\nStatus: " + quizStatus
+				+ " unieke deelname." + "\nDatum van aanmaak: " + aanmaakDatum
+				+ ", auteur: " + auteur + "\nStatus: " + quizStatus
 				+ "\nGeldig voor leerjaren: " + doelLeerjarenString();
 	}
 
 	/**
-	 * override equals --> controle of deze quiz dezelfde als als de andere
+	 * Controle of deze quiz dezelfde als als de andere
 	 *
 	 * @param aQuiz
 	 *            een quiz waarmee we gaan vergelijken
-	 * @return
+	 * @return true als de Quiz objecten hetzelfde zijn
 	 */
 	@Override
 	public boolean equals(Object aQuiz) {
@@ -383,6 +400,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Toevoegen van een nieuwe opdracht voor deze quiz
 	 *
 	 * @param quizOpdracht
+	 *            de toe te voegen QuizOpdracht
 	 */
 	protected void addQuizOpdracht(QuizOpdracht quizOpdracht) {
 		this.quizOpdrachten.add(quizOpdracht);
@@ -392,6 +410,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * Verwijderen van een bestaande opdracht voor deze quiz
 	 *
 	 * @param quizOpdracht
+	 *            de te verwijderen QuizOpdracht
 	 */
 	protected void removeQuizOpdracht(QuizOpdracht quizOpdracht) {
 		this.quizOpdrachten.remove(quizOpdracht);
@@ -400,7 +419,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	/**
 	 * Ophalen van de list van opdrachten gelinkt aan deze quiz
 	 *
-	 * @return
+	 * @return een ArrayList&lt;Opdracht&gt met de Opdrachten in deze Quiz
 	 */
 	public ArrayList<Opdracht> getOpdrachten() {
 		ArrayList<Opdracht> opdrachten = new ArrayList<Opdracht>();
@@ -446,7 +465,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Ophalen van de list van leerlingen die reeds deelnamen aan deze quiz
+	 * Ophalen van de lijst van leerlingen die reeds deelnamen aan deze quiz
 	 *
 	 * @return een ArrayList&lt;Leerling&gt; met alle Leerling objecten die een
 	 *         deelname relatie hebben met dit Quiz object
@@ -491,16 +510,17 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		}
 	}
 
-	@Override
 	/**
 	 * Geeft een Quiz terug die een clone is van deze quiz (thx Bert)
 	 * @return een geclonede Quiz
 	 */
+	@Override
 	public Quiz clone() {
 		Quiz clone = null;
 		try {
-			clone = (Quiz) super.clone(); //first shallow cloning for the basic types
-			//then start deep cloning for the object types
+			clone = (Quiz) super.clone(); // first shallow cloning for the basic
+											// types
+			// then start deep cloning for the object types
 			clone.aanmaakDatum = new Datum(aanmaakDatum);
 			clone.zijnDoelLeerjaren = this.zijnDoelLeerjaren.clone();
 			clone.quizDeelnames = (ArrayList<QuizDeelname>) this.quizDeelnames
@@ -532,7 +552,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}
-	
+
 	private String doelLeerjarenString() {
 		if (getDoelLeerjaren().size() == 0) {
 			return "geen enkel";
@@ -541,8 +561,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		for (int i = 0; i < getDoelLeerjaren().size(); i++) {
 			if (i < getDoelLeerjaren().size() - 1) {
 				doelLeerjarenString += getDoelLeerjaren().get(i) + ", ";
-			}
-			else {
+			} else {
 				doelLeerjarenString += getDoelLeerjaren().get(i);
 			}
 		}
