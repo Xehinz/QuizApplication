@@ -15,13 +15,15 @@ import java.util.Iterator;
 
 public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iterable<Quiz> {
 	private HashSet<Quiz> quizcatalogus;
+	private int hoogsteID;
 
 	/**
 	 * Maakt een nieuwe QuizCatalogus aan
 	 *
 	 */
 	public QuizCatalogus() {
-		this.quizcatalogus = new HashSet<Quiz>(); // added
+		this.quizcatalogus = new HashSet<Quiz>();
+		hoogsteID = 0;// added
 	}
 
 	/**
@@ -32,7 +34,11 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 */
 
 	public QuizCatalogus(Collection<Quiz> qc) {
-		this.quizcatalogus = new HashSet<Quiz>(qc);
+		this.quizcatalogus = new HashSet<Quiz>();
+		hoogsteID = 0;
+		for (Quiz quiz : qc) {
+			addQuiz(quiz);
+		}
 	}
 
 	/**
@@ -70,6 +76,13 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 			throw new IllegalArgumentException(
 					"In de catalogus zit al een quiz met een onderwerp dat equivalent is aan dat van de meegegeven Quiz");
 		}
+		if (Q.getID() == 0) {
+			Q.setID(++hoogsteID);
+		} else {
+			if (Q.getID() > hoogsteID) {
+				hoogsteID = Q.getID();
+			}
+		}
 		this.quizcatalogus.add(Q);
 	}
 
@@ -87,6 +100,9 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 		if (!Q.isVerwijderbaar()) {
 			throw new IllegalStateException(String.format(
 					"De quiz bevindt zich in de status %s en is dus niet verwijderbaar", Q.getQuizStatus().toString()));
+		}
+		if (Q.getID() == hoogsteID) {
+			hoogsteID--;
 		}
 		this.quizcatalogus.remove(Q);
 	}

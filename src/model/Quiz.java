@@ -181,6 +181,23 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		return somScores / this.quizDeelnames.size();
 	}
 
+	/**
+	 * Method die door de container klasse gebruikt kan worden om de ID van deze
+	 * Opdracht te zetten
+	 *
+	 * @param id
+	 *            de ID van deze Opdracht
+	 */
+	protected void setID(int id) {
+		ID = id;
+	}
+	
+	/**
+	 * Haalt de ID van de Opdracht op
+	 *
+	 * @return de ID van de Opdracht
+	 */
+	
 	public int getID() {
 		return ID;
 	}
