@@ -430,8 +430,15 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param hint
 	 *            de String met de hint om toe te voegen
+	 * @throws IllegalStateException
+	 *             als de Opdracht niet meer aanpasbaar is omdat er al
+	 *             leerlingen deze opdracht hebben opgelost
 	 */
-	public void addHint(String hint) {
+	public void addHint(String hint) throws IllegalStateException {
+		if (!isAanpasbaar()) {
+			throw new IllegalStateException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
 		antwoordHints.add(hint);
 	}
 
@@ -440,8 +447,15 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param hint
 	 *            de String met de hint om te verwijderen
+	 * @throws IllegalStateException
+	 *             als de Opdracht niet meer aanpasbaar is omdat er al
+	 *             leerlingen deze opdracht hebben opgelost
 	 */
-	public void removeHint(String hint) {
+	public void removeHint(String hint) throws IllegalStateException {
+		if (!isAanpasbaar()) {
+			throw new IllegalStateException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
 		antwoordHints.remove(hint);
 	}
 
@@ -450,10 +464,21 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 *
 	 * @param volgnr
 	 *            het volgnummer van de hint, beginnende bij 1
+	 * @throws IllegalStateException
+	 *             als de Opdracht niet meer aanpasbaar is omdat er al
+	 *             leerlingen deze opdracht hebben opgelost
+	 * @throws IllegalArgumentException
+	 *             als er voor het meegegeven volgnummer geen hint bestaat
 	 */
-	public void removeHint(int volgnr) throws IllegalArgumentException {
-		if (volgnr < 0 || volgnr > antwoordHints.size() - 1) {
-			throw new IllegalArgumentException("De hint met volgnummer " + volgnr + " bestaat niet");
+	public void removeHint(int volgnr) throws IllegalArgumentException,
+			IllegalStateException {
+		if (!isAanpasbaar()) {
+			throw new IllegalStateException(
+					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
+		}
+		if (volgnr < 1 || volgnr > antwoordHints.size()) {
+			throw new IllegalArgumentException("De hint met volgnummer "
+					+ volgnr + " bestaat niet");
 		}
 		antwoordHints.remove(volgnr - 1);
 	}
