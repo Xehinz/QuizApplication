@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Template class voor het inlezen en wegschrijven van records in tekstformaat. De default implementatie gebruikt
- * bestanden van het .txt formaat. Als useCSV op true gezet wordt gebruikt de klasse bestanden van het .csv formaat
+ * Template class voor het inlezen en wegschrijven van records in tekstformaat.
+ * Geef true mee aan de constructor om in .csv formaat te werken.
  *
  * @author Ben Vandenberk
  * @version 04/11/2014
  *
  */
-public abstract class TxtTemplate {
+abstract class TxtTemplate {
 
 	protected boolean useCSV = false;
 
@@ -31,8 +31,8 @@ public abstract class TxtTemplate {
 	public TxtTemplate(boolean useCSV) {
 		this.useCSV = useCSV;
 	}
-	
-	public <T> ArrayList<T> lees() {
+
+	public <T> ArrayList<T> lees() throws IOException {
 		File inputFile = new File(getBestandsnaam());
 		ArrayList<T> objecten = new ArrayList<T>();
 
@@ -51,16 +51,16 @@ public abstract class TxtTemplate {
 				objecten.add((T) maakObject(fields));
 			}
 			scanner.close();
-		} catch (FileNotFoundException ex) {
-			System.err.println("Bestand niet gevonden");
+		} catch (FileNotFoundException Fex) {
+			throw new IOException(String.format("Bestand [%s] niet gevonden", getBestandsnaam()), Fex);
 		} catch (Exception ex) {
-			System.err.println(ex.getMessage());
+			throw new IOException("Leesfout: " + ex.getMessage(), ex);
 		}
 
 		return objecten;
 	}
 
-	public <T> void schrijf(ArrayList<T> objecten) {
+	public <T> void schrijf(ArrayList<T> objecten) throws IOException {
 		File outputFile = new File(getBestandsnaam());
 
 		try {
@@ -75,10 +75,10 @@ public abstract class TxtTemplate {
 			}
 
 			writer.close();
-		} catch (FileNotFoundException ex) {
-			System.err.println("Bestand niet gevonden");
+		} catch (FileNotFoundException Fex) {
+			throw new IOException(String.format("Bestand [%s] niet gevonden", getBestandsnaam()), Fex);
 		} catch (Exception ex) {
-			System.err.println(ex.getMessage());
+			throw new IOException("Schrijffout: " + ex.getMessage(), ex);
 		}
 	}
 }

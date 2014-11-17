@@ -1,5 +1,6 @@
 package persistency;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import model.Leerling;
@@ -9,28 +10,28 @@ import model.Quiz;
 import model.QuizDeelname;
 import model.QuizOpdracht;
 
-public interface DBStrategy {
-	public ArrayList<Opdracht> leesOpdrachten();
+interface DBStrategy {
+	public ArrayList<Opdracht> leesOpdrachten() throws IOException;
 
-	public ArrayList<Leerling> leesLeerlingen();
+	public ArrayList<Leerling> leesLeerlingen() throws IOException;
 
-	public ArrayList<Quiz> leesQuizzen();
+	public ArrayList<Quiz> leesQuizzen() throws IOException;
 
-	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames();
+	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames() throws IOException;
 
-	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten();
+	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten() throws IOException;
 
-	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden();
+	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden() throws IOException;
 
-	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten);
+	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) throws IOException;
 
-	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen);
+	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen) throws IOException;
 
-	public void schrijfQuizzen(ArrayList<Quiz> quizzen);
+	public void schrijfQuizzen(ArrayList<Quiz> quizzen) throws IOException;
 
-	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames);
+	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames) throws IOException;
 
-	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten);
+	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten) throws IOException;
 
-	public void schrijfOpdrachtAntwoorden(ArrayList<OpdrachtAntwoord> opdrachtAntwoorden);
+	public void schrijfOpdrachtAntwoorden(ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) throws IOException;
 }

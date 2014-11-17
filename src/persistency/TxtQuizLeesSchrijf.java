@@ -16,7 +16,7 @@ import model.QuizStatus;
  *
  */
 
-public class TxtQuizLeesSchrijf extends TxtTemplate {
+class TxtQuizLeesSchrijf extends TxtTemplate {
 
 	public TxtQuizLeesSchrijf(boolean useCSV) {
 		super(useCSV);

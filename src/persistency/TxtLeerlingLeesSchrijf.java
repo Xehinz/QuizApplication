@@ -11,7 +11,7 @@ import model.Leerling;
  * @version 04/11/2014
  *
  */
-public class TxtLeerlingLeesSchrijf extends TxtTemplate {
+class TxtLeerlingLeesSchrijf extends TxtTemplate {
 
 	public TxtLeerlingLeesSchrijf(boolean useCSV) {
 		super(useCSV);

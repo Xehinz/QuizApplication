@@ -13,15 +13,29 @@ import model.QuizCatalogus;
 import model.QuizDeelname;
 import model.QuizOpdracht;
 
+/**
+ * Facade-klasse van persistency package. DBHandler voorziet in methods om de
+ * staat van het programma op te slaan en weer uit te lezen. Gebruik de setter
+ * setUseCSV(boolean useCSV) om, in geval van opslag in tekst, het .csv formaat
+ * in plaats van het .txt formaat te gebruiken.
+ * 
+ * @author Ben Vandenberk
+ * @version 17/11/2014
+ *
+ */
 public class DBHandler {
 
 	private boolean useCSV;
-	
+
 	private DBStrategy dbStrategy;
 	private OpdrachtCatalogus opdrachtCatalogus;
 	private LeerlingContainer leerlingContainer;
 	private QuizCatalogus quizCatalogus;
 
+	/**
+	 * Maakt een DBHandler object aan. Gebruik deze constructor als je enkel wil
+	 * inlezen uit opslag
+	 */
 	public DBHandler() {
 		opdrachtCatalogus = new OpdrachtCatalogus();
 		leerlingContainer = new LeerlingContainer();
@@ -29,6 +43,17 @@ public class DBHandler {
 		dbStrategy = new TxtDB(useCSV);
 	}
 
+	/**
+	 * Maakt een DBHandler object aan. Gebruik deze constructor voor
+	 * wegschrijven of inlezen
+	 * 
+	 * @param opdrachtCatalogus
+	 *            de OpdrachtCatalogus om weg te schrijven
+	 * @param leerlingContainer
+	 *            de LeerlingContainer om weg te schrijven
+	 * @param quizCatalogus
+	 *            de QuizCatalogus om weg te schrijven
+	 */
 	public DBHandler(OpdrachtCatalogus opdrachtCatalogus,
 			LeerlingContainer leerlingContainer, QuizCatalogus quizCatalogus) {
 		this.opdrachtCatalogus = opdrachtCatalogus;
@@ -37,6 +62,12 @@ public class DBHandler {
 		dbStrategy = new TxtDB(useCSV);
 	}
 
+	/**
+	 * Method om de opgeslagen data in te lezen
+	 * 
+	 * @throws IOException
+	 *             als er zich bij het inlezen een fout voordoet
+	 */
 	public void vulCatalogi() throws IOException {
 		opdrachtCatalogus = new OpdrachtCatalogus(dbStrategy.leesOpdrachten());
 		leerlingContainer = new LeerlingContainer(dbStrategy.leesLeerlingen());
@@ -46,7 +77,13 @@ public class DBHandler {
 		koppelQuizDeelnamesAanQuizOpdrachten();
 	}
 
-	public void saveCatalogi() {
+	/**
+	 * Method om de staat van het programma op te slaan
+	 * 
+	 * @throws IOException
+	 *             als er zich bij het wegschrijven een fout voordoet
+	 */
+	public void saveCatalogi() throws IOException {
 		dbStrategy.schrijfOpdrachten(opdrachtCatalogus.getOpdrachten());
 		dbStrategy.schrijfLeerlingen(leerlingContainer.getLeerlingen());
 		dbStrategy.schrijfQuizzen(quizCatalogus.getQuizzen());
@@ -58,6 +95,15 @@ public class DBHandler {
 				.getAlleOpdrachtAntwoorden());
 	}
 
+	/**
+	 * METHOD IS MISSCHIEN NIET NODIG. AFWACHTEN HOE .INIT FILE WERKT
+	 * 
+	 * Method om in te stellen of DBHandler met DB of tekst werkt.
+	 * 
+	 * @param storageStrategy
+	 *            de StorageStrategy (StorageStrategy.TEKST of
+	 *            StorageStrategy.DATABASE)
+	 */
 	public void setDBStrategy(StorageStrategy storageStrategy) {
 		switch (storageStrategy) {
 		case TEKST:
@@ -69,18 +115,38 @@ public class DBHandler {
 		}
 	}
 
+	/**
+	 * Haalt de OpdrachtCatalogus op
+	 * 
+	 * @return de OpdrachtCatalogus
+	 */
 	public OpdrachtCatalogus getOpdrachtCatalogus() {
 		return opdrachtCatalogus;
 	}
 
+	/**
+	 * Haalt de QuizCatalogus op
+	 * 
+	 * @return de QuizCatalogus
+	 */
 	public QuizCatalogus getQuizCatalogus() {
 		return quizCatalogus;
 	}
 
+	/**
+	 * Haalt de LeerlingContainer op
+	 * 
+	 * @return de LeerlingContainer
+	 */
 	public LeerlingContainer getLeerlingContainer() {
 		return leerlingContainer;
 	}
-	
+
+	/**
+	 * Geef true mee om in .csv formaat te werken. Enkel van toepassing indien de StorageStrategy TEKST is
+	 * 
+	 * @param useCSV true voor .csv, false voor .txt
+	 */
 	public void setUseCSV(boolean useCSV) {
 		this.useCSV = useCSV;
 		dbStrategy = new TxtDB(useCSV);
@@ -90,7 +156,7 @@ public class DBHandler {
 	 * Deze method werkt enkel als ze pas wordt aangeroepen nadat de Catalogus
 	 * en Container klasses zijn opgevuld.
 	 */
-	private void koppelQuizzenAanOpdrachten() {
+	private void koppelQuizzenAanOpdrachten() throws IOException {
 		ArrayList<PseudoQuizOpdracht> quizOpdrachten = dbStrategy
 				.leesQuizOpdrachten();
 
@@ -111,7 +177,7 @@ public class DBHandler {
 	 * Deze method werkt enkel als ze pas wordt aangeroepen nadat de Catalogus
 	 * en Container klasses zijn opgevuld.
 	 */
-	private void koppelLeerlingenAanQuizzen() {
+	private void koppelLeerlingenAanQuizzen() throws IOException {
 		ArrayList<PseudoQuizDeelname> quizDeelnames = dbStrategy
 				.leesQuizDeelnames();
 
@@ -123,8 +189,8 @@ public class DBHandler {
 			huidigeLeerling = leerlingContainer.getLeerling(quizDeelname
 					.getLeerlingID());
 
-			QuizDeelname.koppelQuizAanLeerling(huidigeQuiz, huidigeLeerling, quizDeelname.getDeelnameDatum(),
-					true);
+			QuizDeelname.koppelQuizAanLeerling(huidigeQuiz, huidigeLeerling,
+					quizDeelname.getDeelnameDatum(), true);
 		}
 	}
 

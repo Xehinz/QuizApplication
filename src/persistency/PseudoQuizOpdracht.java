@@ -1,9 +1,6 @@
 package persistency;
 
-import model.Opdracht;
-import model.Quiz;
-
-public class PseudoQuizOpdracht {
+class PseudoQuizOpdracht {
 	
 	private int ID, maxScore, quizID, opdrachtID;	
 	

@@ -11,7 +11,7 @@ import model.Opdracht;
  *
  */
 
-public abstract class TxtOpdrachtLeesSchrijf extends TxtTemplate {
+abstract class TxtOpdrachtLeesSchrijf extends TxtTemplate {
 	
 	public TxtOpdrachtLeesSchrijf(boolean useCSV) {
 		super(useCSV);

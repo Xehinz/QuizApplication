@@ -1,8 +1,6 @@
 package persistency;
 
-import model.OpdrachtAntwoord;
-
-public class PseudoOpdrachtAntwoord {
+class PseudoOpdrachtAntwoord {
 
 	private int quizDeelnameID, quizOpdrachtID;
 	private int aantalPogingen, antwoordTijd;

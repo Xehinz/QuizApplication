@@ -2,7 +2,7 @@ package persistency;
 
 import util.datumWrapper.Datum;
 
-public class PseudoQuizDeelname {
+class PseudoQuizDeelname {
 	private int quizDeelnameID, quizID, leerlingID;
 	private Datum deelnameDatum;
 

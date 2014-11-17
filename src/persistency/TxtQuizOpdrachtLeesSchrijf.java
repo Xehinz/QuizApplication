@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import model.QuizOpdracht;
 
-public class TxtQuizOpdrachtLeesSchrijf extends TxtTemplate {
+class TxtQuizOpdrachtLeesSchrijf extends TxtTemplate {
 
 	public TxtQuizOpdrachtLeesSchrijf(boolean useCSV) {
 		super(useCSV);

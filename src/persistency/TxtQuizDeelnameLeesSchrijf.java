@@ -6,7 +6,7 @@ import util.datumWrapper.Datum;
 import model.OpdrachtAntwoord;
 import model.QuizDeelname;
 
-public class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
+class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
 
 	public TxtQuizDeelnameLeesSchrijf(boolean useCSV) {
 		super(useCSV);

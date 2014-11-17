@@ -16,7 +16,7 @@ import model.Leraar;
  *
  */
 
-public class TxtReproductieLeesSchrijf extends TxtOpdrachtLeesSchrijf {
+class TxtReproductieLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 
 	public TxtReproductieLeesSchrijf(boolean useCSV) {
 		super(useCSV);

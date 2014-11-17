@@ -3,8 +3,6 @@
  */
 package quizApplication;
 
-import persistency.DBHandler;
-import persistency.TxtDB;
 import model.*;
 
 import java.util.ArrayList;

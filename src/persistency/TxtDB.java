@@ -1,5 +1,6 @@
 package persistency;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import model.Leerling;
@@ -21,7 +22,7 @@ import model.Reproductie;
  *
  */
 
-public class TxtDB implements DBStrategy {
+class TxtDB implements DBStrategy {
 
 	private TxtLeerlingLeesSchrijf txtLeerlingLeesSchrijf;
 	private TxtOpdrachtAntwoordLeesSchrijf txtOpdrachtAntwoordLeesSchrijf;
@@ -46,7 +47,7 @@ public class TxtDB implements DBStrategy {
 	}
 
 	@Override
-	public ArrayList<Opdracht> leesOpdrachten() {
+	public ArrayList<Opdracht> leesOpdrachten() throws IOException {
 		ArrayList<Object> opdrachtObjecten = new ArrayList<Object>();
 		opdrachtObjecten.addAll(txtKlassiekeOpdrachtLeesSchrijf.lees());
 		opdrachtObjecten.addAll(txtReproductieLeesSchrijf.lees());
@@ -60,32 +61,32 @@ public class TxtDB implements DBStrategy {
 	}
 
 	@Override
-	public ArrayList<Leerling> leesLeerlingen() {
+	public ArrayList<Leerling> leesLeerlingen() throws IOException {
 		return txtLeerlingLeesSchrijf.lees();
 	}
 
 	@Override
-	public ArrayList<Quiz> leesQuizzen() {
+	public ArrayList<Quiz> leesQuizzen() throws IOException {
 		return txtQuizLeesSchrijf.lees();
 	}
 
 	@Override
-	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames() {
+	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames() throws IOException {
 		return txtQuizDeelnameLeesSchrijf.lees();
 	}
 
 	@Override
-	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten() {
+	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten() throws IOException {
 		return txtQuizOpdrachtLeesSchrijf.lees();
 	}
 
 	@Override
-	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden() {
+	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden() throws IOException {
 		return txtOpdrachtAntwoordLeesSchrijf.lees();
 	}
 
 	@Override
-	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) {
+	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) throws IOException {
 		ArrayList<Opdracht> klassiekeopdrachten = new ArrayList<Opdracht>();
 		ArrayList<Opdracht> meerkeuzeopdrachten = new ArrayList<Opdracht>();
 		ArrayList<Opdracht> opsommingsopdrachten = new ArrayList<Opdracht>();
@@ -111,28 +112,28 @@ public class TxtDB implements DBStrategy {
 	}
 
 	@Override
-	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen) {
+	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen) throws IOException {
 		txtLeerlingLeesSchrijf.schrijf(leerlingen);
 	}
 
 	@Override
-	public void schrijfQuizzen(ArrayList<Quiz> quizzen) {
+	public void schrijfQuizzen(ArrayList<Quiz> quizzen) throws IOException {
 		txtQuizLeesSchrijf.schrijf(quizzen);
 	}
 
 	@Override
-	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames) {
+	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames) throws IOException {
 		txtQuizDeelnameLeesSchrijf.schrijf(quizDeelnames);
 	}
 
 	@Override
-	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten) {
+	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten) throws IOException {
 		txtQuizOpdrachtLeesSchrijf.schrijf(quizOpdrachten);
 	}
 
 	@Override
 	public void schrijfOpdrachtAntwoorden(
-			ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) {
+			ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) throws IOException {
 		txtOpdrachtAntwoordLeesSchrijf.schrijf(opdrachtAntwoorden);
 	}
 

@@ -9,12 +9,12 @@ import model.Quiz;
 import model.QuizDeelname;
 import model.QuizOpdracht;
 
-public class MySQLDB implements DBStrategy {
+class MySQLDB implements DBStrategy {
 
 	public MySQLDB() {
-		
+
 	}
-	
+
 	@Override
 	public ArrayList<Opdracht> leesOpdrachten() {
 		// TODO Auto-generated method stub
@@ -82,7 +82,8 @@ public class MySQLDB implements DBStrategy {
 	}
 
 	@Override
-	public void schrijfOpdrachtAntwoorden(ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) {
+	public void schrijfOpdrachtAntwoorden(
+			ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) {
 		// TODO Auto-generated method stub
 
 	}

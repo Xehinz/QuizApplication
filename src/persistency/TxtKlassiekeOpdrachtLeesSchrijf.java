@@ -16,7 +16,7 @@ import model.OpdrachtCategorie;
  *
  */
 
-public class TxtKlassiekeOpdrachtLeesSchrijf extends TxtOpdrachtLeesSchrijf {
+class TxtKlassiekeOpdrachtLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 	
 	public TxtKlassiekeOpdrachtLeesSchrijf(boolean useCSV) {
 		super(useCSV);
