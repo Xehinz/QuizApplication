@@ -37,31 +37,31 @@ public class MainView extends JFrame {
 		
 	}
 	
-	void displayErrorMessage(String errorMessage){ 
+	public void displayErrorMessage(String errorMessage){ 
 		JOptionPane.showMessageDialog(this, errorMessage); 
 	} 
 
-	void addBeheerLeerlingListener(ActionListener listenForCalcButton){
+	public void addBeheerLeerlingListener(ActionListener listenForCalcButton){
 		buttonBeheerLeerling.addActionListener(listenForCalcButton);
 	}
 
-	void addBeheerQuizListener(ActionListener listenForCalcButton){
+	public void addBeheerQuizListener(ActionListener listenForCalcButton){
 		buttonBeheerQuiz.addActionListener(listenForCalcButton);
 	}
 
-	void addBeheerOpdrachtListener(ActionListener listenForCalcButton){
+	public void addBeheerOpdrachtListener(ActionListener listenForCalcButton){
 		buttonBeheerOpdracht.addActionListener(listenForCalcButton);
 	}
 
-	void addNeemDeelAanQuizListener(ActionListener listenForCalcButton){
+	public void addNeemDeelAanQuizListener(ActionListener listenForCalcButton){
 		buttonNeemDeelAanQuiz.addActionListener(listenForCalcButton);
 	}
 
-	void addOverzichtScoresListener(ActionListener listenForCalcButton){
+	public void addOverzichtScoresListener(ActionListener listenForCalcButton){
 		buttonOverzichtScores.addActionListener(listenForCalcButton);
 	}
 
-	void addStopListener(ActionListener listenForCalcButton){
+	public void addStopListener(ActionListener listenForCalcButton){
 		buttonStop.addActionListener(listenForCalcButton);
 	}
 
