@@ -155,6 +155,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 		for (Opdracht opdracht : this) {
 			alleQuizOpdrachten.addAll(opdracht.getQuizOpdrachten());
 		}
+		Collections.sort(alleQuizOpdrachten);
 		return alleQuizOpdrachten;
 	}
 

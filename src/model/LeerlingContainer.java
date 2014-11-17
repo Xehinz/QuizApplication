@@ -130,6 +130,7 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
 		for (Leerling leerling : this) {
 			alleQuizDeelnames.addAll(leerling.getQuizDeelnames());
 		}
+		Collections.sort(alleQuizDeelnames);
 		return alleQuizDeelnames;
 	}
 
@@ -145,6 +146,7 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
 		for (Leerling leerling : this) {
 			alleOpdrachtAntwoorden.addAll(leerling.getAlleOpdrachtAntwoorden());
 		}
+		Collections.sort(alleOpdrachtAntwoorden);
 		return alleOpdrachtAntwoorden;
 	}
 
