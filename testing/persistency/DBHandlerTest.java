@@ -105,8 +105,7 @@ public class DBHandlerTest {
 		
 		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer, quizCatalogus);
 		
-		oorspronkelijkeProgrammaString = programmaString();
-		
+		oorspronkelijkeProgrammaString = programmaString();	
 	}
 
 	@Test

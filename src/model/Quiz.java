@@ -376,18 +376,12 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		if (this.isUniekeDeelname != other.isUniekeDeelname) {
 			return false;
 		}
-		if (this.quizStatus != other.quizStatus) {
-			return false;
-		}
 		if (!this.aanmaakDatum.equals(other.aanmaakDatum)) {
 			return false;
 		}
 		if (this.auteur != other.auteur) {
 			return false;
-		}
-		if (!this.getOpdrachten().equals(other.getOpdrachten())) {
-			return false;
-		}
+		}		
 		for (int i = 0; i < this.zijnDoelLeerjaren.length; i++) {
 			if (this.zijnDoelLeerjaren[i] != other.zijnDoelLeerjaren[i]) {
 				return false;
@@ -494,20 +488,14 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Vergelijk deze quiz met een andere quiz
+	 * Vergelijk deze quiz met een andere quiz op basis van het onderwerp
 	 *
 	 * @return een negatief nummer, een nul of een positief nummer als de quiz
-	 *         minder, hetzelfde aantal of meer opdrachten heeft
+	 *         alfabetisch eerder, op dezelfde plaats of later komt
 	 */
 	@Override
 	public int compareTo(Quiz aQuiz) {
-		if (this.getOpdrachten().size() < aQuiz.getOpdrachten().size()) {
-			return -1;
-		} else if (this.getOpdrachten().size() > aQuiz.getOpdrachten().size()) {
-			return 1;
-		} else {
-			return 0;
-		}
+		return this.onderwerp.compareTo(aQuiz.onderwerp);
 	}
 
 	/**
@@ -540,14 +528,10 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		hash = hash * 13 + onderwerp.hashCode();
 		hash = hash * 23 + (isTest ? 10 : 20);
 		hash = hash * 7 + (isUniekeDeelname ? 80 : 120);
-		hash = hash * 17 + quizStatus.hashCode();
 		hash = hash * 19 + aanmaakDatum.toString().hashCode();
 		hash = hash * 31 + auteur.toString().hashCode();
 		for (boolean bool : zijnDoelLeerjaren) {
 			hash = hash * 13 + (bool ? 30 : 70);
-		}
-		for (Opdracht opdracht : getOpdrachten()) {
-			hash = hash * 19 + opdracht.hashCode();
 		}
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;

@@ -48,8 +48,13 @@ public class TxtMeerkeuzeLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 			throw new IOException("Het object om weg te schrijven is geen Meerkeuze");
 		}
 		String opties = new String();
-		for (String s : meerkeuze.getOpties()) {
-			opties += String.format("%s;", s);
+		for (int i = 0; i < meerkeuze.getOpties().size(); i++) {
+			if (i < meerkeuze.getOpties().size() - 1) {
+			opties += String.format("%s;", meerkeuze.getOpties().get(i));
+			}
+			else {
+				opties += meerkeuze.getOpties().get(i);
+			}
 		}
 		return String.format("%s\t%s\t%s", this.maakBasisOpdrachtString(meerkeuze), opties, meerkeuze.getJuisteAntwoord());
 	}

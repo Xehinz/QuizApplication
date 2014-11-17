@@ -1,9 +1,12 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * De OpdrachtCatalogus klasse, met 1 field: Een lijst met alle aangemaakte
@@ -163,7 +166,9 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	public String toString() {
 		String result = "Opdrachtcatalogus met " + this.count()
 				+ " opdrachten:\n\n";
-		for (Opdracht opdracht : this) {
+		ArrayList<Opdracht> gesorteerd = new ArrayList<Opdracht>(opdrachtcatalogus);
+		Collections.sort(gesorteerd);
+		for (Opdracht opdracht : gesorteerd) {
 			result += opdracht + scheiding();
 		}
 		return result;

@@ -1,1 +1,1 @@
-4	15/11/2014	Wat is de hoofdstad van Frankrijk	1	15	AARDRIJKSKUNDE	CHARLOTTE_NEVEN	... - Dakar|	Parijs
+1	17/11/2014	Waarom zijn de bananen krom?	1	20	NEDERLANDS	CHARLOTTE_NEVEN	Denk niet te ver!|Wat zouden je ouders antwoorden?	Daarom

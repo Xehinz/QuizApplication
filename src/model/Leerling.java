@@ -98,6 +98,15 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	public int getID() {
 		return ID;
 	}
+	
+	/**
+	 * Method die door de container klasse gebruikt kan worden om de ID in te stellen
+	 * 
+	 * @param ID de gewenste ID
+	 */
+	protected void setID(int ID) {
+		this.ID = ID;
+	}
 
 	/**
 	 * Zet het leerjaar field van dit Leerling object. Accepteert de integers 1

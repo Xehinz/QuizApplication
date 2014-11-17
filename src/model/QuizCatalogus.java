@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -165,7 +166,9 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	@Override
 	public String toString() {
 		String result = "Quizcatalogus met " + this.count() + " quizzen:\n\n";
-		for (Quiz quiz : this) {
+		ArrayList<Quiz> gesorteerd = new ArrayList<Quiz>(quizcatalogus);
+		Collections.sort(gesorteerd);
+		for (Quiz quiz : gesorteerd) {
 			result += quiz + scheiding();
 		}
 		return result;

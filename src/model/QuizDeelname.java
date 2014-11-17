@@ -243,7 +243,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		long hash = 1;
 		hash = hash * 7 * leerling.hashCode();
 		hash = hash * 31 * quiz.hashCode();
-		hash = hash * 19 * datum.toString().hashCode();
+		//hash = hash * 19 * datum.toString().hashCode();
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}

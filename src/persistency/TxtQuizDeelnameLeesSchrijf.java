@@ -9,7 +9,7 @@ public class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
 
 	@Override
 	protected String getBestandsnaam() {
-		return useCSV ? "quizDeelnames.csv" : "quizDeelnames.txt";
+		return useCSV ? "resources/quizDeelnames.csv" : "resources/quizDeelnames.txt";
 	}
 
 	@Override

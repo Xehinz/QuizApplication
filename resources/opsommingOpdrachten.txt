@@ -1,1 +1,1 @@
-4	15/11/2014	Wat zijn de 2 grootste eilanden van de Azoren	1	15	AARDRIJKSKUNDE	CHARLOTTE_NEVEN	groen & berg|	Sao Miguel;Pico	false
+2	17/11/2014	Geef de 5 kleinste priemgetallen in volgorde	2	25	WISKUNDE	STEVEN_OPDEBEEK	1 is geen priemgetal!	2;3;5;7;11	true

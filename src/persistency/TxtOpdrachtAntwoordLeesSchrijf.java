@@ -8,7 +8,7 @@ public class TxtOpdrachtAntwoordLeesSchrijf extends TxtTemplate {
 
 	@Override
 	protected String getBestandsnaam() {
-		return useCSV ? "opdrachtAntwoorden.csv" : "opdrachtAntwoorden.txt";
+		return useCSV ? "resources/opdrachtAntwoorden.csv" : "resources/opdrachtAntwoorden.txt";
 	}
 
 	@Override

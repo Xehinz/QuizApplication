@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -19,6 +20,7 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
 		Comparable<LeerlingContainer> {
 
 	private ArrayList<Leerling> leerlingen;
+	private int hoogsteID;
 
 	/**
 	 * Maakt een lege LeerlingContainer aan
@@ -36,7 +38,10 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
 	 *            LeerlingContainer zal bevatten
 	 */
 	public LeerlingContainer(Collection<Leerling> leerlingen) {
-		this.leerlingen = new ArrayList<Leerling>(leerlingen);
+		this.leerlingen = new ArrayList<Leerling>();
+		for (Leerling leerling : leerlingen) {
+			addLeerling(leerling);
+		}
 	}
 
 	/**
@@ -46,10 +51,18 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
 	 * @param leerling
 	 *            de Leerling om toe te voegen
 	 */
-	public void addLeerling(Leerling leerling) {
-		if (!leerlingen.contains(leerling)) {
-			leerlingen.add(leerling);
+	public void addLeerling(Leerling leerling) throws IllegalArgumentException {
+		if (leerlingen.contains(leerling)) {
+			throw new IllegalArgumentException("De LeerlingContainer kan geen twee dezelfde leerlingen bevatten");
 		}
+		if (leerling.getID() == 0) {
+			leerling.setID(++hoogsteID);
+		} else { 
+			if (leerling.getID() > hoogsteID) {
+			hoogsteID = leerling.getID();
+			}
+		}
+		leerlingen.add(leerling);
 	}
 
 	/**
@@ -203,6 +216,7 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
 	public String toString() {
 		String result = String.format(
 				"LeerlingContainer met %d leerlingen:\n\n", count());
+		Collections.sort(leerlingen);
 		for (Leerling leerling : this) {
 			result += leerling + scheiding();
 		}
