@@ -2,11 +2,16 @@ package persistency;
 
 import java.io.IOException;
 
+import util.datumWrapper.Datum;
 import model.OpdrachtAntwoord;
 import model.QuizDeelname;
 
 public class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
 
+	public TxtQuizDeelnameLeesSchrijf(boolean useCSV) {
+		super(useCSV);
+	}
+	
 	@Override
 	protected String getBestandsnaam() {
 		return useCSV ? "resources/quizDeelnames.csv" : "resources/quizDeelnames.txt";
@@ -16,7 +21,7 @@ public class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
 	protected PseudoQuizDeelname maakObject(String[] fields) throws IOException {
 		try {
 			return new PseudoQuizDeelname(Integer.parseInt(fields[0]),
-					Integer.parseInt(fields[1]), Integer.parseInt(fields[2]));
+					Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), new Datum(fields[3]));
 		} catch (NumberFormatException Nex) {
 			throw new IOException("Fout bij het parsen vanuit tekstbestand",
 					Nex);
@@ -31,20 +36,20 @@ public class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
 
 	@Override
 	protected String maakStringRecord(Object object) throws IOException {
-		QuizDeelname quizdeelname = null;
+		QuizDeelname quizDeelname = null;
 		if (object instanceof QuizDeelname) {
-			quizdeelname = (QuizDeelname) object;
+			quizDeelname = (QuizDeelname) object;
 		} else {
 			throw new IOException(
 					"Het object om weg te schrijven is geen QuizDeelname");
 		}
-		return String.format("%s\t%s\t%s", quizdeelname.getID(),
-				quizdeelname.getQuiz().getID(), quizdeelname.getLeerling().getID());
+		return String.format("%s\t%s\t%s\t%s", quizDeelname.getID(),
+				quizDeelname.getQuiz().getID(), quizDeelname.getLeerling().getID(), quizDeelname.getDatum().getDatumInEuropeesFormaat());
 	}
 
 	@Override
 	protected String getHeaderCSV() {
-		return "QuizDeelnameID\tQuizID\tLeerlingID";
+		return "QuizDeelnameID\tQuizID\tLeerlingID\tDeelnameDatum";
 	}
 
 }

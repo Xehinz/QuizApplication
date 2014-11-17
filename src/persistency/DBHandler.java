@@ -15,6 +15,8 @@ import model.QuizOpdracht;
 
 public class DBHandler {
 
+	private boolean useCSV;
+	
 	private DBStrategy dbStrategy;
 	private OpdrachtCatalogus opdrachtCatalogus;
 	private LeerlingContainer leerlingContainer;
@@ -24,7 +26,7 @@ public class DBHandler {
 		opdrachtCatalogus = new OpdrachtCatalogus();
 		leerlingContainer = new LeerlingContainer();
 		quizCatalogus = new QuizCatalogus();
-		dbStrategy = new TxtDB();
+		dbStrategy = new TxtDB(useCSV);
 	}
 
 	public DBHandler(OpdrachtCatalogus opdrachtCatalogus,
@@ -32,7 +34,7 @@ public class DBHandler {
 		this.opdrachtCatalogus = opdrachtCatalogus;
 		this.leerlingContainer = leerlingContainer;
 		this.quizCatalogus = quizCatalogus;
-		dbStrategy = new TxtDB();
+		dbStrategy = new TxtDB(useCSV);
 	}
 
 	public void vulCatalogi() throws IOException {
@@ -59,7 +61,7 @@ public class DBHandler {
 	public void setDBStrategy(StorageStrategy storageStrategy) {
 		switch (storageStrategy) {
 		case TEKST:
-			dbStrategy = new TxtDB();
+			dbStrategy = new TxtDB(useCSV);
 			break;
 		case DATABASE:
 			dbStrategy = new MySQLDB();
@@ -78,7 +80,16 @@ public class DBHandler {
 	public LeerlingContainer getLeerlingContainer() {
 		return leerlingContainer;
 	}
+	
+	public void setUseCSV(boolean useCSV) {
+		this.useCSV = useCSV;
+		dbStrategy = new TxtDB(useCSV);
+	}
 
+	/**
+	 * Deze method werkt enkel als ze pas wordt aangeroepen nadat de Catalogus
+	 * en Container klasses zijn opgevuld.
+	 */
 	private void koppelQuizzenAanOpdrachten() {
 		ArrayList<PseudoQuizOpdracht> quizOpdrachten = dbStrategy
 				.leesQuizOpdrachten();
@@ -96,6 +107,10 @@ public class DBHandler {
 		}
 	}
 
+	/**
+	 * Deze method werkt enkel als ze pas wordt aangeroepen nadat de Catalogus
+	 * en Container klasses zijn opgevuld.
+	 */
 	private void koppelLeerlingenAanQuizzen() {
 		ArrayList<PseudoQuizDeelname> quizDeelnames = dbStrategy
 				.leesQuizDeelnames();
@@ -108,7 +123,7 @@ public class DBHandler {
 			huidigeLeerling = leerlingContainer.getLeerling(quizDeelname
 					.getLeerlingID());
 
-			QuizDeelname.koppelQuizAanLeerling(huidigeQuiz, huidigeLeerling,
+			QuizDeelname.koppelQuizAanLeerling(huidigeQuiz, huidigeLeerling, quizDeelname.getDeelnameDatum(),
 					true);
 		}
 	}
@@ -144,7 +159,8 @@ public class DBHandler {
 				}
 			}
 			if (huidigeQuizDeelname == null || huidigeQuizOpdracht == null) {
-				throw new IOException("De QuizOpdracht en/of QuizDeelname werd niet gevonden");
+				throw new IOException(
+						"De QuizOpdracht en/of QuizDeelname werd niet gevonden");
 			}
 			OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(
 					huidigeQuizDeelname, huidigeQuizOpdracht,

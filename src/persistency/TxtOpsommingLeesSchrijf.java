@@ -18,6 +18,10 @@ import model.Leraar;
 
 public class TxtOpsommingLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 
+	public TxtOpsommingLeesSchrijf(boolean useCSV) {
+		super(useCSV);
+	}
+	
 	@Override
 	protected String getBestandsnaam() {
 		return useCSV ? "resources/opsommingOpdrachten.csv" : "resources/opsommingOpdrachten.txt";

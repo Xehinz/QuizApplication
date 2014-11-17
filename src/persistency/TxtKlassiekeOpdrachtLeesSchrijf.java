@@ -18,6 +18,10 @@ import model.OpdrachtCategorie;
 
 public class TxtKlassiekeOpdrachtLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 	
+	public TxtKlassiekeOpdrachtLeesSchrijf(boolean useCSV) {
+		super(useCSV);
+	}
+	
 	@Override
 	protected String getBestandsnaam() {
 		return useCSV ? "resources/klassiekeOpdrachten.csv" : "resources/klassiekeOpdrachten.txt";

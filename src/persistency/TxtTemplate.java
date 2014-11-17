@@ -28,6 +28,10 @@ public abstract class TxtTemplate {
 
 	protected abstract String getHeaderCSV();
 
+	public TxtTemplate(boolean useCSV) {
+		this.useCSV = useCSV;
+	}
+	
 	public <T> ArrayList<T> lees() {
 		File inputFile = new File(getBestandsnaam());
 		ArrayList<T> objecten = new ArrayList<T>();
@@ -76,15 +80,5 @@ public abstract class TxtTemplate {
 		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		}
-	}
-
-	/**
-	 * Geef true mee om in .csv formaat te werken
-	 *
-	 * @param isCSV
-	 *            boolean - true voor csv
-	 */
-	public void useCSV(boolean isCSV) {
-		this.useCSV = isCSV;
 	}
 }

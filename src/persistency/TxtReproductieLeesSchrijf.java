@@ -18,6 +18,10 @@ import model.Leraar;
 
 public class TxtReproductieLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 
+	public TxtReproductieLeesSchrijf(boolean useCSV) {
+		super(useCSV);
+	}
+	
 	@Override
 	protected String getBestandsnaam() {
 		return useCSV ? "resources/reproductieOpdrachten.csv" : "resources/reproductieOpdrachten.txt";

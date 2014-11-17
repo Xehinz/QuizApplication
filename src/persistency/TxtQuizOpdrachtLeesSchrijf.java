@@ -6,6 +6,10 @@ import model.QuizOpdracht;
 
 public class TxtQuizOpdrachtLeesSchrijf extends TxtTemplate {
 
+	public TxtQuizOpdrachtLeesSchrijf(boolean useCSV) {
+		super(useCSV);
+	}
+	
 	@Override
 	protected String getBestandsnaam() {
 		return useCSV? "resources/quizOpdrachten.csv" : "resources/quizOpdrachten.txt";

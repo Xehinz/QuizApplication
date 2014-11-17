@@ -104,6 +104,7 @@ public class DBHandlerTest {
 		quizB.setQuizStatus(QuizStatus.AFGESLOTEN);
 		
 		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer, quizCatalogus);
+		dbHandler.setUseCSV(true);
 		
 		oorspronkelijkeProgrammaString = programmaString();	
 	}

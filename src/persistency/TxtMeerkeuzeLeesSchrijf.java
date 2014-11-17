@@ -18,6 +18,10 @@ import model.OpdrachtCategorie;
 
 public class TxtMeerkeuzeLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 
+	public TxtMeerkeuzeLeesSchrijf(boolean useCSV) {
+		super(useCSV);
+	}
+	
 	@Override
 	protected String getBestandsnaam() {
 		return useCSV ? "resources/meerkeuzeOpdrachten.csv" : "resources/meerkeuzeOpdrachten.txt";

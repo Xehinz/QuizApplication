@@ -27,8 +27,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * @param leerling
 	 *            de Leerling die deelneemt aan een Quiz
 	 */
-	private QuizDeelname(Quiz quiz, Leerling leerling) {
-		this.datum = new Datum();
+	private QuizDeelname(Quiz quiz, Leerling leerling, Datum deelnameDatum) {
+		this.datum = deelnameDatum;
 		this.quiz = quiz;
 		this.leerling = leerling;
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
@@ -96,6 +96,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
 	 *            de deelnemende Leerling
+	 * @param deelnameDatum
+	 *            de Datum van deelname
 	 * @param uitStorage
 	 *            zet op true om een koppeling vanuit storage (tekst / DB) te
 	 *            maken
@@ -106,7 +108,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 *             te nemen
 	 */
 	public static QuizDeelname koppelQuizAanLeerling(Quiz quiz,
-			Leerling leerling, boolean uitStorage) throws IllegalStateException {
+			Leerling leerling, Datum deelnameDatum, boolean uitStorage)
+			throws IllegalStateException {
 		if (!uitStorage) {
 			if (!quiz.isDeelnameMogelijk()) {
 				throw new IllegalStateException(
@@ -121,7 +124,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 							"De quiz is niet opengesteld voor het leerjaar waarin de leerling zich bevindt (%d)",
 							leerling.getLeerjaar()));
 		}
-		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling);
+		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling,
+				deelnameDatum);
 		leerling.addQuizDeelname(quizDeelname);
 		quiz.addQuizDeelname(quizDeelname);
 		return quizDeelname;
@@ -143,7 +147,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	public static QuizDeelname koppelQuizAanLeerling(Quiz quiz,
 			Leerling leerling) throws IllegalStateException {
-		return koppelQuizAanLeerling(quiz, leerling, false);
+		return koppelQuizAanLeerling(quiz, leerling, new Datum(), false);
 	}
 
 	/**
@@ -186,8 +190,10 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	@Override
 	public String toString() {
 		String result = "QuizDeelname [ID=" + ID + "] - Datum: " + datum;
-		result += "\nDIE\n" + leerling.toString().replaceAll("(?m)^", "\t");;
-		result += "\nKOPPELT AAN\n" + quiz.toString().replaceAll("(?m)^", "\t");;
+		result += "\nDIE\n" + leerling.toString().replaceAll("(?m)^", "\t");
+		;
+		result += "\nKOPPELT AAN\n" + quiz.toString().replaceAll("(?m)^", "\t");
+		;
 		return result;
 	}
 
@@ -243,7 +249,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		long hash = 1;
 		hash = hash * 7 * leerling.hashCode();
 		hash = hash * 31 * quiz.hashCode();
-		//hash = hash * 19 * datum.toString().hashCode();
+		// hash = hash * 19 * datum.toString().hashCode();
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}

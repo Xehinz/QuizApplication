@@ -33,16 +33,16 @@ public class TxtDB implements DBStrategy {
 	private TxtMeerkeuzeLeesSchrijf txtMeerkeuzeLeesSchrijf;
 	private TxtOpsommingLeesSchrijf txtOpsommingLeesSchrijf;
 
-	public TxtDB() {
-		this.txtLeerlingLeesSchrijf = new TxtLeerlingLeesSchrijf();
-		this.txtOpdrachtAntwoordLeesSchrijf = new TxtOpdrachtAntwoordLeesSchrijf();
-		this.txtQuizDeelnameLeesSchrijf = new TxtQuizDeelnameLeesSchrijf();
-		this.txtQuizLeesSchrijf = new TxtQuizLeesSchrijf();
-		this.txtQuizOpdrachtLeesSchrijf = new TxtQuizOpdrachtLeesSchrijf();
-		this.txtKlassiekeOpdrachtLeesSchrijf = new TxtKlassiekeOpdrachtLeesSchrijf();
-		this.txtReproductieLeesSchrijf = new TxtReproductieLeesSchrijf();
-		this.txtMeerkeuzeLeesSchrijf = new TxtMeerkeuzeLeesSchrijf();
-		this.txtOpsommingLeesSchrijf = new TxtOpsommingLeesSchrijf();
+	public TxtDB(boolean useCSV) {
+		this.txtLeerlingLeesSchrijf = new TxtLeerlingLeesSchrijf(useCSV);		
+		this.txtOpdrachtAntwoordLeesSchrijf = new TxtOpdrachtAntwoordLeesSchrijf(useCSV);
+		this.txtQuizDeelnameLeesSchrijf = new TxtQuizDeelnameLeesSchrijf(useCSV);
+		this.txtQuizLeesSchrijf = new TxtQuizLeesSchrijf(useCSV);
+		this.txtQuizOpdrachtLeesSchrijf = new TxtQuizOpdrachtLeesSchrijf(useCSV);
+		this.txtKlassiekeOpdrachtLeesSchrijf = new TxtKlassiekeOpdrachtLeesSchrijf(useCSV);
+		this.txtReproductieLeesSchrijf = new TxtReproductieLeesSchrijf(useCSV);
+		this.txtMeerkeuzeLeesSchrijf = new TxtMeerkeuzeLeesSchrijf(useCSV);
+		this.txtOpsommingLeesSchrijf = new TxtOpsommingLeesSchrijf(useCSV);
 	}
 
 	@Override

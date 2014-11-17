@@ -13,7 +13,8 @@ import model.Leerling;
  */
 public class TxtLeerlingLeesSchrijf extends TxtTemplate {
 
-	public TxtLeerlingLeesSchrijf() {
+	public TxtLeerlingLeesSchrijf(boolean useCSV) {
+		super(useCSV);
 	}
 
 	@Override

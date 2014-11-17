@@ -18,6 +18,10 @@ import model.QuizStatus;
 
 public class TxtQuizLeesSchrijf extends TxtTemplate {
 
+	public TxtQuizLeesSchrijf(boolean useCSV) {
+		super(useCSV);
+	}
+	
 	@Override
 	protected String getBestandsnaam() {
 		return useCSV ? "resources/quizzen.csv" : "resources/quizzen.txt";
@@ -93,6 +97,6 @@ public class TxtQuizLeesSchrijf extends TxtTemplate {
 	@Override
 	protected String getHeaderCSV() {
 		
-		return "ID\tDatum\tQuizStatus\tAuteur\tOnderwerp\tIsUniekeDeelname";
+		return "ID\tDatum\tQuizStatus\tAuteur\tOnderwerp\tIsUniekeDeelname\tIsTest\tDoelLeerjaren";
 	}
 }
