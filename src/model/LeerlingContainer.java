@@ -14,6 +14,7 @@ import java.util.Iterator;
  * heen.
  * 
  * @author Jef Bellens
+ * @version 17/11/2014
  *
  */
 public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
@@ -72,6 +73,9 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
 	 *            de Leerling om te verwijderen
 	 */
 	public void removeLeerling(Leerling leerling) {
+		if (!leerlingen.contains(leerling)) {
+			throw new IllegalArgumentException("Leerling niet in LeerlingContainer");
+		}
 		leerlingen.remove(leerling);
 	}
 
