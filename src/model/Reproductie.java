@@ -231,7 +231,7 @@ public class Reproductie extends Opdracht {
 			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
-		if (juisteAntwoord == "") {
+		if (juisteAntwoord.equals("")) {
 			throw new IllegalArgumentException("Minimum 1 trefwoord nodig");
 		}
 		if (lijst.size() < this.minimumAantalTrefwoorden) {
