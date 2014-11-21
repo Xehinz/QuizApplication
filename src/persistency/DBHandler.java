@@ -25,7 +25,7 @@ import model.QuizOpdracht;
  */
 public class DBHandler {
 
-	private boolean useCSV;
+	private boolean useCSV;	
 
 	private DBStrategy dbStrategy;
 	private OpdrachtCatalogus opdrachtCatalogus;
