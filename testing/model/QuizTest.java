@@ -7,10 +7,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import util.datumWrapper.*;
+
 /**
  *
- * @author johan
- * @version 2014.10.25
+ * @author johan, adriaan
+ * @version 21/11/2014
  */
 public class QuizTest {
 
@@ -28,6 +30,16 @@ public class QuizTest {
 		assertTrue("Het onderwerp is hetzelfde", raarOnderwerp.getOnderwerp() == "raar onderwerp");
 	}
 
+	@Test
+	public void testQuiz_getStatus_IsOK() {
+		Quiz isStatus = new Quiz(Leraar.CHARLOTTE_NEVEN, "een quiz met een status", false);
+		assertTrue("Deze status is bij initialisatie gelijk", isStatus.getQuizStatus() == QuizStatus.IN_CONSTRUCTIE);
+
+		isStatus = new Quiz(Leraar.CHARLOTTE_NEVEN, "een andere quiz zonder status bij initialisatie");
+		isStatus.setQuizStatus(QuizStatus.AFGEWERKT);
+		assertTrue("Deze status is bij set-method gelijk", isStatus.getQuizStatus() == QuizStatus.AFGEWERKT);
+	}
+	
 	@Test
 	public void testQuiz_IsTest_IsOK() {
 		Quiz isTest = new Quiz(Leraar.CHARLOTTE_NEVEN, "is test");
@@ -47,15 +59,87 @@ public class QuizTest {
 	}
 
 	@Test
-	public void testQuiz_getStatus_IsOK() {
-		Quiz isStatus = new Quiz(Leraar.CHARLOTTE_NEVEN, "een quiz met een status", false);
-		assertTrue("Deze status is bij initialisatie gelijk", isStatus.getQuizStatus() == QuizStatus.IN_CONSTRUCTIE);
-
-		isStatus = new Quiz(Leraar.CHARLOTTE_NEVEN, "een andere quiz zonder status bij initialisatie");
-		isStatus.setQuizStatus(QuizStatus.AFGEWERKT);
-		assertTrue("Deze status is bij set-method gelijk", isStatus.getQuizStatus() == QuizStatus.AFGEWERKT);
+	public void test_getAanmaakDatum_isOK() {
+		Datum datum = new Datum();
+		assertEquals("Aanmaakdatum is datum van aanmaak", myQuiz.getAanmaakDatum(), datum);
 	}
-
+	
+	@Test
+	public void test_getAuteur_isOK() {
+		Leraar leraar = Leraar.CHARLOTTE_NEVEN;
+		assertEquals("getAuteur geeft auteur", myQuiz.getAuteur(), leraar);
+	}
+	
+	@Test
+	public void test_getMaxScore_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_getGemiddeldeScore_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_setDoeljaren_isOK() {
+		//TODO;
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void test_setDoeljaren_buiten_scope_throwsIllegalArgumentException() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_getDoelJaren_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_setOnderwerp_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_setQuizStatus_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_isGeldigLeerjaar_true_false() {
+		//TODO;
+	}
+		
+	@Test
+	public void test_isDeelnameMogelijk_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_isVerwijderbaar_true_false() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_ToStirng_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_toString_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_compareTo_isOK() {
+		//TODO;
+	}
+	
+	@Test
+	public void test_equals_true_false() {
+		//TODO;
+	}
+	
 	@Test
 	public void testQuiz_getOpdrachtenVanEenCloneQuiz_EqualsEenCloneQuiz_IsOK() {
 		Quiz aQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "new quiz");

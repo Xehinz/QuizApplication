@@ -14,7 +14,7 @@ import java.util.Collections;
  * Tests voor LeerlingContainer
  *
  * @author Adriaan
- * @version 17/11/2014
+ * @version 21/11/2014
  */
 
 public class LeerlingContainerTest {
