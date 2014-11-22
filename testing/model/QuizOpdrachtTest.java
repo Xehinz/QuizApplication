@@ -26,6 +26,7 @@ public class QuizOpdrachtTest {
 	ArrayList<Quiz> quizen;
 	QuizOpdracht quizOpdracht;
 	int maxScore;
+	ArrayList<OpdrachtAntwoord> opdrachtAntwoord = quizOpdracht.getOpdrachtAntwoorden();
 	
 	@Before
 	public void setUp() throws Exception {
@@ -39,7 +40,6 @@ public class QuizOpdrachtTest {
 		quizCatalogus = new QuizCatalogus();
 		quizCatalogus.addQuiz(quiz1);
 		quizCatalogus.addQuiz(quiz2);
-
 		
 		legeOpdrachtCatalogus = new OpdrachtCatalogus();
 		tweedeLegeCatalogus = new OpdrachtCatalogus();
@@ -62,7 +62,7 @@ public class QuizOpdrachtTest {
 		gevuldeCatalogusAndereOpdrachten = new OpdrachtCatalogus();
 		gevuldeCatalogusAndereOpdrachten.addOpdracht(opdracht1);
 		gevuldeCatalogusAndereOpdrachten.addOpdracht(opdracht3);
-		
+				
 	}
 	
 	@Test
@@ -85,6 +85,18 @@ public class QuizOpdrachtTest {
 	
 	@Test
 	public void AddOpdrachtAntwoord_VoegOpdrachtAntwoordToe_CorrectToegevoegd() {
+		assertFalse("Kopie van OpdrachtAntwoord is leeg" , (opdrachtAntwoord.isEmpty()));
+		OpdrachtAntwoord opdrachtAntwoord1 = opdrachtAntwoord.get(0);
+		assertTrue("Opdrachtantwoord correct toegevoegd", opdrachtAntwoord.add(opdrachtAntwoord1));
 		
+	}
+	
+	@Test
+	public void GetGemiddeldeScore_VerkrijgGemiddeldeScore_CorrecteGemiddeldeScore() {
+		double somScores = 0;
+		for (OpdrachtAntwoord opdrachtAntwoord1 : opdrachtAntwoord) {
+			somScores += opdrachtAntwoord1.getBehaaldeScore();
+		}
+		assertEquals("Correcte Gemiddelde Score", (somScores / opdrachtAntwoord.size()), quizOpdracht.getGemiddeldeScore());
 	}
 }
