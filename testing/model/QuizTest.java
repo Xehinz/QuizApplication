@@ -3,6 +3,8 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import model.quizStatus.Afgewerkt;
+import model.quizStatus.InConstructie;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,11 +35,11 @@ public class QuizTest {
 	@Test
 	public void testQuiz_getStatus_IsOK() {
 		Quiz isStatus = new Quiz(Leraar.CHARLOTTE_NEVEN, "een quiz met een status", false);
-		assertTrue("Deze status is bij initialisatie gelijk", isStatus.getQuizStatus() == QuizStatus.IN_CONSTRUCTIE);
+		assertTrue("Deze status is bij initialisatie gelijk", isStatus.getQuizStatus() instanceof InConstructie);
 
 		isStatus = new Quiz(Leraar.CHARLOTTE_NEVEN, "een andere quiz zonder status bij initialisatie");
-		isStatus.setQuizStatus(QuizStatus.AFGEWERKT);
-		assertTrue("Deze status is bij set-method gelijk", isStatus.getQuizStatus() == QuizStatus.AFGEWERKT);
+		isStatus.setQuizStatus(new Afgewerkt());
+		assertTrue("Deze status is bij set-method gelijk", isStatus.getQuizStatus() instanceof Afgewerkt);
 	}
 	
 	@Test

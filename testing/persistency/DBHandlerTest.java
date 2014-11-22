@@ -18,8 +18,10 @@ import model.Quiz;
 import model.QuizCatalogus;
 import model.QuizDeelname;
 import model.QuizOpdracht;
-import model.QuizStatus;
 import model.Reproductie;
+import model.quizStatus.Afgesloten;
+import model.quizStatus.LaatsteKans;
+import model.quizStatus.Opengesteld;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -91,11 +93,11 @@ public class DBHandlerTest {
 		quizA = new Quiz(Leraar.MIEKE_WITTEMANS, "Priemgetallen en steden",
 				false);
 		//quizA.setDoelLeerjaren(1, 2);
-		quizA.setQuizStatus(QuizStatus.OPENGESTELD);
+		quizA.setQuizStatus(new Opengesteld());
 		quizB = new Quiz(Leraar.CHARLOTTE_NEVEN, "Bananen en croque monsieurs",
 				true);
 		//quizB.setDoelLeerjaren(5, 6);
-		quizB.setQuizStatus(QuizStatus.OPENGESTELD);
+		quizB.setQuizStatus(new Opengesteld());
 
 		quizCatalogus = new QuizCatalogus();
 		quizCatalogus.addQuiz(quizA);
@@ -105,7 +107,7 @@ public class DBHandlerTest {
 		quizA.setIsUniekeDeelname(true);
 		quizA.setIsTest(true);
 		quizB.setDoelLeerjaren(4,5,6);
-		quizB.setQuizStatus(QuizStatus.LAATSTE_KANS);
+		quizB.setQuizStatus(new LaatsteKans());
 		quizB.setOnderwerp("Eten");		
 
 		QuizOpdracht A1 = QuizOpdracht.koppelOpdrachtAanQuiz(quizA, opsomming,
@@ -142,8 +144,8 @@ public class DBHandlerTest {
 				30, "kaas ham boter");
 
 		// Quizzen sluiten
-		//quizA.setQuizStatus(QuizStatus.AFGESLOTEN);
-		//quizB.setQuizStatus(QuizStatus.AFGESLOTEN);
+		//quizA.setQuizStatus(new Afgesloten());
+		//quizB.setQuizStatus(new Afgesloten());
 
 		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer,
 				quizCatalogus);

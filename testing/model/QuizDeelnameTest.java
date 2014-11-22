@@ -6,6 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import model.quizStatus.InConstructie;
+import model.quizStatus.Opengesteld;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,14 +36,14 @@ public class QuizDeelnameTest {
 	public void setUp() {
 		datum = new Datum();
 		quiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "Onderwerp 1");
-		quiz.setQuizStatus(QuizStatus.OPENGESTELD);
+		quiz.setQuizStatus(new Opengesteld());
 		quiz2 = new Quiz(Leraar.JOS_VERBEEK);
-		quiz2.setQuizStatus(QuizStatus.IN_CONSTRUCTIE);
+		quiz2.setQuizStatus(new InConstructie());
 		quiz3 = new Quiz(Leraar.MARIA_AERTS);
-		quiz3.setQuizStatus(QuizStatus.OPENGESTELD);
+		quiz3.setQuizStatus(new Opengesteld());
 		quiz3.setDoelLeerjaren(1);
 		quiz4 = new Quiz(Leraar.CHARLOTTE_NEVEN, "Onderwerp 2");
-		quiz4.setQuizStatus(QuizStatus.OPENGESTELD);
+		quiz4.setQuizStatus(new Opengesteld());
 
 		leerling = new Leerling("Bram", "Verhelst", 3);
 		leerling2 = new Leerling("An", "Stijnen", 2);

@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import model.quizStatus.Opengesteld;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,7 +67,7 @@ public class OpdrachtTest {
 		// nietAanpasbareOpdracht daadwerkelijk niet aanpasbaar maken door een
 		// Leerling te laten deelnemen aan een quiz met de opdracht
 		Quiz quiz = new Quiz(Leraar.MIEKE_WITTEMANS, "mijnQuiz");
-		quiz.setQuizStatus(QuizStatus.OPENGESTELD);
+		quiz.setQuizStatus(new Opengesteld());
 		Leerling leerling = new Leerling("Boris", "Jeltsin", 1);
 		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, nietAanpasbareOpdracht, 10);
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);

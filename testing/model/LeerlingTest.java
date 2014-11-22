@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import model.quizStatus.Opengesteld;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +32,7 @@ public class LeerlingTest {
 		derdeleerling = new Leerling("Rebecca", "Hofkens", 6);
 		vierdeleerling = new Leerling("Jef", "hOfKeNS", 4);
 		quiz = new Quiz(Leraar.CHARLOTTE_NEVEN);
-		quiz.setQuizStatus(QuizStatus.OPENGESTELD);
+		quiz.setQuizStatus(new Opengesteld());
 		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
 	}
 

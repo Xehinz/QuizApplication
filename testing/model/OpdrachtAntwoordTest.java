@@ -3,6 +3,7 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import model.quizStatus.Opengesteld;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,10 +37,10 @@ public class OpdrachtAntwoordTest {
 	@Before
 	public void setUp() {
 		quiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "De Hoofdsteden van Europa");
-		quiz.setQuizStatus(QuizStatus.OPENGESTELD);
+		quiz.setQuizStatus(new Opengesteld());
 
 		kleinereQuiz = new Quiz(Leraar.MIEKE_WITTEMANS, "Quiz met minder opdrachten");
-		kleinereQuiz.setQuizStatus(QuizStatus.OPENGESTELD);
+		kleinereQuiz.setQuizStatus(new Opengesteld());
 
 		opdrachtZonderTijdZonderPogingen = new KlassiekeOpdracht("Wat is de hoofdstad van Frankrijk?", 0, "Parijs",
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.MARIA_AERTS);

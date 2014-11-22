@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import model.quizStatus.InConstructie;
+import model.quizStatus.QuizStatus;
 import util.datumWrapper.Datum;
 
 /**
@@ -18,7 +20,7 @@ import util.datumWrapper.Datum;
  * <li>Een indicator of aan de quiz maar 1 keer mag deelgenomen worden
  * (isUniekeDeelname - boolean)</li>
  * <li>Een indicator of de quiz een test is (isTest - boolean)</li>
- * <li>De status van de Quiz (enum: QuizStatus). De verschillende statussen van
+ * <li>De status van de Quiz (QuizStatus). De verschillende statussen van
  * een quiz zijn IN_CONSTRUCTIE, AFGEWERKT, OPENGESTELD, LAATSTE_KANS en
  * AFGESLOTEN</li>
  * <li>Een unieke ID (int). De ID wordt ingesteld door de QuizCatalogus, wanneer
@@ -39,7 +41,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	private String onderwerp = "";
 	private boolean isTest = false;
 	private boolean isUniekeDeelname = false;
-	private QuizStatus quizStatus = QuizStatus.IN_CONSTRUCTIE;
+	private QuizStatus quizStatus = new InConstructie();
 	private ArrayList<QuizOpdracht> quizOpdrachten;
 	private ArrayList<QuizDeelname> quizDeelnames;
 	private boolean[] zijnDoelLeerjaren = new boolean[7];
@@ -298,7 +300,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Test of de quiz zich in een status bevindt die deelname eraan toelaat
+	 * Enkel wanneer een quiz zich in de status 'Opengesteld' of 'Laatste kans' bevindt, staat ze open voor deelname
 	 *
 	 * @return true als de quiz open is voor deelname
 	 */
@@ -314,8 +316,16 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 *         en dus verwijderbaar is
 	 */
 	public boolean isVerwijderbaar() {
-		return this.quizStatus == QuizStatus.IN_CONSTRUCTIE
-				|| this.quizStatus == QuizStatus.AFGEWERKT;
+		return this.quizStatus.isVerwijderbaar();
+	}
+	
+	/**
+	 * Enkel wanneer een quiz zich in de status 'In constructie' bevindt, is ze aanpasbaar
+	 * 
+	 * @return true als de Quiz aanpasbaar is
+	 */
+	public boolean isAanpasbaar() {
+		return this.quizStatus.isAanpasbaar();
 	}
 
 	/**
