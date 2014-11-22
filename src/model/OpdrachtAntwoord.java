@@ -34,9 +34,9 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 	private OpdrachtAntwoord(QuizDeelname quizDeelname,
 			QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
 			String laatsteAntwoord) {
-		if (aantalPogingen < 1) {
+		if (aantalPogingen < 0) {
 			throw new IllegalArgumentException(
-					"Het aantal pogingen kan niet kleiner zijn dan 1");
+					"Het aantal pogingen kan niet kleiner zijn dan 0");
 		}
 		if (antwoordTijd < 0) {
 			throw new IllegalArgumentException(

@@ -381,7 +381,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 		}
 		if (this.auteur != other.auteur) {
 			return false;
-		}		
+		}
 		for (int i = 0; i < this.zijnDoelLeerjaren.length; i++) {
 			if (this.zijnDoelLeerjaren[i] != other.zijnDoelLeerjaren[i]) {
 				return false;
@@ -436,6 +436,26 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 			kopieQuizOpdrachten.add(quizOpdracht);
 		}
 		return kopieQuizOpdrachten;
+	}
+
+	/**
+	 * Haalt de QuizOpdracht op die het argument-opdracht linkt aant deze Quiz.
+	 * Geeft null terug als het argument-opdracht zich niet in deze Quiz bevindt
+	 * 
+	 * @param opdracht
+	 *            de Opdracht waarvan de overeenkomstige QuizOpdracht gezocht
+	 *            wordt
+	 * @return de gewenste QuizOpdracht
+	 */
+	public QuizOpdracht getQuizOpdracht(Opdracht opdracht) {
+		QuizOpdracht result = null;
+		for (QuizOpdracht quizOpdracht : quizOpdrachten) {
+			if (quizOpdracht.getOpdracht().equals(opdracht)) {
+				result = quizOpdracht;
+				break;
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -500,6 +520,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 
 	/**
 	 * Geeft een Quiz terug die een clone is van deze quiz (thx Bert)
+	 * 
 	 * @return een geclonede Quiz
 	 */
 	@Override

@@ -3,6 +3,7 @@ package view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,11 +11,12 @@ import java.util.Collection;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
+import model.Leerling;
 import model.Quiz;
 
 @SuppressWarnings("serial")
@@ -32,6 +34,7 @@ public class QuizDeelnameView extends JFrame {
 	public QuizDeelnameView(Collection<Quiz> mogelijkeQuizzen) {
 		super("Deelnemen aan Quiz");
 		this.setSize(1200, 400);
+		this.setLocationRelativeTo(null);
 		
 		quizTableModel = new QuizTableModel(mogelijkeQuizzen);
 		
@@ -72,7 +75,7 @@ public class QuizDeelnameView extends JFrame {
 		JScrollPane scroller = new JScrollPane(quizzen);
 //		Dimension d = quizzen.getPreferredSize();
 //		d.height = quizzen.getRowHeight() * (quizzen.getRowCount() + 2);
-		//quizzen.setPreferredScrollableViewportSize(d);
+//		quizzen.setPreferredScrollableViewportSize(d);
 		this.add(scroller, constraints);	
 		
 		deelneemKnop = new JButton("Deelnemen");
@@ -84,12 +87,20 @@ public class QuizDeelnameView extends JFrame {
 		this.add(deelneemKnop, constraints);
 	}
 	
-	public void addDeelneemKnopListener(ActionListener listener) {
-		deelneemKnop.addActionListener(listener);
+	public void setLeerling(Leerling leerling) {
+		this.leerling.setText(String.format("Leerling: %s", leerling.getNaam()));
 	}
 	
 	public Quiz getGeselecteerdeQuiz() {
 		return quizTableModel.getQuiz(quizzen.getSelectedRow());
+	}
+	
+	public void toonInformationDialog(String boodschap, String titel) {
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void addDeelneemKnopListener(ActionListener listener) {
+		deelneemKnop.addActionListener(listener);
 	}
 
 	class QuizTableModel extends AbstractTableModel {

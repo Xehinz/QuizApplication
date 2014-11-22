@@ -67,10 +67,10 @@ public class QuizOpdrachtTest {
 	
 	@Test
 	public void testAttachOpdrachtToQuiz_KoppelOpdrachtAanQuiz_CorrecteKoppeling() {
-		QuizOpdracht.attachOpdrachtToQuiz(quiz1, opdracht1, 5);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quiz1, opdracht1, 5);
 		//assertTrue("Quiz1 heeft juiste opdracht", quiz1.getOpdrachten().contains(quizOpdracht));
 		assertTrue("Opdracht1 heeft juiste quiz", opdracht1.getQuizOpdrachten().contains(quiz1));
-		QuizOpdracht.attachOpdrachtToQuiz(quiz2, opdracht2, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quiz2, opdracht2, 10);
 		assertTrue("Quiz2 heeft juiste opdracht", quiz2.getOpdrachten().contains(opdracht2));
 		assertTrue("Opdracht2 heeft juiste quiz", opdracht2.getQuizOpdrachten().contains(quiz2));
 	}

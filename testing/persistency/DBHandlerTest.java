@@ -58,16 +58,16 @@ public class DBHandlerTest {
 		Bert.setLeerlingFamilienaam("Neyts");
 
 		klassiek = new KlassiekeOpdracht("Waarom zijn de bananen krom?",
-				"Daarom", 1, 20, OpdrachtCategorie.NEDERLANDS,
+				"Daarom", 0, 20, OpdrachtCategorie.NEDERLANDS,
 				Leraar.CHARLOTTE_NEVEN);
 		klassiek.addHint("Denk niet te ver!");
 		klassiek.addHint("Wat zouden je ouders antwoorden?");
 		opsomming = new Opsomming(
 				"Geef de 5 kleinste priemgetallen in volgorde", "2;3;5;7;11",
-				2, 25, OpdrachtCategorie.WISKUNDE, Leraar.STEVEN_OPDEBEEK, true);
+				0, 25, OpdrachtCategorie.WISKUNDE, Leraar.STEVEN_OPDEBEEK, true);
 		opsomming.addHint("1 is geen priemgetal!");
 		meerkeuze = new Meerkeuze("Welke stad ligt niet in Vlaanderen?",
-				"Namen", 1, 10, OpdrachtCategorie.AARDRIJKSKUNDE,
+				"Namen", 1, 0, OpdrachtCategorie.AARDRIJKSKUNDE,
 				Leraar.JOS_VERBEEK);
 		((Meerkeuze) meerkeuze).setOpties("Namen;Gent;Antwerpen");
 		reproductie = new Reproductie("Hoe maak je een croque monsieur?",
@@ -90,11 +90,11 @@ public class DBHandlerTest {
 
 		quizA = new Quiz(Leraar.MIEKE_WITTEMANS, "Priemgetallen en steden",
 				false);
-		quizA.setDoelLeerjaren(1, 2);
+		//quizA.setDoelLeerjaren(1, 2);
 		quizA.setQuizStatus(QuizStatus.OPENGESTELD);
 		quizB = new Quiz(Leraar.CHARLOTTE_NEVEN, "Bananen en croque monsieurs",
 				true);
-		quizB.setDoelLeerjaren(5, 6);
+		//quizB.setDoelLeerjaren(5, 6);
 		quizB.setQuizStatus(QuizStatus.OPENGESTELD);
 
 		quizCatalogus = new QuizCatalogus();
@@ -142,8 +142,8 @@ public class DBHandlerTest {
 				30, "kaas ham boter");
 
 		// Quizzen sluiten
-		quizA.setQuizStatus(QuizStatus.AFGESLOTEN);
-		quizB.setQuizStatus(QuizStatus.AFGESLOTEN);
+		//quizA.setQuizStatus(QuizStatus.AFGESLOTEN);
+		//quizB.setQuizStatus(QuizStatus.AFGESLOTEN);
 
 		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer,
 				quizCatalogus);

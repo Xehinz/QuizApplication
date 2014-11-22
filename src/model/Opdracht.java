@@ -207,15 +207,12 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Haalt het maximum aantal antwoordpogingen op. Geeft 9999 terug wanneer
-	 * het maximum aantal pogingen ongelimiteerd is. Dit is om fouten te
-	 * vermijden; Gebruik de method heeftPogingsBeperking() om te testen op een
-	 * beperkt aantal pogingen
+	 * Haalt het maximum aantal antwoordpogingen op. Geeft 0 terug wanneer het aantal pogingen ongelimiteerd is
 	 *
 	 * @return het maximum aantal antwoordpogingen
 	 */
 	public int getMaxAantalPogingen() {
-		return heeftPogingBeperking() ? maxAantalPogingen : 9999;
+		return maxAantalPogingen;
 	}
 
 	/**
@@ -242,14 +239,12 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	}
 
 	/**
-	 * Haalt de maximum toegestane antwoordtijd op. Geeft 9999 terug wanneer de
-	 * antwoordtijd ongelimiteerd is. Dit is om fouten te vermijden; Gebruik de
-	 * method heeftTijdsbeperking() om te testen op een tijdsbeperking
+	 * Haalt de maximum toegestane antwoordtijd op. Geeft 0 terug wanneer de antwoordtijd ongelimiteerd is.
 	 *
 	 * @return de maximum toegestane antwoordtijd
 	 */
 	public int getMaxAntwoordTijd() {
-		return heeftTijdsbeperking() ? maxAntwoordTijd : 9999;
+		return maxAntwoordTijd;
 	}
 
 	/**
@@ -583,8 +578,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		String hashString = aanmaakDatum.toString() + auteur + vraag
 				+ opdrachtCategorie;
 		long hash = hashString.hashCode();
-		hash = hash * 13 + maxAntwoordTijd;
-		hash = hash * 23 + maxAantalPogingen;
+		hash = hash * 13 + (heeftTijdsbeperking() ? maxAntwoordTijd : 5);
+		hash = hash * 23 + (heeftPogingBeperking() ? maxAantalPogingen : 6);
 		hash = hash * 41 + hintsString().hashCode();
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
