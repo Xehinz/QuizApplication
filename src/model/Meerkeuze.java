@@ -260,7 +260,7 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 
 	@Override
 	public String getValideerTekst() {
-		return "Typ je meerkeuze-optie uit de lijst met meerkeuze-opties.";
+		return "Duid een optie aan uit de lijst";
 	}
 
 	@Override

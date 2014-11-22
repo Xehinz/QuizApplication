@@ -13,11 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
-import javax.swing.event.ChangeListener;
 
 @SuppressWarnings("serial")
 public class DeelnameKlassiekOpsommingView extends JFrame {

@@ -80,11 +80,6 @@ public class OpdrachtAntwoordTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testKoppelQuizDeelnameAanQuizOpdracht_AantalPogingen0_ThrowsIllegalArgumentException() {
-		OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdrachtZonderTijdZonderPogingen, 0, 10, "");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
 	public void testKoppelQuizDeelnameAanQuizOpdracht_AantalPogingenNegatief_ThrowsIllegalArgumentException() {
 		OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdrachtZonderTijdZonderPogingen, -10, 10, "");
 	}

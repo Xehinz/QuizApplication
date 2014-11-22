@@ -4,11 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JProgressBar;
 import javax.swing.Timer;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
+import persistency.DBHandler;
 import view.DeelnameKlassiekOpsommingView;
 import view.DeelnameMeerkeuzeView;
 import view.DeelnameReproductieView;
@@ -27,6 +25,8 @@ import model.Valideerbaar;
 
 public class QuizDeelnameController {
 
+	private DBHandler dbHandler;
+	
 	private Quiz quiz;
 	private final Leerling leerling;
 	private QuizDeelnameView quizDeelnameView;
@@ -42,8 +42,10 @@ public class QuizDeelnameController {
 
 	private Timer timer;
 
-	public QuizDeelnameController(Leerling leerling,
+	public QuizDeelnameController(DBHandler dbHandler, Leerling leerling,
 			QuizDeelnameView quizDeelnameView) {
+		
+		this.dbHandler = dbHandler;
 		this.leerling = leerling;
 		this.quizDeelnameView = quizDeelnameView;
 
@@ -59,6 +61,7 @@ public class QuizDeelnameController {
 		laatsteAntwoord = "";
 		timer = null;
 
+		quizDeelnameView.setQuizzen(dbHandler.getQuizCatalogus().getMogelijkeQuizzenVoor(leerling));
 		quizDeelnameView.setLeerling(leerling);
 		quizDeelnameView.addDeelneemKnopListener(new ActionListener() {
 			@Override

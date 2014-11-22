@@ -97,8 +97,8 @@ public class OpdrachtTest {
 	}
 
 	@Test
-	public void testGetMaxAantalPogingen_OpdrachtNietBeperktePogingen_Geeft9999() {
-		assertEquals(9999, nietBeperktePogingen.getMaxAantalPogingen());
+	public void testGetMaxAantalPogingen_OpdrachtNietBeperktePogingen_Geeft0() {
+		assertEquals(0, nietBeperktePogingen.getMaxAantalPogingen());
 	}
 
 	@Test
@@ -118,8 +118,8 @@ public class OpdrachtTest {
 	}
 
 	@Test
-	public void testGetMaxAntwoordTijd_OpdrachtNietOpTijd_Geeft9999() {
-		assertEquals(9999, nietOpTijd.getMaxAntwoordTijd());
+	public void testGetMaxAntwoordTijd_OpdrachtNietOpTijd_Geeft0() {
+		assertEquals(0, nietOpTijd.getMaxAntwoordTijd());
 	}
 
 	@Test

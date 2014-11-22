@@ -30,6 +30,7 @@ public class DeelnameMeerkeuzeView extends DeelnameKlassiekOpsommingView {
 			constraints = new GridBagConstraints();
 			constraints.gridy = i;
 			constraints.gridx = 0;
+			constraints.anchor = GridBagConstraints.WEST;
 			panelCenter.add(keuzes[i], constraints);
 		}
 	
@@ -44,5 +45,4 @@ public class DeelnameMeerkeuzeView extends DeelnameKlassiekOpsommingView {
 		}
 		return "";
 	}
-
 }

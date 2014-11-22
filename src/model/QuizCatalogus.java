@@ -158,6 +158,36 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 		}
 		throw new IllegalArgumentException("De QuizCatalogus bevat geen Quiz met ID=" + quizID);
 	}
+	
+	/**
+	 * Geeft en lijst terug met alle quizzen uit de QuizCatalogus die de meegegeven Leerling mag maken
+	 * 
+	 * @param leerling de Leerling waarvoor de geldige quizzen opgehaald worden
+	 * @return een ArrayList&lt;Quiz&gt; met alle mogelijke quizzen voor de Leerling
+	 */
+	public ArrayList<Quiz> getMogelijkeQuizzenVoor(Leerling leerling) {
+		ArrayList<Quiz> quizzen = new ArrayList<Quiz>();
+		
+		for (Quiz quiz : this) {
+			if (quiz.isDeelnameMogelijk() && quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
+				if (!quiz.getIsUniekeDeelname()) {
+					quizzen.add(quiz);
+				} else {
+					boolean heeftAlDeelgenomen = false;
+					for (QuizDeelname quizDeelname : leerling.getQuizDeelnames()) {
+						if (quizDeelname.getQuiz().equals(quiz)) {
+							heeftAlDeelgenomen = true;
+						}
+					}
+					if (!heeftAlDeelgenomen) {
+						quizzen.add(quiz);
+					}
+				}
+			}
+		}
+		
+		return quizzen;
+	}
 
 	/**
 	 * Override van de toString methode

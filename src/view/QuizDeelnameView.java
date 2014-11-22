@@ -3,7 +3,6 @@ package view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,17 +25,17 @@ public class QuizDeelnameView extends JFrame {
 	private GridBagConstraints constraints;
 	
 	private JLabel leerling, quizHeader;
-	private JTable quizzen;
+	private JTable quizTabel;
 	private JButton deelneemKnop;
 	
 	private QuizTableModel quizTableModel;
 	
-	public QuizDeelnameView(Collection<Quiz> mogelijkeQuizzen) {
+	public QuizDeelnameView() {
 		super("Deelnemen aan Quiz");
 		this.setSize(1200, 400);
 		this.setLocationRelativeTo(null);
 		
-		quizTableModel = new QuizTableModel(mogelijkeQuizzen);
+		quizTableModel = new QuizTableModel();
 		
 		layout = new GridBagLayout();
 		this.setLayout(layout);
@@ -59,10 +58,10 @@ public class QuizDeelnameView extends JFrame {
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		this.add(quizHeader, constraints);		
 			
-		quizzen = new JTable(quizTableModel);	
-		quizzen.getColumnModel().getColumn(0).setPreferredWidth(400);
-		quizzen.setAutoCreateRowSorter(true);
-		quizzen.setFillsViewportHeight(true);	
+		quizTabel = new JTable(quizTableModel);	
+		quizTabel.getColumnModel().getColumn(0).setPreferredWidth(400);
+		quizTabel.setAutoCreateRowSorter(true);
+		quizTabel.setFillsViewportHeight(true);	
 		
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
@@ -72,7 +71,7 @@ public class QuizDeelnameView extends JFrame {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		
-		JScrollPane scroller = new JScrollPane(quizzen);
+		JScrollPane scroller = new JScrollPane(quizTabel);
 //		Dimension d = quizzen.getPreferredSize();
 //		d.height = quizzen.getRowHeight() * (quizzen.getRowCount() + 2);
 //		quizzen.setPreferredScrollableViewportSize(d);
@@ -91,8 +90,12 @@ public class QuizDeelnameView extends JFrame {
 		this.leerling.setText(String.format("Leerling: %s", leerling.getNaam()));
 	}
 	
+	public void setQuizzen(Collection<Quiz> quizzen) {
+		quizTableModel.setQuizzen(quizzen);		
+	}
+	
 	public Quiz getGeselecteerdeQuiz() {
-		return quizTableModel.getQuiz(quizzen.getSelectedRow());
+		return quizTableModel.getQuiz(quizTabel.getSelectedRow());
 	}
 	
 	public void toonInformationDialog(String boodschap, String titel) {
@@ -108,10 +111,15 @@ public class QuizDeelnameView extends JFrame {
 		private String[] headers;
 		private ArrayList<Quiz> quizzen;
 		
-		public QuizTableModel(Collection<Quiz> quizzen) {
+		public QuizTableModel() {
 			super();
-			this.quizzen = new ArrayList<Quiz>(quizzen);
 			headers = new String[] {"Onderwerp", "Leraar", "Aantal deelnames", "Test?"};
+			quizzen = new ArrayList<Quiz>();
+		}
+		
+		public QuizTableModel(Collection<Quiz> quizzen) {
+			this();
+			this.quizzen = new ArrayList<Quiz>(quizzen);			
 		}
 		
 		public Quiz getQuiz(int row) {
@@ -119,6 +127,10 @@ public class QuizDeelnameView extends JFrame {
 				return quizzen.get(row);
 			}
 			return null;
+		}
+		
+		public void setQuizzen(Collection<Quiz> quizzen) {
+			this.quizzen = new ArrayList<Quiz>(quizzen);
 		}
 		
 		@Override   

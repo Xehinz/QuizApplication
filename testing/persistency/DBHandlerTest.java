@@ -20,6 +20,8 @@ import model.QuizDeelname;
 import model.QuizOpdracht;
 import model.Reproductie;
 import model.quizStatus.Afgesloten;
+import model.quizStatus.Afgewerkt;
+import model.quizStatus.InConstructie;
 import model.quizStatus.LaatsteKans;
 import model.quizStatus.Opengesteld;
 
@@ -92,11 +94,11 @@ public class DBHandlerTest {
 
 		quizA = new Quiz(Leraar.MIEKE_WITTEMANS, "Priemgetallen en steden",
 				false);
-		//quizA.setDoelLeerjaren(1, 2);
+		quizA.setDoelLeerjaren(1, 2);
 		quizA.setQuizStatus(new Opengesteld());
 		quizB = new Quiz(Leraar.CHARLOTTE_NEVEN, "Bananen en croque monsieurs",
-				true);
-		//quizB.setDoelLeerjaren(5, 6);
+				false);
+		quizB.setDoelLeerjaren(5, 6);
 		quizB.setQuizStatus(new Opengesteld());
 
 		quizCatalogus = new QuizCatalogus();
@@ -144,8 +146,8 @@ public class DBHandlerTest {
 				30, "kaas ham boter");
 
 		// Quizzen sluiten
-		//quizA.setQuizStatus(new Afgesloten());
-		//quizB.setQuizStatus(new Afgesloten());
+		quizA.setQuizStatus(new Afgesloten());
+		quizB.setQuizStatus(new Afgesloten());
 
 		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer,
 				quizCatalogus);
