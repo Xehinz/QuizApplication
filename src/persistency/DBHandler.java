@@ -25,7 +25,7 @@ import model.QuizOpdracht;
  */
 public class DBHandler {
 
-	private boolean useCSV;	
+	private boolean useCSV;
 
 	private DBStrategy dbStrategy;
 	private OpdrachtCatalogus opdrachtCatalogus;
@@ -96,9 +96,9 @@ public class DBHandler {
 	}
 
 	/**
-	 * METHOD IS MISSCHIEN NIET NODIG. AFWACHTEN HOE .INIT FILE WERKT
-	 * 
-	 * Method om in te stellen of DBHandler met DB of tekst werkt.
+	 * Method om in te stellen of DBHandler met DB of tekst werkt. Omdat de
+	 * andere klasses in het persistency package best onzichtbaar zijn voor de
+	 * buitenwereld werken we met een enum: StorageStrategy
 	 * 
 	 * @param storageStrategy
 	 *            de StorageStrategy (StorageStrategy.TEKST of
@@ -107,7 +107,7 @@ public class DBHandler {
 	public void setDBStrategy(StorageStrategy storageStrategy) {
 		switch (storageStrategy) {
 		case TEKST:
-			dbStrategy = new TxtDB(useCSV);
+			dbStrategy = new TxtDB(useCSV);			
 			break;
 		case DATABASE:
 			dbStrategy = new MySQLDB();
@@ -143,9 +143,11 @@ public class DBHandler {
 	}
 
 	/**
-	 * Geef true mee om in .csv formaat te werken. Enkel van toepassing indien de StorageStrategy TEKST is
+	 * Geef true mee om in .csv formaat te werken. Enkel van toepassing indien
+	 * de StorageStrategy TEKST is
 	 * 
-	 * @param useCSV true voor .csv, false voor .txt
+	 * @param useCSV
+	 *            true voor .csv, false voor .txt
 	 */
 	public void setUseCSV(boolean useCSV) {
 		this.useCSV = useCSV;

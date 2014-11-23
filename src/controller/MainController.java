@@ -36,7 +36,7 @@ public class MainController {
 	
 	class BeheerQuizListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			BeheerQuizController aQuizController = new BeheerQuizController(theData);
+			//BeheerQuizController aQuizController = new BeheerQuizController(theData);
 		}
 	}
 	

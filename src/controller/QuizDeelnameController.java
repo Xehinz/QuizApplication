@@ -64,7 +64,6 @@ public class QuizDeelnameController {
 		quizDeelnameView.setQuizzen(dbHandler.getQuizCatalogus().getMogelijkeQuizzenVoor(leerling));
 		quizDeelnameView.setLeerling(leerling);
 		quizDeelnameView.addDeelneemKnopListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent event) {
 				quiz = quizDeelnameView.getGeselecteerdeQuiz();
 				if (quiz == null) {
@@ -141,7 +140,6 @@ public class QuizDeelnameController {
 			huidigeOpdrachtView
 					.setMaxTijd(huidigeOpdracht.getMaxAntwoordTijd() * 1000);
 			timer.addActionListener(new ActionListener() {
-				@Override
 				public void actionPerformed(ActionEvent event) {
 						verstrekenTijd += 100;
 						if (verstrekenTijd >= huidigeOpdracht.getMaxAntwoordTijd() * 1000) {
@@ -165,7 +163,6 @@ public class QuizDeelnameController {
 
 		huidigeOpdrachtView.useHint(huidigeOpdracht.getHints().size() > 0);
 		huidigeOpdrachtView.addHintKnopListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (huidigeHintIndex < huidigeOpdracht.getHints().size()) {
 					huidigeOpdrachtView.toonInformationDialog(huidigeOpdracht
@@ -185,7 +182,6 @@ public class QuizDeelnameController {
 		}		
 		
 		huidigeOpdrachtView.addAntwoordKnopListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (valideerAntwoord()) {
 					antwoord();

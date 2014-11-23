@@ -35,6 +35,31 @@ public enum Leraar {
 	public String getFamilienaam() {
 		return familienaam;
 	}
+	
+	/**
+	 * Geeft de Leraar op basis van de meegegeven naam
+	 * 
+	 * @param volledigeNaam de String met de naam ("voornaam familienaam")
+	 * @return de gewenste Leraar
+	 * @throws IllegalArgumentException als er geen Leraar bestaat voor de meegegeven naam
+	 */
+	public static Leraar getLeraar(String volledigeNaam) throws IllegalArgumentException {
+		
+		volledigeNaam = volledigeNaam.trim().toLowerCase();
+		switch(volledigeNaam) {		
+		case "maria aerts":
+			return Leraar.MARIA_AERTS;
+		case "jos verbeek":
+			return Leraar.JOS_VERBEEK;
+		case "steven opdebeek":
+			return Leraar.STEVEN_OPDEBEEK;
+		case "charlotte neven":
+			return Leraar.CHARLOTTE_NEVEN;
+		case "mieke wittemans":
+			return Leraar.MIEKE_WITTEMANS;
+		}
+		throw new IllegalArgumentException("Er bestaat geen Leraar met als naam " + volledigeNaam);
+	}
 
 	@Override
 	public String toString() {

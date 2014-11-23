@@ -122,6 +122,22 @@ public class LeerlingContainer implements Iterable<Leerling>, Cloneable,
 		throw new IllegalArgumentException(
 				"De LeerlingContainer bevat geen leerling met ID=" + leerlingID);
 	}
+	
+	/**
+	 * Haalt de Leerling met de meegegeven naam op
+	 * 
+	 * @param volledigeNaam de naam van de gewenste Leerling
+	 * @return de gewenste Leerling
+	 * @throws IllegalArgumentException als de LeerlingContainer geen Leerling met de meegegeven naam bevat
+	 */
+	public Leerling getLeerling(String volledigeNaam) throws IllegalArgumentException {
+		for (Leerling leerling : this) {
+			if (leerling.getNaam().trim().equalsIgnoreCase(volledigeNaam.trim())) {
+				return leerling;
+			}
+		}
+		throw new IllegalArgumentException("De LeerlingContainer bevat geen leerling met naam " + volledigeNaam);
+	}
 
 	/**
 	 * Haalt een lijstje op van alle QuizDeelnames, van alle Leerlingen
