@@ -36,7 +36,7 @@ public class DeelnameKlassiekOpsommingView extends JFrame {
 
 	public DeelnameKlassiekOpsommingView() {
 		super("Quiz: ");
-		this.setSize(500, 200);
+		this.setSize(500, 275);
 		this.setLocationRelativeTo(null);
 
 		// Maakt een JPanel met alle GUI Componenten die gemeenschappelijk zijn

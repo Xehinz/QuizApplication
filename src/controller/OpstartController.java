@@ -35,12 +35,12 @@ public class OpstartController {
 					"Fout");
 		}
 
-		loginView.addLoginActionListener(new ActionListener() {			
+		loginView.addLoginActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if (valideerLeerlingOfLeraar(loginView.getVolledigeNaam())) {
 					if (leraar == null) {
 						// MainLeerlingController mainLeerlingController = new
-						// MainLeerlingController(dbHandler, leerling.clone());						
+						// MainLeerlingController(dbHandler, leerling.clone());
 					} else {
 						// MainLeraarController mainLeraarController = new
 						// MainLeraarController(dbHandler, leraar);
@@ -58,45 +58,46 @@ public class OpstartController {
 		loginView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loginView.setVisible(true);
 	}
-	
-	public static void main(String[] args) {		
+
+	public static void main(String[] args) {
 		LoginView loginView = new LoginView();
-		
+
 		Properties settings = new Properties();
 		try {
-		settings.load(new FileInputStream("resources/settings.ini"));
+			settings.load(new FileInputStream("resources/settings.ini"));
 		} catch (FileNotFoundException fEx) {
-			loginView.toonErrorMessage("setting.ini niet gevonden:\n" + fEx.getMessage(), "Fout");
+			loginView.toonErrorMessage(
+					"setting.ini niet gevonden:\n" + fEx.getMessage(), "Fout");
 		} catch (IOException iEx) {
-			loginView.toonErrorMessage("Inladen van instellingen uit settings.ini mislukt:\n" + iEx.getMessage(), "Fout");
+			loginView.toonErrorMessage(
+					"Inladen van instellingen uit settings.ini mislukt:\n"
+							+ iEx.getMessage(), "Fout");
 		}
-		
+
 		DBHandler dbHandler = new DBHandler();
-		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings.getProperty("dbstrategy")));
-		
-		OpstartController opstartController = new OpstartController(dbHandler, loginView);
+		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings
+				.getProperty("dbstrategy")));
+
+		OpstartController opstartController = new OpstartController(dbHandler,
+				loginView);
 	}
 
 	private boolean valideerLeerlingOfLeraar(String volledigeNaam) {
-		boolean gevonden = false;
-
 		try {
 			leraar = Leraar.getLeraar(volledigeNaam);
-			gevonden = true;
+			return true;
 		} catch (IllegalArgumentException ex) {
 
 		}
 
-		if (!gevonden) {
-			try {
-				leerling = dbHandler.getLeerlingContainer().getLeerling(
-						volledigeNaam);
-				gevonden = true;
-			} catch (IllegalArgumentException ex) {
+		try {
+			leerling = dbHandler.getLeerlingContainer().getLeerling(
+					volledigeNaam);
+			return true;
+		} catch (IllegalArgumentException ex) {
 
-			}
 		}
 
-		return gevonden;
+		return false;
 	}
 }

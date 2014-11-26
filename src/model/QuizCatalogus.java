@@ -188,6 +188,21 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 		
 		return quizzen;
 	}
+	
+	/**
+	 * Geeft een lijst terug van al de quizzen waaraan al is deelgenomen
+	 * 
+	 * @return een ArrayList&lt;Quiz&gt; van al de quizzen waaraan al is deelgenomen
+	 */
+	public ArrayList<Quiz> getReedsIngevuldeQuizzen() {
+		ArrayList<Quiz> reedsIngevuldeQuizzen = new ArrayList<Quiz>();
+		for (Quiz quiz : this) {
+			if(quiz.getQuizDeelnames().size() > 0) {
+				reedsIngevuldeQuizzen.add(quiz);
+			}
+		}
+		return reedsIngevuldeQuizzen;
+	}
 
 	/**
 	 * Override van de toString methode

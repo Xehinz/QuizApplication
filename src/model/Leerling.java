@@ -211,7 +211,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 			}
 		}
 		return toReturn;
-	}
+	}	
 	
 	/**
 	 * Haalt een lijstje op van alle OpdrachtAntwoorden van deze Leerling

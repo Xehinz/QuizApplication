@@ -147,6 +147,14 @@ public class QuizDeelnameView extends JFrame {
 		public int getRowCount() {
 			return quizzen.size();
 		}
+		
+	    @Override
+	    public Class<?> getColumnClass(int columnIndex) {
+	        if (quizzen.isEmpty()) {
+	            return Object.class;
+	        }
+	        return getValueAt(0, columnIndex).getClass();
+	    }
 
 		@Override
 		public Object getValueAt(int row, int col) {
