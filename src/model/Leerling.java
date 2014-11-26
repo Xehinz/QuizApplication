@@ -282,6 +282,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 		return (int) hash;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Leerling clone() {
 		Leerling clone = null;

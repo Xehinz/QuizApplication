@@ -50,7 +50,7 @@ class TxtReproductieLeesSchrijf extends TxtOpdrachtLeesSchrijf {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen Reproductie");
 		}		
-		return String.format("%s\t%s\t%d", this.maakBasisOpdrachtString(reproductie), reproductie.getJuisteTrefwoorden(), reproductie.getMinimumAantalTrefwoorden());	
+		return String.format("%s\t%s\t%d", this.maakBasisOpdrachtString(reproductie), reproductie.getJuisteAntwoord(), reproductie.getMinimumAantalTrefwoorden());	
 	}
 
 	@Override

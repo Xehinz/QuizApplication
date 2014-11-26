@@ -32,6 +32,7 @@ abstract class TxtTemplate {
 		this.useCSV = useCSV;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> ArrayList<T> lees() throws IOException {
 		File inputFile = new File(getBestandsnaam());
 		ArrayList<T> objecten = new ArrayList<T>();

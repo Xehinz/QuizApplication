@@ -12,7 +12,8 @@ class PseudoOpdrachtAntwoord {
 		this.quizOpdrachtID = quizOpdrachtID;
 		this.aantalPogingen = aantalPogingen;
 		this.antwoordTijd = antwoordTijd;
-		this.laatsteAntwoord = laatsteAntwoord;		
+		this.laatsteAntwoord = laatsteAntwoord;	
+
 	}
 
 	public int getQuizDeelnameID() {

@@ -1,12 +1,10 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * De OpdrachtCatalogus klasse, met 1 field: Een lijst met alle aangemaakte

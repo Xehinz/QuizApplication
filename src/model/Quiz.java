@@ -533,6 +533,7 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * 
 	 * @return een geclonede Quiz
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Quiz clone() {
 		Quiz clone = null;

@@ -81,7 +81,7 @@ public class QuizDeelnameController {
 	}
 
 	private void neemDeel() {
-		quizDeelnameView.dispose();
+		quizDeelnameView.setVisible(false);
 
 		quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
 
@@ -97,7 +97,7 @@ public class QuizDeelnameController {
 			huidigeQuizOpdracht = quiz.getQuizOpdracht(huidigeOpdracht);
 			runOpdracht();
 		} else {
-			System.exit(0);
+			quizDeelnameView.setVisible(true);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class QuizDeelnameController {
 						if (verstrekenTijd >= huidigeOpdracht.getMaxAntwoordTijd() * 1000) {
 							OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(
 									quizDeelname, huidigeQuizOpdracht,
-									aantalPogingen, verstrekenTijd,
+									aantalPogingen, verstrekenTijd / 1000,
 									laatsteAntwoord);
 							huidigeOpdrachtView.toonInformationDialog(
 									"Je tijd is verstreken", "Tijd op");
@@ -216,7 +216,7 @@ public class QuizDeelnameController {
 
 		if (huidigeOpdracht.isJuisteAntwoord(huidigeOpdrachtView.getAntwoord())) {
 			OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname,
-					huidigeQuizOpdracht, aantalPogingen, verstrekenTijd,
+					huidigeQuizOpdracht, aantalPogingen, verstrekenTijd / 1000,
 					huidigeOpdrachtView.getAntwoord());
 			timer.stop();
 			huidigeOpdrachtView.toonInformationDialog("Je antwoord was correct", "Juist!");
@@ -226,7 +226,7 @@ public class QuizDeelnameController {
 					&& aantalPogingen == huidigeOpdracht.getMaxAantalPogingen()) {
 				OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(
 						quizDeelname, huidigeQuizOpdracht, aantalPogingen,
-						verstrekenTijd, huidigeOpdrachtView.getAntwoord());
+						verstrekenTijd / 1000, huidigeOpdrachtView.getAntwoord());
 				timer.stop();
 				huidigeOpdrachtView
 						.toonInformationDialog(

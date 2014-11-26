@@ -254,6 +254,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		return (int) hash;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public QuizDeelname clone() {
 		QuizDeelname clone = null;
