@@ -67,7 +67,7 @@ class TxtQuizLeesSchrijf extends TxtTemplate {
 				leerjaren += doelLeerjaren.get(i);
 			}
 		}
-		return String.format("%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s", quiz.getID(), quiz.getAanmaakDatum().getDatumInEuropeesFormaat(), quiz.getQuizStatus(), quiz.getAuteur().name(), quiz.getOnderwerp(), quiz.getIsUniekeDeelname(), quiz.getIsTest(), leerjaren);
+		return String.format("%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s", quiz.getID(), quiz.getAanmaakDatum().getDatumInEuropeesFormaat(), quiz.getQuizStatus().toString(), quiz.getAuteur().name(), quiz.getOnderwerp(), quiz.getIsUniekeDeelname(), quiz.getIsTest(), leerjaren);
 	}
 
 	@Override

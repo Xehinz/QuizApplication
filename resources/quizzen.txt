@@ -1,2 +1,2 @@
-1	22/11/2014	OPENGESTELD	MIEKE_WITTEMANS	Priemgetallen en steden	true	true	1,2,3,4,5,6
-2	22/11/2014	LAATSTE_KANS	CHARLOTTE_NEVEN	Eten	true	false	4,5,6
+2	26/11/2014	Afgesloten	CHARLOTTE_NEVEN	Eten	false	false	4,5,6
+1	26/11/2014	Afgesloten	MIEKE_WITTEMANS	Priemgetallen en steden	true	true	1,2
