@@ -1,5 +1,7 @@
 package view;
 
+import javax.swing.JFrame;
+
 /**
  * 
  * @author Adriaan Kuipers
@@ -7,6 +9,13 @@ package view;
  * 
  */
 
-public class QuizAanpassingView {
+@SuppressWarnings("serial")
+public class QuizAanpassingView extends JFrame {
+	
+	public QuizAanpassingView() {
+	super("Quiz");
+	this.setSize(1200, 800);
+	this.setLocationRelativeTo(null);
+	}
 
 }

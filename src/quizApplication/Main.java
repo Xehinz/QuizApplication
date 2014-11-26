@@ -27,6 +27,7 @@ public class Main {
 		
 		DBHandler db = new DBHandler();
 		QuizBeheerView view = new QuizBeheerView();
+		Leraar leraar = Leraar.CHARLOTTE_NEVEN;
 		
 		try {
 			db.vulCatalogi();
@@ -35,7 +36,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		QuizBeheerController test = new QuizBeheerController(db, view);
+		QuizBeheerController test = new QuizBeheerController(db, leraar, view);
 		
 		
 	}

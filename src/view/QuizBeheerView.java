@@ -13,6 +13,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JFrame;  // Window
@@ -36,9 +37,9 @@ public class QuizBeheerView extends JFrame {
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
 	private JButton btnNieuweQuiz, btnAanpassenQuiz, btnVerwijderQuiz;
-	private JTable table;
+	private JTable quiztabel;
 	private JScrollPane tabelVeld;
-	private QuizBeheerTableModel model;
+	private QuizBeheerTableModel tabelModel;
 	
 	public QuizBeheerView() {
 		//Set window
@@ -52,14 +53,14 @@ public class QuizBeheerView extends JFrame {
 		this.setLayout(layout);
 				
 		//Set Table
-		model = new QuizBeheerTableModel();
-		table = new JTable(model);
-		setKolomBreedte(table);
+		tabelModel = new QuizBeheerTableModel();
+		quiztabel = new JTable(tabelModel);
+		setKolomBreedte(quiztabel);
 				
 		//Set TabelVeld
 				
-		tabelVeld = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
+		tabelVeld = new JScrollPane(quiztabel);
+		quiztabel.setFillsViewportHeight(true);
 		//table.setAutoCreateRowSorter(true);
 				//Set constraints
 		constraints = new GridBagConstraints();
@@ -111,34 +112,42 @@ public class QuizBeheerView extends JFrame {
 		
 	}	
 	
-	public void addNieuweQuizActionListener(ActionListener listener) {
+	public void addNieuweQuizKnopActionListener(ActionListener listener) {
 		btnNieuweQuiz.addActionListener(listener);
 	}
 	
-	public void addAanpassenQuizActionListener(ActionListener listener) {
+	public void addAanpassenQuizKnopActionListener(ActionListener listener) {
 		btnAanpassenQuiz.addActionListener(listener);
 	}
 	
-	public void addVerwijderQuizActionListener(ActionListener listener) {
+	public void addVerwijderQuizKnopActionListener(ActionListener listener) {
 		btnVerwijderQuiz.addActionListener(listener);
 	}
 	
 	public void setQuizzen(Collection<Quiz> quizzen) {
-		model.setQuizzen(quizzen);		
+		tabelModel.setQuizzen(quizzen);		
+	}
+	
+	public Quiz getGeselecteerdeQuiz() {
+		return tabelModel.getQuiz(quiztabel.getSelectedRow());
+	}
+	
+	public void toonInformationDialog(String boodschap, String titel) {
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void setKolomBreedte (JTable table) {
-		TableColumn column = null;
+		TableColumn kolom = null;
 		for (int i = 0; i < 6; i++) {
-			    column = table.getColumnModel().getColumn(i);
+			    kolom = table.getColumnModel().getColumn(i);
 			    if (i == 3 || i == 5 || i == 6) {
-			        column.setPreferredWidth(50); //Vragen, Test, Unieke Deelname
+			        kolom.setPreferredWidth(50); //Vragen, Test, Unieke Deelname
 			    }
 			    if (i == 0 || i == 2) {
-				        column.setPreferredWidth(140); //Auteur, Klas
+				        kolom.setPreferredWidth(140); //Auteur, Klas
 			    }
 			    if (i == 1) {
-			        column.setPreferredWidth(250); //Onderwerp
+			        kolom.setPreferredWidth(250); //Onderwerp
 			    }
 			}
 	}
