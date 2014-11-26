@@ -1,33 +1,49 @@
 package util.tableModels;
 
+/**
+ * 
+ * @author Adriaan Kuipers
+ * @version 26/11/2014
+ * 
+ */
+
 import java.util.ArrayList;
+import java.util.Collection;
 
 import model.Quiz;
 
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
 
 @SuppressWarnings("serial")
 public class QuizBeheerTableModel extends AbstractTableModel {
 
 	private ArrayList<Quiz> quizzen;
-	private String[] columns;
+	private String[] headers;
 	
 	
-	public QuizBeheerTableModel (ArrayList<Quiz> quizzen) {
-		this.quizzen = quizzen;
-		columns = new String[]{"Auteur","Onderwerp","Klas","Vragen","Status","Test","Unieke Deelname"};
+	public QuizBeheerTableModel () {
+		headers = new String[]{"Auteur","Onderwerp","Klas","Vragen","Status","Test","Unieke Deelname"};
+		quizzen = new ArrayList<Quiz>();
 	}
 	
 	
 	@Override
 	public int getColumnCount() {
-		return columns.length;
+		return headers.length;
 	}
 	@Override
 	public int getRowCount() {
 		return quizzen.size();
 	}
+	
+	@Override   
+	public String getColumnName(int col) {
+	        return headers[col];
+	}
+	
 	@Override
 	public Object getValueAt(int row, int col) {
 		Quiz quiz = quizzen.get(row);
@@ -44,8 +60,15 @@ public class QuizBeheerTableModel extends AbstractTableModel {
 	    }
 	}
 
+	public void setQuizzen (Collection<Quiz> quizzen) {
+		this.quizzen = new ArrayList<Quiz>(quizzen);
+	}
 	
-	
-	
-	
+	public Quiz getQuiz(int row) {
+		if (row < quizzen.size() && row >= 0) {
+			return quizzen.get(row);
+		}
+		return null;
+	}
+		
 }
