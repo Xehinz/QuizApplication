@@ -500,6 +500,13 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @return <code>true</code> als het meegegeven antwoord correct is
 	 */
 	public abstract boolean isJuisteAntwoord(String antwoord);
+	
+	/**
+	 * Geeft het juiste antwoord op deze opdracht terug
+	 * 
+	 * @return de String met het juiste antwoord
+	 */
+	public abstract String getJuisteAntwoord();
 
 	/**
 	 * Zoekt naar een QuizOpdracht met een bepaalde ID. Geeft null terug als die
@@ -602,6 +609,7 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Opdracht clone() {
 		Opdracht clone = null;

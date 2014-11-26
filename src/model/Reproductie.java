@@ -198,7 +198,7 @@ public class Reproductie extends Opdracht {
 	 * 
 	 * @return de String met juiste trefwoorden op
 	 */
-	public String getJuisteTrefwoorden() {
+	public String getJuisteAntwoord() {
 		return juisteTrefwoorden;
 	}
 

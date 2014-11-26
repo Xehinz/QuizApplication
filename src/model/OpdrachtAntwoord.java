@@ -67,6 +67,15 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 	public QuizOpdracht getQuizOpdracht() {
 		return quizOpdracht;
 	}
+	
+	/**
+	 * Haalt een kopie van de opdracht verbonden aan dit OpdrachtAntwoord op
+	 * 
+	 * @return de Opdracht verbonden aan dit OpdrachtAntwoord
+	 */
+	public Opdracht getOpdracht() {
+		return quizOpdracht.getOpdracht().clone();
+	}
 
 	/**
 	 * Haalt het definitieve (laatste) antwoord op

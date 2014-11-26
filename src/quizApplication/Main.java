@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import util.datumWrapper.Datum;
+import controller.OverzichtScoresQuizzenController;
 import controller.QuizBeheerController;
 import view.MainView;
+import view.OverzichtScoresQuizzenView;
 import view.QuizBeheerView;
 import persistency.DBHandler;
 
@@ -25,18 +27,16 @@ public class Main {
 	
 	public static void main(String[] args) {		
 		
-		DBHandler db = new DBHandler();
-		QuizBeheerView view = new QuizBeheerView();
-		Leraar leraar = Leraar.CHARLOTTE_NEVEN;
-		
+		OverzichtScoresQuizzenView scores = new OverzichtScoresQuizzenView();
+		DBHandler dbHandler = new DBHandler();
 		try {
-			db.vulCatalogi();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			dbHandler.vulCatalogi();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
+		OverzichtScoresQuizzenController contr = new OverzichtScoresQuizzenController(dbHandler);
 		
-		QuizBeheerController test = new QuizBeheerController(db, leraar, view);
+
 		
 		
 	}
