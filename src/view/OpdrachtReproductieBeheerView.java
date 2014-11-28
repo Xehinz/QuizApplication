@@ -43,5 +43,13 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView {
 		b.fill = GridBagConstraints.BOTH;
 		grootPanel.add(middenPanel, b);
 	}
+	
+	public void setMinimumAantalTrefwoorden(int min){
+		txtMinimumAantalTrefwoorden.setText(Integer.toString(min));
+	}
+	
+	public int getMogelijkeAntwoordenMeerkeuze(){
+		return Integer.parseInt(txtMinimumAantalTrefwoorden.getText());
+	}
 
 }

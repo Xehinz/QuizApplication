@@ -241,7 +241,7 @@ public class OpdrachtAanpassingView extends JFrame {
 	
 	public static void main(String[] args) {
 		OpdrachtAanpassingView oav = new OpdrachtReproductieBeheerView();
-		OpdrachtAanpassingView obv = new OpdrachtMeerkeuzeBeheerView();
+		//OpdrachtAanpassingView obv = new OpdrachtMeerkeuzeBeheerView();
 		OpdrachtAanpassingView ocv = new OpdrachtOpsommingBeheerView();
 		OpdrachtAanpassingView odv = new OpdrachtAanpassingView();
 		

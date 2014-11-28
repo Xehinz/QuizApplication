@@ -36,29 +36,46 @@ public class OpdrachtAanpassingController {
 		this.opdracht = opdracht;
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
-		
+
 		if (opdracht instanceof KlassiekeOpdracht) {
 			view = new OpdrachtAanpassingView();
+			setAlgemeneComponenten(view);
 		}
+
 		if (opdracht instanceof Meerkeuze) {
 			view = new OpdrachtMeerkeuzeBeheerView();
+			setAlgemeneComponenten(view);
+			((OpdrachtMeerkeuzeBeheerView) view)
+					.setMogelijkeAntwoordenMeerkeuze(((Meerkeuze) opdracht)
+							.getOpties());
 		}
+
 		if (opdracht instanceof Opsomming) {
 			view = new OpdrachtOpsommingBeheerView();
+			setAlgemeneComponenten(view);
+			((OpdrachtOpsommingBeheerView) view)
+					.setInJuisteVolgorde(((Opsomming) opdracht)
+							.getInJuisteVolgorde());
 		}
 		if (opdracht instanceof Reproductie) {
 			view = new OpdrachtReproductieBeheerView();
+			setAlgemeneComponenten(view);
+			((OpdrachtReproductieBeheerView) view)
+					.setMinimumAantalTrefwoorden(((Reproductie) opdracht)
+							.getMinimumAantalTrefwoorden());
 		}
+	}
 
-		view.setOpdrachtCategorie(opdracht.getOpdrachtCategorie());
-		view.setVraag(opdracht.getVraag());
-		view.setJuisteAntwoord(opdracht.getJuisteAntwoord());
-		view.setHints(opdracht.getHints());
-		view.setMaxAantalPogingen(Integer.toString(opdracht
+	public void setAlgemeneComponenten(OpdrachtAanpassingView view) {
+		view.setOpdrachtCategorie(getOpdracht().getOpdrachtCategorie());
+		view.setVraag(getOpdracht().getVraag());
+		view.setJuisteAntwoord(getOpdracht().getJuisteAntwoord());
+		view.setHints(getOpdracht().getHints());
+		view.setMaxAantalPogingen(Integer.toString(getOpdracht()
 				.getMaxAantalPogingen()));
-		view.setMaxAntwoordTijd(Integer.toString(opdracht.getMaxAntwoordTijd()));
+		view.setMaxAntwoordTijd(Integer.toString(getOpdracht()
+				.getMaxAntwoordTijd()));
 
-		
 		view.NieuweHintKnopActionListener(new NieuweHintKnopListener());
 		view.OpslaanKnopActionListener(new OpslaanKnopListener());
 

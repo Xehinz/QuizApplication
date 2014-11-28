@@ -42,5 +42,13 @@ public class OpdrachtOpsommingBeheerView extends OpdrachtAanpassingView {
 		b.fill = GridBagConstraints.BOTH;
 		grootPanel.add(middenPanel, b);
 	}
+	
+	public void setInJuisteVolgorde(boolean b){
+		chbInJuisteVolgorde.setSelected(b);
+	}
+	
+	public boolean getMogelijkeAntwoordenMeerkeuze(){
+		return chbInJuisteVolgorde.isSelected();
+	}
 
 }
