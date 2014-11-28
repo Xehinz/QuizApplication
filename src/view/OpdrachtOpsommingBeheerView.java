@@ -18,6 +18,7 @@ public class OpdrachtOpsommingBeheerView extends OpdrachtAanpassingView {
 	
 	public OpdrachtOpsommingBeheerView() {
 		super();
+		this.setTitle("Opsomming opdracht");
 		middenPanel = new JPanel();
 		middenPanel.setLayout(new GridBagLayout());
 		

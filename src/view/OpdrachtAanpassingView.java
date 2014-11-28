@@ -50,6 +50,7 @@ public class OpdrachtAanpassingView extends JFrame {
 
 		this.setSize(1000, 600);
 		this.setLocationRelativeTo(null);
+		this.setTitle("Klassieke opdracht");
 
 		grootPanel = new JPanel();
 		grootPanel.setLayout(new GridBagLayout());
@@ -236,11 +237,11 @@ public class OpdrachtAanpassingView extends JFrame {
 		btnOpslaan.addActionListener(listener);
 	}
 	
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		OpdrachtAanpassingView oav = new OpdrachtReproductieBeheerView();
 		//OpdrachtAanpassingView obv = new OpdrachtMeerkeuzeBeheerView();
 		OpdrachtAanpassingView ocv = new OpdrachtOpsommingBeheerView();
 		OpdrachtAanpassingView odv = new OpdrachtAanpassingView();
-	}*/
+	}
 
 }

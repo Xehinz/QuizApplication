@@ -10,22 +10,29 @@ import java.util.Collection;
 
 import javax.swing.*;
 
+import persistency.DBHandler;
 import controller.OpdrachtBeheerController;
+import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
 
 public class OpdrachtBeheerView extends JFrame {
 
-	private JButton btnNieuweKlassieke = new JButton("Nieuwe klassieke opdracht");
-	private JButton btnNieuweMeerkeuze = new JButton("Nieuwe meerkeuze opdracht");
-	private JButton btnNieuweOpsomming = new JButton("Nieuwe opsomming opdracht");
-	private JButton btnNieuweReproductie = new JButton("Nieuwe reproductie opdracht");
+	private JButton btnNieuweKlassieke = new JButton(
+			"Nieuwe klassieke opdracht");
+	private JButton btnNieuweMeerkeuze = new JButton(
+			"Nieuwe meerkeuze opdracht");
+	private JButton btnNieuweOpsomming = new JButton(
+			"Nieuwe opsomming opdracht");
+	private JButton btnNieuweReproductie = new JButton(
+			"Nieuwe reproductie opdracht");
 	private JButton btnPasOpdrachtAan = new JButton("Pas opdracht aan");
 	private JButton btnVerwijderOpdracht = new JButton("Verwijder opdracht");
 	private JButton btnBekijkDetails = new JButton("Bekijk details");
 
 	private JList<Opdracht> lijstOpdrachten = new JList<>();
-	private JComboBox<OpdrachtCategorie> selecteerCategorie = new JComboBox<>();
+	private JComboBox<OpdrachtCategorie> selecteerCategorie = new JComboBox<>(
+			OpdrachtCategorie.values());
 
 	public OpdrachtBeheerView() {
 		super("Opdrachtenbeheer");
@@ -73,8 +80,6 @@ public class OpdrachtBeheerView extends JFrame {
 		c.weighty = 0.5;
 		c.insets = new Insets(10, 0, 0, 0);
 		c.anchor = GridBagConstraints.WEST;
-		selecteerCategorie.setModel(new DefaultComboBoxModel(
-				new String[] { "lkjdfksjdflksjdlfkd" }));
 		newPanel.add(selecteerCategorie, c);
 
 		c = new GridBagConstraints();
@@ -103,32 +108,33 @@ public class OpdrachtBeheerView extends JFrame {
 	public Opdracht getGeselecteerdeOpdracht() {
 		return (Opdracht) lijstOpdrachten.getSelectedValue();
 	}
-	
+
 	public void addNieuweKlassiekeKnopActionListener(ActionListener listener) {
 		btnNieuweKlassieke.addActionListener(listener);
 	}
-	
+
 	public void addNieuweMeerkeuzeKnopActionListener(ActionListener listener) {
 		btnNieuweMeerkeuze.addActionListener(listener);
 	}
-	
+
 	public void addNieuweOpsommingKnopActionListener(ActionListener listener) {
 		btnNieuweOpsomming.addActionListener(listener);
 	}
-	
+
 	public void addNieuweReproductieKnopActionListener(ActionListener listener) {
 		btnNieuweReproductie.addActionListener(listener);
 	}
-	
+
 	public void addPasOpdrachtAanKnopActionListener(ActionListener listener) {
 		btnPasOpdrachtAan.addActionListener(listener);
 	}
-	
+
 	public void addVerwijderOpdrachtKnopActionListener(ActionListener listener) {
 		btnVerwijderOpdracht.addActionListener(listener);
 	}
-	
+
 	public void addBekijkDetailsKnopActionListener(ActionListener listener) {
 		btnBekijkDetails.addActionListener(listener);
 	}
+
 }

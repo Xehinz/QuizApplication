@@ -40,8 +40,8 @@ public class Reproductie extends Opdracht {
 	 */
 	public Reproductie(OpdrachtCategorie opdrachtCategorie, Leraar auteur) {
 		super(opdrachtCategorie, auteur);
-		this.setJuisteAntwoord("");
-		this.setMinimumAantalTrefwoorden(0);
+		this.setJuisteAntwoord("leeg");
+		this.setMinimumAantalTrefwoorden(1);
 	}
 
 	/**

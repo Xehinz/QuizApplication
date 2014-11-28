@@ -34,8 +34,8 @@ public class OpdrachtBeheerController {
 
 		view.addNieuweKlassiekeKnopActionListener(new NieuweKlassiekeKnopListener());
 		view.addNieuweMeerkeuzeKnopActionListener(new NieuweMeerkeuzeKnopListener());
-		view.addNieuweOpsommingKnopActionListener(new NieuweMeerkeuzeKnopListener());
-		view.addNieuweReproductieKnopActionListener(new NieuweMeerkeuzeKnopListener());
+		view.addNieuweOpsommingKnopActionListener(new NieuweOpsommingKnopListener());
+		view.addNieuweReproductieKnopActionListener(new NieuweReproductieKnopListener());
 		view.addPasOpdrachtAanKnopActionListener(new PasOpdrachtAanKnopListener());
 		view.addVerwijderOpdrachtKnopActionListener(new VerwijderOpdrachtKnopListener());
 		view.addBekijkDetailsKnopActionListener(new BekijkDetailsKnopListener());
@@ -53,8 +53,7 @@ public class OpdrachtBeheerController {
 	}
 
 	private void openOpdrachtAanpassing(Opdracht opdracht, Leraar leraar) {
-		OpdrachtAanpassingController oac = new OpdrachtAanpassingController(
-				opdracht, leraar, dbHandler);
+		new OpdrachtAanpassingController(opdracht, leraar, dbHandler);
 	}
 
 	class NieuweKlassiekeKnopListener implements ActionListener {
@@ -77,7 +76,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new Opsomming(null, leraar);
-			openOpdrachtAanpassing((Opsomming)opdracht, leraar);
+			openOpdrachtAanpassing(opdracht, leraar);
 		}
 	}
 	
@@ -85,7 +84,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new Reproductie(null, leraar);
-			openOpdrachtAanpassing((Reproductie)opdracht, leraar);
+			openOpdrachtAanpassing(opdracht, leraar);
 		}
 	}
 

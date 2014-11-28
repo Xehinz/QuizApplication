@@ -18,6 +18,7 @@ public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView {
 
 	public OpdrachtMeerkeuzeBeheerView() {
 		super();
+		this.setTitle("Meerkeuze opdracht");
 		middenPanel = new JPanel();
 		middenPanel.setLayout(new GridBagLayout());
 

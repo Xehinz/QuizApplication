@@ -18,6 +18,7 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView {
 	
 	public OpdrachtReproductieBeheerView() {
 		super();
+		this.setTitle("Reproductie opdracht");
 		middenPanel = new JPanel();
 		middenPanel.setLayout(new GridBagLayout());
 		
