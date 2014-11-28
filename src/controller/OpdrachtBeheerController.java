@@ -66,7 +66,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new KlassiekeOpdracht(null, leraar);
-			openOpdrachtAanpassing(opdracht, leraar);
+			OpdrachtAanpassingView oav = new OpdrachtAanpassingView();
 		}
 	}
 	
@@ -74,7 +74,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new Meerkeuze(null, leraar);
-			openOpdrachtAanpassing(opdracht, leraar);
+			OpdrachtAanpassingView oav = new OpdrachtAanpassingView();
 		}
 	}
 	
@@ -82,7 +82,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new Opsomming(null, leraar);
-			openOpdrachtAanpassing(opdracht, leraar);
+			OpdrachtAanpassingView oav = new OpdrachtAanpassingView();
 		}
 	}
 	
@@ -90,7 +90,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new Reproductie(null, leraar);
-			openOpdrachtAanpassing(opdracht, leraar);
+			OpdrachtAanpassingView oav = new OpdrachtAanpassingView();
 		}
 	}
 
@@ -104,7 +104,18 @@ public class OpdrachtBeheerController {
 			if (!opdracht.isAanpasbaar()) {
 				return;
 			}
-			openOpdrachtAanpassing(opdracht, opdracht.getAuteur());
+			if (opdracht instanceof KlassiekeOpdracht){
+				
+			}
+			if (opdracht instanceof Meerkeuze){
+				
+			}
+			if (opdracht instanceof Opsomming){
+				
+			}
+			if (opdracht instanceof Reproductie){
+				
+			}
 		}
 	}
 
@@ -137,7 +148,9 @@ public class OpdrachtBeheerController {
 
 	public static void main(String[] args) {
 		OpdrachtBeheerView OBV = new OpdrachtBeheerView();
-		//OpdrachtBeheerController OBC =  new OpdrachtBeheerController(this.dbHandler, leraar, view);
-		OBV.show();
+		DBHandler dbHandler = new DBHandler();
+		Leraar leraar = Leraar.MIEKE_WITTEMANS;
+		OpdrachtBeheerController OBC =  new OpdrachtBeheerController(dbHandler, leraar, OBV);
+		OBV.setVisible(true);
 	}
 }

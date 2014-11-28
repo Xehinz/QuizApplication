@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -35,26 +36,30 @@ public class OpdrachtAanpassingView extends JFrame {
 	private JLabel lblMaxAantalPogingen = new JLabel(
 			"Maximum aantal pogingen: ");
 	private JLabel lblMaxAntwoordTijd = new JLabel("Maximum antwoordtijd: ");
-	private JLabel lblMogelijkeAntwoordenMeerkeuze = new JLabel(
-			"Mogelijke antwoorden: ");
+	
 	private JLabel lblInJuisteVolgorde = new JLabel("In juiste volgorde: ");
 	private JLabel lblMinimumAantalTrefwoorden = new JLabel(
 			"Minimum aantal trefwoorden: ");
 	private JTextField txtVraag, txtJuisteAntwoord, txtHints,
 			txtMaxAantalPogingen, txtMaxAntwoordTijd,
-			txtMogelijkeAntwoordenMeerkeuze, txtMinimumAantalTrefwoorden;
+			 txtMinimumAantalTrefwoorden;
 	private JCheckBox chbInJuisteVolgorde;
 	private JComboBox<OpdrachtCategorie> cbbOpdrachtCategorie = new JComboBox<>(
 			OpdrachtCategorie.values());
 	private JList lijstHints;
+	protected JPanel bovenPanel, middenPanel, onderPanel, grootPanel;
 
 	public OpdrachtAanpassingView() {
 
 		this.setSize(1000, 600);
 		this.setLocationRelativeTo(null);
 
-		JPanel newPanel = new JPanel();
-		newPanel.setLayout(new GridBagLayout());
+		grootPanel = new JPanel();
+		grootPanel.setLayout(new GridBagLayout());
+		GridBagConstraints b = new GridBagConstraints();
+		
+		bovenPanel = new JPanel();
+		bovenPanel.setLayout(new GridBagLayout());
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 1;
@@ -62,11 +67,11 @@ public class OpdrachtAanpassingView extends JFrame {
 		c.weightx = 0.2;
 		c.anchor = GridBagConstraints.EAST;
 		c.insets = new Insets(10, 10, 0, 0);
-		newPanel.add(lblOpdrachtCategorie, c);
+		bovenPanel.add(lblOpdrachtCategorie, c);
 		c.gridx = 2;
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
-		newPanel.add(cbbOpdrachtCategorie, c);
+		bovenPanel.add(cbbOpdrachtCategorie, c);
 
 		c = new GridBagConstraints();
 		c.gridy = 2;
@@ -74,68 +79,62 @@ public class OpdrachtAanpassingView extends JFrame {
 		c.weightx = 0.2;
 		c.insets = new Insets(10, 10, 0, 0);
 		c.anchor = GridBagConstraints.EAST;
-		newPanel.add(lblVraag, c);
+		bovenPanel.add(lblVraag, c);
 		c.gridx = 2;
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
 		txtVraag = new JTextField();
 		txtVraag.setPreferredSize(new Dimension(600, 25));
-		newPanel.add(txtVraag, c);
+		bovenPanel.add(txtVraag, c);
 
-		c = new GridBagConstraints();
-		c.gridy = 3;
-		c.gridx = 1;
-		c.weightx = 0.2;
-		c.insets = new Insets(10, 10, 0, 0);
-		c.anchor = GridBagConstraints.EAST;
-		newPanel.add(lblMogelijkeAntwoordenMeerkeuze, c);
-		c.gridx = 2;
-		c.weightx = 0.8;
-		c.anchor = GridBagConstraints.WEST;
-		txtMogelijkeAntwoordenMeerkeuze = new JTextField();
-		txtMogelijkeAntwoordenMeerkeuze.setPreferredSize(new Dimension(600, 75));
-		newPanel.add(txtMogelijkeAntwoordenMeerkeuze, c);
+		b.gridx = 1;
+		b.gridy = 1;
+		b.insets = new Insets (10, 10, 10, 10);
+		b.fill = GridBagConstraints.BOTH;
+		grootPanel.add(bovenPanel, b);
+		
+		onderPanel = new JPanel();
+		onderPanel.setLayout(new GridBagLayout());
 		
 		c = new GridBagConstraints();
-		c.gridy = 3;
+		c.gridy = 1;
 		c.gridx = 1;
 		c.weightx = 0.2;
 		c.insets = new Insets(10, 10, 0, 0);
 		c.anchor = GridBagConstraints.EAST;
-		newPanel.add(lblInJuisteVolgorde, c);
-		c.gridx = 2;
-		c.weightx = 0.8;
-		c.anchor = GridBagConstraints.WEST;
-		chbInJuisteVolgorde = new JCheckBox();
-		newPanel.add(chbInJuisteVolgorde, c);
-		
-		c = new GridBagConstraints();
-		c.gridy = 3;
-		c.gridx = 1;
-		c.weightx = 0.2;
-		c.insets = new Insets(10, 10, 0, 0);
-		c.anchor = GridBagConstraints.EAST;
-		newPanel.add(lblMinimumAantalTrefwoorden, c);
-		c.gridx = 2;
-		c.weightx = 0.8;
-		c.anchor = GridBagConstraints.WEST;
-		txtMinimumAantalTrefwoorden = new JTextField();
-		txtMinimumAantalTrefwoorden.setPreferredSize(new Dimension(200, 25));
-		newPanel.add(txtMinimumAantalTrefwoorden, c);
-		
-		c = new GridBagConstraints();
-		c.gridy = 4;
-		c.gridx = 1;
-		c.weightx = 0.2;
-		c.insets = new Insets(10, 10, 0, 0);
-		c.anchor = GridBagConstraints.EAST;
-		newPanel.add(lblJuisteAntwoord, c);
+		onderPanel.add(lblJuisteAntwoord, c);
 		c.gridx = 2;
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
 		txtJuisteAntwoord = new JTextField();
 		txtJuisteAntwoord.setPreferredSize(new Dimension(600, 25));
-		newPanel.add(txtJuisteAntwoord, c);
+		onderPanel.add(txtJuisteAntwoord, c);
+
+		c = new GridBagConstraints();
+		c.gridy = 2;
+		c.gridx = 1;
+		c.weightx = 0.2;
+		c.insets = new Insets(10, 10, 0, 0);
+		c.anchor = GridBagConstraints.EAST;
+		onderPanel.add(lblHints, c);
+		c.gridx = 2;
+		c.weightx = 0.8;
+		c.anchor = GridBagConstraints.WEST;
+		txtHints = new JTextField();
+		txtHints.setPreferredSize(new Dimension(600, 25));
+		onderPanel.add(txtHints, c);
+		c.gridy = 3;
+		onderPanel.add(btnAddHint, c);
+
+		c = new GridBagConstraints();
+		c.gridy = 4;
+		c.gridx = 2;
+		c.weightx = 0.8;
+		c.insets = new Insets(10, 10, 0, 0);
+		c.anchor = GridBagConstraints.WEST;
+		lijstHints = new JList();
+		lijstHints.setPreferredSize(new Dimension(600, 75));
+		onderPanel.add(lijstHints, c);
 
 		c = new GridBagConstraints();
 		c.gridy = 5;
@@ -143,65 +142,37 @@ public class OpdrachtAanpassingView extends JFrame {
 		c.weightx = 0.2;
 		c.insets = new Insets(10, 10, 0, 0);
 		c.anchor = GridBagConstraints.EAST;
-		newPanel.add(lblHints, c);
-		c.gridx = 2;
-		c.weightx = 0.8;
-		c.anchor = GridBagConstraints.WEST;
-		txtHints = new JTextField();
-		txtHints.setPreferredSize(new Dimension(600, 25));
-		newPanel.add(txtHints, c);
-		c.gridy = 6;
-		newPanel.add(btnAddHint, c);
-
-		c = new GridBagConstraints();
-		c.gridy = 7;
-		c.gridx = 2;
-		c.weightx = 0.8;
-		c.insets = new Insets(10, 10, 0, 0);
-		c.anchor = GridBagConstraints.WEST;
-		lijstHints = new JList();
-		lijstHints.setPreferredSize(new Dimension(600, 75));
-		newPanel.add(lijstHints, c);
-
-		c = new GridBagConstraints();
-		c.gridy = 8;
-		c.gridx = 1;
-		c.weightx = 0.2;
-		c.insets = new Insets(10, 10, 0, 0);
-		c.anchor = GridBagConstraints.EAST;
-		newPanel.add(lblMaxAantalPogingen, c);
+		onderPanel.add(lblMaxAantalPogingen, c);
 		c.gridx = 2;
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
 		txtMaxAantalPogingen = new JTextField();
 		txtMaxAantalPogingen.setPreferredSize(new Dimension(100, 25));
-		newPanel.add(txtMaxAantalPogingen, c);
+		onderPanel.add(txtMaxAantalPogingen, c);
 
 		c = new GridBagConstraints();
-		c.gridy = 9;
+		c.gridy = 6;
 		c.gridx = 1;
 		c.weightx = 0.2;
 		c.insets = new Insets(10, 10, 0, 0);
 		c.anchor = GridBagConstraints.EAST;
-		newPanel.add(lblMaxAntwoordTijd, c);
+		onderPanel.add(lblMaxAntwoordTijd, c);
 		c.gridx = 2;
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
 		txtMaxAntwoordTijd = new JTextField();
 		txtMaxAntwoordTijd.setPreferredSize(new Dimension(100, 25));
-		newPanel.add(txtMaxAntwoordTijd, c);
+		onderPanel.add(txtMaxAntwoordTijd, c);
 
-		c.gridy = 10;
-		newPanel.add(btnOpslaan, c);
-
-		this.add(newPanel);
+		c.gridy = 7;
+		c.insets = new Insets (10, 10, 10, 10);
+		onderPanel.add(btnOpslaan, c);
+		
+		b.gridy = 3;
+		grootPanel.add(onderPanel, b);
+		
+		this.add(grootPanel);
 		this.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		OpdrachtAanpassingView OAV = new OpdrachtAanpassingView();
-		OAV.setOpsomming();
-		OAV.show();
 	}
 
 	public void setVraag(String vraag) {
@@ -259,44 +230,6 @@ public class OpdrachtAanpassingView extends JFrame {
 	public void setOpdrachtCategorie(OpdrachtCategorie oc) {
 		cbbOpdrachtCategorie.setSelectedItem(oc);
 	}
-
-	public void setKlassieke() {
-		this.setTitle("Klassieke opdracht");
-		this.lblMinimumAantalTrefwoorden.setVisible(false);
-		this.lblMogelijkeAntwoordenMeerkeuze.setVisible(false);
-		this.lblInJuisteVolgorde.setVisible(false);
-		this.txtMinimumAantalTrefwoorden.setVisible(false);
-		this.txtMogelijkeAntwoordenMeerkeuze.setVisible(false);
-		this.chbInJuisteVolgorde.setVisible(false);
-	}
-
-	public void setMeerkeuze() {
-		this.setTitle("Meerkeuze opdracht");
-		this.lblMinimumAantalTrefwoorden.setVisible(false);
-		this.lblInJuisteVolgorde.setVisible(false);
-		this.txtMinimumAantalTrefwoorden.setVisible(false);
-		this.chbInJuisteVolgorde.setVisible(false);
-	}
-
-	public void setOpsomming() {
-		this.setTitle("Opsomming opdracht");
-		this.txtMinimumAantalTrefwoorden.setVisible(false);
-		this.lblMinimumAantalTrefwoorden.setVisible(false);
-		this.lblMogelijkeAntwoordenMeerkeuze.setVisible(false);
-		this.txtMogelijkeAntwoordenMeerkeuze.setVisible(false);
-	}
-
-	public void setReproductie() {
-		this.setTitle("Reproductie opdracht");
-		this.lblMogelijkeAntwoordenMeerkeuze.setVisible(false);
-		this.lblInJuisteVolgorde.setVisible(false);
-		this.txtMogelijkeAntwoordenMeerkeuze.setVisible(false);
-		this.chbInJuisteVolgorde.setVisible(false);		
-	}
-
-	public void setBekijkDetails(){
-		this.btnOpslaan.setVisible(false);
-	}
 	
 	public void NieuweHintKnopActionListener(ActionListener listener) {
 		btnAddHint.addActionListener(listener);
@@ -304,6 +237,14 @@ public class OpdrachtAanpassingView extends JFrame {
 
 	public void OpslaanKnopActionListener(ActionListener listener) {
 		btnOpslaan.addActionListener(listener);
+	}
+	
+	public static void main(String[] args) {
+		OpdrachtAanpassingView oav = new OpdrachtReproductieBeheerView();
+		OpdrachtAanpassingView obv = new OpdrachtMeerkeuzeBeheerView();
+		OpdrachtAanpassingView ocv = new OpdrachtOpsommingBeheerView();
+		OpdrachtAanpassingView odv = new OpdrachtAanpassingView();
+		
 	}
 
 }

@@ -20,6 +20,9 @@ import model.Reproductie;
 import persistency.DBHandler;
 import view.OpdrachtAanpassingView;
 import view.OpdrachtBeheerView;
+import view.OpdrachtMeerkeuzeBeheerView;
+import view.OpdrachtOpsommingBeheerView;
+import view.OpdrachtReproductieBeheerView;
 import view.QuizAanpassingView;
 
 public class OpdrachtAanpassingController {
@@ -30,10 +33,22 @@ public class OpdrachtAanpassingController {
 
 	public OpdrachtAanpassingController(Opdracht opdracht, Leraar leraar,
 			DBHandler dbHandler) {
-		view = new OpdrachtAanpassingView();
 		this.opdracht = opdracht;
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
+		
+		if (opdracht instanceof KlassiekeOpdracht) {
+			view = new OpdrachtAanpassingView();
+		}
+		if (opdracht instanceof Meerkeuze) {
+			view = new OpdrachtMeerkeuzeBeheerView();
+		}
+		if (opdracht instanceof Opsomming) {
+			view = new OpdrachtOpsommingBeheerView();
+		}
+		if (opdracht instanceof Reproductie) {
+			view = new OpdrachtReproductieBeheerView();
+		}
 
 		view.setOpdrachtCategorie(opdracht.getOpdrachtCategorie());
 		view.setVraag(opdracht.getVraag());
@@ -43,19 +58,6 @@ public class OpdrachtAanpassingController {
 				.getMaxAantalPogingen()));
 		view.setMaxAntwoordTijd(Integer.toString(opdracht.getMaxAntwoordTijd()));
 
-		if (opdracht instanceof KlassiekeOpdracht){
-			view.setKlassieke();
-		}
-		if (opdracht instanceof Meerkeuze){
-			view.setMeerkeuze();
-			
-		}
-		if (opdracht instanceof Opsomming){
-			view.setOpsomming();
-		}
-		if (opdracht instanceof Reproductie){
-			view.setReproductie();
-		}
 		
 		view.NieuweHintKnopActionListener(new NieuweHintKnopListener());
 		view.OpslaanKnopActionListener(new OpslaanKnopListener());
