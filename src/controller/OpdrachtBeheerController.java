@@ -11,15 +11,10 @@ import model.Meerkeuze;
 import model.Opdracht;
 import model.OpdrachtCategorie;
 import model.Opsomming;
-import model.Quiz;
 import model.Reproductie;
-import controller.QuizBeheerController.AanpassenQuizKnopListener;
-import controller.QuizBeheerController.NieuweQuizKnopListener;
-import controller.QuizBeheerController.VerwijderQuizKnopListener;
 import persistency.DBHandler;
 import view.OpdrachtAanpassingView;
 import view.OpdrachtBeheerView;
-import view.QuizBeheerView;
 
 public class OpdrachtBeheerController {
 
@@ -66,7 +61,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new KlassiekeOpdracht(null, leraar);
-			OpdrachtAanpassingView oav = new OpdrachtAanpassingView();
+			openOpdrachtAanpassing(opdracht, leraar);
 		}
 	}
 	
@@ -74,7 +69,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new Meerkeuze(null, leraar);
-			OpdrachtAanpassingView oav = new OpdrachtAanpassingView();
+			openOpdrachtAanpassing(opdracht, leraar);
 		}
 	}
 	
@@ -82,7 +77,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new Opsomming(null, leraar);
-			OpdrachtAanpassingView oav = new OpdrachtAanpassingView();
+			openOpdrachtAanpassing((Opsomming)opdracht, leraar);
 		}
 	}
 	
@@ -90,7 +85,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = new Reproductie(null, leraar);
-			OpdrachtAanpassingView oav = new OpdrachtAanpassingView();
+			openOpdrachtAanpassing((Reproductie)opdracht, leraar);
 		}
 	}
 

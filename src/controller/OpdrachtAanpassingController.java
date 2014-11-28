@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import controller.OpdrachtBeheerController.BekijkDetailsKnopListener;
-import controller.OpdrachtBeheerController.NieuweOpdrachtKnopListener;
+import controller.OpdrachtBeheerController.NieuweKlassiekeKnopListener;
 import controller.OpdrachtBeheerController.PasOpdrachtAanKnopListener;
 import controller.OpdrachtBeheerController.VerwijderOpdrachtKnopListener;
 import model.KlassiekeOpdracht;
@@ -42,13 +42,13 @@ public class OpdrachtAanpassingController {
 			setAlgemeneComponenten(view);
 		}
 
-		if (opdracht instanceof Meerkeuze) {
+		/*if (opdracht instanceof Meerkeuze) {
 			view = new OpdrachtMeerkeuzeBeheerView();
 			setAlgemeneComponenten(view);
 			((OpdrachtMeerkeuzeBeheerView) view)
 					.setMogelijkeAntwoordenMeerkeuze(((Meerkeuze) opdracht)
 							.getOpties());
-		}
+		}*/
 
 		if (opdracht instanceof Opsomming) {
 			view = new OpdrachtOpsommingBeheerView();
@@ -79,7 +79,7 @@ public class OpdrachtAanpassingController {
 		view.NieuweHintKnopActionListener(new NieuweHintKnopListener());
 		view.OpslaanKnopActionListener(new OpslaanKnopListener());
 
-		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
 	}
 
@@ -94,8 +94,8 @@ public class OpdrachtAanpassingController {
 		opdracht.setMaxAantalPogingen(maxAantalPogingen);
 		opdracht.setMaxAntwoordTijd(maxAntwoordTijd);
 		opdracht.setOpdrachtCategorie(oc);
-		opdracht.setHints(hints);
-		opdracht.setJuisteAntwoord(juisteAntwoord);
+		/*opdracht.setHints(hints);
+		opdracht.setJuisteAntwoord(juisteAntwoord);*/
 	}
 
 	class NieuweHintKnopListener implements ActionListener {

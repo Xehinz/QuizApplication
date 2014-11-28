@@ -8,9 +8,6 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -239,12 +236,11 @@ public class OpdrachtAanpassingView extends JFrame {
 		btnOpslaan.addActionListener(listener);
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		OpdrachtAanpassingView oav = new OpdrachtReproductieBeheerView();
 		//OpdrachtAanpassingView obv = new OpdrachtMeerkeuzeBeheerView();
 		OpdrachtAanpassingView ocv = new OpdrachtOpsommingBeheerView();
 		OpdrachtAanpassingView odv = new OpdrachtAanpassingView();
-		
-	}
+	}*/
 
 }
