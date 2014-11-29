@@ -15,10 +15,11 @@ public class QuizAanpassingController {
 	private Leraar leraar;
 	
 	public QuizAanpassingController(Quiz quiz, Leraar leraar, DBHandler dbHandler) {
-		view = new QuizAanpassingView();
+		view = new QuizAanpassingView(quiz, leraar, (dbHandler.getOpdrachtCatalogus()).getOpdrachten());
 		this.quiz = quiz;
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
+		
 		
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);

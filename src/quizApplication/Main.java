@@ -11,6 +11,7 @@ import java.util.HashSet;
 
 import util.datumWrapper.Datum;
 import controller.OverzichtScoresQuizzenController;
+import controller.QuizAanpassingController;
 import controller.QuizBeheerController;
 import view.MainView;
 import view.OverzichtScoresQuizzenView;
@@ -27,14 +28,15 @@ public class Main {
 	
 	public static void main(String[] args) {		
 		
-		OverzichtScoresQuizzenView scores = new OverzichtScoresQuizzenView();
 		DBHandler dbHandler = new DBHandler();
 		try {
 			dbHandler.vulCatalogi();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		OverzichtScoresQuizzenController contr = new OverzichtScoresQuizzenController(dbHandler);
+		Quiz quiz = dbHandler.getQuizCatalogus().getQuiz(1);
+		Leraar leraar = Leraar.CHARLOTTE_NEVEN;
+		QuizAanpassingController qac = new QuizAanpassingController(quiz, leraar, dbHandler);
 		
 
 		
