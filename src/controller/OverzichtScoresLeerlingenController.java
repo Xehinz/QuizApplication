@@ -26,27 +26,12 @@ public class OverzichtScoresLeerlingenController {
 		this.quiz = quiz;
 		this.startScoreController = startScoreController;
 		
-		openView();
-		addStartScoreClosedHandler();
-	}
-	
-	private void openView() {
 		leerlingenView.setTableModel(leerlingScoreTableModel);
-		leerlingenView.setQuizOnderwerp(quiz.getOnderwerp());	
-		
-		leerlingenView.addDetailKnopListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				QuizDeelname geselecteerd = leerlingScoreTableModel.getQuizDeelname(leerlingenView.getGeselecteerdeRijIndex());
-				if (geselecteerd == null) {
-					leerlingenView.toonInformationDialog("Selecteer een deelname om details te zien", "Geen deelname geselecteerd");
-				} else {
-					@SuppressWarnings("unused")
-					OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd, startScoreController);
-				}
-			}
-		});		
-		
+		leerlingenView.setQuizOnderwerp(quiz.getOnderwerp());		
+		leerlingenView.addDetailKnopListener(new DetailKnopListener());			
 		leerlingenView.setVisible(true);
+		
+		addStartScoreClosedHandler();
 	}
 	
 	private void addStartScoreClosedHandler() {
@@ -56,6 +41,20 @@ public class OverzichtScoresLeerlingenController {
 				leerlingenView.dispose();
 			}
 		});
+	}
+	
+	class DetailKnopListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			QuizDeelname geselecteerd = leerlingScoreTableModel.getQuizDeelname(leerlingenView.getGeselecteerdeRijIndex());
+			if (geselecteerd == null) {
+				leerlingenView.toonInformationDialog("Selecteer een deelname om details te zien", "Geen deelname geselecteerd");
+			} else {
+				@SuppressWarnings("unused")
+				OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd, startScoreController);
+			}
+		}
 	}
 
 	@SuppressWarnings("serial")

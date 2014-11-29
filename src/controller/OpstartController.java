@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,16 +18,18 @@ import persistency.StorageStrategy;
 import view.LoginView;
 
 public class OpstartController {
-
-	private LoginView loginView;
+	
 	private DBHandler dbHandler;
+	private LoginView loginView;
 
 	private Leraar leraar;
 	private Leerling leerling;
 
-	public OpstartController(DBHandler dbHandler, LoginView loginView) {
-		this.loginView = loginView;
+	public OpstartController(DBHandler dbHandler) {		
 		this.dbHandler = dbHandler;
+		loginView = new LoginView();
+		
+		loginView.addWindowListener(new LoginViewClosedHandler());
 
 		try {
 			dbHandler.vulCatalogi();
@@ -34,29 +38,8 @@ public class OpstartController {
 					"Fout bij het inlezen van data:\n" + Iex.getMessage(),
 					"Fout");
 		}
-
-		loginView.addLoginActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				if (valideerLeerlingOfLeraar(loginView.getVolledigeNaam())) {
-					if (leraar == null) {
-						// MainLeerlingController mainLeerlingController = new
-						// MainLeerlingController(dbHandler, leerling.clone());
-					} else {
-						// MainLeraarController mainLeraarController = new
-						// MainLeraarController(dbHandler, leraar);
-					}
-					loginView.dispose();
-				} else {
-					loginView.toonInformationMessage("Ongeldige login",
-							"Login mislukt");
-				}
-				leraar = null;
-				leerling = null;
-			}
-		});
-
-		loginView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		loginView.setVisible(true);
+		
+		login();
 	}
 
 	public static void main(String[] args) {
@@ -78,8 +61,15 @@ public class OpstartController {
 		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings
 				.getProperty("dbstrategy")));
 
-		OpstartController opstartController = new OpstartController(dbHandler,
-				loginView);
+		OpstartController opstartController = new OpstartController(dbHandler);
+	}
+	
+	public void login() {
+		loginView = new LoginView();
+		loginView.addLoginActionListener(new LoginKnopListener());
+
+		loginView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginView.setVisible(true);
 	}
 
 	private boolean valideerLeerlingOfLeraar(String volledigeNaam) {
@@ -100,4 +90,39 @@ public class OpstartController {
 
 		return false;
 	}
+	
+	class LoginKnopListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (valideerLeerlingOfLeraar(loginView.getVolledigeNaam())) {
+				if (leraar == null) {
+					 MainLeerlingController mainLeerlingController = new
+					 MainLeerlingController(dbHandler, leerling.clone(), OpstartController.this);
+				} else {
+					 MainLeraarController mainLeraarController = new
+					 MainLeraarController(dbHandler, leraar, OpstartController.this);
+				}
+				loginView.dispose();
+			} else {
+				loginView.toonInformationMessage("Ongeldige login",
+						"Login mislukt");
+			}
+			leraar = null;
+			leerling = null;
+		}
+	}
+	
+	class LoginViewClosedHandler extends WindowAdapter {
+		
+		@Override
+		public void windowClosing(WindowEvent event) {
+			try {
+			dbHandler.saveCatalogi();
+			} catch (IOException iEx) {
+				loginView.toonErrorMessage(String.format("Fout bij het opslaan van de data:\n%s", iEx.getMessage()), "Fout bij Opslaan");
+			}
+		}
+	}
+	
 }

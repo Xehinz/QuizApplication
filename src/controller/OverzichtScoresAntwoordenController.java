@@ -25,28 +25,14 @@ public class OverzichtScoresAntwoordenController {
 		this.quizDeelname = quizDeelname;
 		this.startScoreController = startScoreController;
 		
-		openView();
+		antwoordenView.setAntwoordTableModel(antwoordTableModel);
+		antwoordenView.setTitel(quizDeelname.getLeerling().getNaam(), quizDeelname.getQuiz().getOnderwerp());		
+		antwoordenView.addAntwoordenSelectionListener(new AntwoordSelectionListener());		
+		antwoordenView.setVisible(true);
+		
 		addStartScoreClosedHandler();
 	}	
-	
-	private void openView() {
-		antwoordenView.setAntwoordTableModel(antwoordTableModel);
-		antwoordenView.setTitel(quizDeelname.getLeerling().getNaam(), quizDeelname.getQuiz().getOnderwerp());
 		
-		antwoordenView.addAntwoordenSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				OpdrachtAntwoord geselecteerd = antwoordTableModel.getOpdrachtAntwoord(antwoordenView.getGeselecteerdeRij());
-				antwoordenView.setJuisteAntwoord(geselecteerd.getOpdracht().getJuisteAntwoord());
-				antwoordenView.setGemiddeldeScore(geselecteerd.getQuizOpdracht().getGemiddeldeScore(), geselecteerd.getQuizOpdracht().getMaxScore());
-			}
-			
-		});
-		
-		antwoordenView.setVisible(true);
-	}
-	
 	private void addStartScoreClosedHandler() {
 		startScoreController.addStartScoreViewClosedListener(new WindowAdapter() {
 			@Override
@@ -54,6 +40,17 @@ public class OverzichtScoresAntwoordenController {
 				antwoordenView.dispose();
 			}
 		});
+	}
+	
+	class AntwoordSelectionListener implements ListSelectionListener {
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			OpdrachtAntwoord geselecteerd = antwoordTableModel.getOpdrachtAntwoord(antwoordenView.getGeselecteerdeRij());
+			antwoordenView.setJuisteAntwoord(geselecteerd.getOpdracht().getJuisteAntwoord());
+			antwoordenView.setGemiddeldeScore(geselecteerd.getQuizOpdracht().getGemiddeldeScore(), geselecteerd.getQuizOpdracht().getMaxScore());
+		}
+		
 	}
 	
 	@SuppressWarnings("serial")

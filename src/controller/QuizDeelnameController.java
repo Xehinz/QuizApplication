@@ -66,20 +66,8 @@ public class QuizDeelnameController {
 
 		quizDeelnameView.setQuizzen(dbHandler.getQuizCatalogus().getMogelijkeQuizzenVoor(leerling));
 		quizDeelnameView.setLeerling(leerling);
-		quizDeelnameView.addDeelneemKnopListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				quiz = quizDeelnameView.getGeselecteerdeQuiz();
-				if (quiz == null) {
-					quizDeelnameView.toonInformationDialog(
-							"Selecteer een quiz om er aan deel te nemen",
-							"Deelnemen");
-					return;
-				}
-				neemDeel();
-			}
-		});
-
-		quizDeelnameView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		quizDeelnameView.addDeelneemKnopListener(new DeelneemKnopListener());
+		
 		quizDeelnameView.setVisible(true);
 	}
 
@@ -131,22 +119,10 @@ public class QuizDeelnameController {
 		huidigeOpdrachtView.setVraag(huidigeOpdracht.getVraag());
 		huidigeOpdrachtView.setOpdrachtCategorie(huidigeOpdracht
 				.getOpdrachtCategorie().toString());
-		huidigeOpdrachtView.setVraagCounter(huidigeOpdrachtIndex);
-		huidigeOpdrachtView.setVisible(true);
-		huidigeOpdrachtView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		huidigeOpdrachtView.setVraagCounter(huidigeOpdrachtIndex);		
 		
 		// Als de opdrachtview gesloten wordt, moet er terug naar het quiz menu gegaan worden
-		huidigeOpdrachtView.addClosedListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent event) {
-				  if (JOptionPane.showConfirmDialog(huidigeOpdrachtView, 
-				            "Wil je deze quiz verlaten?", "Quiz beëindigen?", 
-				            JOptionPane.YES_NO_OPTION,
-				            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-				            keerTerugNaarKiezenQuiz();
-				        } 
-			}
-		});
+		huidigeOpdrachtView.addClosedListener(new OpdrachtSchermpjeSluitHandler());
 		
 		// Een opdracht overslaan
 		huidigeOpdrachtView.addVolgendeVraagKnopListener(ae -> {slaVraagOver();});
@@ -162,41 +138,16 @@ public class QuizDeelnameController {
 		if (huidigeOpdracht.heeftTijdsbeperking()) {
 			huidigeOpdrachtView
 					.setMaxTijd(huidigeOpdracht.getMaxAntwoordTijd() * 1000);
-			timer.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent event) {						
-						if (verstrekenTijd >= huidigeOpdracht.getMaxAntwoordTijd() * 1000) {
-							OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(
-									quizDeelname, huidigeQuizOpdracht,
-									aantalPogingen, verstrekenTijd / 1000,
-									laatsteAntwoord);
-							huidigeOpdrachtView.toonInformationDialog(
-									"Je tijd is verstreken", "Tijd op");
-							timer.stop();
-							volgendeOpdracht();
-						}
-					}
-				});
+			timer.addActionListener(new TimerTickListener());
 			}
 		else {
 			huidigeOpdrachtView.opTijd(false);
-		}
-		
-		timer.start();
+		}		
 
 		// Hintknop zichtbaar maken als er hints zijn en eventhandler aan de knop koppelen
 		if (huidigeOpdracht.getHints().size() > 0) {
 			huidigeOpdrachtView.useHint(true);
-			huidigeOpdrachtView.addHintKnopListener(new ActionListener() {
-				public void actionPerformed(ActionEvent event) {
-					if (huidigeHintIndex < huidigeOpdracht.getHints().size()) {
-						huidigeOpdrachtView.toonInformationDialog(huidigeOpdracht
-								.getHints().get(huidigeHintIndex++), "Hint");
-						if (huidigeHintIndex == huidigeOpdracht.getHints().size()) {
-							huidigeOpdrachtView.disableHint();
-						}
-					}
-				}
-			});
+			huidigeOpdrachtView.addHintKnopListener(new HintKnopListener());
 		}
 
 		// Logica voor maximum aantal pogingen
@@ -208,20 +159,11 @@ public class QuizDeelnameController {
 		}		
 		
 		// Antwoordknop event handler
-		huidigeOpdrachtView.addAntwoordKnopListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				if (valideerAntwoord()) {
-					antwoord();
-				} else {
-					Valideerbaar valideerbareOpdracht = (Valideerbaar) huidigeOpdracht;
-					huidigeOpdrachtView.toonInformationDialog(
-							"Antwoord is niet van juiste formaat:\n"
-									+ valideerbareOpdracht.getValideerTekst(),
-							"Opgelet");
-				}
-			}
-		});
-
+		huidigeOpdrachtView.addAntwoordKnopListener(new AntwoordKnopListener());	
+		
+		huidigeOpdrachtView.setVisible(true);
+		huidigeOpdrachtView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		timer.start();
 	}
 
 	private boolean valideerAntwoord() {
@@ -282,6 +224,86 @@ public class QuizDeelnameController {
 				verstrekenTijd / 1000, huidigeOpdrachtView.getAntwoord());
 		timer.stop();
 		volgendeOpdracht();
+	}
+	
+	class DeelneemKnopListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			quiz = quizDeelnameView.getGeselecteerdeQuiz();
+			if (quiz == null) {
+				quizDeelnameView.toonInformationDialog(
+						"Selecteer een quiz om er aan deel te nemen",
+						"Deelnemen");
+				return;
+			}
+			neemDeel();
+		}
+		
+	}
+	
+	class AntwoordKnopListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (valideerAntwoord()) {
+				antwoord();
+			} else {
+				Valideerbaar valideerbareOpdracht = (Valideerbaar) huidigeOpdracht;
+				huidigeOpdrachtView.toonInformationDialog(
+						"Antwoord is niet van juiste formaat:\n"
+								+ valideerbareOpdracht.getValideerTekst(),
+						"Opgelet");
+			}
+		}
+		
+	}
+	
+	class HintKnopListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (huidigeHintIndex < huidigeOpdracht.getHints().size()) {
+				huidigeOpdrachtView.toonInformationDialog(huidigeOpdracht
+						.getHints().get(huidigeHintIndex++), "Hint");
+				if (huidigeHintIndex == huidigeOpdracht.getHints().size()) {
+					huidigeOpdrachtView.disableHint();
+				}
+			}
+		}
+		
+	}
+	
+	class TimerTickListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {						
+			if (verstrekenTijd >= huidigeOpdracht.getMaxAntwoordTijd() * 1000) {
+				OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(
+						quizDeelname, huidigeQuizOpdracht,
+						aantalPogingen, verstrekenTijd / 1000,
+						laatsteAntwoord);
+				huidigeOpdrachtView.toonInformationDialog(
+						"Je tijd is verstreken", "Tijd op");
+				timer.stop();
+				volgendeOpdracht();
+			}
+		}
+		
+	}
+	
+	class OpdrachtSchermpjeSluitHandler extends WindowAdapter {
+		
+		@Override
+		public void windowClosing(WindowEvent event) {
+			  if (JOptionPane.showConfirmDialog(huidigeOpdrachtView, 
+			            "Wil je deze quiz verlaten?", "Quiz beëindigen?", 
+			            JOptionPane.YES_NO_OPTION,
+			            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+			            keerTerugNaarKiezenQuiz();
+			        } 
+		}
+		
 	}
 
 }

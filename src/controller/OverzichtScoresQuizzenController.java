@@ -18,36 +18,34 @@ public class OverzichtScoresQuizzenController {
 	private OverzichtScoresQuizzenView quizzenView;	
 	private QuizScoreTableModel quizScoreTableModel;
 	
-	public OverzichtScoresQuizzenController(DBHandler dbHandler) {
+	public OverzichtScoresQuizzenController(DBHandler dbHandler, OverzichtScoresQuizzenView quizzenView) {
 		
-		this.quizzenView = new OverzichtScoresQuizzenView();		
+		this.quizzenView = quizzenView;	
 		quizScoreTableModel = new QuizScoreTableModel(dbHandler.getQuizCatalogus().getReedsIngevuldeQuizzen());
 		
-		openView();
+		quizzenView.setTableModel(quizScoreTableModel);		
+		quizzenView.addDetailKnopListener(new DetailKnopListener());				
+		quizzenView.setVisible(true);	
 	}
 	
 	public void addStartScoreViewClosedListener(WindowListener listener) {
 		quizzenView.addWindowListener(listener);
 	}
 	
-	private void openView() {
-		quizzenView.setTableModel(quizScoreTableModel);
+	class DetailKnopListener implements ActionListener {
 		
-		quizzenView.addDetailKnopListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				Quiz geselecteerd = quizScoreTableModel.getQuiz(quizzenView.getGeselecteerdeRijIndex());
-				if (geselecteerd == null) {
-					quizzenView.toonInformationDialog("Selecteer een quiz om details te zien", "Geen quiz geselecteerd");
-				}
-				else {
-					@SuppressWarnings("unused")
-					OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this);					
-				}			
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			Quiz geselecteerd = quizScoreTableModel.getQuiz(quizzenView.getGeselecteerdeRijIndex());
+			if (geselecteerd == null) {
+				quizzenView.toonInformationDialog("Selecteer een quiz om details te zien", "Geen quiz geselecteerd");
 			}
-		});
-				
-		quizzenView.setVisible(true);
-		quizzenView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			else {
+				@SuppressWarnings("unused")
+				OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this);					
+			}			
+		}
+		
 	}
 
 	@SuppressWarnings("serial")

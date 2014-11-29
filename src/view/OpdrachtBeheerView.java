@@ -93,8 +93,7 @@ public class OpdrachtBeheerView extends JFrame {
 		c.anchor = GridBagConstraints.WEST;
 		newPanel.add(new JScrollPane(lijstOpdrachten), c);
 
-		this.add(newPanel);
-		this.setVisible(true);
+		this.add(newPanel);		
 	}
 
 	public void setOpdrachten(ArrayList<Opdracht> opdrachten) {
