@@ -24,9 +24,9 @@ public class QuizDeelnameView extends JFrame {
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
 	
-	private JLabel leerling, quizHeader;
-	private JTable quizTabel;
-	private JButton deelneemKnop;
+	private JLabel lblLeerling, lblQuizzen;
+	private JTable tblQuizzen;
+	private JButton btnDeelnemen;
 	
 	private QuizTableModel quizTableModel;
 	
@@ -40,28 +40,28 @@ public class QuizDeelnameView extends JFrame {
 		layout = new GridBagLayout();
 		this.setLayout(layout);
 		
-		leerling = new JLabel("Leerling: ");
+		lblLeerling = new JLabel("Leerling: ");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 0, 0);
 		constraints.gridy = 0;
 		constraints.gridx = 0;
 		constraints.weightx = 0.5;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-		this.add(leerling, constraints);
+		this.add(lblLeerling, constraints);
 		
-		quizHeader = new JLabel("Quizzen:");
+		lblQuizzen = new JLabel("Quizzen:");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 0, 0);
 		constraints.gridy = 1;
 		constraints.gridx = 0;		
 		constraints.weighty = 0.5;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-		this.add(quizHeader, constraints);		
+		this.add(lblQuizzen, constraints);		
 			
-		quizTabel = new JTable(quizTableModel);	
-		quizTabel.getColumnModel().getColumn(0).setPreferredWidth(400);
-		quizTabel.setAutoCreateRowSorter(true);
-		quizTabel.setFillsViewportHeight(true);	
+		tblQuizzen = new JTable(quizTableModel);	
+		tblQuizzen.getColumnModel().getColumn(0).setPreferredWidth(400);
+		tblQuizzen.setAutoCreateRowSorter(true);
+		tblQuizzen.setFillsViewportHeight(true);	
 		
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
@@ -71,31 +71,28 @@ public class QuizDeelnameView extends JFrame {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		
-		JScrollPane scroller = new JScrollPane(quizTabel);
-//		Dimension d = quizzen.getPreferredSize();
-//		d.height = quizzen.getRowHeight() * (quizzen.getRowCount() + 2);
-//		quizzen.setPreferredScrollableViewportSize(d);
+		JScrollPane scroller = new JScrollPane(tblQuizzen);
 		this.add(scroller, constraints);	
 		
-		deelneemKnop = new JButton("Deelnemen");
+		btnDeelnemen = new JButton("Deelnemen");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 0, 10, 10);
 		constraints.gridy = 3;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;				
-		this.add(deelneemKnop, constraints);
+		this.add(btnDeelnemen, constraints);
 	}
 	
 	public void setLeerling(Leerling leerling) {
-		this.leerling.setText(String.format("Leerling: %s", leerling.getNaam()));
+		this.lblLeerling.setText(String.format("Leerling: %s", leerling.getNaam()));
 	}
 	
 	public void setQuizzen(Collection<Quiz> quizzen) {
 		quizTableModel.setQuizzen(quizzen);		
 	}
 	
-	public Quiz getGeselecteerdeQuiz() {
-		return quizTableModel.getQuiz(quizTabel.getSelectedRow());
+	public Quiz getGeselecteerdeQuiz() {		
+		return quizTableModel.getQuiz(tblQuizzen.convertRowIndexToModel(tblQuizzen.getSelectedRow()));
 	}
 	
 	public void toonInformationDialog(String boodschap, String titel) {
@@ -103,7 +100,7 @@ public class QuizDeelnameView extends JFrame {
 	}
 	
 	public void addDeelneemKnopListener(ActionListener listener) {
-		deelneemKnop.addActionListener(listener);
+		btnDeelnemen.addActionListener(listener);
 	}
 
 	class QuizTableModel extends AbstractTableModel {

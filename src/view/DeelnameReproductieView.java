@@ -12,32 +12,32 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class DeelnameReproductieView extends DeelnameKlassiekOpsommingView {
 	
-	private JTextArea grootAntwoordVeld;
+	private JTextArea txtAntwoordGroot;
 	
 	public DeelnameReproductieView() {
 		super();
 		this.setSize(500, 275);
 		
 		// Het middelste deel varieert naargelang type opdracht
-		panelCenter = new JPanel(layout);
-		add(panelCenter, BorderLayout.CENTER);
+		pnlCentrum = new JPanel(layout);
+		add(pnlCentrum, BorderLayout.CENTER);
 		
-		grootAntwoordVeld = new JTextArea();
-		grootAntwoordVeld.setRows(5);
-		antwoordVeld.setMinimumSize(new Dimension(50,20));
-		antwoordVeld.setMaximumSize(new Dimension(10000,10000));
+		txtAntwoordGroot = new JTextArea();
+		txtAntwoordGroot.setRows(5);
+		txtAntwoord.setMinimumSize(new Dimension(50,20));
+		txtAntwoord.setMaximumSize(new Dimension(10000,10000));
 		constraints = new GridBagConstraints();		
 		constraints.insets = new Insets(0, 20, 0, 20);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 1;
 		constraints.gridy = 0;
 		constraints.gridy = 0;				
-		panelCenter.add(new JScrollPane(grootAntwoordVeld), constraints);
+		pnlCentrum.add(new JScrollPane(txtAntwoordGroot), constraints);
 	}
 	
 	@Override
 	public String getAntwoord() {
-		return grootAntwoordVeld.getText();
+		return txtAntwoordGroot.getText();
 	}
 
 }

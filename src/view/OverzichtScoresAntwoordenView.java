@@ -1,6 +1,5 @@
 package view;
 
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -11,8 +10,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
-
-
 
 @SuppressWarnings("serial")
 public class OverzichtScoresAntwoordenView extends JFrame {

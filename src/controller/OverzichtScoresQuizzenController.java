@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,14 +15,22 @@ import model.Quiz;
 
 public class OverzichtScoresQuizzenController {	
 
-	private OverzichtScoresQuizzenView quizzenView;
-	
+	private OverzichtScoresQuizzenView quizzenView;	
 	private QuizScoreTableModel quizScoreTableModel;
 	
 	public OverzichtScoresQuizzenController(DBHandler dbHandler) {
-		this.quizzenView = new OverzichtScoresQuizzenView();
 		
+		this.quizzenView = new OverzichtScoresQuizzenView();		
 		quizScoreTableModel = new QuizScoreTableModel(dbHandler.getQuizCatalogus().getReedsIngevuldeQuizzen());
+		
+		openView();
+	}
+	
+	public void addStartScoreViewClosedListener(WindowListener listener) {
+		quizzenView.addWindowListener(listener);
+	}
+	
+	private void openView() {
 		quizzenView.setTableModel(quizScoreTableModel);
 		
 		quizzenView.addDetailKnopListener(new ActionListener() {
@@ -32,7 +41,7 @@ public class OverzichtScoresQuizzenController {
 				}
 				else {
 					@SuppressWarnings("unused")
-					OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd);
+					OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this);					
 				}			
 			}
 		});

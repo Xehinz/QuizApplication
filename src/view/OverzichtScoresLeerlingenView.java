@@ -26,8 +26,7 @@ public class OverzichtScoresLeerlingenView extends JFrame{
 	
 	public OverzichtScoresLeerlingenView() {
 		super("Overzicht Scores: Leerlingen");	
-		this.setSize(800, 400);
-		this.setLocationRelativeTo(null);
+		this.setSize(800, 400);		
 		
 		layout = new GridBagLayout();
 		this.setLayout(layout);		

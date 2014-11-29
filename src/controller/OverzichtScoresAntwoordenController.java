@@ -1,5 +1,8 @@
 package controller;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -11,11 +14,22 @@ import model.QuizDeelname;
 public class OverzichtScoresAntwoordenController {
 
 	private AntwoordTableModel antwoordTableModel;
+	private QuizDeelname quizDeelname;
+	private OverzichtScoresAntwoordenView antwoordenView;
+	private OverzichtScoresQuizzenController startScoreController;
 	
-	public OverzichtScoresAntwoordenController(QuizDeelname quizDeelname) {		
+	public OverzichtScoresAntwoordenController(QuizDeelname quizDeelname, OverzichtScoresQuizzenController startScoreController) {		
 		
-		OverzichtScoresAntwoordenView antwoordenView = new OverzichtScoresAntwoordenView();
+		antwoordenView = new OverzichtScoresAntwoordenView();
 		antwoordTableModel = new AntwoordTableModel(quizDeelname);
+		this.quizDeelname = quizDeelname;
+		this.startScoreController = startScoreController;
+		
+		openView();
+		addStartScoreClosedHandler();
+	}	
+	
+	private void openView() {
 		antwoordenView.setAntwoordTableModel(antwoordTableModel);
 		antwoordenView.setTitel(quizDeelname.getLeerling().getNaam(), quizDeelname.getQuiz().getOnderwerp());
 		
@@ -31,7 +45,16 @@ public class OverzichtScoresAntwoordenController {
 		});
 		
 		antwoordenView.setVisible(true);
-	}	
+	}
+	
+	private void addStartScoreClosedHandler() {
+		startScoreController.addStartScoreViewClosedListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				antwoordenView.dispose();
+			}
+		});
+	}
 	
 	@SuppressWarnings("serial")
 	class AntwoordTableModel extends AbstractTableModel {

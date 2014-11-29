@@ -18,8 +18,8 @@ public class DeelnameMeerkeuzeView extends DeelnameKlassiekOpsommingView {
 		this.setSize(500, 275 + extraHoogte);
 		
 		// Het middelste deel varieert naargelang type opdracht
-		panelCenter = new JPanel(layout);
-		add(panelCenter, BorderLayout.CENTER);
+		pnlCentrum = new JPanel(layout);
+		add(pnlCentrum, BorderLayout.CENTER);
 		
 		buttonGroup = new ButtonGroup();
 		keuzes = new JRadioButton[antwoordKeuzes.length];
@@ -31,7 +31,7 @@ public class DeelnameMeerkeuzeView extends DeelnameKlassiekOpsommingView {
 			constraints.gridy = i;
 			constraints.gridx = 0;
 			constraints.anchor = GridBagConstraints.WEST;
-			panelCenter.add(keuzes[i], constraints);
+			pnlCentrum.add(keuzes[i], constraints);
 		}
 	
 	}

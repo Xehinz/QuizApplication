@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,13 +24,13 @@ public class DeelnameKlassiekOpsommingView extends JFrame {
 	protected GridBagLayout layout;
 	protected GridBagConstraints constraints;
 
-	protected JPanel gemeenschappelijkPanelBoven, gemeenschappelijkPanelOnder,
-			panelCenter;
-	protected JLabel vraagCounter, opdrachtCategorie, pogingen,
-			pogingenCounter;
-	protected JLabel vraag;
-	protected JTextField antwoordVeld;
-	protected JButton antwoordKnop, hintKnop;
+	protected JPanel pnlGemeenschappelijkBoven, pnlGemeenschappelijkOnder,
+			pnlCentrum;
+	protected JLabel lblVraagCounter, lblOpdrachtCategorie, lblPogingen,
+			lblPogingCounter;
+	protected JLabel lblVraag;
+	protected JTextField txtAntwoord;
+	protected JButton btnAntwoord, btnHint, btnVolgendeVraag;
 
 	protected JProgressBar tijdVoortgang;
 	protected Timer timer;
@@ -42,25 +43,25 @@ public class DeelnameKlassiekOpsommingView extends JFrame {
 		// Maakt een JPanel met alle GUI Componenten die gemeenschappelijk zijn
 		// voor alle soorten Opdrachten
 		layout = new GridBagLayout();
-		gemeenschappelijkPanelBoven = new JPanel(layout);
-		add(gemeenschappelijkPanelBoven, BorderLayout.NORTH);
+		pnlGemeenschappelijkBoven = new JPanel(layout);
+		add(pnlGemeenschappelijkBoven, BorderLayout.NORTH);
 
-		vraagCounter = new JLabel("Vraag 0");
+		lblVraagCounter = new JLabel("Vraag 0");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 0, 0);
 		constraints.gridy = 0;
 		constraints.gridx = 0;
 		constraints.weightx = 0.5;
 		constraints.anchor = GridBagConstraints.WEST;
-		gemeenschappelijkPanelBoven.add(vraagCounter, constraints);
+		pnlGemeenschappelijkBoven.add(lblVraagCounter, constraints);
 		
-		opdrachtCategorie = new JLabel("Categorie: ");
+		lblOpdrachtCategorie = new JLabel("Categorie: ");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(0, 10, 0, 0);
 		constraints.gridy = 1;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.WEST;
-		gemeenschappelijkPanelBoven.add(opdrachtCategorie, constraints);
+		pnlGemeenschappelijkBoven.add(lblOpdrachtCategorie, constraints);
 
 		tijdVoortgang = new JProgressBar();
 		constraints = new GridBagConstraints();
@@ -69,73 +70,82 @@ public class DeelnameKlassiekOpsommingView extends JFrame {
 		constraints.gridx = 1;
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		gemeenschappelijkPanelBoven.add(tijdVoortgang, constraints);
+		pnlGemeenschappelijkBoven.add(tijdVoortgang, constraints);
 
-		pogingen = new JLabel("Resterende pogingen: ");
+		lblPogingen = new JLabel("Resterende pogingen: ");
 		constraints = new GridBagConstraints();
 		constraints.gridy = 0;
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.EAST;
-		gemeenschappelijkPanelBoven.add(pogingen, constraints);
+		pnlGemeenschappelijkBoven.add(lblPogingen, constraints);
 
-		pogingenCounter = new JLabel("0");
+		lblPogingCounter = new JLabel("0");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(0, 0, 0, 10);
 		constraints.gridy = 0;
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.WEST;
-		gemeenschappelijkPanelBoven.add(pogingenCounter, constraints);
+		pnlGemeenschappelijkBoven.add(lblPogingCounter, constraints);
 
-		vraag = new JLabel("Vraag?");
+		lblVraag = new JLabel("Vraag?");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(15, 0, 0, 0);
 		constraints.gridy = 2;
 		constraints.gridwidth = 3;
-		gemeenschappelijkPanelBoven.add(vraag, constraints);
+		pnlGemeenschappelijkBoven.add(lblVraag, constraints);
 
 		// Het middelste deel varieert naargelang type opdracht
-		panelCenter = new JPanel(layout);
-		add(panelCenter, BorderLayout.CENTER);
+		pnlCentrum = new JPanel(layout);
+		add(pnlCentrum, BorderLayout.CENTER);
 
-		antwoordVeld = new JTextField();
-		antwoordVeld.setMinimumSize(new Dimension(50, 20));
-		antwoordVeld.setMaximumSize(new Dimension(10000, 20));
+		txtAntwoord = new JTextField();
+		txtAntwoord.setMinimumSize(new Dimension(50, 20));
+		txtAntwoord.setMaximumSize(new Dimension(10000, 20));
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(0, 20, 0, 20);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1;
 		constraints.gridy = 0;
 		constraints.gridy = 0;
-		panelCenter.add(antwoordVeld, constraints);
+		pnlCentrum.add(txtAntwoord, constraints);
 
 		ToolTipManager.sharedInstance().setInitialDelay(300);
 		ToolTipManager.sharedInstance().setReshowDelay(300);
 
 		// AntwoordKnop is gemeenschappelijk voor alle Opdrachten
-		gemeenschappelijkPanelOnder = new JPanel(layout);
-		add(gemeenschappelijkPanelOnder, BorderLayout.SOUTH);
+		pnlGemeenschappelijkOnder = new JPanel(layout);
+		add(pnlGemeenschappelijkOnder, BorderLayout.SOUTH);
 
-		hintKnop = new JButton("Geef Hint");
+		btnHint = new JButton("Geef Hint");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(0, 20, 10, 0);
-		constraints.gridy = 1;
+		constraints.gridy = 0;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.WEST;
-		gemeenschappelijkPanelOnder.add(hintKnop, constraints);
+		pnlGemeenschappelijkOnder.add(btnHint, constraints);
+		
+		btnVolgendeVraag = new JButton("Volgende Vraag");
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(0, 0, 10, 10);
+		constraints.gridy = 0;
+		constraints.gridx = 1;
+		constraints.weightx = 10;
+		constraints.anchor = GridBagConstraints.EAST;
+		pnlGemeenschappelijkOnder.add(btnVolgendeVraag, constraints);
 
-		antwoordKnop = new JButton("Geef Antwoord");
+		btnAntwoord = new JButton("Geef Antwoord");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(0, 0, 10, 20);
-		constraints.gridy = 1;
-		constraints.gridx = 1;
+		constraints.gridy = 0;
+		constraints.gridx = 2;
 		constraints.weightx = 0.5;
 		constraints.anchor = GridBagConstraints.EAST;
-		gemeenschappelijkPanelOnder.add(antwoordKnop, constraints);
+		pnlGemeenschappelijkOnder.add(btnAntwoord, constraints);
 
 	}
 
 	public void setVraagCounter(int count) {
-		vraagCounter.setText(String.format("Vraag %d", count));
+		lblVraagCounter.setText(String.format("Vraag %d", count));
 	}
 
 	public void setMaxTijd(int milliSeconden) {
@@ -149,33 +159,33 @@ public class DeelnameKlassiekOpsommingView extends JFrame {
 	}
 
 	public void setPogingen(int pogingen) {
-		pogingenCounter.setText(Integer.toString(pogingen));
+		lblPogingCounter.setText(Integer.toString(pogingen));
 	}
 
 	public void setVraag(String vraag) {
-		this.vraag.setText(vraag);
+		this.lblVraag.setText(vraag);
 	}
 	
 	public void setOpdrachtCategorie(String categorie) {
-		opdrachtCategorie.setText("Categorie: " + categorie);
+		lblOpdrachtCategorie.setText("Categorie: " + categorie);
 	}
 
 	public String getAntwoord() {
-		return antwoordVeld.getText();
+		return txtAntwoord.getText();
 	}
 
 	public void setAntwoordVeldToolTip(String toolTip) {
-		antwoordVeld.setToolTipText(toolTip);
+		txtAntwoord.setToolTipText(toolTip);
 	}
 
 	public void useHint(boolean useHint) {
 		if (!useHint) {
-			hintKnop.setVisible(false);
+			btnHint.setVisible(false);
 		}
 	}
 	
 	public void disableHint() {
-		hintKnop.setEnabled(false);
+		btnHint.setEnabled(false);
 	}
 
 	public void opTijd(boolean opTijd) {
@@ -185,7 +195,7 @@ public class DeelnameKlassiekOpsommingView extends JFrame {
 	}
 	
 	public void beperktePogingen(boolean beperktePogingen) {
-		pogingenCounter.setText("ongelimiteerd");
+		lblPogingCounter.setText("ongelimiteerd");
 	}
 
 	public void setQuizOnderwerp(String onderwerp) {
@@ -193,11 +203,19 @@ public class DeelnameKlassiekOpsommingView extends JFrame {
 	}
 
 	public void addAntwoordKnopListener(ActionListener listener) {
-		antwoordKnop.addActionListener(listener);
+		btnAntwoord.addActionListener(listener);
 	}
 
 	public void addHintKnopListener(ActionListener listener) {
-		hintKnop.addActionListener(listener);
+		btnHint.addActionListener(listener);
+	}
+	
+	public void addVolgendeVraagKnopListener(ActionListener listener) {
+		btnVolgendeVraag.addActionListener(listener);
+	}
+	
+	public void addClosedListener(WindowListener listener) {
+		this.addWindowListener(listener);
 	}
 
 	public void toonInformationDialog(String boodschap, String titel) {

@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,11 +16,21 @@ import view.OverzichtScoresLeerlingenView;
 public class OverzichtScoresLeerlingenController {
 
 	private LeerlingScoreTableModel leerlingScoreTableModel;
+	private OverzichtScoresLeerlingenView leerlingenView;
+	private Quiz quiz;
+	private OverzichtScoresQuizzenController startScoreController;
 
-	public OverzichtScoresLeerlingenController(Quiz quiz) {
-		
-		OverzichtScoresLeerlingenView leerlingenView = new OverzichtScoresLeerlingenView();
+	public OverzichtScoresLeerlingenController(Quiz quiz, OverzichtScoresQuizzenController startScoreController) {		
+		leerlingenView = new OverzichtScoresLeerlingenView();
 		leerlingScoreTableModel = new LeerlingScoreTableModel(quiz.getQuizDeelnames());
+		this.quiz = quiz;
+		this.startScoreController = startScoreController;
+		
+		openView();
+		addStartScoreClosedHandler();
+	}
+	
+	private void openView() {
 		leerlingenView.setTableModel(leerlingScoreTableModel);
 		leerlingenView.setQuizOnderwerp(quiz.getOnderwerp());	
 		
@@ -29,12 +41,21 @@ public class OverzichtScoresLeerlingenController {
 					leerlingenView.toonInformationDialog("Selecteer een deelname om details te zien", "Geen deelname geselecteerd");
 				} else {
 					@SuppressWarnings("unused")
-					OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd);
+					OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd, startScoreController);
 				}
 			}
-		});
+		});		
 		
 		leerlingenView.setVisible(true);
+	}
+	
+	private void addStartScoreClosedHandler() {
+		startScoreController.addStartScoreViewClosedListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				leerlingenView.dispose();
+			}
+		});
 	}
 
 	@SuppressWarnings("serial")
