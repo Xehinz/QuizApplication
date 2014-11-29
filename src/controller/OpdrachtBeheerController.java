@@ -39,6 +39,7 @@ public class OpdrachtBeheerController {
 		view.addPasOpdrachtAanKnopActionListener(new PasOpdrachtAanKnopListener());
 		view.addVerwijderOpdrachtKnopActionListener(new VerwijderOpdrachtKnopListener());
 		view.addBekijkDetailsKnopActionListener(new BekijkDetailsKnopListener());
+		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
 
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
@@ -63,7 +64,7 @@ public class OpdrachtBeheerController {
 			openOpdrachtAanpassing(opdracht, leraar);
 		}
 	}
-	
+
 	class NieuweMeerkeuzeKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -71,7 +72,7 @@ public class OpdrachtBeheerController {
 			openOpdrachtAanpassing(opdracht, leraar);
 		}
 	}
-	
+
 	class NieuweOpsommingKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -79,7 +80,7 @@ public class OpdrachtBeheerController {
 			openOpdrachtAanpassing(opdracht, leraar);
 		}
 	}
-	
+
 	class NieuweReproductieKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -97,18 +98,8 @@ public class OpdrachtBeheerController {
 			}
 			if (!opdracht.isAanpasbaar()) {
 				return;
-			}
-			if (opdracht instanceof KlassiekeOpdracht){
-				
-			}
-			if (opdracht instanceof Meerkeuze){
-				
-			}
-			if (opdracht instanceof Opsomming){
-				
-			}
-			if (opdracht instanceof Reproductie){
-				
+			} else {
+				openOpdrachtAanpassing(opdracht, opdracht.getAuteur());
 			}
 		}
 	}
@@ -124,27 +115,36 @@ public class OpdrachtBeheerController {
 				return;
 			} else {
 				dbHandler.getOpdrachtCatalogus().removeOpdracht(opdracht);
+				view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten());
 			}
 		}
 	}
-	
+
 	class BekijkDetailsKnopListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent event){
+		public void actionPerformed(ActionEvent event) {
 			opdracht = view.getGeselecteerdeOpdracht();
-			if (opdracht == null){
+			if (opdracht == null) {
 				return;
 			}
 			openOpdrachtAanpassing(opdracht, opdracht.getAuteur());
 		}
 	}
 	
+	class SelecteerCategorieListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent event){
+			OpdrachtCategorie OC = view.getOpdrachtCategorie();
+			view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten(OC));
+		}
+	}
 
 	public static void main(String[] args) {
 		OpdrachtBeheerView OBV = new OpdrachtBeheerView();
 		DBHandler dbHandler = new DBHandler();
 		Leraar leraar = Leraar.MIEKE_WITTEMANS;
-		OpdrachtBeheerController OBC =  new OpdrachtBeheerController(dbHandler, leraar, OBV);
+		OpdrachtBeheerController OBC = new OpdrachtBeheerController(dbHandler,
+				leraar, OBV);
 		OBV.setVisible(true);
 	}
 }

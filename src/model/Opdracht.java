@@ -509,6 +509,13 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	public abstract String getJuisteAntwoord();
 
 	/**
+	 * Stelt het juiste antwoord in
+	 * 
+	 * @param juisteAntwoord de String met het te setten juiste antwoord
+	 */
+	public abstract void setJuisteAntwoord(String juisteAntwoord);
+	
+	/**
 	 * Zoekt naar een QuizOpdracht met een bepaalde ID. Geeft null terug als die
 	 * voor deze Opdracht niet bestaat.
 	 * 
@@ -641,4 +648,9 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		}
 		return hintsString;
 	}
+
+	public void setHints(ArrayList<String> hints) {
+		this.antwoordHints = hints;
+	}
+
 }

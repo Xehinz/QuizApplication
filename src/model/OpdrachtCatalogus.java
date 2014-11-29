@@ -121,6 +121,16 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 		}
 		return opdrachten;
 	}
+	
+	public ArrayList<Opdracht> getOpdrachten(OpdrachtCategorie OC){
+		ArrayList<Opdracht> opdrachten =  new ArrayList<Opdracht>();
+		for (Opdracht opdracht : opdrachtcatalogus){
+			if (opdracht.getOpdrachtCategorie().equals(OC)){
+				opdrachten.add(opdracht);
+			}
+		}
+		return opdrachten;
+	}
 
 	/**
 	 * Haalt de Opdracht op uit de OpdrachtCatalogus met een bepaalde ID

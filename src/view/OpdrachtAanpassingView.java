@@ -18,6 +18,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
 
@@ -37,12 +38,14 @@ public class OpdrachtAanpassingView extends JFrame {
 	private JLabel lblInJuisteVolgorde = new JLabel("In juiste volgorde: ");
 	private JLabel lblMinimumAantalTrefwoorden = new JLabel(
 			"Minimum aantal trefwoorden: ");
+	private JLabel lblLeraar = new JLabel("Auteur: ");
 	private JTextField txtVraag, txtJuisteAntwoord, txtHints,
 			txtMaxAantalPogingen, txtMaxAntwoordTijd,
 			 txtMinimumAantalTrefwoorden;
 	private JCheckBox chbInJuisteVolgorde;
 	private JComboBox<OpdrachtCategorie> cbbOpdrachtCategorie = new JComboBox<>(
 			OpdrachtCategorie.values());
+	private JComboBox<Leraar> cbbLeraar = new JComboBox<>(Leraar.values());
 	private JList lijstHints;
 	protected JPanel bovenPanel, middenPanel, onderPanel, grootPanel;
 
@@ -58,8 +61,20 @@ public class OpdrachtAanpassingView extends JFrame {
 		
 		bovenPanel = new JPanel();
 		bovenPanel.setLayout(new GridBagLayout());
-
+		
 		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 0;
+		c.weightx = 0.2;
+		c.anchor = GridBagConstraints.EAST;
+		c.insets = new Insets(10, 10, 0, 0);
+		bovenPanel.add(lblLeraar, c);
+		c.gridx = 2;
+		c.weightx = 0.8;
+		c.anchor = GridBagConstraints.WEST;
+		bovenPanel.add(cbbLeraar, c);
+		
+		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 1;
 		c.weightx = 0.2;

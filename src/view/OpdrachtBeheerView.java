@@ -39,6 +39,7 @@ public class OpdrachtBeheerView extends JFrame {
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(800, 500);
+		selecteerCategorie.setSelectedItem(null);
 
 		JPanel newPanel = new JPanel();
 		newPanel.setLayout(new GridBagLayout());
@@ -108,6 +109,10 @@ public class OpdrachtBeheerView extends JFrame {
 	public Opdracht getGeselecteerdeOpdracht() {
 		return (Opdracht) lijstOpdrachten.getSelectedValue();
 	}
+	
+	public OpdrachtCategorie getOpdrachtCategorie(){
+		return (OpdrachtCategorie) selecteerCategorie.getSelectedItem();
+	}
 
 	public void addNieuweKlassiekeKnopActionListener(ActionListener listener) {
 		btnNieuweKlassieke.addActionListener(listener);
@@ -135,6 +140,10 @@ public class OpdrachtBeheerView extends JFrame {
 
 	public void addBekijkDetailsKnopActionListener(ActionListener listener) {
 		btnBekijkDetails.addActionListener(listener);
+	}
+	
+	public void addSelecteerCategorieActionlistener(ActionListener listener){
+		selecteerCategorie.addActionListener(listener);
 	}
 
 }

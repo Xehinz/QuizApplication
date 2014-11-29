@@ -189,6 +189,7 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 	 *             wanneer het meegegeven antwoord niet behoort tot de
 	 *             meerkeuzelijst
 	 */
+	@Override
 	public void setJuisteAntwoord(String juisteAntwoord)
 			throws IllegalStateException, IllegalArgumentException {
 		if (!isAanpasbaar()) {
@@ -220,6 +221,10 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 			newList.add(b);
 		}
 		return newList;
+	}
+	
+	public String getOptiesString(){
+		return this.meerkeuzeOpties;
 	}
 
 	/**
