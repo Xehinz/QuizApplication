@@ -3,6 +3,7 @@ package view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -288,5 +289,26 @@ public class QuizAanpassingView extends JFrame {
 			return geselecteerdeOpdrachtenTabelModel.getOpdracht(geselecteerdeOpdrachtenTabel.getSelectedRow());
 		}
 	}
+	
+	public void addQuizBewarenKnopActionListener(ActionListener listener) {
+		btnQuizBewaren.addActionListener(listener);
+	}
+	
+	public void addOpdrachtToevoegenKnopActionListener(ActionListener listener) {
+		btnOpdrachtToevoegen.addActionListener(listener);
+	}
+	
+	public void addopdrachtVerwijderenKnopActionListener(ActionListener listener) {
+		btnOpdrachtVerwijderen.addActionListener(listener);
+	}
+	
+	public void addCategorieLijstSelectieActionListener(ActionListener listener) {
+		cmbCategorie.addActionListener(listener);
+	}
+	
+	public void addSorteerLijstSelectieActionListener(ActionListener listener) {
+		cmbSorteer.addActionListener(listener);
+	}
+	
 
 }
