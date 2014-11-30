@@ -49,7 +49,7 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView {
 		txtMinimumAantalTrefwoorden.setText(Integer.toString(min));
 	}
 	
-	public int getMogelijkeAntwoordenMeerkeuze(){
+	public int getMinimumAantalTrefwoorden(){
 		return Integer.parseInt(txtMinimumAantalTrefwoorden.getText());
 	}
 

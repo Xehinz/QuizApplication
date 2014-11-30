@@ -244,6 +244,7 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 	 *             wanneer de opdracht niet meer aanpasbaar is omdat er al
 	 *             leerlingen ze hebben opgelost
 	 */
+	@Override
 	public void setJuisteAntwoord(String opsommingjuisteantwoord)
 			throws IllegalStateException {
 		if (!isAanpasbaar()) {
@@ -360,5 +361,9 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 	private void setAantalAntwoordenInOpsomming() {
 		this.aantalAntwoordenInOpsomming = Opsomming.getLijstJuisteAntwoord(
 				this.opsommingJuisteAntwoord).size();
+	}
+
+	public void setInJuisteVolgorde(boolean inJuisteVolgorde) {
+		this.inJuisteVolgorde = inJuisteVolgorde;
 	}
 }

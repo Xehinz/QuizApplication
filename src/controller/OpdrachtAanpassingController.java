@@ -97,6 +97,19 @@ public class OpdrachtAanpassingController {
 		opdracht.setJuisteAntwoord(juisteAntwoord);
 	}
 
+	public void setMeerkeuze(String mogelijkeAntwoorden) {
+		((Meerkeuze) opdracht).setOpties(mogelijkeAntwoorden);
+	}
+
+	public void setOpsomming(boolean inJuisteVolgorde) {
+		((Opsomming) opdracht).setInJuisteVolgorde(inJuisteVolgorde);
+	}
+
+	public void setReproductie(int minAantalTrefwoorden) {
+		((Reproductie) opdracht)
+				.setMinimumAantalTrefwoorden(minAantalTrefwoorden);
+	}
+
 	class NieuweHintKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -111,6 +124,23 @@ public class OpdrachtAanpassingController {
 			setOpdracht(view.getOpdrachtCategorie(), view.getVraag(),
 					view.getJuisteAntwoord(), view.getHints(),
 					view.getMaxAantalPogingen(), view.getMaxAntwoordTijd());
+			if (opdracht instanceof Meerkeuze) {
+				if (((Meerkeuze) opdracht).isValide(view.getJuisteAntwoord())) {
+					setMeerkeuze(((OpdrachtMeerkeuzeBeheerView) view)
+							.getMogelijkeAntwoordenMeerkeuze());
+				}
+			}
+			if (opdracht instanceof Opsomming) {
+				if (((Opsomming) opdracht).isValide(view.getJuisteAntwoord())) {
+					setOpsomming(((OpdrachtOpsommingBeheerView) view)
+							.getInJuisteVolgorde());
+				}
+			}
+			if (opdracht instanceof Reproductie) {
+				setReproductie(((OpdrachtReproductieBeheerView) view)
+						.getMinimumAantalTrefwoorden());
+			}
+			dbHandler.getOpdrachtCatalogus().addOpdracht(opdracht);
 		}
 	}
 }

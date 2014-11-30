@@ -34,19 +34,14 @@ public class OpdrachtAanpassingView extends JFrame {
 	private JLabel lblMaxAantalPogingen = new JLabel(
 			"Maximum aantal pogingen: ");
 	private JLabel lblMaxAntwoordTijd = new JLabel("Maximum antwoordtijd: ");
-	
-	private JLabel lblInJuisteVolgorde = new JLabel("In juiste volgorde: ");
-	private JLabel lblMinimumAantalTrefwoorden = new JLabel(
-			"Minimum aantal trefwoorden: ");
+
 	private JLabel lblLeraar = new JLabel("Auteur: ");
 	private JTextField txtVraag, txtJuisteAntwoord, txtHints,
-			txtMaxAantalPogingen, txtMaxAntwoordTijd,
-			 txtMinimumAantalTrefwoorden;
-	private JCheckBox chbInJuisteVolgorde;
+			txtMaxAantalPogingen, txtMaxAntwoordTijd;
 	private JComboBox<OpdrachtCategorie> cbbOpdrachtCategorie = new JComboBox<>(
 			OpdrachtCategorie.values());
 	private JComboBox<Leraar> cbbLeraar = new JComboBox<>(Leraar.values());
-	private JList lijstHints;
+	private JList<String> lijstHints;
 	protected JPanel bovenPanel, middenPanel, onderPanel, grootPanel;
 
 	public OpdrachtAanpassingView() {
@@ -254,7 +249,7 @@ public class OpdrachtAanpassingView extends JFrame {
 	
 	public static void main(String[] args) {
 		OpdrachtAanpassingView oav = new OpdrachtReproductieBeheerView();
-		//OpdrachtAanpassingView obv = new OpdrachtMeerkeuzeBeheerView();
+		OpdrachtAanpassingView obv = new OpdrachtMeerkeuzeBeheerView();
 		OpdrachtAanpassingView ocv = new OpdrachtOpsommingBeheerView();
 		OpdrachtAanpassingView odv = new OpdrachtAanpassingView();
 	}

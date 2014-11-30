@@ -223,6 +223,7 @@ public class Reproductie extends Opdracht {
 	 *             wanneer de opdracht niet meer aanpasbaar is omdat er al
 	 *             leerlingen ze hebben opgelost
 	 */
+	@Override
 	public void setJuisteAntwoord(String juisteAntwoord)
 			throws IllegalStateException {
 		ArrayList<String> lijst = new ArrayList<String>(

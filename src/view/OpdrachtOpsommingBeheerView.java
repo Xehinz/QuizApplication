@@ -48,7 +48,7 @@ public class OpdrachtOpsommingBeheerView extends OpdrachtAanpassingView {
 		chbInJuisteVolgorde.setSelected(b);
 	}
 	
-	public boolean getMogelijkeAntwoordenMeerkeuze(){
+	public boolean getInJuisteVolgorde(){
 		return chbInJuisteVolgorde.isSelected();
 	}
 
