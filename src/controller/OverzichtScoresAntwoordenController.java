@@ -7,22 +7,21 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
-import view.OverzichtScoresAntwoordenView;
+import view.viewInterfaces.IOverzichtScoresAntwoordenView;
+import view.viewInterfaces.IOverzichtScoresViewFactory;
 import model.OpdrachtAntwoord;
 import model.QuizDeelname;
 
 public class OverzichtScoresAntwoordenController {
 
 	private AntwoordTableModel antwoordTableModel;
-	private QuizDeelname quizDeelname;
-	private OverzichtScoresAntwoordenView antwoordenView;
+	private IOverzichtScoresAntwoordenView antwoordenView;
 	private OverzichtScoresQuizzenController startScoreController;
 	
-	public OverzichtScoresAntwoordenController(QuizDeelname quizDeelname, OverzichtScoresQuizzenController startScoreController) {		
+	public OverzichtScoresAntwoordenController(QuizDeelname quizDeelname, OverzichtScoresQuizzenController startScoreController, IOverzichtScoresViewFactory overzichtScoresViewFactory) {		
 		
-		antwoordenView = new OverzichtScoresAntwoordenView();
+		this.antwoordenView = (IOverzichtScoresAntwoordenView)overzichtScoresViewFactory.maakOverzichtScoresView("antwoord");
 		antwoordTableModel = new AntwoordTableModel(quizDeelname);
-		this.quizDeelname = quizDeelname;
 		this.startScoreController = startScoreController;
 		
 		antwoordenView.setAntwoordTableModel(antwoordTableModel);

@@ -13,8 +13,9 @@ import model.Leraar;
 import persistency.DBHandler;
 import view.MainLeraarView;
 import view.OpdrachtBeheerView;
-import view.OverzichtScoresQuizzenView;
+import view.OverzichtScoresViewFactory;
 import view.QuizBeheerView;
+import view.viewInterfaces.IOverzichtScoresViewFactory;
 
 public class MainLeraarController {
 	
@@ -28,7 +29,7 @@ public class MainLeraarController {
 	
 	private QuizBeheerView quizBeheerView;
 	private OpdrachtBeheerView opdrachtBeheerView;
-	private OverzichtScoresQuizzenView overzichtScoresQuizzenView;
+	private IOverzichtScoresViewFactory overzichtScoresViewFactory;
 	
 	private MainLeraarView mainView;	
 	private Leraar leraar;
@@ -41,6 +42,7 @@ public class MainLeraarController {
 		this.dbHandler = dbHandler;
 		this.opstartController = opstartController;
 		this.leraar = leraar;
+		this.overzichtScoresViewFactory = new OverzichtScoresViewFactory();
 
 		mainView.setLeraar(leraar.toString());
 		mainView.addOverzichtScoresKnopActionListener(new OverzichtScoresKnopListener());	
@@ -104,18 +106,17 @@ public class MainLeraarController {
 		public void actionPerformed(ActionEvent event) {
 			if (!overzichtScoresStaatOpen) {
 				overzichtScoresStaatOpen = true;
-				overzichtScoresQuizzenView = new OverzichtScoresQuizzenView();
 				overzichtScoresController = new OverzichtScoresQuizzenController(
-						dbHandler, overzichtScoresQuizzenView);
+						dbHandler, overzichtScoresViewFactory);
 				
-				overzichtScoresQuizzenView.addWindowListener(new WindowAdapter() {
+				overzichtScoresController.addStartScoreViewClosedListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
 						overzichtScoresStaatOpen = false;
 					}
 				});
 			} else {
-				overzichtScoresQuizzenView.toFront();
+				overzichtScoresController.roepStartScoreViewNaarVoren();
 			}
 		}
 		

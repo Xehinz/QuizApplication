@@ -10,10 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import model.Leerling;
-import model.Leraar;
 import persistency.DBHandler;
 import view.MainLeerlingView;
+import view.OpdrachtDeelnameViewFactory;
 import view.QuizDeelnameView;
+import view.viewInterfaces.IQuizDeelnameView;
 
 public class MainLeerlingController {
 	
@@ -23,10 +24,9 @@ public class MainLeerlingController {
 	private Leerling leerling;
 	
 	private OpstartController opstartController;
-	private QuizDeelnameController quizDeelnameController;
 	
 	private MainLeerlingView mainView;
-	private QuizDeelnameView quizDeelnameView;
+	private IQuizDeelnameView quizDeelnameView;
 	
 	public MainLeerlingController(DBHandler dbHandler, Leerling leerling, OpstartController opstartController) {
 		this.dbHandler = dbHandler;
@@ -92,12 +92,13 @@ public class MainLeerlingController {
 	
 	class DeelnemenKnopListener implements ActionListener {
 		
+		@SuppressWarnings("unused")
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			if (!quizDeelnameStaatOpen) {
 				quizDeelnameStaatOpen = true;
 				quizDeelnameView = new QuizDeelnameView();
-				quizDeelnameController = new QuizDeelnameController(dbHandler, leerling, quizDeelnameView);
+				QuizDeelnameController quizDeelnameController = new QuizDeelnameController(dbHandler, leerling, quizDeelnameView, new OpdrachtDeelnameViewFactory());
 				quizDeelnameView.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {

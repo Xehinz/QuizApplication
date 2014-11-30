@@ -2,6 +2,7 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -12,14 +13,28 @@ public class DeelnameMeerkeuzeView extends DeelnameKlassiekOpsommingView {
 	private ButtonGroup buttonGroup;
 	private JRadioButton[] keuzes;
 	
-	public DeelnameMeerkeuzeView(String[] antwoordKeuzes) {
-		super();
-		int extraHoogte = antwoordKeuzes.length > 3 ? (antwoordKeuzes.length - 3) * 25 : 0;
-		this.setSize(500, 275 + extraHoogte);
+	public DeelnameMeerkeuzeView() {
+		super();	
 		
 		// Het middelste deel varieert naargelang type opdracht
 		pnlCentrum = new JPanel(layout);
-		add(pnlCentrum, BorderLayout.CENTER);
+		add(pnlCentrum, BorderLayout.CENTER);	
+	}
+	
+	@Override
+	public String getAntwoord() {
+		for (int i = 0; i < keuzes.length; i++) {
+			if (keuzes[i].isSelected()) {
+				return keuzes[i].getText();
+			}
+		}
+		return "";
+	}
+	
+	@Override
+	public void setAntwoordKeuzes(String[] antwoordKeuzes) {
+		int extraHoogte = antwoordKeuzes.length > 3 ? (antwoordKeuzes.length - 3) * 25 : 0;
+		this.setSize(500, 275 + extraHoogte);
 		
 		buttonGroup = new ButtonGroup();
 		keuzes = new JRadioButton[antwoordKeuzes.length];
@@ -33,16 +48,5 @@ public class DeelnameMeerkeuzeView extends DeelnameKlassiekOpsommingView {
 			constraints.anchor = GridBagConstraints.WEST;
 			pnlCentrum.add(keuzes[i], constraints);
 		}
-	
-	}
-	
-	@Override
-	public String getAntwoord() {
-		for (int i = 0; i < keuzes.length; i++) {
-			if (keuzes[i].isSelected()) {
-				return keuzes[i].getText();
-			}
-		}
-		return "";
 	}
 }

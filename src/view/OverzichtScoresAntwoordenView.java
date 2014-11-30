@@ -11,8 +11,10 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
+import view.viewInterfaces.IOverzichtScoresAntwoordenView;
+
 @SuppressWarnings("serial")
-public class OverzichtScoresAntwoordenView extends JFrame {
+public class OverzichtScoresAntwoordenView extends JFrame implements IOverzichtScoresAntwoordenView {
 	
 	private JLabel lblVragen;
 	private JTable tblAntwoorden;

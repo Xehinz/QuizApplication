@@ -11,19 +11,22 @@ import javax.swing.table.AbstractTableModel;
 
 import model.Quiz;
 import model.QuizDeelname;
-import view.OverzichtScoresLeerlingenView;
+import view.viewInterfaces.IOverzichtScoresLeerlingenView;
+import view.viewInterfaces.IOverzichtScoresViewFactory;
 
 public class OverzichtScoresLeerlingenController {
 
 	private LeerlingScoreTableModel leerlingScoreTableModel;
-	private OverzichtScoresLeerlingenView leerlingenView;
-	private Quiz quiz;
+	private IOverzichtScoresLeerlingenView leerlingenView;
+	private IOverzichtScoresViewFactory overzichtScoresViewFactory;
 	private OverzichtScoresQuizzenController startScoreController;
 
-	public OverzichtScoresLeerlingenController(Quiz quiz, OverzichtScoresQuizzenController startScoreController) {		
-		leerlingenView = new OverzichtScoresLeerlingenView();
+	public OverzichtScoresLeerlingenController(Quiz quiz, OverzichtScoresQuizzenController startScoreController, IOverzichtScoresViewFactory overzichtScoresViewFactory) {		
+		
+		this.overzichtScoresViewFactory = overzichtScoresViewFactory;
+		this.leerlingenView = (IOverzichtScoresLeerlingenView)overzichtScoresViewFactory.maakOverzichtScoresView("leerling");
+		
 		leerlingScoreTableModel = new LeerlingScoreTableModel(quiz.getQuizDeelnames());
-		this.quiz = quiz;
 		this.startScoreController = startScoreController;
 		
 		leerlingenView.setTableModel(leerlingScoreTableModel);
@@ -52,7 +55,7 @@ public class OverzichtScoresLeerlingenController {
 				leerlingenView.toonInformationDialog("Selecteer een deelname om details te zien", "Geen deelname geselecteerd");
 			} else {
 				@SuppressWarnings("unused")
-				OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd, startScoreController);
+				OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd, startScoreController, overzichtScoresViewFactory);
 			}
 		}
 	}

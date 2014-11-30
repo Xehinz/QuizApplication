@@ -11,11 +11,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.RowSorterListener;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+
+import view.viewInterfaces.IOverzichtScoresQuizzenView;
 
 @SuppressWarnings("serial")
-public class OverzichtScoresQuizzenView extends JFrame {
+public class OverzichtScoresQuizzenView extends JFrame implements IOverzichtScoresQuizzenView {
 	
 	private JLabel lblQuizzen;
 	private JTable tblQuizzen;
@@ -64,7 +65,7 @@ public class OverzichtScoresQuizzenView extends JFrame {
 		this.add(btnDetail, constraints);			
 	}
 	
-	public void setTableModel(AbstractTableModel quizScoreTableModel) {
+	public void setTableModel(TableModel quizScoreTableModel) {
 		tblQuizzen.setModel(quizScoreTableModel);
 		tblQuizzen.getColumnModel().getColumn(0).setPreferredWidth(300);
 	}

@@ -18,8 +18,10 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
 
+import view.viewInterfaces.IOpdrachtDeelnameView;
+
 @SuppressWarnings("serial")
-public class DeelnameKlassiekOpsommingView extends JFrame {
+public class DeelnameKlassiekOpsommingView extends JFrame implements IOpdrachtDeelnameView {
 
 	protected GridBagLayout layout;
 	protected GridBagConstraints constraints;
@@ -172,6 +174,10 @@ public class DeelnameKlassiekOpsommingView extends JFrame {
 
 	public String getAntwoord() {
 		return txtAntwoord.getText();
+	}
+	
+	public void setAntwoordKeuzes(String[] antwoordKeuzes) {
+		throw new UnsupportedOperationException("Voor dit type opdracht zijn er geen antwoordkeuzes");
 	}
 
 	public void setAntwoordVeldToolTip(String toolTip) {

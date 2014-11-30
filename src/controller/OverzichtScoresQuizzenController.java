@@ -6,21 +6,24 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JFrame;
 import javax.swing.table.AbstractTableModel;
 
 import persistency.DBHandler;
-import view.OverzichtScoresQuizzenView;
+import view.viewInterfaces.IOverzichtScoresQuizzenView;
+import view.viewInterfaces.IOverzichtScoresViewFactory;
 import model.Quiz;
 
 public class OverzichtScoresQuizzenController {	
 
-	private OverzichtScoresQuizzenView quizzenView;	
+	private IOverzichtScoresQuizzenView quizzenView;
+	private IOverzichtScoresViewFactory overzichtScoresViewFactory;
 	private QuizScoreTableModel quizScoreTableModel;
 	
-	public OverzichtScoresQuizzenController(DBHandler dbHandler, OverzichtScoresQuizzenView quizzenView) {
+	public OverzichtScoresQuizzenController(DBHandler dbHandler, IOverzichtScoresViewFactory overzichtScoresViewFactory) {
 		
-		this.quizzenView = quizzenView;	
+		this.overzichtScoresViewFactory = overzichtScoresViewFactory;
+		this.quizzenView = (IOverzichtScoresQuizzenView)overzichtScoresViewFactory.maakOverzichtScoresView("quiz");
+
 		quizScoreTableModel = new QuizScoreTableModel(dbHandler.getQuizCatalogus().getReedsIngevuldeQuizzen());
 		
 		quizzenView.setTableModel(quizScoreTableModel);		
@@ -30,6 +33,10 @@ public class OverzichtScoresQuizzenController {
 	
 	public void addStartScoreViewClosedListener(WindowListener listener) {
 		quizzenView.addWindowListener(listener);
+	}
+	
+	public void roepStartScoreViewNaarVoren() {
+		quizzenView.toFront();
 	}
 	
 	class DetailKnopListener implements ActionListener {
@@ -42,7 +49,7 @@ public class OverzichtScoresQuizzenController {
 			}
 			else {
 				@SuppressWarnings("unused")
-				OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this);					
+				OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this, overzichtScoresViewFactory);					
 			}			
 		}
 		

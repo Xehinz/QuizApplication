@@ -11,11 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableModel;
+
+import view.viewInterfaces.IOverzichtScoresLeerlingenView;
 
 @SuppressWarnings("serial")
-public class OverzichtScoresLeerlingenView extends JFrame{
+public class OverzichtScoresLeerlingenView extends JFrame implements IOverzichtScoresLeerlingenView {
 	
 	private JLabel lblDeelnames;
 	private JTable tblDeelnames;
@@ -63,7 +65,7 @@ public class OverzichtScoresLeerlingenView extends JFrame{
 		this.add(btnDetail, constraints);			
 	}
 	
-	public void setTableModel(AbstractTableModel leerlingScoreTableModel) {
+	public void setTableModel(TableModel leerlingScoreTableModel) {
 		tblDeelnames.setModel(leerlingScoreTableModel);	
 		DefaultTableCellRenderer middleRenderer = new DefaultTableCellRenderer();
 		middleRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);

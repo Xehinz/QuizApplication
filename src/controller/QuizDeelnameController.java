@@ -4,39 +4,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.table.AbstractTableModel;
 
 import persistency.DBHandler;
-import view.DeelnameKlassiekOpsommingView;
-import view.DeelnameMeerkeuzeView;
-import view.DeelnameReproductieView;
-import view.QuizDeelnameView;
-import model.KlassiekeOpdracht;
+import view.viewInterfaces.IOpdrachtDeelnameView;
+import view.viewInterfaces.IOpdrachtDeelnameViewFactory;
+import view.viewInterfaces.IQuizDeelnameView;
 import model.Leerling;
 import model.Meerkeuze;
 import model.Opdracht;
 import model.OpdrachtAntwoord;
-import model.Opsomming;
 import model.Quiz;
 import model.QuizDeelname;
 import model.QuizOpdracht;
-import model.Reproductie;
 import model.Valideerbaar;
 
 public class QuizDeelnameController {
 
 	private DBHandler dbHandler;
+	private final Leerling leerling;
+	private IQuizDeelnameView quizDeelnameView;
+	private IOpdrachtDeelnameViewFactory opdrachtDeelnameViewFactory;
 	
 	private Quiz quiz;
-	private final Leerling leerling;
-	private QuizDeelnameView quizDeelnameView;
+	private QuizTableModel quizTableModel;
 
 	private Opdracht huidigeOpdracht;
 	private QuizOpdracht huidigeQuizOpdracht;
-	private DeelnameKlassiekOpsommingView huidigeOpdrachtView;
+	private IOpdrachtDeelnameView huidigeOpdrachtView;
 	private QuizDeelname quizDeelname;
 	private int huidigeOpdrachtIndex, huidigeHintIndex;
 	private int aantalPogingen;
@@ -46,11 +47,12 @@ public class QuizDeelnameController {
 	private Timer timer;
 
 	public QuizDeelnameController(DBHandler dbHandler, Leerling leerling,
-			QuizDeelnameView quizDeelnameView) {
+			IQuizDeelnameView quizDeelnameView, IOpdrachtDeelnameViewFactory opdrachtDeelnameViewFactory) {
 		
 		this.dbHandler = dbHandler;
 		this.leerling = leerling;
 		this.quizDeelnameView = quizDeelnameView;
+		this.opdrachtDeelnameViewFactory = opdrachtDeelnameViewFactory;
 
 		huidigeOpdrachtIndex = 0;
 		aantalPogingen = 0;
@@ -64,8 +66,9 @@ public class QuizDeelnameController {
 		laatsteAntwoord = "";
 		timer = null;
 
-		quizDeelnameView.setQuizzen(dbHandler.getQuizCatalogus().getMogelijkeQuizzenVoor(leerling));
-		quizDeelnameView.setLeerling(leerling);
+		quizTableModel = new QuizTableModel(dbHandler.getQuizCatalogus().getMogelijkeQuizzenVoor(leerling));
+		quizDeelnameView.setTableModel(quizTableModel);
+		quizDeelnameView.setLeerling(leerling.getNaam());
 		quizDeelnameView.addDeelneemKnopListener(new DeelneemKnopListener());
 		
 		quizDeelnameView.setVisible(true);
@@ -73,8 +76,7 @@ public class QuizDeelnameController {
 
 	private void neemDeel() {
 		quizDeelnameView.setVisible(false);
-		quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz, leerling);		
-		
+		quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz, leerling);				
 		volgendeOpdracht();
 	}
 
@@ -99,27 +101,19 @@ public class QuizDeelnameController {
 		laatsteAntwoord = "";
 		huidigeHintIndex = 0;
 
-		// Bepalen wat voor view er nodig is voor de volgende opdracht
-		if (huidigeOpdracht instanceof KlassiekeOpdracht) {
-			huidigeOpdrachtView = new DeelnameKlassiekOpsommingView();
-		} else if (huidigeOpdracht instanceof Opsomming) {
-			huidigeOpdrachtView = new DeelnameKlassiekOpsommingView();
-			huidigeOpdrachtView
-					.setAntwoordVeldToolTip("Scheid je antwoorden met ;");
-		} else if (huidigeOpdracht instanceof Meerkeuze) {
-			Meerkeuze meerkeuze = (Meerkeuze) huidigeOpdracht;
-			huidigeOpdrachtView = new DeelnameMeerkeuzeView(meerkeuze
-					.getOpties().toArray(new String[0]));
-		} else if (huidigeOpdracht instanceof Reproductie) {
-			huidigeOpdrachtView = new DeelnameReproductieView();
-		}
+	    huidigeOpdrachtView = opdrachtDeelnameViewFactory.maakOpdrachtDeelnameView(huidigeOpdracht.getClass().getSimpleName());
 
 		// View voorzien van informatie over huidige opdracht
 		huidigeOpdrachtView.setQuizOnderwerp(quiz.getOnderwerp());
 		huidigeOpdrachtView.setVraag(huidigeOpdracht.getVraag());
 		huidigeOpdrachtView.setOpdrachtCategorie(huidigeOpdracht
 				.getOpdrachtCategorie().toString());
-		huidigeOpdrachtView.setVraagCounter(huidigeOpdrachtIndex);		
+		huidigeOpdrachtView.setVraagCounter(huidigeOpdrachtIndex);	
+		
+		// Alleen een Meerkeuze opdracht heeft opties nodig
+		if (huidigeOpdracht instanceof Meerkeuze) {
+			huidigeOpdrachtView.setAntwoordKeuzes(((Meerkeuze)huidigeOpdracht).getOpties().toArray(new String[0]));
+		}
 		
 		// Als de opdrachtview gesloten wordt, moet er terug naar het quiz menu gegaan worden
 		huidigeOpdrachtView.addClosedListener(new OpdrachtSchermpjeSluitHandler());
@@ -215,7 +209,8 @@ public class QuizDeelnameController {
 		huidigeOpdrachtView.dispose();
 		huidigeOpdrachtIndex = 0;
 		quizDeelnameView.setVisible(true);
-		quizDeelnameView.setQuizzen(dbHandler.getQuizCatalogus().getMogelijkeQuizzenVoor(leerling));
+		quizTableModel = new QuizTableModel(dbHandler.getQuizCatalogus().getMogelijkeQuizzenVoor(leerling));
+		quizDeelnameView.setTableModel(quizTableModel);		
 	}
 	
 	private void slaVraagOver() {
@@ -230,7 +225,7 @@ public class QuizDeelnameController {
 		
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			quiz = quizDeelnameView.getGeselecteerdeQuiz();
+			quiz = quizTableModel.getQuiz(quizDeelnameView.getGeselecteerdeRij());
 			if (quiz == null) {
 				quizDeelnameView.toonInformationDialog(
 						"Selecteer een quiz om er aan deel te nemen",
@@ -296,7 +291,7 @@ public class QuizDeelnameController {
 		
 		@Override
 		public void windowClosing(WindowEvent event) {
-			  if (JOptionPane.showConfirmDialog(huidigeOpdrachtView, 
+			  if (JOptionPane.showConfirmDialog(null, 
 			            "Wil je deze quiz verlaten?", "Quiz beëindigen?", 
 			            JOptionPane.YES_NO_OPTION,
 			            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
@@ -304,6 +299,76 @@ public class QuizDeelnameController {
 			        } 
 		}
 		
+	}
+	
+	@SuppressWarnings("serial")
+	class QuizTableModel extends AbstractTableModel {
+
+		private String[] headers;
+		private ArrayList<Quiz> quizzen;
+		
+		public QuizTableModel() {
+			super();
+			headers = new String[] {"Onderwerp", "Leraar", "Aantal deelnames", "Test?"};
+			quizzen = new ArrayList<Quiz>();
+		}
+		
+		public QuizTableModel(Collection<Quiz> quizzen) {
+			this();
+			this.quizzen = new ArrayList<Quiz>(quizzen);			
+		}
+		
+		public Quiz getQuiz(int row) {
+			if (row < quizzen.size() && row >= 0) {
+				return quizzen.get(row);
+			}
+			return null;
+		}
+		
+		public void setQuizzen(Collection<Quiz> quizzen) {
+			this.quizzen = new ArrayList<Quiz>(quizzen);
+		}
+		
+		@Override   
+		public String getColumnName(int col) {
+		        return headers[col];
+		    }
+		
+		@Override
+		public int getColumnCount() {
+			return 4;
+		}
+
+		@Override
+		public int getRowCount() {
+			return quizzen.size();
+		}
+		
+	    @Override
+	    public Class<?> getColumnClass(int columnIndex) {
+	        if (quizzen.isEmpty()) {
+	            return Object.class;
+	        }
+	        return getValueAt(0, columnIndex).getClass();
+	    }
+
+		@Override
+		public Object getValueAt(int row, int col) {
+			Quiz quiz = quizzen.get(row);
+			
+			switch (col) {
+				case 0: 
+					return quiz.getOnderwerp();
+				case 1:
+					return quiz.getAuteur().toString();
+				case 2:
+					return quiz.getIsUniekeDeelname() ? "1" : "Meerdere deelnames";
+				case 3:
+					return quiz.getIsTest() ? "Test" : "Geen test";
+			}
+			
+			return "";
+		}		
 	}
 
 }
