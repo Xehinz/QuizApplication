@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -49,10 +50,11 @@ public class QuizAanpassingView extends JFrame {
 	//SWINGFIELDS	
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
-	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblIsTest, lblIsUniekeDeelname, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten;
+	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten;
 	private JButton btnOpdrachtToevoegen, btnOpdrachtVerwijderen, btnQuizBewaren;
 	private JTextField txtOnderwerp, txtLeraar, txtKlas;
 	private JComboBox cmbStatus, cmbCategorie, cmbSorteer;
+	private JCheckBox ckbIsTest, ckbIsUniekeDeelname;
 	private JTable alleOpdrachtenTabel, geselecteerdeOpdrachtenTabel;
 	private QuizAanpassingTableModel alleOpdrachtenTabelModel, geselecteerdeOpdrachtenTabelModel;	
 	private JScrollPane alleOpdrachtenVeld, geselecteerdeOpdrachtenVeld;
@@ -91,6 +93,12 @@ public class QuizAanpassingView extends JFrame {
 		String[] sorteerOpties = {"geen", "categorie", "vraag"};
 		cmbSorteer = new JComboBox<String>(sorteerOpties);
 		
+		//INIT CHECKBOX
+		ckbIsTest = new JCheckBox("Test");
+		ckbIsTest.setSelected(quiz.getIsTest());
+		ckbIsUniekeDeelname = new JCheckBox("Unieke Deelname");
+		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
+		
 		//INIT TABLE + SCROLLPANE
 		alleOpdrachtenTabelModel = new QuizAanpassingTableModel();
 		alleOpdrachtenTabel = new JTable(alleOpdrachtenTabelModel);
@@ -111,8 +119,6 @@ public class QuizAanpassingView extends JFrame {
 		lblLeraar = new JLabel("Auteur");
 		lblStatus = new JLabel("Status");
 		lblKlas = new JLabel ("Klas");
-		lblIsTest = new JLabel("Test");
-		lblIsUniekeDeelname = new JLabel("Unieke Deelname");
 		lblFilterOpCategorie = new JLabel("Toon opdrachten van categorie :");
 		lblSorteer = new JLabel("Sorteer opdrachten op :");
 		lblAantalOpdrachten = new JLabel();
@@ -181,28 +187,16 @@ public class QuizAanpassingView extends JFrame {
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
 		constraints.gridx = 2;
-		quizInfoVeld.add(lblKlas, constraints);
-		
-		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 1;
-		constraints.gridx = 5;
-		constraints.anchor = GridBagConstraints.WEST;
-		quizInfoVeld.add(lblIsUniekeDeelname, constraints);
-		
-		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 2;
-		constraints.gridx = 5;
-		constraints.anchor = GridBagConstraints.WEST;
-		quizInfoVeld.add(lblIsTest, constraints);		
+		quizInfoVeld.add(lblKlas, constraints);			
 		
 		//ADD BUTTON
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 2;
-		constraints.gridx = 0;
-		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridy = 1;
+		constraints.gridx = 4;
+		constraints.gridwidth = 2;
+		constraints.gridheight = 2;
+		constraints.fill = GridBagConstraints.BOTH;
 		quizInfoVeld.add(btnQuizBewaren, constraints);
 		
 		//ADD COMBOBOX
@@ -212,6 +206,19 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridx = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		quizInfoVeld.add(cmbStatus, constraints);	
+		
+		//ADD CHECKBOX
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.gridy = 2;
+		constraints.gridx = 0;
+		quizInfoVeld.add(ckbIsTest, constraints);
+		
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.gridy = 2;
+		constraints.gridx = 2;
+		quizInfoVeld.add(ckbIsUniekeDeelname, constraints);
 		
 		//ADD TEXTFIELDS
 		constraints = new GridBagConstraints();
@@ -316,6 +323,14 @@ public class QuizAanpassingView extends JFrame {
 	
 	public void addSorteerLijstSelectieActionListener(ActionListener listener) {
 		cmbSorteer.addActionListener(listener);
+	}
+	
+	public void addIsTestCheckBoxActionListener(ActionListener listener) {
+		ckbIsTest.addActionListener(listener);
+	}
+	
+	public void addIsUniekeDeelnameCheckBoxActionListener(ActionListener listener) {
+		ckbIsUniekeDeelname.addActionListener(listener);
 	}
 	
 	public void setKolomBreedte (JTable table) {

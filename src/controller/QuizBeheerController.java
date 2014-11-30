@@ -19,11 +19,10 @@ public class QuizBeheerController {
 	private Quiz quiz;
 	private Leraar leraar;
 
-	public QuizBeheerController(DBHandler dbHandler, Leraar leraar,
-			QuizBeheerView view) {
+	public QuizBeheerController(DBHandler dbHandler, Leraar leraar) {
 		this.dbHandler = dbHandler;
 		this.leraar = leraar;
-		this.view = view;
+		this.view = new QuizBeheerView();
 		this.quiz = null;
 
 		// Vul Tabel

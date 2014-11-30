@@ -38,13 +38,13 @@ public class Main {
 			ex.printStackTrace();
 		}
 		
-		/*
+		
 		Quiz quiz = dbHandler.getQuizCatalogus().getQuiz(1);
 		Leraar leraar = Leraar.CHARLOTTE_NEVEN;
-		QuizAanpassingController qac = new QuizAanpassingController(quiz, leraar, dbHandler);
-		*/
+		QuizBeheerController qbc = new QuizBeheerController(dbHandler, leraar);
 		
-		OpstartController boot = new OpstartController(dbHandler);
+		
+		//OpstartController boot = new OpstartController(dbHandler);
 		
 	}
 }
