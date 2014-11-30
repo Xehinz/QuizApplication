@@ -14,7 +14,9 @@ import persistency.DBHandler;
 import view.MainLeerlingView;
 import view.OpdrachtDeelnameViewFactory;
 import view.QuizDeelnameView;
+import view.QuizScoresRapportView;
 import view.viewInterfaces.IQuizDeelnameView;
+import view.viewInterfaces.IQuizScoresRapportView;
 
 /**
  * 
@@ -32,6 +34,7 @@ public class MainLeerlingController {
 	
 	private MainLeerlingView mainView;
 	private IQuizDeelnameView quizDeelnameView;
+	private IQuizScoresRapportView quizScoresRapportView;
 	
 	public MainLeerlingController(DBHandler dbHandler, Leerling leerling, OpstartController opstartController) {
 		this.dbHandler = dbHandler;
@@ -121,6 +124,8 @@ public class MainLeerlingController {
 		
 		@Override
 		public void actionPerformed(ActionEvent event) {
+			
+			quizScoresRapportView = new QuizScoresRapportView();
 			
 		}
 		
