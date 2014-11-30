@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumn;
 
 import model.Leraar;
 import model.Opdracht;
@@ -92,11 +94,17 @@ public class QuizAanpassingView extends JFrame {
 		//INIT TABLE + SCROLLPANE
 		alleOpdrachtenTabelModel = new QuizAanpassingTableModel();
 		alleOpdrachtenTabel = new JTable(alleOpdrachtenTabelModel);
-		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);		
+		setKolomBreedte(alleOpdrachtenTabel);
+		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);
+		alleOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
 		geselecteerdeOpdrachtenTabelModel = new QuizAanpassingTableModel();
 		geselecteerdeOpdrachtenTabel = new JTable(geselecteerdeOpdrachtenTabelModel);
+		setKolomBreedte(geselecteerdeOpdrachtenTabel);
 		geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
+		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
 		setOpdrachtTabellen(alleOpdrachten, quiz);
+		
+		
 		
 		//INIT LABELS
 		lblOnderwerp = new JLabel("Onderwerp");
@@ -279,7 +287,7 @@ public class QuizAanpassingView extends JFrame {
 		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
 		alleOpdrachten.removeAll(quiz.getOpdrachten());
 		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
-		//setLblAantalOpdrachten();
+		//setLblAantalOpdrachten();		
 	}
 	
 	public Opdracht getGeselecteerdeOpdracht(String richting) {
@@ -310,5 +318,17 @@ public class QuizAanpassingView extends JFrame {
 		cmbSorteer.addActionListener(listener);
 	}
 	
+	public void setKolomBreedte (JTable table) {
+		TableColumn kolom = null;
+		for (int i = 0; i < 2; i++) {
+			    kolom = table.getColumnModel().getColumn(i);
+			    if (i == 0 || i == 1) {
+			        kolom.setPreferredWidth(40); //Categorie + type
+			    }
+			    if (i == 2) {
+				    kolom.setPreferredWidth(320); //vraag
+			    }
+			}
+	}
 
 }
