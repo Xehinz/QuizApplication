@@ -142,6 +142,8 @@ public class QuizDeelnameController {
 		if (huidigeOpdracht.getHints().size() > 0) {
 			huidigeOpdrachtView.useHint(true);
 			huidigeOpdrachtView.addHintKnopListener(new HintKnopListener());
+		} else {
+			huidigeOpdrachtView.disableHint();
 		}
 
 		// Logica voor maximum aantal pogingen

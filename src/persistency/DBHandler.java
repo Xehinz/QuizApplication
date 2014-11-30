@@ -192,7 +192,7 @@ public class DBHandler {
 					.getLeerlingID());
 
 			QuizDeelname.koppelQuizAanLeerling(huidigeQuiz, huidigeLeerling,
-					quizDeelname.getDeelnameDatum(), true);
+					quizDeelname.getDeelnameDatum(), quizDeelname.getTijdstipDeelname(), true);
 		}
 	}
 

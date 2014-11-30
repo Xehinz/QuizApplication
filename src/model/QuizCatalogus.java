@@ -24,7 +24,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 */
 	public QuizCatalogus() {
 		this.quizcatalogus = new HashSet<Quiz>();
-		hoogsteID = 0;// added
+		hoogsteID = 0;
 	}
 
 	/**

@@ -165,9 +165,9 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 		result = PRIME * result
 				+ ((laatsteAntwoord == null) ? 0 : laatsteAntwoord.hashCode());
 		result = PRIME * result
-				+ ((quizDeelname == null) ? 0 : quizDeelname.hashCode());
+				+ ((quizDeelname == null) ? 0 : quizDeelname.getQuiz().hashCode());
 		result = PRIME * result
-				+ ((quizOpdracht == null) ? 0 : quizOpdracht.hashCode());
+				+ ((quizOpdracht == null) ? 0 : quizOpdracht.getOpdracht().hashCode());
 		result %= Integer.MAX_VALUE;
 		return (int) result;
 	}

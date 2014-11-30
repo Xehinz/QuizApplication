@@ -16,30 +16,25 @@ public class OverzichtScoresAntwoordenController {
 
 	private AntwoordTableModel antwoordTableModel;
 	private IOverzichtScoresAntwoordenView antwoordenView;
-	private OverzichtScoresQuizzenController startScoreController;
 	
 	public OverzichtScoresAntwoordenController(QuizDeelname quizDeelname, OverzichtScoresQuizzenController startScoreController, IOverzichtScoresViewFactory overzichtScoresViewFactory) {		
 		
 		this.antwoordenView = (IOverzichtScoresAntwoordenView)overzichtScoresViewFactory.maakOverzichtScoresView("antwoord");
 		antwoordTableModel = new AntwoordTableModel(quizDeelname);
-		this.startScoreController = startScoreController;
 		
 		antwoordenView.setAntwoordTableModel(antwoordTableModel);
 		antwoordenView.setTitel(quizDeelname.getLeerling().getNaam(), quizDeelname.getQuiz().getOnderwerp());		
 		antwoordenView.addAntwoordenSelectionListener(new AntwoordSelectionListener());		
 		antwoordenView.setVisible(true);
 		
-		addStartScoreClosedHandler();
-	}	
-		
-	private void addStartScoreClosedHandler() {
+		// Als het hoofd-score scherm sluit, moeten alle subvenstertjes ook sluiten
 		startScoreController.addStartScoreViewClosedListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
 				antwoordenView.dispose();
 			}
 		});
-	}
+	}	
 	
 	class AntwoordSelectionListener implements ListSelectionListener {
 		

@@ -60,12 +60,15 @@ public class OpstartController {
 		DBHandler dbHandler = new DBHandler();
 		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings
 				.getProperty("dbstrategy")));
+		dbHandler.setUseCSV(true);
 
+		@SuppressWarnings("unused")
 		OpstartController opstartController = new OpstartController(dbHandler);
 	}
 	
 	public void login() {
 		loginView = new LoginView();
+		loginView.addWindowListener(new LoginViewClosedHandler());
 		loginView.addLoginActionListener(new LoginKnopListener());
 
 		loginView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -93,12 +96,13 @@ public class OpstartController {
 	
 	class LoginKnopListener implements ActionListener {
 		
+		@SuppressWarnings("unused")
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			if (valideerLeerlingOfLeraar(loginView.getVolledigeNaam())) {
 				if (leraar == null) {
 					 MainLeerlingController mainLeerlingController = new
-					 MainLeerlingController(dbHandler, leerling.clone(), OpstartController.this);
+					 MainLeerlingController(dbHandler, leerling, OpstartController.this);
 				} else {
 					 MainLeraarController mainLeraarController = new
 					 MainLeraarController(dbHandler, leraar, OpstartController.this);

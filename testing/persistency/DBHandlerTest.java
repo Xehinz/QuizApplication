@@ -87,18 +87,18 @@ public class DBHandlerTest {
 		
 		// Zaken wijzigen tijdens sessie
 		klassiek.setMaxAantalPogingen(2);
-		((KlassiekeOpdracht)klassiek).setJuisteAntwoord("Ze groeien naar de zon toe");
+		((KlassiekeOpdracht)klassiek).setJuisteAntwoord("daarom");
 		opsomming.setMaxAntwoordTijd(100);
 		meerkeuze.setOpdrachtCategorie(OpdrachtCategorie.WETENSCHAPPEN);
 		reproductie.setVraag("Hoe maak je croque monsieurs?");
 
 		quizA = new Quiz(Leraar.MIEKE_WITTEMANS, "Priemgetallen en steden",
 				false);
-		//quizA.setDoelLeerjaren(1, 2);
+		quizA.setDoelLeerjaren(1, 2);
 		quizA.setQuizStatus(new Opengesteld());
 		quizB = new Quiz(Leraar.CHARLOTTE_NEVEN, "Bananen en croque monsieurs",
 				false);
-		//quizB.setDoelLeerjaren(5, 6);
+		quizB.setDoelLeerjaren(5, 6);
 		quizB.setQuizStatus(new Opengesteld());
 
 		quizCatalogus = new QuizCatalogus();
@@ -146,8 +146,8 @@ public class DBHandlerTest {
 				30, "kaas ham boter");
 
 		// Quizzen sluiten
-		//quizA.setQuizStatus(new Afgesloten());
-		//quizB.setQuizStatus(new Afgesloten());
+		quizA.setQuizStatus(new Afgesloten());
+		quizB.setQuizStatus(new Afgesloten());
 
 		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer,
 				quizCatalogus);

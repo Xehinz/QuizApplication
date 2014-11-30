@@ -63,7 +63,7 @@ public class MainLeerlingController {
 		public void actionPerformed(ActionEvent event) {
 			if (JOptionPane.showConfirmDialog(mainView, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				try {
-				dbHandler.vulCatalogi();
+				dbHandler.saveCatalogi();
 				} catch (IOException iEx) {
 					JOptionPane.showMessageDialog(mainView, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
 				} finally {
@@ -80,7 +80,7 @@ public class MainLeerlingController {
 		public void windowClosing(WindowEvent event) {
 			if (JOptionPane.showConfirmDialog(mainView, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				try {
-				dbHandler.vulCatalogi();
+				dbHandler.saveCatalogi();
 				} catch (IOException iEx) {
 					JOptionPane.showMessageDialog(mainView, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
 				} finally {

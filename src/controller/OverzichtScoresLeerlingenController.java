@@ -25,19 +25,16 @@ public class OverzichtScoresLeerlingenController {
 		
 		this.overzichtScoresViewFactory = overzichtScoresViewFactory;
 		this.leerlingenView = (IOverzichtScoresLeerlingenView)overzichtScoresViewFactory.maakOverzichtScoresView("leerling");
+		this.startScoreController = startScoreController;
 		
 		leerlingScoreTableModel = new LeerlingScoreTableModel(quiz.getQuizDeelnames());
-		this.startScoreController = startScoreController;
 		
 		leerlingenView.setTableModel(leerlingScoreTableModel);
 		leerlingenView.setQuizOnderwerp(quiz.getOnderwerp());		
 		leerlingenView.addDetailKnopListener(new DetailKnopListener());			
 		leerlingenView.setVisible(true);
 		
-		addStartScoreClosedHandler();
-	}
-	
-	private void addStartScoreClosedHandler() {
+		// Als het hoofd-score scherm sluit, moeten alle subvenstertjes ook sluiten
 		startScoreController.addStartScoreViewClosedListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {

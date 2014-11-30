@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import util.datumWrapper.Datum;
@@ -18,6 +19,10 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	private final Quiz quiz;
 	private final Datum datum;
 	private ArrayList<OpdrachtAntwoord> opdrachtAntwoorden;
+	// Omdat we hashCode() gebruiken om ID's te genereren, hebben we de tijd
+	// nodig om te differentiëren tussen twee deelnames op dezelfde dag, door
+	// dezelfde leerling, aan de zelfde quiz.
+	private LocalTime tijdstipDeelname;
 
 	/**
 	 * Constructor QuizDeelname met 2 parameters
@@ -27,10 +32,12 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * @param leerling
 	 *            de Leerling die deelneemt aan een Quiz
 	 */
-	private QuizDeelname(Quiz quiz, Leerling leerling, Datum deelnameDatum) {
+	private QuizDeelname(Quiz quiz, Leerling leerling, Datum deelnameDatum,
+			LocalTime tijdstipDeelname) {
 		this.datum = deelnameDatum;
 		this.quiz = quiz;
 		this.leerling = leerling;
+		this.tijdstipDeelname = tijdstipDeelname;
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
 		ID = this.hashCode();
 	}
@@ -61,6 +68,15 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	public Datum getDatum() {
 		return new Datum(datum);
+	}
+	
+	/**
+	 * Haalt het tijdstip van deelname op
+	 * 
+	 * @return de LocalTime met het tijdstip van deelname
+	 */
+	public LocalTime getTijdstipDeelname() {
+		return LocalTime.of(tijdstipDeelname.getHour(), tijdstipDeelname.getMinute(), tijdstipDeelname.getSecond(), tijdstipDeelname.getNano());
 	}
 
 	/**
@@ -98,6 +114,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 *            de deelnemende Leerling
 	 * @param deelnameDatum
 	 *            de Datum van deelname
+	 * @param tijdstipDeelname
+	 *            de LocalTime met het tijdstip van deelname
 	 * @param uitStorage
 	 *            zet op true om een koppeling vanuit storage (tekst / DB) te
 	 *            maken
@@ -108,8 +126,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 *             te nemen
 	 */
 	public static QuizDeelname koppelQuizAanLeerling(Quiz quiz,
-			Leerling leerling, Datum deelnameDatum, boolean uitStorage)
-			throws IllegalStateException {
+			Leerling leerling, Datum deelnameDatum, LocalTime tijdstipDeelname,
+			boolean uitStorage) throws IllegalStateException {
 		if (!uitStorage) {
 			if (!quiz.isDeelnameMogelijk()) {
 				throw new IllegalStateException(
@@ -125,7 +143,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 							leerling.getLeerjaar()));
 		}
 		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling,
-				deelnameDatum);
+				deelnameDatum, tijdstipDeelname);
 		leerling.addQuizDeelname(quizDeelname);
 		quiz.addQuizDeelname(quizDeelname);
 		return quizDeelname;
@@ -147,7 +165,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	public static QuizDeelname koppelQuizAanLeerling(Quiz quiz,
 			Leerling leerling) throws IllegalStateException {
-		return koppelQuizAanLeerling(quiz, leerling, new Datum(), false);
+		return koppelQuizAanLeerling(quiz, leerling, new Datum(),
+				LocalTime.now(), false);
 	}
 
 	/**
@@ -224,6 +243,9 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		if (!other.getDatum().equals(this.datum)) {
 			return false;
 		}
+		if (!other.getTijdstipDeelname().equals(this.tijdstipDeelname)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -247,9 +269,10 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	@Override
 	public int hashCode() {
 		long hash = 1;
-		hash = hash * 7 * leerling.hashCode();
-		hash = hash * 31 * quiz.hashCode();
-		// hash = hash * 19 * datum.toString().hashCode();
+		hash = hash * 7 + leerling.hashCode();
+		hash = hash * 31 + quiz.hashCode();
+		hash = hash * 19 + datum.toString().hashCode();
+		hash = hash * 13 + tijdstipDeelname.toString().hashCode();
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}

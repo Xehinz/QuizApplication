@@ -1,2 +1,2 @@
-2	29/11/2014	Laatste kans	CHARLOTTE_NEVEN	Eten	false	false	4,5,6
-1	29/11/2014	Opengesteld	MIEKE_WITTEMANS	Priemgetallen en steden	true	true	1,2,3,4,5,6
+1	30/11/2014	Afgesloten	MIEKE_WITTEMANS	Priemgetallen en steden	true	true	1,2
+2	30/11/2014	Afgesloten	CHARLOTTE_NEVEN	Eten	false	false	4,5,6
