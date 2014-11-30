@@ -54,6 +54,14 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	}
 
 	/**
+	 * Lege constructor die gebruikt wordt in de beheer-leerling-controller om een nieuwe leerling aan te maken
+	 * @author Johan Boogers
+	 */
+	public Leerling() {
+		
+	}
+
+	/**
 	 * Haalt de waarde van het voornaam field van dit Leerling object op
 	 *
 	 * @return de String dit de voornaam van dit Leerling object voorstelt
@@ -296,6 +304,16 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 			ex.printStackTrace();
 		}
 		return clone;
+	}
+
+	/**
+	 * Controle of deze leerling verwijderd kan worden (enkel indien er geen deelnames zijn aan quizen)
+	 * @author Johan Boogers
+	 * @return
+	 */
+	public boolean isVerwijderbaar() {
+		if (this.getDeelgenomenQuizzen().size() == 0) {return true;}
+		else { return false; }
 	}
 
 }
