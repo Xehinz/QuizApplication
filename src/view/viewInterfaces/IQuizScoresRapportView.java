@@ -4,7 +4,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.table.TableModel;
 
-public interface IQuizScoresRapportView {
+import model.Leerling;
+
+public interface IQuizScoresRapportView extends IView {
+	
+	public void setLeerling(Leerling leerling);
 	
 	public int getGeselecteerdeRij();
 	

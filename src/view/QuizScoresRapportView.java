@@ -12,6 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
+import model.Leerling;
 import view.viewInterfaces.IOverzichtScoresQuizzenView;
 import view.viewInterfaces.IQuizScoresRapportView;
 
@@ -22,6 +23,7 @@ public class QuizScoresRapportView extends JFrame implements
 	private GridBagLayout layout ;
 	private GridBagConstraints constraints;
 	
+	private JLabel lblLeerling;
 	private JLabel lblDeelnamenRapport;
 	private JLabel lblQuizzenRapport;
 	
@@ -29,6 +31,9 @@ public class QuizScoresRapportView extends JFrame implements
 	private JTable tblQuizzen;
 	
 	private JButton btnToonQuizzen;
+	
+	private Leerling leerling;
+	
 	
 	public QuizScoresRapportView() {
 		super("Deelnamen en quizrapporten");
@@ -95,7 +100,14 @@ public class QuizScoresRapportView extends JFrame implements
 		tblQuizzen.setModel(quizScoreTableModel);
 		
 	}
-
+	
+	public void setLeerling(Leerling leerling) {
+		this.leerling = leerling;
+		this.lblLeerling.setText(String.format("Leerling: %s", this.leerling.getLeerlingFamilienaam() + " " + this.leerling.getLeerlingVoornaam()));
+		
+	}
+	
+	
 	@Override
 	public void addDetailKnopListener(ActionListener listener) {
 		btnToonQuizzen.addActionListener(listener);
