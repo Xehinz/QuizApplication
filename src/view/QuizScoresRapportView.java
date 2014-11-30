@@ -43,7 +43,7 @@ public class QuizScoresRapportView extends JFrame implements
 		this.setLayout(layout);
 
 		
-		lblDeelnamenRapport = new JLabel("Deelnamen Rapport");
+		lblDeelnamenRapport = new JLabel("Deelnamen Rapport: ");
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 0, 0);
 		constraints.gridy = 0;
@@ -57,25 +57,25 @@ public class QuizScoresRapportView extends JFrame implements
 		tblDeelnamen.setFillsViewportHeight(true);	
 		
 		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 2;
+		constraints.gridy = 1;
 		constraints.gridx = 0;
 		constraints.weighty = 10;
-		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
+		constraints.insets = new Insets(0, 10, 10, 10);
+		constraints.fill = GridBagConstraints.BOTH;
 		
 		JScrollPane scroller = new JScrollPane(tblQuizzen);
 		this.add(scroller, constraints);	
 
 		
-		lblQuizzenRapport = new JLabel("Quizzen Rapport");
-		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 0, 0);
-		constraints.gridy = 1;
-		constraints.gridx = 0;		
-		constraints.weighty = 0.5;
-		constraints.anchor = GridBagConstraints.NORTHWEST;
-		this.add(lblQuizzenRapport, constraints);		
+//		lblQuizzenRapport = new JLabel("Quizzen Rapport");
+//		constraints = new GridBagConstraints();
+//		constraints.insets = new Insets(10, 10, 0, 0);
+//		constraints.gridy = 1;
+//		constraints.gridx = 0;		
+//		constraints.weighty = 0.5;
+//		constraints.anchor = GridBagConstraints.NORTHWEST;
+//		this.add(lblQuizzenRapport, constraints);		
 			
 //		tblQuizzen = new JTable();			
 //		tblQuizzen.setAutoCreateRowSorter(true);
@@ -97,14 +97,12 @@ public class QuizScoresRapportView extends JFrame implements
 	@Override
 	public void setTableModel(TableModel quizScoreTableModel) {
 		tblDeelnamen.setModel(quizScoreTableModel);
-		tblQuizzen.setModel(quizScoreTableModel);
-		
+		//tblDeelnamen.getColumnModel().getColumn(0).setPreferredWidth(300);
 	}
 	
 	public void setLeerling(Leerling leerling) {
 		this.leerling = leerling;
-		this.lblLeerling.setText(String.format("Leerling: %s", this.leerling.getLeerlingFamilienaam() + " " + this.leerling.getLeerlingVoornaam()));
-		
+		this.lblDeelnamenRapport.setText(String.format("%s%s",this.lblDeelnamenRapport.getText(), this.leerling.getLeerlingFamilienaam() + " " + this.leerling.getLeerlingVoornaam()));
 	}
 	
 	

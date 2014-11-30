@@ -33,38 +33,37 @@ public class QuizScoresRapportController {
 		this.leerling = leerling;
 		this.quizScoresRapportView = view;
 		this.quizScoresRapportView.setLeerling(leerling);
-		this.quizScoresRapportView.setTableModel(new QuizDeelnameScoresTableModel(null, dbHandler.getQuizCatalogus().getQuizzen()));
+		this.quizScoresRapportView.setTableModel(new QuizDeelnameScoresTableModel(leerling.getQuizDeelnames()));
 		this.quizScoresRapportView.setVisible(true);
-		
 	}
 	
 }
 
 @SuppressWarnings("serial")
 	class QuizDeelnameScoresTableModel extends AbstractTableModel {
-
-	private String[] headers;
-	private ArrayList<QuizDeelname> deelnamen;
-	private ArrayList<Quiz> quizzen;
+	private ArrayList<QuizDeelname> deelnamenVanLeerling;
+	private String[] headers = new String[] {"Quiz", "Datum deelname"};
 	
-	public QuizDeelnameScoresTableModel(ArrayList<QuizDeelname> deelnamen, ArrayList<Quiz> quizzen) {
+	
+	public QuizDeelnameScoresTableModel(ArrayList<QuizDeelname> deelnames) {
 		super();
-		headers = new String[] {"Leerling", "Aantal deelnames"};
-		this.deelnamen = deelnamen;
-		this.quizzen = quizzen;
-		
+	
+		deelnamenVanLeerling = deelnames;
 	}
+	
+	@Override   
+	public String getColumnName(int col) {
+	        return headers[col];
+	    }
 	
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 2;
 	}
 
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return deelnamenVanLeerling.size();
 	}
 
 	@Override

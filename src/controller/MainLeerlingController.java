@@ -126,6 +126,7 @@ public class MainLeerlingController {
 		public void actionPerformed(ActionEvent event) {
 			
 			quizScoresRapportView = new QuizScoresRapportView();
+			QuizScoresRapportController controller = new QuizScoresRapportController(dbHandler, leerling, quizScoresRapportView);
 			
 		}
 		
