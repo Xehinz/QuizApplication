@@ -28,6 +28,11 @@ import model.quizStatus.Opengesteld;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class DBHandlerTest {
 
 	private DBHandler dbHandler;

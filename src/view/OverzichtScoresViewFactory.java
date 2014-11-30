@@ -3,6 +3,11 @@ package view;
 import view.viewInterfaces.IOverzichtScoresView;
 import view.viewInterfaces.IOverzichtScoresViewFactory;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class OverzichtScoresViewFactory implements IOverzichtScoresViewFactory {
 
 	/**

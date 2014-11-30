@@ -3,6 +3,11 @@ package view.viewInterfaces;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public interface IOpdrachtDeelnameView extends IView {
 
 	public void setVraagCounter(int count);

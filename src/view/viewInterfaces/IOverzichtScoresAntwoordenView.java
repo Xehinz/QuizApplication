@@ -3,6 +3,11 @@ package view.viewInterfaces;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public interface IOverzichtScoresAntwoordenView extends IOverzichtScoresView {
 	
 	public void setAntwoordTableModel(TableModel antwoordTableModel);

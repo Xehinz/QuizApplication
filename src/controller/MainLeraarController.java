@@ -17,6 +17,11 @@ import view.OverzichtScoresViewFactory;
 import view.QuizBeheerView;
 import view.viewInterfaces.IOverzichtScoresViewFactory;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class MainLeraarController {
 	
 	private boolean overzichtScoresStaatOpen, opdrachtBeheerStaatOpen, quizBeheerStaatOpen;

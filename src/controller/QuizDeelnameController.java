@@ -25,7 +25,12 @@ import model.QuizDeelname;
 import model.QuizOpdracht;
 import model.Valideerbaar;
 
-public class QuizDeelnameController {
+
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */public class QuizDeelnameController {
 
 	private DBHandler dbHandler;
 	private final Leerling leerling;

@@ -14,6 +14,11 @@ import model.QuizDeelname;
 import view.viewInterfaces.IOverzichtScoresLeerlingenView;
 import view.viewInterfaces.IOverzichtScoresViewFactory;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class OverzichtScoresLeerlingenController {
 
 	private LeerlingScoreTableModel leerlingScoreTableModel;

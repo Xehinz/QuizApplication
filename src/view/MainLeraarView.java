@@ -9,6 +9,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 @SuppressWarnings("serial")
 public class MainLeraarView extends JFrame {
 	

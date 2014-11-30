@@ -13,6 +13,11 @@ import view.viewInterfaces.IOverzichtScoresQuizzenView;
 import view.viewInterfaces.IOverzichtScoresViewFactory;
 import model.Quiz;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class OverzichtScoresQuizzenController {	
 
 	private IOverzichtScoresQuizzenView quizzenView;

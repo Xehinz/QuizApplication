@@ -16,6 +16,11 @@ import view.OpdrachtDeelnameViewFactory;
 import view.QuizDeelnameView;
 import view.viewInterfaces.IQuizDeelnameView;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class MainLeerlingController {
 	
 	private boolean quizDeelnameStaatOpen;

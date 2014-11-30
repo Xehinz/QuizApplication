@@ -20,6 +20,11 @@ import javax.swing.ToolTipManager;
 
 import view.viewInterfaces.IOpdrachtDeelnameView;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 @SuppressWarnings("serial")
 public class DeelnameKlassiekOpsommingView extends JFrame implements IOpdrachtDeelnameView {
 

@@ -17,6 +17,11 @@ import persistency.DBHandler;
 import persistency.StorageStrategy;
 import view.LoginView;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class OpstartController {
 	
 	private DBHandler dbHandler;

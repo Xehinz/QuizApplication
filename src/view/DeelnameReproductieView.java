@@ -9,6 +9,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 @SuppressWarnings("serial")
 public class DeelnameReproductieView extends DeelnameKlassiekOpsommingView {
 	

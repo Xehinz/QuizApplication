@@ -15,6 +15,11 @@ import javax.swing.table.TableModel;
 
 import view.viewInterfaces.IOverzichtScoresQuizzenView;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 @SuppressWarnings("serial")
 public class OverzichtScoresQuizzenView extends JFrame implements IOverzichtScoresQuizzenView {
 	

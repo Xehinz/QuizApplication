@@ -31,6 +31,7 @@ public class Main {
 		
 		
 		DBHandler dbHandler = new DBHandler();
+		dbHandler.setUseCSV(true);
 		try {
 			dbHandler.vulCatalogi();
 		} catch (Exception ex) {

@@ -16,6 +16,11 @@ import javax.swing.table.TableModel;
 
 import view.viewInterfaces.IOverzichtScoresLeerlingenView;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 @SuppressWarnings("serial")
 public class OverzichtScoresLeerlingenView extends JFrame implements IOverzichtScoresLeerlingenView {
 	

@@ -3,6 +3,11 @@ package view;
 import view.viewInterfaces.IOpdrachtDeelnameView;
 import view.viewInterfaces.IOpdrachtDeelnameViewFactory;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class OpdrachtDeelnameViewFactory implements IOpdrachtDeelnameViewFactory {
 
 	public OpdrachtDeelnameViewFactory() {

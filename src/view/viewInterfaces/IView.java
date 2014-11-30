@@ -3,6 +3,11 @@ package view.viewInterfaces;
 import java.awt.Component;
 import java.awt.event.WindowListener;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public interface IView {
 	
 	public void setVisible(boolean isVisible);

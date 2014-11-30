@@ -12,6 +12,11 @@ import view.viewInterfaces.IOverzichtScoresViewFactory;
 import model.OpdrachtAntwoord;
 import model.QuizDeelname;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public class OverzichtScoresAntwoordenController {
 
 	private AntwoordTableModel antwoordTableModel;

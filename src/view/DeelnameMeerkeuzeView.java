@@ -7,6 +7,11 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 @SuppressWarnings("serial")
 public class DeelnameMeerkeuzeView extends DeelnameKlassiekOpsommingView {
 	

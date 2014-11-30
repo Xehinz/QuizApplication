@@ -15,6 +15,11 @@ import javax.swing.table.TableModel;
 
 import view.viewInterfaces.IQuizDeelnameView;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 @SuppressWarnings("serial")
 public class QuizDeelnameView extends JFrame implements IQuizDeelnameView {
 	

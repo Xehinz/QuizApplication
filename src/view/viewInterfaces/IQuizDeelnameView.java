@@ -4,6 +4,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.table.TableModel;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 public interface IQuizDeelnameView extends IView {
 	
 	public void setLeerling(String volledigeNaam);

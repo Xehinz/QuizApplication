@@ -13,6 +13,11 @@ import javax.swing.table.TableModel;
 
 import view.viewInterfaces.IOverzichtScoresAntwoordenView;
 
+/**
+ * 
+ * @author Ben Vandenberk
+ *
+ */
 @SuppressWarnings("serial")
 public class OverzichtScoresAntwoordenView extends JFrame implements IOverzichtScoresAntwoordenView {
 	
