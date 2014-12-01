@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 
 import persistency.DBHandler;
 import controller.OpdrachtBeheerController;
@@ -37,7 +38,6 @@ public class OpdrachtBeheerView extends JFrame {
 	public OpdrachtBeheerView() {
 		super("Opdrachtenbeheer");
 
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(800, 500);
 		selecteerCategorie.setSelectedItem(null);
 
@@ -97,12 +97,13 @@ public class OpdrachtBeheerView extends JFrame {
 	}
 
 	public void setOpdrachten(ArrayList<Opdracht> opdrachten) {
-		DefaultListModel<Opdracht> model = new DefaultListModel<>();
+		DefaultListModel<Opdracht> model = new DefaultListModel<Opdracht>();
 		for (Opdracht O : opdrachten) {
 			model.addElement(O);
 		}
 		lijstOpdrachten.setModel(model);
-		lijstOpdrachten.setSelectedIndex(0);
+		lijstOpdrachten.setSelectedIndex(0);	
+		
 	}
 
 	public Opdracht getGeselecteerdeOpdracht() {
@@ -111,6 +112,10 @@ public class OpdrachtBeheerView extends JFrame {
 	
 	public OpdrachtCategorie getOpdrachtCategorie(){
 		return (OpdrachtCategorie) selecteerCategorie.getSelectedItem();
+	}
+	
+	public void setListCellRenderer(ListCellRenderer<Opdracht> LCR){
+		lijstOpdrachten.setCellRenderer(LCR);
 	}
 
 	public void addNieuweKlassiekeKnopActionListener(ActionListener listener) {
@@ -143,6 +148,14 @@ public class OpdrachtBeheerView extends JFrame {
 	
 	public void addSelecteerCategorieActionlistener(ActionListener listener){
 		selecteerCategorie.addActionListener(listener);
+	}
+	
+	public void addListSelectionListener(ListSelectionListener listener){
+		lijstOpdrachten.addListSelectionListener(listener);
+	}
+	
+	public void disableAanpassen(boolean b){
+		btnPasOpdrachtAan.setEnabled(b);
 	}
 
 }

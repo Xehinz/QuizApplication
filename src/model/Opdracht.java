@@ -653,4 +653,8 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 		this.antwoordHints = hints;
 	}
 
+	public String toStringVoorLijst() {
+		return opdrachtCategorie + " - " + vraag;
+	}
+
 }

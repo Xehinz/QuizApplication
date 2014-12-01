@@ -26,16 +26,18 @@ import view.OpdrachtReproductieBeheerView;
 import view.QuizAanpassingView;
 
 public class OpdrachtAanpassingController {
-	protected OpdrachtAanpassingView view;
+	private OpdrachtAanpassingView view;
 	private DBHandler dbHandler;
 	private Opdracht opdracht;
 	private Leraar leraar;
+	private OpdrachtBeheerController opdrachtBeheerController;
 
 	public OpdrachtAanpassingController(Opdracht opdracht, Leraar leraar,
-			DBHandler dbHandler) {
+			DBHandler dbHandler, OpdrachtBeheerController opdrachtBeheerController) {
 		this.opdracht = opdracht;
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
+		this.opdrachtBeheerController = opdrachtBeheerController;
 
 		if (opdracht instanceof KlassiekeOpdracht) {
 			view = new OpdrachtAanpassingView();
@@ -86,16 +88,20 @@ public class OpdrachtAanpassingController {
 	public Opdracht getOpdracht() {
 		return opdracht;
 	}
+	
+	public OpdrachtAanpassingView getView(){
+		return this.view;
+	}
 
 	public void setOpdracht(OpdrachtCategorie oc, String vraag,
 			String juisteAntwoord, ArrayList<String> hints,
 			int maxAantalPogingen, int maxAntwoordTijd) {
+		opdracht.setJuisteAntwoord(juisteAntwoord);
 		opdracht.setVraag(vraag);
 		opdracht.setMaxAantalPogingen(maxAantalPogingen);
 		opdracht.setMaxAntwoordTijd(maxAntwoordTijd);
 		opdracht.setOpdrachtCategorie(oc);
 		opdracht.setHints(hints);
-		opdracht.setJuisteAntwoord(juisteAntwoord);
 	}
 
 	public void setMeerkeuze(String mogelijkeAntwoorden) {
@@ -132,16 +138,18 @@ public class OpdrachtAanpassingController {
 				}
 			}
 			if (opdracht instanceof Opsomming) {
-				if (((Opsomming) opdracht).isValide(view.getJuisteAntwoord())) {
+				
 					setOpsomming(((OpdrachtOpsommingBeheerView) view)
 							.getInJuisteVolgorde());
-				}
+				
 			}
 			if (opdracht instanceof Reproductie) {
 				setReproductie(((OpdrachtReproductieBeheerView) view)
 						.getMinimumAantalTrefwoorden());
 			}
 			dbHandler.getOpdrachtCatalogus().addOpdracht(opdracht);
+			view.setVisible(false);
+			opdrachtBeheerController.getView().setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten());
 		}
 	}
 }

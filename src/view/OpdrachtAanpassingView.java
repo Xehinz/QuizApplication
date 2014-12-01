@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -17,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 
 import model.Leraar;
 import model.Opdracht;
@@ -141,7 +143,7 @@ public class OpdrachtAanpassingView extends JFrame {
 		c.weightx = 0.8;
 		c.insets = new Insets(10, 10, 0, 0);
 		c.anchor = GridBagConstraints.WEST;
-		lijstHints = new JList();
+		lijstHints = new JList<>();
 		lijstHints.setPreferredSize(new Dimension(600, 75));
 		onderPanel.add(lijstHints, c);
 
@@ -209,7 +211,12 @@ public class OpdrachtAanpassingView extends JFrame {
 	}
 
 	public ArrayList<String> getHints() {
-		return (ArrayList<String>) lijstHints.getModel();
+		ListModel<String> lijst = lijstHints.getModel();
+		ArrayList<String> s = new ArrayList<>();
+		for(int i = 0; i < lijst.getSize(); i++){
+		    s.add(lijst.getElementAt(i)); 
+		}
+		return s;
 	}
 
 	public String getHint() {
@@ -256,6 +263,7 @@ public class OpdrachtAanpassingView extends JFrame {
 		btnOpslaan.setEnabled(false);
 		btnAddHint.setEnabled(false);
 		cbbOpdrachtCategorie.setEnabled(false);
+		cbbOpdrachtCategorie.setForeground(Color.black);
 		txtVraag.setEditable(false);
 		txtJuisteAntwoord.setEditable(false);
 		txtHints.setEditable(false);
@@ -263,11 +271,6 @@ public class OpdrachtAanpassingView extends JFrame {
 		txtMaxAntwoordTijd.setEditable(false);
 	}
 	
-	public static void main(String[] args) {
-		OpdrachtAanpassingView oav = new OpdrachtReproductieBeheerView();
-		OpdrachtAanpassingView obv = new OpdrachtMeerkeuzeBeheerView();
-		OpdrachtAanpassingView ocv = new OpdrachtOpsommingBeheerView();
-		OpdrachtAanpassingView odv = new OpdrachtAanpassingView();
-	}
+	
 
 }

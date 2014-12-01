@@ -1,10 +1,14 @@
 package controller;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import model.KlassiekeOpdracht;
 import model.Leraar;
@@ -33,6 +37,7 @@ public class OpdrachtBeheerController {
 
 		view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten());
 
+		view.setListCellRenderer(new OpdrachtListCellRenderer());
 		view.addNieuweKlassiekeKnopActionListener(new NieuweKlassiekeKnopListener());
 		view.addNieuweMeerkeuzeKnopActionListener(new NieuweMeerkeuzeKnopListener());
 		view.addNieuweOpsommingKnopActionListener(new NieuweOpsommingKnopListener());
@@ -41,8 +46,8 @@ public class OpdrachtBeheerController {
 		view.addVerwijderOpdrachtKnopActionListener(new VerwijderOpdrachtKnopListener());
 		view.addBekijkDetailsKnopActionListener(new BekijkDetailsKnopListener());
 		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
-
-		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		view.addListSelectionListener(new OpdrachtGeselecteerd());
+		view.disableAanpassen(view.getGeselecteerdeOpdracht().isAanpasbaar());
 		view.setVisible(true);
 	}
 
@@ -54,13 +59,18 @@ public class OpdrachtBeheerController {
 		this.dbHandler = dbHandler;
 	}
 
-	private void openOpdrachtAanpassing(Opdracht opdracht, Leraar leraar) {
-		new OpdrachtAanpassingController(opdracht, leraar, dbHandler);
+	public OpdrachtBeheerView getView() {
+		return this.view;
 	}
-	
-	private void openOpdrachtBekijken(Opdracht opdracht, Leraar leraar){
-		OpdrachtAanpassingController OAC = new OpdrachtAanpassingController(opdracht, leraar, dbHandler);
-		OAC.view.disableAanpassen();
+
+	private void openOpdrachtAanpassing(Opdracht opdracht, Leraar leraar) {
+		new OpdrachtAanpassingController(opdracht, leraar, dbHandler, this);
+	}
+
+	private void openOpdrachtBekijken(Opdracht opdracht, Leraar leraar) {
+		OpdrachtAanpassingController OAC = new OpdrachtAanpassingController(
+				opdracht, leraar, dbHandler, this);
+		OAC.getView().disableAanpassen();
 	}
 
 	class NieuweKlassiekeKnopListener implements ActionListener {
@@ -121,7 +131,8 @@ public class OpdrachtBeheerController {
 				return;
 			} else {
 				dbHandler.getOpdrachtCatalogus().removeOpdracht(opdracht);
-				view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten());
+				view.setOpdrachten(dbHandler.getOpdrachtCatalogus()
+						.getOpdrachten());
 			}
 		}
 	}
@@ -136,21 +147,61 @@ public class OpdrachtBeheerController {
 			openOpdrachtBekijken(opdracht, opdracht.getAuteur());
 		}
 	}
-	
+
 	class SelecteerCategorieListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent event){
+		public void actionPerformed(ActionEvent event) {
 			OpdrachtCategorie OC = view.getOpdrachtCategorie();
-			view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten(OC));
+			view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten(
+					OC));
 		}
 	}
 
-	public static void main(String[] args) {
-		OpdrachtBeheerView OBV = new OpdrachtBeheerView();
-		DBHandler dbHandler = new DBHandler();
-		Leraar leraar = Leraar.MIEKE_WITTEMANS;
-		OpdrachtBeheerController OBC = new OpdrachtBeheerController(dbHandler,
-				leraar, OBV);
-		OBV.setVisible(true);
+	class OpdrachtGeselecteerd implements ListSelectionListener {
+
+		@Override
+		public void valueChanged(ListSelectionEvent arg0) {
+			if (view.getGeselecteerdeOpdracht() != null) {
+			opdracht = view.getGeselecteerdeOpdracht();
+			}
+			view.disableAanpassen(opdracht.isAanpasbaar());
+		}
+
 	}
+	
+	class OpdrachtListCellRenderer extends JLabel implements ListCellRenderer<Opdracht> {
+		
+		  public OpdrachtListCellRenderer() {
+		         setOpaque(true);
+		     }	
+
+		@Override
+		public Component getListCellRendererComponent(
+				JList<? extends Opdracht> list, Opdracht value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			Color background;
+			Color foreground;
+			
+			Opdracht opdracht = null;
+			if (value instanceof Opdracht) {
+				opdracht = (Opdracht)value;
+			}
+			this.setText(opdracht.toStringVoorLijst());
+			
+			UIDefaults defaults = UIManager.getDefaults();
+			
+	       if (isSelected) {
+	             background = defaults.getColor("List.selectionBackground");
+	             foreground = defaults.getColor("List.selectionForeground");	        
+	         } else {
+	             background = Color.WHITE;
+	             foreground = Color.BLACK;
+	         }
+	       
+	       setBackground(background);
+	         setForeground(foreground);
+			return this;
+		}		
+	}
+
 }
