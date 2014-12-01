@@ -1,5 +1,11 @@
 package model.quizStatus;
 
+/**
+ * 
+ * Modelleert de 'Afgewerkt' status van een Quiz. Implementeert de QuizStatus
+ * interface
+ *
+ */
 public class Afgewerkt implements QuizStatus {
 
 	public Afgewerkt() {

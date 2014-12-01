@@ -16,7 +16,6 @@ import model.Leerling;
 import model.Leraar;
 import persistency.DBHandler;
 import persistency.StorageStrategy;
-import view.LoginView;
 import view.ViewFactory;
 import view.ViewType;
 import view.viewInterfaces.ILoginView;

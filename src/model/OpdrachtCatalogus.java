@@ -17,7 +17,6 @@ import java.util.Iterator;
  * @version 26/10/2014
  *
  */
-
 public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 		Cloneable, Iterable<Opdracht> {
 	private HashSet<Opdracht> opdrachtcatalogus;
@@ -26,7 +25,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	/**
 	 * Maakt een nieuwe OpdrachtCatalogus aan
 	 */
-
 	public OpdrachtCatalogus() {
 		this.opdrachtcatalogus = new HashSet<Opdracht>();
 		hoogsteID = 0;
@@ -39,7 +37,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	 * @param oc
 	 *            een lijst van opdrachten
 	 */
-
 	public OpdrachtCatalogus(Collection<Opdracht> oc) {
 		this.opdrachtcatalogus = new HashSet<Opdracht>();
 		hoogsteID = 0;
@@ -54,7 +51,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	 * @param opdracht
 	 *            de toe te voegen Opdracht
 	 */
-
 	public void addOpdracht(Opdracht opdracht) {		
 		if (opdracht.getID() == 0) {
 			opdracht.setID(++hoogsteID);
@@ -74,7 +70,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	 * @throws IllegalStateException
 	 *             als de opdracht reeds gelinkt is aan een quiz
 	 */
-
 	public void removeOpdracht(Opdracht opdracht) throws IllegalStateException {
 		if (!opdracht.isVerwijderbaar()) {
 			throw new IllegalStateException(
@@ -93,17 +88,15 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	 *            de te zoeken opdracht
 	 * @return <code>true</code> als de opdracht in de catalogus voorkomt
 	 */
-
 	public boolean hasOpdracht(Opdracht opdracht) {
 		return this.opdrachtcatalogus.contains(opdracht);
 	}
 
 	/**
-	 * telt het aantal opdrachten in de catalogus
+	 * Telt het aantal opdrachten in de catalogus
 	 *
 	 * @return het aantal opdrachten in de catalogus
 	 */
-
 	public int count() {
 		return this.opdrachtcatalogus.size();
 	}
@@ -122,6 +115,12 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 		return opdrachten;
 	}
 	
+	/**
+	 * Haalt alle opdrachten op die van de meegegeven categorie zijn
+	 * 
+	 * @param OC de OpdrachtCategorie
+	 * @return een ArrayList&lt;Opdracht&gt; met de opdrachten van de gewenste OpdrachtCategorie
+	 */
 	public ArrayList<Opdracht> getOpdrachten(OpdrachtCategorie OC){
 		ArrayList<Opdracht> opdrachten =  new ArrayList<Opdracht>();
 		for (Opdracht opdracht : opdrachtcatalogus){
@@ -170,7 +169,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	/**
 	 * Override van de toString methode
 	 */
-
 	@Override
 	public String toString() {
 		String result = "Opdrachtcatalogus met " + this.count()
@@ -189,7 +187,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	 * @param aOpdrachtCatalogus
 	 *            de te vergelijken catalogus
 	 */
-
 	@Override
 	public boolean equals(Object aOpdrachtCatalogus) {
 		if (aOpdrachtCatalogus == null) {
@@ -241,7 +238,6 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	 *
 	 * @return de gekloonde OpdrachtCatalogus
 	 */
-
 	@Override
 	public OpdrachtCatalogus clone() {
 		OpdrachtCatalogus clone = null;

@@ -171,7 +171,7 @@ public class DBHandler {
 					.getOpdrachtID());
 
 			QuizOpdracht.koppelOpdrachtAanQuiz(huidigeQuiz, huidigeOpdracht,
-					quizOpdracht.getMaxScore());
+					quizOpdracht.getMaxScore(), true);
 		}
 	}
 

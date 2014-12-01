@@ -25,12 +25,16 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	private LocalTime tijdstipDeelname;
 
 	/**
-	 * Constructor QuizDeelname met 2 parameters
+	 * Constructor QuizDeelname met 4 parameters
 	 *
 	 * @param quiz
 	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
 	 *            de Leerling die deelneemt aan een Quiz
+	 * @param deelnameDatum
+	 *            de Datum van deelname
+	 * @param tijdstipDeelname
+	 *            de LocalTime met het tijdstip van deelname
 	 */
 	private QuizDeelname(Quiz quiz, Leerling leerling, Datum deelnameDatum,
 			LocalTime tijdstipDeelname) {
@@ -69,14 +73,16 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	public Datum getDatum() {
 		return new Datum(datum);
 	}
-	
+
 	/**
 	 * Haalt het tijdstip van deelname op
 	 * 
 	 * @return de LocalTime met het tijdstip van deelname
 	 */
 	public LocalTime getTijdstipDeelname() {
-		return LocalTime.of(tijdstipDeelname.getHour(), tijdstipDeelname.getMinute(), tijdstipDeelname.getSecond(), tijdstipDeelname.getNano());
+		return LocalTime.of(tijdstipDeelname.getHour(),
+				tijdstipDeelname.getMinute(), tijdstipDeelname.getSecond(),
+				tijdstipDeelname.getNano());
 	}
 
 	/**
@@ -167,15 +173,6 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 			Leerling leerling) throws IllegalStateException {
 		return koppelQuizAanLeerling(quiz, leerling, new Datum(),
 				LocalTime.now(), false);
-	}
-
-	/**
-	 * geeft ovezicht van gestelde vragen met juiste antwoorden, gegeven
-	 * antwoorden & behaalde score
-	 */
-	public String feedback() {
-		throw new UnsupportedOperationException(
-				"Method nog niet geïmplementeerd");
 	}
 
 	/**

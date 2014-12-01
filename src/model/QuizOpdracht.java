@@ -3,11 +3,14 @@ package model;
 import java.util.ArrayList;
 
 /**
+ * De QuizOpdracht klasse koppelt een Quiz aan een Opdracht. Een zelfde opdracht
+ * kan verschillende maximum scores hebben in verschillende quizzen.
+ * QuizOpdracht houdt naast de Quiz en de Opdracht deze maxScore bij.
  *
  * @author Bert Neyt
- * @version 0.0
+ * 
  */
-public class QuizOpdracht implements Comparable<QuizOpdracht> {	
+public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	private int ID;
 	private Quiz quiz;
@@ -33,19 +36,84 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 		ID = this.hashCode();
 	}
 
-	public static QuizOpdracht koppelOpdrachtAanQuiz(Quiz quiz, Opdracht opdracht, int maxScore) {
+	/**
+	 * Deze method koppelt een Quiz aan een Opdracht en kent aan de associatie
+	 * een maximum score toe
+	 * 
+	 * @param quiz
+	 *            de Quiz om te koppelen
+	 * @param opdracht
+	 *            de Opdracht om te koppelen
+	 * @param maxScore
+	 *            de maximum score van de opdracht in de quiz
+	 * @param uitStorage
+	 *            zet op true om een koppeling vanuit storage (tekst / DB) te
+	 *            maken
+	 * @return de resulterende QuizOpdracht
+	 * @throws IllegalStateException
+	 *             als de status van de Quiz het toevoegen van een Opdracht niet
+	 *             toelaat
+	 */
+	public static QuizOpdracht koppelOpdrachtAanQuiz(Quiz quiz,
+			Opdracht opdracht, int maxScore, boolean uitStorage)
+			throws IllegalStateException {
+
+		if (!uitStorage) {
+			if (!quiz.isAanpasbaar()) {
+				throw new IllegalStateException(
+						"De Quiz bevindt zich in een status die toevoegen van opdrachten onmogelijk maakt");
+			}
+		}
+
 		QuizOpdracht quizOpdracht = new QuizOpdracht(quiz, opdracht, maxScore);
-		//qOpdracht = new QuizOpdracht(quiz, opdracht, maxScore);
 		quiz.addQuizOpdracht(quizOpdracht);
 		opdracht.addQuizOpdracht(quizOpdracht);
 		return quizOpdracht;
 	}
 
-	public void ontkoppelOpdrachtVanQuiz() {
-		quiz.removeQuizOpdracht(this);
-		opdracht.removeQuizOpdracht(this);
+	/**
+	 * Deze method koppelt een Quiz aan een Opdracht en kent aan de associatie
+	 * een maximum score toe
+	 * 
+	 * @param quiz
+	 *            de Quiz om te koppelen
+	 * @param opdracht
+	 *            de Opdracht om te koppelen
+	 * @param maxScore
+	 *            de maximum score van de opdracht in de quiz
+	 * @return de resulterende QuizOpdracht
+	 * @throws IllegalStateException
+	 *             als de status van de Quiz het toevoegen van een Opdracht niet
+	 *             toelaat
+	 */
+	public static QuizOpdracht koppelOpdrachtAanQuiz(Quiz quiz,
+			Opdracht opdracht, int maxScore) {
+		return koppelOpdrachtAanQuiz(quiz, opdracht, maxScore, false);
 	}
 
+	/**
+	 * Deze method doet de koppeling voorzien door deze QuizOpdracht teniet.
+	 * 
+	 * @throws IllegalStateException
+	 *             als de status van de Quiz de ontkoppeling niet toelaat
+	 */
+	public void ontkoppelOpdrachtVanQuiz() throws IllegalStateException {
+		if (quiz.isAanpasbaar()) {
+			quiz.removeQuizOpdracht(this);
+			opdracht.removeQuizOpdracht(this);
+		} else {
+			throw new IllegalStateException(
+					"De Quiz bevindt zich in een status die ontkoppelingen onmogelijk maakt");
+		}
+	}
+
+	/**
+	 * Voegt een OpdrachtAntwoord toe aan de interne lijst van
+	 * OpdrachtAntwoorden
+	 * 
+	 * @param opdrachtAntwoord
+	 *            het toe te voegen OpdrachtAntwoord
+	 */
 	protected void addOpdrachtAntwoord(OpdrachtAntwoord opdrachtAntwoord) {
 		this.opdrachtAntwoorden.add(opdrachtAntwoord);
 	}
@@ -63,14 +131,29 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 		return kopie;
 	}
 
+	/**
+	 * Haalt de Quiz geassocieerd met deze QuizOpdracht op
+	 * 
+	 * @return de Quiz geassocieerd met deze QuizOpdracht
+	 */
 	public Quiz getQuiz() {
 		return quiz.clone();
 	}
 
+	/**
+	 * Haalt de Opdracht geassocieerd met deze QuizOpdracht op
+	 * 
+	 * @return de Opdracht geassocieerd met deze QuizOpdracht
+	 */
 	public Opdracht getOpdracht() {
 		return opdracht.clone();
 	}
 
+	/**
+	 * Geeft de maximum score terug van deze QuizOpdracht
+	 * 
+	 * @return de maximum score
+	 */
 	public int getMaxScore() {
 		return maxScore;
 	}
@@ -84,6 +167,13 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 		return ID;
 	}
 
+	/**
+	 * Geeft de gemiddelde score van alle leerlingen voor deze QuizOpdracht
+	 * terug
+	 * 
+	 * @return de gemiddelde score van alle leerlingen voor deze QuizOpdracht
+	 *         (double)
+	 */
 	public double getGemiddeldeScore() {
 		double somScores = 0;
 		for (OpdrachtAntwoord opdrachtAntwoord : this.opdrachtAntwoorden) {
@@ -93,12 +183,13 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	}
 
 	/**
-	 * Vergelijkt deze QuizOpdracht met een andere QuizOpdracht, eerst op basis van de Quiz, dan op basis van de
-	 * Opdracht
+	 * Vergelijkt deze QuizOpdracht met een andere QuizOpdracht, eerst op basis
+	 * van de Quiz, dan op basis van de Opdracht
 	 *
 	 * @param quizOpdracht
 	 *            de QuizOpdracht waarmee vergeleken wordt
-	 * @return -1, 0 of 1 als deze QuizOpdracht voor, op dezelfde plaats of na het argument-QuizOpdracht komt
+	 * @return -1, 0 of 1 als deze QuizOpdracht voor, op dezelfde plaats of na
+	 *         het argument-QuizOpdracht komt
 	 */
 	@Override
 	public int compareTo(QuizOpdracht quizOpdracht) {
@@ -153,9 +244,12 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
 	@Override
 	public String toString() {
-		String result = "QuizOpdracht [ID=" + ID + "] - Maximale score: " + maxScore;
-		result += "\nDIE\n" + opdracht.toString().replaceAll("(?m)^", "\t");;
-		result += "\nKOPPELT AAN\n" + quiz.toString().replaceAll("(?m)^", "\t");;
+		String result = "QuizOpdracht [ID=" + ID + "] - Maximale score: "
+				+ maxScore;
+		result += "\nDIE\n" + opdracht.toString().replaceAll("(?m)^", "\t");
+		;
+		result += "\nKOPPELT AAN\n" + quiz.toString().replaceAll("(?m)^", "\t");
+		;
 		return result;
 	}
 

@@ -1,5 +1,11 @@
 package model.quizStatus;
 
+/**
+ * 
+ * Modelleert de 'Laatste kans' status van een Quiz. Implementeert de QuizStatus
+ * interface
+ *
+ */
 public class LaatsteKans implements QuizStatus {
 	
 	public LaatsteKans() {

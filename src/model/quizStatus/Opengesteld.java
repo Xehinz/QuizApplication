@@ -1,5 +1,11 @@
 package model.quizStatus;
 
+/**
+ * 
+ * Modelleert de 'Opengesteld' status van een Quiz. Implementeert de QuizStatus
+ * interface
+ *
+ */
 public class Opengesteld implements QuizStatus {
 
 	public Opengesteld() {

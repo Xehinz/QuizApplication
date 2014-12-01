@@ -1,5 +1,11 @@
 package model.quizStatus;
 
+/**
+ * 
+ * Modelleert de 'In constructie' status van een Quiz. Implementeert de QuizStatus
+ * interface
+ *
+ */
 public class InConstructie implements QuizStatus {
 
 	public InConstructie() {

@@ -33,7 +33,6 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 * @param qc
 	 *            een lijst van quizzen
 	 */
-
 	public QuizCatalogus(Collection<Quiz> qc) {
 		this.quizcatalogus = new HashSet<Quiz>();
 		hoogsteID = 0;
@@ -47,7 +46,6 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *
 	 * @return de gekloonde QuizCatalogus
 	 */
-
 	@Override
 	public QuizCatalogus clone() {
 		QuizCatalogus clone = null;
@@ -71,7 +69,6 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 * @throws IllegalArgumentException
 	 *             als het onderwerp van de meegegeven Quiz al voorkomt in de QuizCatalogus
 	 */
-
 	public void addQuiz(Quiz Q) throws IllegalArgumentException {
 		if (onderwerpBestaatAl(Q.getOnderwerp())) {
 			throw new IllegalArgumentException(
@@ -96,7 +93,6 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *             als de quiz zich niet in de status 'In constructie' of 'Afgewerkt' bevindt en dus niet verwijderbaar
 	 *             is
 	 */
-
 	public void removeQuiz(Quiz Q) throws IllegalStateException {
 		if (!Q.isVerwijderbaar()) {
 			throw new IllegalStateException(String.format(
@@ -122,23 +118,21 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	}
 
 	/**
-	 * check of de catalogus een bepaalde quiz bevat
+	 * Check of de catalogus een bepaalde quiz bevat
 	 *
 	 * @param quiz
 	 *            de te zoeken quiz
 	 * @return <code>true</code> als de quiz in de catalogus voorkomt
 	 */
-
 	public boolean hasQuiz(Quiz quiz) {
 		return this.quizcatalogus.contains(quiz);
 	}
 
 	/**
-	 * telt het aantal quizzen in de catalogus
+	 * Telt het aantal quizzen in de catalogus
 	 *
 	 * @return het aantal quizzen in de catalogus
 	 */
-
 	public int count() {
 		return this.quizcatalogus.size();
 	}
@@ -207,7 +201,6 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	/**
 	 * Override van de toString methode
 	 */
-
 	@Override
 	public String toString() {
 		String result = "Quizcatalogus met " + this.count() + " quizzen:\n\n";
@@ -225,7 +218,6 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 * @param aQuizCatalogus
 	 *            de te vergelijken catalogus
 	 */
-
 	@Override
 	public boolean equals(Object aQuizCatalogus) {
 		if (aQuizCatalogus == null) {
@@ -244,7 +236,6 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 * @param QC
 	 *            de te vergelijken catalogus
 	 */
-
 	@Override
 	public int compareTo(QuizCatalogus QC) {
 		if (this.count() < QC.count()) {

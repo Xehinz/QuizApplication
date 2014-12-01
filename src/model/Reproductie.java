@@ -20,7 +20,6 @@ import util.datumWrapper.Datum;
  * @author Bert Neyt
  * 
  */
-
 public class Reproductie extends Opdracht {
 
 	private String juisteTrefwoorden;
