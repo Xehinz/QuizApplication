@@ -51,9 +51,9 @@ public class QuizAanpassingView extends JFrame {
 	//SWINGFIELDS	
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
-	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten;
+	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten, lblMaxPunten;
 	private JButton btnOpdrachtToevoegen, btnOpdrachtVerwijderen, btnQuizBewaren;
-	private JTextField txtOnderwerp, txtLeraar, txtKlas;
+	private JTextField txtOnderwerp, txtLeraar, txtKlas, txtMaxPunten;
 	private JComboBox cmbStatus, cmbCategorie, cmbSorteer;
 	private JCheckBox ckbIsTest, ckbIsUniekeDeelname;
 	private JTable alleOpdrachtenTabel, geselecteerdeOpdrachtenTabel;
@@ -76,8 +76,10 @@ public class QuizAanpassingView extends JFrame {
 		
 		//INIT BUTTONS
 		btnOpdrachtToevoegen = new JButton(">>>");
+		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
 		btnOpdrachtVerwijderen = new JButton("<<<");
-		btnQuizBewaren = new JButton("Quiz bewaren");		
+		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
+		btnQuizBewaren = new JButton("Quiz bewaren");
 		
 		//INIT COMBOBOX
 		QuizStatus[] status = {new Afgesloten(), new Afgewerkt(), new InConstructie(), new LaatsteKans(), new Opengesteld()};
@@ -88,13 +90,19 @@ public class QuizAanpassingView extends JFrame {
 		
 		//INIT TEXTFIELD
 		txtOnderwerp = new JTextField();
+		txtOnderwerp.setEditable(quiz.isAanpasbaar());
 		txtLeraar = new JTextField();
 		txtLeraar.setEditable(false);
 		txtKlas = new JTextField();
+		txtKlas.setEditable(quiz.isAanpasbaar());
+		txtMaxPunten = new JTextField();
+		txtMaxPunten.setEditable(quiz.isAanpasbaar());
 		
 		//INIT CHECKBOX
 		ckbIsTest = new JCheckBox("Test");
+		ckbIsTest.setEnabled(quiz.isAanpasbaar());
 		ckbIsUniekeDeelname = new JCheckBox("Unieke Deelname");
+		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
 		
 		//INIT TABLE + SCROLLPANE
 		alleOpdrachtenTabelModel = new QuizAanpassingTableModel();
@@ -118,7 +126,8 @@ public class QuizAanpassingView extends JFrame {
 		lblFilterOpCategorie = new JLabel("Toon opdrachten van categorie :");
 		lblSorteer = new JLabel("Sorteer opdrachten op :");
 		lblAantalOpdrachten = new JLabel();
-		//setLblAantalOpdrachten();
+		setLblAantalOpdrachten();
+		lblMaxPunten = new JLabel("Max score voor deze vraag :");
 		
 		//INIT KNOPPENVELD
 		opdrachtKnoppenVeld = new JPanel();
@@ -145,16 +154,37 @@ public class QuizAanpassingView extends JFrame {
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 0;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		sorteerVeld.add(cmbCategorie, constraints);
 				
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		sorteerVeld.add(cmbSorteer, constraints);	
+		sorteerVeld.add(cmbSorteer, constraints);
+		
+			//ADD LABEL
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.gridy = 0;
+		constraints.gridx = 1;
+		sorteerVeld.add(lblAantalOpdrachten, constraints);
+		
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.gridy = 1;
+		constraints.gridx = 1;
+		sorteerVeld.add(lblMaxPunten, constraints);
+		
+			//ADD TEXTFIELD
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.gridy = 1;
+		constraints.gridx = 2;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		sorteerVeld.add(txtMaxPunten, constraints);
 		
 		//INIT QUIZINFOVELD
 		quizInfoVeld = new JPanel();
@@ -281,16 +311,17 @@ public class QuizAanpassingView extends JFrame {
 	}
 	
 	public void setLblAantalOpdrachten() {
-		//aantalOpdrachten = new String("Aantal toegevoegde opdrachten : " + geselecteerdeOpdrachtenTabel.getRowCount());
-		//lblAantalOpdrachten.setText(aantalOpdrachten);
-		lblAantalOpdrachten.setText("test");
+		aantalOpdrachten = new String("Aantal toegevoegde opdrachten : " + geselecteerdeOpdrachtenTabel.getRowCount());
+		lblAantalOpdrachten.setText(aantalOpdrachten);
+		//lblAantalOpdrachten.setText("test");
 	}
 	
 	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Quiz quiz) {
 		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
 		alleOpdrachten.removeAll(quiz.getOpdrachten());
 		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
-		//setLblAantalOpdrachten();		
+		//TODO setLblAantalOpdrachten();
+		//TODO refresh graphics
 	}
 	
 	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten() {
@@ -325,7 +356,7 @@ public class QuizAanpassingView extends JFrame {
 		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	public void setKolomBreedte (JTable table) {
+	public void setKolomBreedte (JTable table) {   //TODO werkt niet
 		TableColumn kolom = null;
 		for (int i = 0; i < 2; i++) {
 			    kolom = table.getColumnModel().getColumn(i);

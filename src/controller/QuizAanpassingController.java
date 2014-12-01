@@ -34,9 +34,7 @@ public class QuizAanpassingController {
 		view.addopdrachtVerwijderenKnopActionListener(new OpdrachtVerwijderenKnopListener());
 		view.addQuizBewarenKnopActionListener(new QuizBewaarKnopListener());
 
-		// Set comboboxlisteners
-
-		// Set checkboxlisteners
+		//TODO Set comboboxlisteners
 
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
@@ -54,6 +52,7 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
+			
 			// TODO add opdracht to quizOpdrachten
 		}
 	}
@@ -98,10 +97,9 @@ public class QuizAanpassingController {
 					}
 				}
 			} catch (Exception ex) {
-				view.toonInformationDialog("Klassen in foutief formaat, gebruik [1]", "Fout");
+				view.toonInformationDialog("Klassen in foutief formaat, gebruik [4] of [1, 2, 4]", "Fout");
 				return;
 			}
-
 			// ONDERWERP
 			String onderwerp = view.getOnderwerpTxt();
 			if (onderwerp == null) {
@@ -118,7 +116,10 @@ public class QuizAanpassingController {
 			quiz.setIsTest(isTest);
 			quiz.setIsUniekeDeelname(isUniekeDeelname);
 			view.toonInformationDialog("Quiz bewaard", "Ok");
-			// TODO quiz updaten / toevoegen in DB
+			//ADD QUIZ TO DB
+			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {
+				dbHandler.getQuizCatalogus().addQuiz(quiz);
+			}
 			view.setViewToQuiz(new Quiz(leraar),
 					(dbHandler.getOpdrachtCatalogus()).getOpdrachten()); // Geef nieuwe quiz aan view
 		}
