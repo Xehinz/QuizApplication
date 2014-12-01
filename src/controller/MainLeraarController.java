@@ -78,7 +78,7 @@ public class MainLeraarController {
 		public void actionPerformed(ActionEvent event) {
 			if (JOptionPane.showConfirmDialog(mainView, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				try {
-				dbHandler.vulCatalogi();
+				dbHandler.saveCatalogi();
 				} catch (IOException iEx) {
 					JOptionPane.showMessageDialog(mainView, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
 				} finally {
@@ -95,7 +95,7 @@ public class MainLeraarController {
 		public void windowClosing(WindowEvent event) {
 			if (JOptionPane.showConfirmDialog(mainView, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				try {
-				dbHandler.vulCatalogi();
+				dbHandler.saveCatalogi();
 				} catch (IOException iEx) {
 					JOptionPane.showMessageDialog(mainView, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
 				} finally {
@@ -154,8 +154,8 @@ public class MainLeraarController {
 		public void actionPerformed(ActionEvent event) {			
 			if (!quizBeheerStaatOpen) {
 				quizBeheerStaatOpen = true;
-				quizBeheerView = new QuizBeheerView();
-				quizBeheerController = new QuizBeheerController(dbHandler, leraar, quizBeheerView);
+				//quizBeheerView = new QuizBeheerView();
+				quizBeheerController = new QuizBeheerController(dbHandler, leraar);
 				quizBeheerView.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
