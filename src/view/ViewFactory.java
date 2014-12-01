@@ -36,10 +36,14 @@ public class ViewFactory {
 			}
 			break;
 		case LoginView:
-			if (settings.getProperty("login").equals("LoginView")) {
+			switch (settings.getProperty("login")) {
+				case "LoginView":
 				return new LoginView();
-			}
-			break;
+				case "LoginView2":
+					return new LoginView2();
+				default:
+					return null;
+			} 			
 		case MainLeerlingView:
 			if (settings.getProperty("mainleerling").equals("MainLeerlingView")) {
 				return new MainLeerlingView();

@@ -67,7 +67,7 @@ public class OpstartController {
 	}
 	
 	public void login() {
-		loginView = new LoginView();
+		loginView = (ILoginView)viewFactory.maakView(ViewType.LoginView);
 		loginView.addWindowListener(new LoginViewClosedHandler());
 		loginView.addLoginActionListener(new LoginKnopListener());
 
