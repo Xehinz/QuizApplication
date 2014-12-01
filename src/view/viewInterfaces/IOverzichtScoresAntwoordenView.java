@@ -8,7 +8,7 @@ import javax.swing.table.TableModel;
  * @author Ben Vandenberk
  *
  */
-public interface IOverzichtScoresAntwoordenView extends IOverzichtScoresView {
+public interface IOverzichtScoresAntwoordenView extends IView {
 	
 	public void setAntwoordTableModel(TableModel antwoordTableModel);
 	

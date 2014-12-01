@@ -9,7 +9,7 @@ import javax.swing.table.TableModel;
  * @author Ben Vandenberk
  *
  */
-public interface IOverzichtScoresLeerlingenView extends IOverzichtScoresView {
+public interface IOverzichtScoresLeerlingenView extends IView {
 	
 	public void setTableModel(TableModel leerlingScoreTableModel);
 	

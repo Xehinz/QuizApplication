@@ -12,13 +12,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import view.viewInterfaces.ILoginView;
+
 /**
  * 
  * @author Ben Vandenberk
  *
  */
 @SuppressWarnings("serial")
-public class LoginView extends JFrame {
+public class LoginView extends JFrame implements ILoginView {
 	
 	private JLabel lblUitleg;
 	private JLabel lblVoornaam, lblFamilienaam;

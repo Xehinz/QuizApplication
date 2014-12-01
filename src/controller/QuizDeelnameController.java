@@ -13,9 +13,12 @@ import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
 import persistency.DBHandler;
+import view.ViewFactory;
+import view.ViewType;
 import view.viewInterfaces.IOpdrachtDeelnameView;
 import view.viewInterfaces.IOpdrachtDeelnameViewFactory;
 import view.viewInterfaces.IQuizDeelnameView;
+import view.viewInterfaces.IView;
 import model.Leerling;
 import model.Meerkeuze;
 import model.Opdracht;
@@ -52,12 +55,12 @@ import model.Valideerbaar;
 	private Timer timer;
 
 	public QuizDeelnameController(DBHandler dbHandler, Leerling leerling,
-			IQuizDeelnameView quizDeelnameView, IOpdrachtDeelnameViewFactory opdrachtDeelnameViewFactory) {
+			ViewFactory viewFactory) {
 		
 		this.dbHandler = dbHandler;
 		this.leerling = leerling;
-		this.quizDeelnameView = quizDeelnameView;
-		this.opdrachtDeelnameViewFactory = opdrachtDeelnameViewFactory;
+		this.quizDeelnameView = (IQuizDeelnameView)viewFactory.maakView(ViewType.QuizDeelname);
+		this.opdrachtDeelnameViewFactory = (IOpdrachtDeelnameViewFactory)viewFactory.maakOpdrachtDeelnameViewFactory();
 
 		huidigeOpdrachtIndex = 0;
 		aantalPogingen = 0;
@@ -77,6 +80,10 @@ import model.Valideerbaar;
 		quizDeelnameView.addDeelneemKnopListener(new DeelneemKnopListener());
 		
 		quizDeelnameView.setVisible(true);
+	}
+	
+	public IView getView() {
+		return quizDeelnameView;
 	}
 
 	private void neemDeel() {

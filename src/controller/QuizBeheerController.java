@@ -35,6 +35,11 @@ public class QuizBeheerController {
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
 	}
+	
+	// Adriaan, dit had ik even nodig
+	public QuizBeheerView getView() {
+		return view;
+	}
 
 	private void openQuizAanpassing(Quiz quiz, Leraar leraar) {
 		QuizAanpassingController qac = new QuizAanpassingController(quiz,

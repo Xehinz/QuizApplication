@@ -11,11 +11,10 @@ import javax.swing.JOptionPane;
 
 import model.Leerling;
 import persistency.DBHandler;
-import view.MainLeerlingView;
-import view.OpdrachtDeelnameViewFactory;
-import view.QuizDeelnameView;
 import view.QuizScoresRapportView;
-import view.viewInterfaces.IQuizDeelnameView;
+import view.ViewFactory;
+import view.ViewType;
+import view.viewInterfaces.IMainLeerlingView;
 import view.viewInterfaces.IQuizScoresRapportView;
 
 /**
@@ -28,19 +27,21 @@ public class MainLeerlingController {
 	private boolean quizDeelnameStaatOpen;
 	
 	private DBHandler dbHandler;
-	private Leerling leerling;
-	
+	private Leerling leerling;	
 	private OpstartController opstartController;
+	private ViewFactory viewFactory;
 	
-	private MainLeerlingView mainView;
-	private IQuizDeelnameView quizDeelnameView;
+	private QuizDeelnameController quizDeelnameController;
+	
+	private IMainLeerlingView mainView;
 	private IQuizScoresRapportView quizScoresRapportView;
 	
-	public MainLeerlingController(DBHandler dbHandler, Leerling leerling, OpstartController opstartController) {
+	public MainLeerlingController(DBHandler dbHandler, Leerling leerling, OpstartController opstartController, ViewFactory viewFactory) {
 		this.dbHandler = dbHandler;
 		this.leerling = leerling;
 		this.opstartController = opstartController;
-		mainView = new MainLeerlingView();
+		this.viewFactory = viewFactory;
+		mainView = (IMainLeerlingView)viewFactory.maakView(ViewType.MainLeerlingView);
 		quizDeelnameStaatOpen = false;
 		
 		mainView.setLeerling(leerling.getNaam());
@@ -69,11 +70,11 @@ public class MainLeerlingController {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			if (JOptionPane.showConfirmDialog(mainView, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(null, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				try {
 				dbHandler.saveCatalogi();
 				} catch (IOException iEx) {
-					JOptionPane.showMessageDialog(mainView, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
+					JOptionPane.showMessageDialog(null, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
 				} finally {
 				System.exit(0);
 				}
@@ -86,11 +87,11 @@ public class MainLeerlingController {
 		
 		@Override
 		public void windowClosing(WindowEvent event) {
-			if (JOptionPane.showConfirmDialog(mainView, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(null, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				try {
 				dbHandler.saveCatalogi();
 				} catch (IOException iEx) {
-					JOptionPane.showMessageDialog(mainView, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
+					JOptionPane.showMessageDialog(null, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
 				} finally {
 				System.exit(0);
 				}
@@ -98,23 +99,21 @@ public class MainLeerlingController {
 		}
 	}
 	
-	class DeelnemenKnopListener implements ActionListener {
-		
-		@SuppressWarnings("unused")
+	class DeelnemenKnopListener implements ActionListener {		
+
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			if (!quizDeelnameStaatOpen) {
-				quizDeelnameStaatOpen = true;
-				quizDeelnameView = new QuizDeelnameView();
-				QuizDeelnameController quizDeelnameController = new QuizDeelnameController(dbHandler, leerling, quizDeelnameView, new OpdrachtDeelnameViewFactory());
-				quizDeelnameView.addWindowListener(new WindowAdapter() {
+				quizDeelnameStaatOpen = true;				
+				quizDeelnameController = new QuizDeelnameController(dbHandler, leerling, viewFactory);
+				quizDeelnameController.getView().addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
 						quizDeelnameStaatOpen = false;
 					}
 				});
 			} else {
-				quizDeelnameView.toFront();
+				quizDeelnameController.getView().toFront();
 			}
 		}
 		

@@ -10,12 +10,16 @@ import java.io.IOException;
 import java.util.Properties;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import model.Leerling;
 import model.Leraar;
 import persistency.DBHandler;
 import persistency.StorageStrategy;
 import view.LoginView;
+import view.ViewFactory;
+import view.ViewType;
+import view.viewInterfaces.ILoginView;
 
 /**
  * 
@@ -25,14 +29,24 @@ import view.LoginView;
 public class OpstartController {
 	
 	private DBHandler dbHandler;
-	private LoginView loginView;
+	private ILoginView loginView;
 
 	private Leraar leraar;
 	private Leerling leerling;
+	
+	private Properties settings;
+	private ViewFactory viewFactory;
 
-	public OpstartController(DBHandler dbHandler) {		
-		this.dbHandler = dbHandler;
-		loginView = new LoginView();
+	public OpstartController() {	
+		loadSettings();
+		
+		this.dbHandler = new DBHandler();		
+		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings
+				.getProperty("dbstrategy")));
+		dbHandler.setUseCSV(true);
+		
+		viewFactory = new ViewFactory(settings);
+		loginView = (ILoginView)viewFactory.maakView(ViewType.LoginView);
 		
 		loginView.addWindowListener(new LoginViewClosedHandler());
 
@@ -48,27 +62,8 @@ public class OpstartController {
 	}
 
 	public static void main(String[] args) {
-		LoginView loginView = new LoginView();
-
-		Properties settings = new Properties();
-		try {
-			settings.load(new FileInputStream("resources/settings.ini"));
-		} catch (FileNotFoundException fEx) {
-			loginView.toonErrorMessage(
-					"setting.ini niet gevonden:\n" + fEx.getMessage(), "Fout");
-		} catch (IOException iEx) {
-			loginView.toonErrorMessage(
-					"Inladen van instellingen uit settings.ini mislukt:\n"
-							+ iEx.getMessage(), "Fout");
-		}
-
-		DBHandler dbHandler = new DBHandler();
-		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings
-				.getProperty("dbstrategy")));
-		dbHandler.setUseCSV(true);
-
 		@SuppressWarnings("unused")
-		OpstartController opstartController = new OpstartController(dbHandler);
+		OpstartController opstartController = new OpstartController();
 	}
 	
 	public void login() {
@@ -78,6 +73,18 @@ public class OpstartController {
 
 		loginView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loginView.setVisible(true);
+	}
+	
+	private void loadSettings() {
+		settings = new Properties();
+		try {
+			settings.load(new FileInputStream("resources/settings.ini"));
+		} catch (FileNotFoundException fEx) {
+			JOptionPane.showConfirmDialog(null, "setting.ini niet gevonden:\n" + fEx.getMessage(), "Fout", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+		} catch (IOException iEx) {
+			JOptionPane.showConfirmDialog(null, "Inladen van instellingen uit settings.ini mislukt:\n"
+					+ iEx.getMessage(), "Fout", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+		}	
 	}
 
 	private boolean valideerLeerlingOfLeraar(String volledigeNaam) {
@@ -107,10 +114,10 @@ public class OpstartController {
 			if (valideerLeerlingOfLeraar(loginView.getVolledigeNaam())) {
 				if (leraar == null) {
 					 MainLeerlingController mainLeerlingController = new
-					 MainLeerlingController(dbHandler, leerling, OpstartController.this);
+					 MainLeerlingController(dbHandler, leerling, OpstartController.this, viewFactory);
 				} else {
 					 MainLeraarController mainLeraarController = new
-					 MainLeraarController(dbHandler, leraar, OpstartController.this);
+					 MainLeraarController(dbHandler, leraar, OpstartController.this, viewFactory);
 				}
 				loginView.dispose();
 			} else {

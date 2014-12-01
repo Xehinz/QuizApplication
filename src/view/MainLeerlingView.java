@@ -9,13 +9,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import view.viewInterfaces.IMainLeerlingView;
+
 /**
  * 
  * @author Ben Vandenberk
  *
  */
 @SuppressWarnings("serial")
-public class MainLeerlingView extends JFrame {
+public class MainLeerlingView extends JFrame implements IMainLeerlingView {
 	
 	private JLabel lblLeerling;
 	private JButton btnLogout, btnDeelnemen, btnQuizRapport, btnAfsluiten;

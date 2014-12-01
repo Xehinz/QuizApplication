@@ -7,8 +7,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
+import view.ViewFactory;
+import view.ViewType;
 import view.viewInterfaces.IOverzichtScoresAntwoordenView;
-import view.viewInterfaces.IOverzichtScoresViewFactory;
 import model.OpdrachtAntwoord;
 import model.QuizDeelname;
 
@@ -22,9 +23,9 @@ public class OverzichtScoresAntwoordenController {
 	private AntwoordTableModel antwoordTableModel;
 	private IOverzichtScoresAntwoordenView antwoordenView;
 	
-	public OverzichtScoresAntwoordenController(QuizDeelname quizDeelname, OverzichtScoresQuizzenController startScoreController, IOverzichtScoresViewFactory overzichtScoresViewFactory) {		
+	public OverzichtScoresAntwoordenController(QuizDeelname quizDeelname, OverzichtScoresQuizzenController startScoreController, ViewFactory viewFactory) {		
 		
-		this.antwoordenView = (IOverzichtScoresAntwoordenView)overzichtScoresViewFactory.maakOverzichtScoresView("antwoord");
+		this.antwoordenView = (IOverzichtScoresAntwoordenView)viewFactory.maakView(ViewType.OverzichtScoresAntwoorden);
 		antwoordTableModel = new AntwoordTableModel(quizDeelname);
 		
 		antwoordenView.setAntwoordTableModel(antwoordTableModel);
@@ -33,7 +34,7 @@ public class OverzichtScoresAntwoordenController {
 		antwoordenView.setVisible(true);
 		
 		// Als het hoofd-score scherm sluit, moeten alle subvenstertjes ook sluiten
-		startScoreController.addStartScoreViewClosedListener(new WindowAdapter() {
+		startScoreController.getView().addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
 				antwoordenView.dispose();

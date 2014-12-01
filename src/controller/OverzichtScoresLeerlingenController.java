@@ -11,8 +11,9 @@ import javax.swing.table.AbstractTableModel;
 
 import model.Quiz;
 import model.QuizDeelname;
+import view.ViewFactory;
+import view.ViewType;
 import view.viewInterfaces.IOverzichtScoresLeerlingenView;
-import view.viewInterfaces.IOverzichtScoresViewFactory;
 
 /**
  * 
@@ -23,13 +24,13 @@ public class OverzichtScoresLeerlingenController {
 
 	private LeerlingScoreTableModel leerlingScoreTableModel;
 	private IOverzichtScoresLeerlingenView leerlingenView;
-	private IOverzichtScoresViewFactory overzichtScoresViewFactory;
+	private ViewFactory viewFactory;
 	private OverzichtScoresQuizzenController startScoreController;
 
-	public OverzichtScoresLeerlingenController(Quiz quiz, OverzichtScoresQuizzenController startScoreController, IOverzichtScoresViewFactory overzichtScoresViewFactory) {		
+	public OverzichtScoresLeerlingenController(Quiz quiz, OverzichtScoresQuizzenController startScoreController, ViewFactory viewFactory) {		
 		
-		this.overzichtScoresViewFactory = overzichtScoresViewFactory;
-		this.leerlingenView = (IOverzichtScoresLeerlingenView)overzichtScoresViewFactory.maakOverzichtScoresView("leerling");
+		this.viewFactory = viewFactory;
+		this.leerlingenView = (IOverzichtScoresLeerlingenView)viewFactory.maakView(ViewType.OverzichtScoresLeerlingen);
 		this.startScoreController = startScoreController;
 		
 		leerlingScoreTableModel = new LeerlingScoreTableModel(quiz.getQuizDeelnames());
@@ -40,7 +41,7 @@ public class OverzichtScoresLeerlingenController {
 		leerlingenView.setVisible(true);
 		
 		// Als het hoofd-score scherm sluit, moeten alle subvenstertjes ook sluiten
-		startScoreController.addStartScoreViewClosedListener(new WindowAdapter() {
+		startScoreController.getView().addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent event) {
 				leerlingenView.dispose();
@@ -57,7 +58,7 @@ public class OverzichtScoresLeerlingenController {
 				leerlingenView.toonInformationDialog("Selecteer een deelname om details te zien", "Geen deelname geselecteerd");
 			} else {
 				@SuppressWarnings("unused")
-				OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd, startScoreController, overzichtScoresViewFactory);
+				OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd, startScoreController, viewFactory);
 			}
 		}
 	}

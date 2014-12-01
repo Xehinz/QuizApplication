@@ -12,11 +12,11 @@ import javax.swing.JOptionPane;
 import model.Leraar;
 import persistency.DBHandler;
 import view.BeheerLeerlingView;
-import view.MainLeraarView;
 import view.OpdrachtBeheerView;
-import view.OverzichtScoresViewFactory;
 import view.QuizBeheerView;
-import view.viewInterfaces.IOverzichtScoresViewFactory;
+import view.ViewFactory;
+import view.ViewType;
+import view.viewInterfaces.IMainLeraarView;
 
 /**
  * 
@@ -36,14 +36,15 @@ public class MainLeraarController {
 	
 	private QuizBeheerView quizBeheerView;
 	private OpdrachtBeheerView opdrachtBeheerView;
-	private BeheerLeerlingView beheerLeerlingView;
-	private IOverzichtScoresViewFactory overzichtScoresViewFactory;
+	private BeheerLeerlingView beheerLeerlingView;	
 	
-	private MainLeraarView mainView;	
+	private ViewFactory viewFactory;
+	
+	private IMainLeraarView mainView;	
 	private Leraar leraar;
 
-	public MainLeraarController(DBHandler dbHandler, Leraar leraar, OpstartController opstartController) {
-		mainView = new MainLeraarView();
+	public MainLeraarController(DBHandler dbHandler, Leraar leraar, OpstartController opstartController, ViewFactory viewFactory) {
+		mainView = (IMainLeraarView)viewFactory.maakView(ViewType.MainLeraarView);
 		overzichtScoresStaatOpen = false;
 		opdrachtBeheerStaatOpen = false;
 		quizBeheerStaatOpen = false;
@@ -51,7 +52,7 @@ public class MainLeraarController {
 		this.dbHandler = dbHandler;
 		this.opstartController = opstartController;
 		this.leraar = leraar;
-		this.overzichtScoresViewFactory = new OverzichtScoresViewFactory();
+		this.viewFactory = viewFactory;
 
 		mainView.setLeraar(leraar.toString());
 		mainView.addOverzichtScoresKnopActionListener(new OverzichtScoresKnopListener());	
@@ -81,11 +82,11 @@ public class MainLeraarController {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			if (JOptionPane.showConfirmDialog(mainView, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(null, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				try {
 				dbHandler.saveCatalogi();
 				} catch (IOException iEx) {
-					JOptionPane.showMessageDialog(mainView, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
+					JOptionPane.showMessageDialog(null, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
 				} finally {
 				System.exit(0);
 				}
@@ -98,11 +99,11 @@ public class MainLeraarController {
 		
 		@Override
 		public void windowClosing(WindowEvent event) {
-			if (JOptionPane.showConfirmDialog(mainView, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+			if (JOptionPane.showConfirmDialog(null, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
 				try {
 				dbHandler.saveCatalogi();
 				} catch (IOException iEx) {
-					JOptionPane.showMessageDialog(mainView, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
+					JOptionPane.showMessageDialog(null, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
 				} finally {
 				System.exit(0);
 				}
@@ -117,16 +118,16 @@ public class MainLeraarController {
 			if (!overzichtScoresStaatOpen) {
 				overzichtScoresStaatOpen = true;
 				overzichtScoresController = new OverzichtScoresQuizzenController(
-						dbHandler, overzichtScoresViewFactory);
+						dbHandler, viewFactory);
 				
-				overzichtScoresController.addStartScoreViewClosedListener(new WindowAdapter() {
+				overzichtScoresController.getView().addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
 						overzichtScoresStaatOpen = false;
 					}
 				});
 			} else {
-				overzichtScoresController.roepStartScoreViewNaarVoren();
+				overzichtScoresController.getView().toFront();
 			}
 		}
 		
@@ -159,16 +160,15 @@ public class MainLeraarController {
 		public void actionPerformed(ActionEvent event) {			
 			if (!quizBeheerStaatOpen) {
 				quizBeheerStaatOpen = true;
-				//quizBeheerView = new QuizBeheerView();
 				quizBeheerController = new QuizBeheerController(dbHandler, leraar);
-				quizBeheerView.addWindowListener(new WindowAdapter() {
+				quizBeheerController.getView().addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
 						quizBeheerStaatOpen = false;
 					}
 				});
 			} else {
-				quizBeheerView.toFront();
+				quizBeheerController.getView().toFront();
 			}
 		}
 		

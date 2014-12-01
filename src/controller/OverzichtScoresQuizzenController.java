@@ -9,8 +9,10 @@ import java.util.Collection;
 import javax.swing.table.AbstractTableModel;
 
 import persistency.DBHandler;
+import view.ViewFactory;
+import view.ViewType;
 import view.viewInterfaces.IOverzichtScoresQuizzenView;
-import view.viewInterfaces.IOverzichtScoresViewFactory;
+import view.viewInterfaces.IView;
 import model.Quiz;
 
 /**
@@ -21,13 +23,13 @@ import model.Quiz;
 public class OverzichtScoresQuizzenController {	
 
 	private IOverzichtScoresQuizzenView quizzenView;
-	private IOverzichtScoresViewFactory overzichtScoresViewFactory;
+	private ViewFactory viewFactory;
 	private QuizScoreTableModel quizScoreTableModel;
 	
-	public OverzichtScoresQuizzenController(DBHandler dbHandler, IOverzichtScoresViewFactory overzichtScoresViewFactory) {
+	public OverzichtScoresQuizzenController(DBHandler dbHandler, ViewFactory viewFactory) {
 		
-		this.overzichtScoresViewFactory = overzichtScoresViewFactory;
-		this.quizzenView = (IOverzichtScoresQuizzenView)overzichtScoresViewFactory.maakOverzichtScoresView("quiz");
+		this.viewFactory = viewFactory;
+		this.quizzenView = (IOverzichtScoresQuizzenView)viewFactory.maakView(ViewType.OverzichtScoresQuizzen);
 
 		quizScoreTableModel = new QuizScoreTableModel(dbHandler.getQuizCatalogus().getReedsIngevuldeQuizzen());
 		
@@ -36,12 +38,8 @@ public class OverzichtScoresQuizzenController {
 		quizzenView.setVisible(true);	
 	}
 	
-	public void addStartScoreViewClosedListener(WindowListener listener) {
-		quizzenView.addWindowListener(listener);
-	}
-	
-	public void roepStartScoreViewNaarVoren() {
-		quizzenView.toFront();
+	public IView getView() {
+		return quizzenView;
 	}
 	
 	class DetailKnopListener implements ActionListener {
@@ -54,7 +52,7 @@ public class OverzichtScoresQuizzenController {
 			}
 			else {
 				@SuppressWarnings("unused")
-				OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this, overzichtScoresViewFactory);					
+				OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this, viewFactory);					
 			}			
 		}
 		
