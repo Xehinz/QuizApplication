@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import model.Leraar;
 import persistency.DBHandler;
+import view.BeheerLeerlingView;
 import view.MainLeraarView;
 import view.OpdrachtBeheerView;
 import view.OverzichtScoresViewFactory;
@@ -24,16 +25,18 @@ import view.viewInterfaces.IOverzichtScoresViewFactory;
  */
 public class MainLeraarController {
 	
-	private boolean overzichtScoresStaatOpen, opdrachtBeheerStaatOpen, quizBeheerStaatOpen;
+	private boolean overzichtScoresStaatOpen, opdrachtBeheerStaatOpen, quizBeheerStaatOpen, leerlingBeheerStaatOpen;
 	private DBHandler dbHandler;
 	
 	private OverzichtScoresQuizzenController overzichtScoresController;
 	private OpdrachtBeheerController opdrachtBeheerController;
 	private OpstartController opstartController;
 	private QuizBeheerController quizBeheerController;
+	private BeheerLeerlingController beheerLeerlingController;
 	
 	private QuizBeheerView quizBeheerView;
 	private OpdrachtBeheerView opdrachtBeheerView;
+	private BeheerLeerlingView beheerLeerlingView;
 	private IOverzichtScoresViewFactory overzichtScoresViewFactory;
 	
 	private MainLeraarView mainView;	
@@ -44,6 +47,7 @@ public class MainLeraarController {
 		overzichtScoresStaatOpen = false;
 		opdrachtBeheerStaatOpen = false;
 		quizBeheerStaatOpen = false;
+		leerlingBeheerStaatOpen = false;
 		this.dbHandler = dbHandler;
 		this.opstartController = opstartController;
 		this.leraar = leraar;
@@ -56,6 +60,7 @@ public class MainLeraarController {
 		mainView.addLogoutKnopActionListener(new LogoutKnopListener());
 		mainView.addOpdrachtBeheerKnopActionListener(new OpdrachtBeheerKnopListener());
 		mainView.addQuizBeheerKnopActionListener(new QuizBeheerKnopListener());
+		mainView.addLeerlingBeheerKnopActionListener(new BeheerLeerlingenKnopListener());
 
 		mainView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainView.setVisible(true);
@@ -167,6 +172,26 @@ public class MainLeraarController {
 			}
 		}
 		
+	}
+	
+	class BeheerLeerlingenKnopListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			if (!leerlingBeheerStaatOpen) {
+				leerlingBeheerStaatOpen = true;
+				beheerLeerlingView = new BeheerLeerlingView();
+				beheerLeerlingController = new BeheerLeerlingController(dbHandler, leraar, beheerLeerlingView);
+				beheerLeerlingView.addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosing(WindowEvent event) {
+						leerlingBeheerStaatOpen = false;
+					}
+				});
+			} else {
+				beheerLeerlingView.toFront();
+			}
+		}
 	}
 
 }
