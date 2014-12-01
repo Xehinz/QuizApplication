@@ -36,11 +36,11 @@ public class OpdrachtAanpassingView extends JFrame {
 	private JLabel lblMaxAntwoordTijd = new JLabel("Maximum antwoordtijd: ");
 
 	private JLabel lblLeraar = new JLabel("Auteur: ");
+	private JLabel lblNaamLeraar = new JLabel("");
 	private JTextField txtVraag, txtJuisteAntwoord, txtHints,
 			txtMaxAantalPogingen, txtMaxAntwoordTijd;
 	private JComboBox<OpdrachtCategorie> cbbOpdrachtCategorie = new JComboBox<>(
 			OpdrachtCategorie.values());
-	private JComboBox<Leraar> cbbLeraar = new JComboBox<>(Leraar.values());
 	private JList<String> lijstHints;
 	protected JPanel bovenPanel, middenPanel, onderPanel, grootPanel;
 
@@ -67,7 +67,8 @@ public class OpdrachtAanpassingView extends JFrame {
 		c.gridx = 2;
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
-		bovenPanel.add(cbbLeraar, c);
+		lblLeraar = new JLabel();
+		bovenPanel.add(lblNaamLeraar, c);
 		
 		c = new GridBagConstraints();
 		c.gridx = 1;
@@ -245,6 +246,21 @@ public class OpdrachtAanpassingView extends JFrame {
 
 	public void OpslaanKnopActionListener(ActionListener listener) {
 		btnOpslaan.addActionListener(listener);
+	}
+	
+	public void setAuteur(Leraar leraar){
+		lblNaamLeraar.setText(leraar.toString());
+	}
+	
+	public void disableAanpassen(){
+		btnOpslaan.setEnabled(false);
+		btnAddHint.setEnabled(false);
+		cbbOpdrachtCategorie.setEnabled(false);
+		txtVraag.setEditable(false);
+		txtJuisteAntwoord.setEditable(false);
+		txtHints.setEditable(false);
+		txtMaxAantalPogingen.setEditable(false);
+		txtMaxAntwoordTijd.setEditable(false);
 	}
 	
 	public static void main(String[] args) {

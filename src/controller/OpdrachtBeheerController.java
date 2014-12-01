@@ -57,6 +57,11 @@ public class OpdrachtBeheerController {
 	private void openOpdrachtAanpassing(Opdracht opdracht, Leraar leraar) {
 		new OpdrachtAanpassingController(opdracht, leraar, dbHandler);
 	}
+	
+	private void openOpdrachtBekijken(Opdracht opdracht, Leraar leraar){
+		OpdrachtAanpassingController OAC = new OpdrachtAanpassingController(opdracht, leraar, dbHandler);
+		OAC.view.disableAanpassen();
+	}
 
 	class NieuweKlassiekeKnopListener implements ActionListener {
 		@Override
@@ -128,7 +133,7 @@ public class OpdrachtBeheerController {
 			if (opdracht == null) {
 				return;
 			}
-			openOpdrachtAanpassing(opdracht, opdracht.getAuteur());
+			openOpdrachtBekijken(opdracht, opdracht.getAuteur());
 		}
 	}
 	

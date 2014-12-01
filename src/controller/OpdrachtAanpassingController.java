@@ -26,7 +26,7 @@ import view.OpdrachtReproductieBeheerView;
 import view.QuizAanpassingView;
 
 public class OpdrachtAanpassingController {
-	private OpdrachtAanpassingView view;
+	protected OpdrachtAanpassingView view;
 	private DBHandler dbHandler;
 	private Opdracht opdracht;
 	private Leraar leraar;
@@ -68,6 +68,7 @@ public class OpdrachtAanpassingController {
 
 	public void setAlgemeneComponenten(OpdrachtAanpassingView view) {
 		view.setOpdrachtCategorie(getOpdracht().getOpdrachtCategorie());
+		view.setAuteur(getOpdracht().getAuteur());
 		view.setVraag(getOpdracht().getVraag());
 		view.setJuisteAntwoord(getOpdracht().getJuisteAntwoord());
 		view.setHints(getOpdracht().getHints());
