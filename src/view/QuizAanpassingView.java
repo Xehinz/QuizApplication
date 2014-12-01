@@ -13,6 +13,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -297,12 +298,12 @@ public class QuizAanpassingView extends JFrame {
 		//setLblAantalOpdrachten();		
 	}
 	
-	public Opdracht getGeselecteerdeOpdracht(String richting) {
-		if(richting.equals(">>>")) {
+	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten() {
 			return alleOpdrachtenTabelModel.getOpdracht(alleOpdrachtenTabel.getSelectedRow());
-		} else {
+	}
+	
+	public Opdracht getGeselecteerdeOpdrachtQuizOpdrachten() {		
 			return geselecteerdeOpdrachtenTabelModel.getOpdracht(geselecteerdeOpdrachtenTabel.getSelectedRow());
-		}
 	}
 	
 	public void addQuizBewarenKnopActionListener(ActionListener listener) {
@@ -325,12 +326,8 @@ public class QuizAanpassingView extends JFrame {
 		cmbSorteer.addActionListener(listener);
 	}
 	
-	public void addIsTestCheckBoxActionListener(ActionListener listener) {
-		ckbIsTest.addActionListener(listener);
-	}
-	
-	public void addIsUniekeDeelnameCheckBoxActionListener(ActionListener listener) {
-		ckbIsUniekeDeelname.addActionListener(listener);
+	public void toonInformationDialog(String boodschap, String titel) {
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void setKolomBreedte (JTable table) {
@@ -344,6 +341,30 @@ public class QuizAanpassingView extends JFrame {
 				    kolom.setPreferredWidth(320); //vraag
 			    }
 			}
+	}
+	
+	public String getOnderwerpTxt() {
+		return txtOnderwerp.getText();
+	}
+	
+	public String getKlasTxt() {
+		return txtKlas.getText();
+	}
+	
+	public boolean getIsTestckb() {
+		return ckbIsTest.isSelected();
+	}
+	
+	public boolean getIsUniekeDeelnameckb() {
+		return ckbIsUniekeDeelname.isSelected();
+	}
+	
+	public QuizStatus getQuizStatuscmb() {
+		return (QuizStatus)cmbStatus.getSelectedItem();
+	}
+	
+	public Quiz getQuiz() {
+		return this.quiz;
 	}
 
 }

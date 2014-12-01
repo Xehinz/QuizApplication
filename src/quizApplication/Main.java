@@ -14,7 +14,7 @@ import controller.OpstartController;
 import controller.OverzichtScoresQuizzenController;
 import controller.QuizAanpassingController;
 import controller.QuizBeheerController;
-import view.MainView;
+//import view.MainView;
 import view.OverzichtScoresQuizzenView;
 import view.QuizBeheerView;
 import persistency.DBHandler;
