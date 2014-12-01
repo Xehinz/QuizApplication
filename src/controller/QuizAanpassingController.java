@@ -98,6 +98,10 @@ public class QuizAanpassingController {
 			quiz.setOnderwerp(onderwerp);
 			quiz.setIsTest(isTest);
 			quiz.setIsUniekeDeelname(isUniekeDeelname);
+			view.toonInformationDialog(
+					"Quiz", "Fout");
+			//TODO quiz updaten / toevoegen in DB
+			view.setViewToQuiz(new Quiz(leraar), (dbHandler.getOpdrachtCatalogus()).getOpdrachten());  //Geef nieuwe quiz aan view
 		}
 	}
 

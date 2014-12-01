@@ -70,22 +70,14 @@ public class QuizAanpassingView extends JFrame {
 		this.setLocationRelativeTo(null);
 		
 		layout = new GridBagLayout();
-		this.setLayout(layout);
-				
-		this.quiz = quiz;
-		this.leraar = leraar;
-		this.alleOpdrachten = alleOpdrachten;				
+		this.setLayout(layout);				
+		
+		this.leraar = leraar;				
 		
 		//INIT BUTTONS
 		btnOpdrachtToevoegen = new JButton(">>>");
 		btnOpdrachtVerwijderen = new JButton("<<<");
-		btnQuizBewaren = new JButton("Quiz bewaren");
-		
-		//INIT TEXTFIELDS
-		txtOnderwerp = new JTextField(quiz.getOnderwerp());
-		txtLeraar = new JTextField(leraar.toString());
-		txtLeraar.setEditable(false);
-		txtKlas = new JTextField(quiz.getDoelLeerjaren().toString());
+		btnQuizBewaren = new JButton("Quiz bewaren");		
 		
 		//INIT COMBOBOX
 		QuizStatus[] status = {new Afgesloten(), new Afgewerkt(), new InConstructie(), new LaatsteKans(), new Opengesteld()};
@@ -94,11 +86,15 @@ public class QuizAanpassingView extends JFrame {
 		String[] sorteerOpties = {"geen", "categorie", "vraag"};
 		cmbSorteer = new JComboBox<String>(sorteerOpties);
 		
+		//INIT TEXTFIELD
+		txtOnderwerp = new JTextField();
+		txtLeraar = new JTextField();
+		txtLeraar.setEditable(false);
+		txtKlas = new JTextField();
+		
 		//INIT CHECKBOX
 		ckbIsTest = new JCheckBox("Test");
-		ckbIsTest.setSelected(quiz.getIsTest());
 		ckbIsUniekeDeelname = new JCheckBox("Unieke Deelname");
-		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
 		
 		//INIT TABLE + SCROLLPANE
 		alleOpdrachtenTabelModel = new QuizAanpassingTableModel();
@@ -110,10 +106,9 @@ public class QuizAanpassingView extends JFrame {
 		geselecteerdeOpdrachtenTabel = new JTable(geselecteerdeOpdrachtenTabelModel);
 		setKolomBreedte(geselecteerdeOpdrachtenTabel);
 		geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
-		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
-		setOpdrachtTabellen(alleOpdrachten, quiz);
+		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));		
 		
-		
+		setViewToQuiz(quiz, alleOpdrachten);
 		
 		//INIT LABELS
 		lblOnderwerp = new JLabel("Onderwerp");
@@ -365,6 +360,21 @@ public class QuizAanpassingView extends JFrame {
 	
 	public Quiz getQuiz() {
 		return this.quiz;
+	}
+		
+	public void setViewToQuiz(Quiz quiz, ArrayList<Opdracht> alleOpdrachten) {
+		this.quiz = quiz;
+		this.alleOpdrachten = alleOpdrachten;
+		
+		//SET FIELDS
+		txtOnderwerp.setText(quiz.getOnderwerp());
+		txtLeraar.setText(leraar.toString());
+		txtKlas.setText(quiz.getDoelLeerjaren().toString());
+		cmbStatus.setSelectedItem(quiz.getQuizStatus());
+		ckbIsTest.setSelected(quiz.getIsTest());
+		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
+		setOpdrachtTabellen(alleOpdrachten, quiz);
+		
 	}
 
 }
