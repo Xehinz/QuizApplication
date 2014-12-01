@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -38,11 +39,10 @@ public class LeerlingAanpassingView extends JFrame  {
 	private JLabel lblID, lblVoornaam, lblFamilienaam, lblLeerjaar;
 	private JButton btnLeerlingBewaren, btnQuizDeelnames;
 	private JTextField txtID, txtVoornaam, txtFamilienaam, txtLeerjaar;
-	private JPanel opdrachtKnoppenVeld, leerlingInfoVeld;
 
 	public LeerlingAanpassingView(Leerling aLeerling, Leraar aLeraar) {
 		super("Leerling");
-		this.setSize(600, 400);		
+		this.setSize(400, 300);		
 		this.setLocationRelativeTo(null);
 		
 		layout = new GridBagLayout();
@@ -56,11 +56,13 @@ public class LeerlingAanpassingView extends JFrame  {
 		btnQuizDeelnames = new JButton("Quiz deelnames");
 		
 		//INIT TEXTFIELDS
-		txtID = new JTextField(aLeerling.getID());
+		txtID = new JTextField();
 		txtID.setEditable(false);
-		txtVoornaam = new JTextField(aLeerling.getLeerlingVoornaam());
-		txtFamilienaam = new JTextField(aLeerling.getLeerlingFamilienaam());
-		txtLeerjaar = new JTextField(aLeerling.getLeerjaar());
+		txtID.setPreferredSize(new Dimension(100, 20));
+		txtVoornaam = new JTextField();
+		txtFamilienaam = new JTextField();
+		txtLeerjaar = new JTextField();
+		txtLeerjaar.setPreferredSize(new Dimension(100, 20));
 		
 		//INIT LABELS
 		lblID = new JLabel("ID");
@@ -68,99 +70,106 @@ public class LeerlingAanpassingView extends JFrame  {
 		lblFamilienaam = new JLabel("Familienaam");
 		lblLeerjaar = new JLabel ("Leerjaar");
 		
-		//INIT KNOPPENVELD
-		opdrachtKnoppenVeld = new JPanel();
-		opdrachtKnoppenVeld.setLayout(layout);
-		//INIT QUIZINFOVELD
-		leerlingInfoVeld = new JPanel();
-		leerlingInfoVeld.setLayout(layout);
-				
 		//ADD LABELS
 		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.insets = new Insets(10, 10, 0, 10);
 		constraints.gridy = 0;
 		constraints.gridx = 0;
-		leerlingInfoVeld.add(lblID, constraints);
+		constraints.weightx = 0.2;
+		constraints.anchor = GridBagConstraints.WEST;
+		this.add(lblID, constraints);
 		
 		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 0;
-		constraints.gridx = 4;
-		leerlingInfoVeld.add(lblVoornaam, constraints);
-		
-		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.insets = new Insets(5, 10, 0, 10);
 		constraints.gridy = 1;
 		constraints.gridx = 0;
-		leerlingInfoVeld.add(lblFamilienaam, constraints);
+		constraints.weightx = 0.2;
+		constraints.anchor = GridBagConstraints.WEST;
+		this.add(lblVoornaam, constraints);
 		
 		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 1;
-		constraints.gridx = 2;
-		leerlingInfoVeld.add(lblLeerjaar, constraints);
+		constraints.insets = new Insets(5, 10, 0, 10);
+		constraints.gridy = 2;
+		constraints.gridx = 0;
+		constraints.weightx = 0.2;
+		constraints.anchor = GridBagConstraints.WEST;
+		this.add(lblFamilienaam, constraints);
+		
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(5, 10, 10, 10);
+		constraints.gridy = 3;
+		constraints.gridx = 0;
+		constraints.weightx = 0.2;
+		constraints.anchor = GridBagConstraints.WEST;
+		this.add(lblLeerjaar, constraints);
 		
 		//ADD BUTTON
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 2;
+		constraints.gridy = 5;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.WEST;
-		leerlingInfoVeld.add(btnLeerlingBewaren, constraints);
+		this.add(btnLeerlingBewaren, constraints);
 
+		/*
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 2;
-		constraints.gridx = 1;
+		constraints.gridy = 5;
+		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.WEST;
 		leerlingInfoVeld.add(btnQuizDeelnames, constraints);
+		*/
 				
 		//ADD TEXTFIELDS
 		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.insets = new Insets(10, 10, 0, 10);
 		constraints.gridy = 0;
 		constraints.gridx = 1;
-		constraints.gridwidth = 3;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		leerlingInfoVeld.add(txtID, constraints);
+		constraints.weightx = 0.4;
+		constraints.anchor = GridBagConstraints.WEST;
+		this.add(txtID, constraints);
 		
 		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 0;
-		constraints.gridx = 5;
+		constraints.insets = new Insets(5, 10, 0, 10);
+		constraints.gridy = 1;
+		constraints.gridx = 1;
+		constraints.weightx = 0.8;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.anchor = GridBagConstraints.WEST;
-		leerlingInfoVeld.add(txtVoornaam, constraints);
+		this.add(txtVoornaam, constraints);
 		
 		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 1;
-		constraints.gridx = 3;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		leerlingInfoVeld.add(txtFamilienaam, constraints);
-		
-		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 1;
-		constraints.gridx = 2;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		leerlingInfoVeld.add(txtLeerjaar, constraints);
-		
-		//BUILD WINDOW
-		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 0;
-		constraints.gridx = 0;
-		constraints.gridwidth = 3;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.anchor = GridBagConstraints.NORTH;
-		this.add(leerlingInfoVeld, constraints);
-		
-		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.insets = new Insets(5, 10, 0, 10);
 		constraints.gridy = 2;
 		constraints.gridx = 1;
-		this.add(opdrachtKnoppenVeld, constraints);
+		constraints.weightx = 0.8;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.WEST;
+		this.add(txtFamilienaam, constraints);
+		
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(5, 10, 10, 10);
+		constraints.gridy = 3;
+		constraints.gridx = 1;
+		constraints.weightx = 0.4;
+		constraints.anchor = GridBagConstraints.WEST;
+		this.add(txtLeerjaar, constraints);
+		
+//		//BUILD WINDOW
+//		constraints = new GridBagConstraints();
+//		constraints.insets = new Insets(10, 10, 10, 10);
+//		constraints.gridy = 0;
+//		constraints.gridx = 0;
+//		constraints.weightx = 1;
+//		constraints.fill = GridBagConstraints.HORIZONTAL;
+//		constraints.anchor = GridBagConstraints.NORTH;
+//		this.add(leerlingInfoVeld, constraints);
+//		
+//		constraints = new GridBagConstraints();
+//		constraints.insets = new Insets(10, 10, 10, 10);
+//		constraints.gridy = 5;
+//		constraints.gridx = 0;
+//		this.add(opdrachtKnoppenVeld, constraints);
 	}
 
 	/**
@@ -186,8 +195,8 @@ public class LeerlingAanpassingView extends JFrame  {
 	public String getID() {
 		return txtID.getText();
 	}
-	public void setID(String id) {
-		 txtID.setText(id);
+	public void setID(int id) {
+		 txtID.setText(Integer.toString(id));
 	}
 	
 	public String getVoornaam() {

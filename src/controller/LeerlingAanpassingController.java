@@ -30,12 +30,17 @@ public class LeerlingAanpassingController {
 
 	
 	public LeerlingAanpassingController(Leerling aLeerling, Leraar aLeraar,
-			DBHandler dbHandler, LeerlingAanpassingView aView) {
+			DBHandler dbHandler) {
 		this.aLeraar = aLeraar;
 		this.aLeerling = aLeerling;
 		this.aDBHandler = dbHandler;
-		this.aView = aView;
+		this.aView = new LeerlingAanpassingView(aLeerling, aLeraar);
 		
+		aView.setID(aLeerling.getID());
+		aView.setVoornaam(aLeerling.getLeerlingVoornaam());
+		aView.setFamilienaam(aLeerling.getLeerlingFamilienaam());
+		aView.setLeerjaar(aLeerling.getLeerjaar());
+	
 		aView.addLeerlingBewarenListener(new LeerlingBewarenListener());
 		aView.openQuizDeelnamesListener(new QuizDeelnamesListener());
 
@@ -51,6 +56,10 @@ public class LeerlingAanpassingController {
 		aLeerling.setLeerlingVoornaam(voornaam);
 		aLeerling.setLeerlingFamilienaam(familienaam);
 		aLeerling.setLeerjaar(leerjaar);
+		
+		aView.setVoornaam(voornaam);
+		aView.setFamilienaam(familienaam);
+		aView.setLeerjaar(leerjaar);
 	}
 
 	class LeerlingBewarenListener implements ActionListener {

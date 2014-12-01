@@ -60,8 +60,7 @@ public class BeheerLeerlingController {
 	}
 	
 	private void openLeerlingAanpassing(Leerling aLeerling, Leraar aLeraar) {
-		//LeerlingAanpassingController aController = new LeerlingAanpassingController(aLeerling,
-		//		aLeraar, getDBHandler());
+		new LeerlingAanpassingController(aLeerling, aLeraar, getDBHandler());
 	}
 
 	/**
