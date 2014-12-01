@@ -374,7 +374,7 @@ public class QuizAanpassingView extends JFrame {
 		ckbIsTest.setSelected(quiz.getIsTest());
 		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
 		setOpdrachtTabellen(alleOpdrachten, quiz);
-		
+		//TODO tabellen worden wel aangepast, maar pas zichtbaar als je de kolombreedte verandert.
 	}
 
 }
