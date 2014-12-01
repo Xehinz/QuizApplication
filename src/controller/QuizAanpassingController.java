@@ -40,9 +40,6 @@ public class QuizAanpassingController {
 		view.setVisible(true);
 	}
 
-	// view.setOpdrachtTabellen((dbHandler.getOpdrachtCatalogus()).getOpdrachten(),
-	// quiz);
-
 	class OpdrachtToevoegenKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -53,7 +50,6 @@ public class QuizAanpassingController {
 				return;
 			}
 			
-			// TODO add opdracht to quizOpdrachten
 		}
 	}
 

@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 
 import model.Leraar;
@@ -328,8 +330,7 @@ public class QuizAanpassingView extends JFrame {
 		alleOpdrachten.removeAll(quiz.getOpdrachten());
 		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
 		alleOpdrachtenTabelModel.fireTableDataChanged();
-		//TODO setLblAantalOpdrachten();
-		//TODO refresh graphics
+		setLblAantalOpdrachten();
 	}
 	
 	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten() {
@@ -358,6 +359,14 @@ public class QuizAanpassingView extends JFrame {
 	
 	public void addSorteerLijstSelectieActionListener(ActionListener listener) {
 		cmbSorteer.addActionListener(listener);
+	}
+	
+	public void addAlleOpdrachtenTabelSelectieListener(TableModelListener listener) {
+		alleOpdrachtenTabelModel.addTableModelListener(listener);
+	}
+	
+	public void addGeselecteerdeOpdrachtenTabelSelectieListener(TableModelListener listener) {
+		geselecteerdeOpdrachtenTabelModel.addTableModelListener(listener);
 	}
 	
 	public void toonInformationDialog(String boodschap, String titel) {
@@ -408,7 +417,9 @@ public class QuizAanpassingView extends JFrame {
 		//SET FIELDS
 		txtOnderwerp.setText(quiz.getOnderwerp());
 		txtOnderwerp.setEditable(quiz.isAanpasbaar());
+		txtLeraar.setEditable(true);
 		txtLeraar.setText(quiz.getAuteur().toString());
+		txtLeraar.setEditable(false);
 		txtKlas.setText(quiz.getDoelLeerjaren().toString());
 		txtKlas.setEditable(quiz.isAanpasbaar());
 		cmbStatus.setSelectedItem(quiz.getQuizStatus());
