@@ -20,9 +20,8 @@ import util.datumWrapper.Datum;
  * <li>Een indicator of aan de quiz maar 1 keer mag deelgenomen worden
  * (isUniekeDeelname - boolean)</li>
  * <li>Een indicator of de quiz een test is (isTest - boolean)</li>
- * <li>De status van de Quiz (QuizStatus). De verschillende statussen van
- * een quiz zijn IN_CONSTRUCTIE, AFGEWERKT, OPENGESTELD, LAATSTE_KANS en
- * AFGESLOTEN</li>
+ * <li>De status van de Quiz (QuizStatus). De verschillende statussen van een
+ * quiz zijn IN_CONSTRUCTIE, AFGEWERKT, OPENGESTELD, LAATSTE_KANS en AFGESLOTEN</li>
  * <li>Een unieke ID (int). De ID wordt ingesteld door de QuizCatalogus, wanneer
  * de Quiz aan een QuizCatalogus wordt toegevoegd</li>
  * </ul>
@@ -235,14 +234,19 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 * @param doelLeerjaar
 	 *            1 of meerdere leerjaren waarvoor de quiz beschikbaar wordt
 	 *            gemaakt
+	 * @throws IllegalArgumentException
+	 *             als een van de meegegeven leerjaren kleiner is dan 1 of
+	 *             groter dan 6
 	 */
-	public void setDoelLeerjaren(int... doelLeerjaar) {
+	public void setDoelLeerjaren(int... doelLeerjaar)
+			throws IllegalArgumentException {
 		for (int i = 1; i < zijnDoelLeerjaren.length; i++) {
 			zijnDoelLeerjaren[i] = false;
 		}
 		for (int leerjaar : doelLeerjaar) {
 			if (leerjaar < 1 || leerjaar > 6) {
-				continue;
+				throw new IllegalArgumentException(String.format(
+						"%d is geen geldig leerjaar", leerjaar));
 			}
 			zijnDoelLeerjaren[leerjaar] = true;
 		}
@@ -300,7 +304,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Enkel wanneer een quiz zich in de status 'Opengesteld' of 'Laatste kans' bevindt, staat ze open voor deelname
+	 * Enkel wanneer een quiz zich in de status 'Opengesteld' of 'Laatste kans'
+	 * bevindt, staat ze open voor deelname
 	 *
 	 * @return true als de quiz open is voor deelname
 	 */
@@ -318,9 +323,10 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	public boolean isVerwijderbaar() {
 		return this.quizStatus.isVerwijderbaar();
 	}
-	
+
 	/**
-	 * Enkel wanneer een quiz zich in de status 'In constructie' bevindt, is ze aanpasbaar
+	 * Enkel wanneer een quiz zich in de status 'In constructie' bevindt, is ze
+	 * aanpasbaar
 	 * 
 	 * @return true als de Quiz aanpasbaar is
 	 */
@@ -518,14 +524,20 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	}
 
 	/**
-	 * Vergelijk deze quiz met een andere quiz op basis van het onderwerp
+	 * Vergelijk deze quiz met een andere quiz op basis van het aantal
+	 * opdrachten. Als het aantal opdrachten gelijk is, vergelijkt compareTo de
+	 * onderwerpen van de twee quizzen alfabetisch
 	 *
 	 * @return een negatief nummer, een nul of een positief nummer als de quiz
-	 *         alfabetisch eerder, op dezelfde plaats of later komt
+	 *         eerder, op dezelfde plaats of later komt
 	 */
 	@Override
 	public int compareTo(Quiz aQuiz) {
-		return this.onderwerp.compareTo(aQuiz.onderwerp);
+		if (this.quizOpdrachten.size() == aQuiz.quizOpdrachten.size()) {
+			return this.onderwerp.compareTo(aQuiz.onderwerp);
+		}
+		return ((Integer) this.quizOpdrachten.size())
+				.compareTo((Integer) aQuiz.quizOpdrachten.size());
 	}
 
 	/**

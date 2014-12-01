@@ -73,7 +73,7 @@ public class MeerkeuzeTest {
 	@Test
 	public void testSetJuisteAntwoord_GeldigeOptieOpKapitalisatieNa_FieldWordtGeset() {
 		opdracht.setJuisteAntwoord("HOND");
-		assertTrue(opdracht.getJuisteAntwoord().equals("Hond"));
+		assertTrue(opdracht.getJuisteAntwoord().equals("HOND"));
 	}
 	
 	@Test (expected = IllegalArgumentException.class)

@@ -3,6 +3,7 @@ package model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import model.quizStatus.InConstructie;
 import model.quizStatus.Opengesteld;
 
 import org.junit.Before;
@@ -37,10 +38,10 @@ public class OpdrachtAntwoordTest {
 	@Before
 	public void setUp() {
 		quiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "De Hoofdsteden van Europa");
-		quiz.setQuizStatus(new Opengesteld());
+		quiz.setQuizStatus(new InConstructie());
 
 		kleinereQuiz = new Quiz(Leraar.MIEKE_WITTEMANS, "Quiz met minder opdrachten");
-		kleinereQuiz.setQuizStatus(new Opengesteld());
+		kleinereQuiz.setQuizStatus(new InConstructie());
 
 		opdrachtZonderTijdZonderPogingen = new KlassiekeOpdracht("Wat is de hoofdstad van Frankrijk?", 0, "Parijs",
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.MARIA_AERTS);
@@ -52,22 +53,19 @@ public class OpdrachtAntwoordTest {
 		leerling = new Leerling("Karel", "Boghen", 3);
 		kleinereLeerling = new Leerling("Laura", "Aaltert", 4);
 
-		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtZonderTijdZonderPogingen, 10);
-		quizOpdrachtZonderTijdZonderPogingen = quiz.getQuizOpdrachten().get(0);
-		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtOpTijdZonderPogingen, 10);
-		quizOpdrachtOpTijdZonderPogingen = quiz.getQuizOpdrachten().get(1);
-		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtZonderTijd1Poging, 10);
-		quizOpdrachtZonderTijd1Poging = quiz.getQuizOpdrachten().get(2);
+		quizOpdrachtZonderTijdZonderPogingen = QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtZonderTijdZonderPogingen, 10);		
+		quizOpdrachtOpTijdZonderPogingen = QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtOpTijdZonderPogingen, 10);		
+		quizOpdrachtZonderTijd1Poging = QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdrachtZonderTijd1Poging, 10);			
 
 		// De QuizOpdracht is kleiner omdat de Quiz kleiner is (minder opdrachten)
-		QuizOpdracht.koppelOpdrachtAanQuiz(kleinereQuiz, opdrachtZonderTijdZonderPogingen, 5);
-		kleinereQuizOpdracht = kleinereQuiz.getQuizOpdrachten().get(0);
+		kleinereQuizOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(kleinereQuiz, opdrachtZonderTijdZonderPogingen, 5);		
+		
+		quiz.setQuizStatus(new Opengesteld());
+		kleinereQuiz.setQuizStatus(new Opengesteld());
 
-		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
-		quizDeelname = quiz.getQuizDeelnames().get(0);
+		quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz, leerling);		
 		// De QuizDeelname is kleiner omdat de Leerling kleiner is (familienaam alfabetisch eerder)
-		QuizDeelname.koppelQuizAanLeerling(kleinereQuiz, kleinereLeerling);
-		kleinereQuizDeelname = kleinereQuiz.getQuizDeelnames().get(0);
+		kleinereQuizDeelname = QuizDeelname.koppelQuizAanLeerling(kleinereQuiz, kleinereLeerling);		
 	}
 
 	@Test

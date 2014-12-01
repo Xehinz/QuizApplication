@@ -19,11 +19,14 @@ import util.datumWrapper.*;
 public class QuizTest {
 
 	private Quiz myQuiz, otherQuiz;
+	private Opdracht opdracht, opdracht2;
 
 	@Before
 	public void setUp() throws Exception {
 		myQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "nieuwe quiz");
 		otherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "andere quiz");
+		opdracht = new KlassiekeOpdracht(OpdrachtCategorie.NEDERLANDS, Leraar.CHARLOTTE_NEVEN);
+		opdracht2 = new KlassiekeOpdracht(OpdrachtCategorie.WETENSCHAPPEN, Leraar.CHARLOTTE_NEVEN);
 	}
 
 	@Test
@@ -89,7 +92,7 @@ public class QuizTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_setDoeljaren_buiten_scope_throwsIllegalArgumentException() {
-		//TODO;
+		myQuiz.setDoelLeerjaren(0);
 	}
 	
 	@Test
@@ -164,24 +167,33 @@ public class QuizTest {
 	}
 
 	@Test
-	public void testQuiz_VergelijkOpdrachten_IsKleiner() {
-		Quiz aQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "new quiz");
-		Quiz anotherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "another quiz");
-		Opdracht aOpdracht = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
-
-		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, aOpdracht, 5);
-		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, aOpdracht, 10);
-		// QuizOpdracht aQuizOpdracht = new QuizOpdracht(aQuiz, aOpdracht, 5);
-		// QuizOpdracht anotherQuizOpdracht = new QuizOpdracht(aQuiz, aOpdracht,
-		// 10);
-		// aQuiz.addQuizOpdracht(aQuizOpdracht);
-		// aQuiz.addQuizOpdracht(anotherQuizOpdracht);
-
-		QuizOpdracht.koppelOpdrachtAanQuiz(anotherQuiz, aOpdracht, 7);
-		// aQuizOpdracht = new QuizOpdracht(anotherQuiz, aOpdracht, 7);
-		// anotherQuiz.addQuizOpdracht(aQuizOpdracht);
-
-		assertTrue("Deze quiz heeft minder opdrachten", anotherQuiz.compareTo(aQuiz) == -1);
+	public void testCompareTo_GrotereQuizOpBasisVanAantalOpdrachtenAlsArgument_GeeftNegatief() {
+		QuizOpdracht.koppelOpdrachtAanQuiz(myQuiz, opdracht, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(myQuiz, opdracht2, 10);
+		
+		QuizOpdracht.koppelOpdrachtAanQuiz(otherQuiz, opdracht, 10);
+		
+		assertTrue(otherQuiz.compareTo(myQuiz) < 0);
+	}
+	
+	@Test
+	public void testCompareTo_KleinerQuizOpBasisVanAantalOpdrachtenAlsArgument_GeeftPositief() {
+		QuizOpdracht.koppelOpdrachtAanQuiz(myQuiz, opdracht, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(myQuiz, opdracht2, 10);
+		
+		QuizOpdracht.koppelOpdrachtAanQuiz(otherQuiz, opdracht, 10);
+		
+		assertTrue(myQuiz.compareTo(otherQuiz) > 0);
+	}
+	
+	@Test
+	public void testCompareTo_GrotereQuizOpBasisVanOnderwerpAlsArgument_GeeftNegatief() {		
+		assertTrue(otherQuiz.compareTo(myQuiz) < 0);
+	}
+	
+	@Test
+	public void testCompareTo_KleinereQuizOpBasisVanOnderwerpAlsArgument_GeeftPositief() {		
+		assertTrue(myQuiz.compareTo(otherQuiz) > 0);
 	}
 
 }

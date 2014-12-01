@@ -49,24 +49,21 @@ public class QuizDeelnameTest {
 		leerling2 = new Leerling("An", "Stijnen", 2);
 		leerling3 = new Leerling("Bram", "Verhelst", 3);
 
-		QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
-		QuizDeelname.koppelQuizAanLeerling(quiz, leerling2);
-		QuizDeelname.koppelQuizAanLeerling(quiz, leerling3);
+		quizdeelname = QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
+		quizdeelname2 = QuizDeelname.koppelQuizAanLeerling(quiz, leerling2);
+		quizdeelname3 = QuizDeelname.koppelQuizAanLeerling(quiz, leerling3);
 		QuizDeelname.koppelQuizAanLeerling(quiz4, leerling);
-
-		quizdeelname = quiz.getQuizDeelnames().get(0);
-		quizdeelname2 = quiz.getQuizDeelnames().get(1);
-		quizdeelname3 = quiz.getQuizDeelnames().get(2);
-		quizdeelname4 = quiz.getQuizDeelnames().get(0);
+	
+		quizdeelname4 = quizdeelname;
 
 		opdracht1 = new KlassiekeOpdracht("Wat is de hoofdstad van Nederland", "Amsterdam", 1, 15,
 				OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.JOS_VERBEEK);
 		opdracht2 = new KlassiekeOpdracht("Hoeveel is 2 maal 2", "4", 1, 10, OpdrachtCategorie.WISKUNDE, Leraar.MIEKE_WITTEMANS);
 
-		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdracht1, 5);
-		QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdracht2, 5);
-		quizopdracht1 = quiz.getQuizOpdrachten().get(0);
-		quizopdracht2 = quiz.getQuizOpdrachten().get(1);
+		quiz.setQuizStatus(new InConstructie());
+		quizopdracht1 = QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdracht1, 5);
+		quizopdracht2 = QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdracht2, 5);
+		quiz.setQuizStatus(new Opengesteld());
 
 		opdrachtantwoord1 = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizdeelname, quizopdracht1, 1, 11, "Brussel");
 		opdrachtantwoord2 = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizdeelname, quizopdracht2, 1, 10, "4");

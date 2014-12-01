@@ -86,9 +86,9 @@ public class QuizOpdrachtTest {
 	@Test
 	public void testAddOpdrachtAntwoord_VoegOpdrachtAntwoordToe_CorrectToegevoegd() {
 		Leerling leerling = new Leerling("Lolli", "Pop", 1);
-		quiz1.setQuizStatus(new Opengesteld());
-		QuizDeelname quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz1, leerling);
 		quizOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(quiz1, opdracht1, 0);
+		quiz1.setQuizStatus(new Opengesteld());
+		QuizDeelname quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz1, leerling);		
 		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdracht, 10, 10, "HUDUUH");
 		quizOpdracht.addOpdrachtAntwoord(opdrachtAntwoord);
 		assertTrue("", quizOpdracht.getOpdrachtAntwoorden().contains(opdrachtAntwoord));
@@ -98,12 +98,12 @@ public class QuizOpdrachtTest {
 	public void testGetGemiddeldeScore_VerkrijgGemiddeldeScore_CorrecteGemiddeldeScore() {
 		Leerling leerling = new Leerling("Lolli", "Pop", 1);
 		Leerling leerling1 = new Leerling("Jan", "Jansen", 2);
+		quizOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(quiz1, opdracht1, 0);
+		QuizOpdracht quizOpdracht1 = QuizOpdracht.koppelOpdrachtAanQuiz(quiz2, opdracht2, 5);
 		quiz1.setQuizStatus(new Opengesteld());
 		quiz2.setQuizStatus(new Opengesteld());
 		QuizDeelname quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz1, leerling);
 		QuizDeelname quizDeelname1 = QuizDeelname.koppelQuizAanLeerling(quiz2, leerling1);
-		quizOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(quiz1, opdracht1, 0);
-		QuizOpdracht quizOpdracht1 = QuizOpdracht.koppelOpdrachtAanQuiz(quiz2, opdracht2, 5);
 		OpdrachtAntwoord opdrachtAntwoord2 = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdracht, 5, 5, "Audi");
 		OpdrachtAntwoord opdrachtAntwoord3 = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname1, quizOpdracht1, 6, 6, "Mercedes");
 		ArrayList<OpdrachtAntwoord> opdrachtAntwoorden;

@@ -199,7 +199,12 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 		if (this.getAantalOpties() > 0) {
 			// verificatie of het meegegeven antwoord wel als optie beschikbaar
 			// is
-			if (!this.getOpties().contains(juisteAntwoord.trim())) {
+			boolean bevat = false;
+			for (int i = 0; i < getOpties().size() && !bevat; i++) {
+				bevat = getOpties().get(i).equalsIgnoreCase(
+						juisteAntwoord.trim()) ? true : false;
+			}
+			if (!bevat) {
 				throw new IllegalArgumentException(
 						"Deze optie kan niet als juiste antwoord ingesteld worden. Dit juiste antwoord is niet als optie beschikbaar in de meerkeuzen.");
 			}
@@ -222,8 +227,8 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 		}
 		return newList;
 	}
-	
-	public String getOptiesString(){
+
+	public String getOptiesString() {
 		return this.meerkeuzeOpties;
 	}
 
@@ -237,16 +242,18 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 	 *             wanneer het juiste antwoord zich niet tussen de meegegeven
 	 *             antwoordopties bevindt
 	 */
-	public void setOpties(String opties) throws IllegalArgumentException {
-		this.meerkeuzeOpties = opties;
+	public void setOpties(String opties) throws IllegalArgumentException {		
+		String oudeOpties = meerkeuzeOpties;
+		this.meerkeuzeOpties = opties.trim();
 		// verificatie of de meegegeven opties ook wel het juiste antwoord
 		// bevatten
 		if (this.juisteOptie != "") {
 			if (!this.getOpties().contains(this.juisteOptie)) {
+				meerkeuzeOpties = oudeOpties;
 				throw new IllegalArgumentException(
 						"Deze opties kunnen niet als meerkeuzen ingesteld worden. Het juiste antwoord is niet beschikbaar in deze lijst met meerkeuzen.");
 			}
-		}
+		}		
 	}
 
 	/**
@@ -270,13 +277,13 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 
 	@Override
 	public boolean isJuisteAntwoord(String antwoord) {
-		return (antwoord.toUpperCase().equals(this.juisteOptie.toUpperCase()));
+		return (antwoord.trim().equalsIgnoreCase(this.juisteOptie.trim()));
 	}
 
 	@Override
 	public String toString() {
-		return "Meerkeuze " + super.toString()
-				+ juisteOptie + ", kies een geldige optie uit: " + meerkeuzeOpties;
+		return "Meerkeuze " + super.toString() + juisteOptie
+				+ ", kies een geldige optie uit: " + meerkeuzeOpties;
 	}
 
 	@Override
