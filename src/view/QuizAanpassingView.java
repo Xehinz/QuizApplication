@@ -72,7 +72,10 @@ public class QuizAanpassingView extends JFrame {
 		layout = new GridBagLayout();
 		this.setLayout(layout);				
 		
-		this.leraar = leraar;				
+		this.leraar = leraar;
+		
+		//set labels
+		//init buttons
 		
 		//INIT BUTTONS
 		btnOpdrachtToevoegen = new JButton(">>>");
@@ -116,8 +119,6 @@ public class QuizAanpassingView extends JFrame {
 		geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
 		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));		
 		
-		setViewToQuiz(quiz, alleOpdrachten);
-		
 		//INIT LABELS
 		lblOnderwerp = new JLabel("Onderwerp");
 		lblLeraar = new JLabel("Auteur");
@@ -126,8 +127,9 @@ public class QuizAanpassingView extends JFrame {
 		lblFilterOpCategorie = new JLabel("Toon opdrachten van categorie :");
 		lblSorteer = new JLabel("Sorteer opdrachten op :");
 		lblAantalOpdrachten = new JLabel();
-		setLblAantalOpdrachten();
 		lblMaxPunten = new JLabel("Max score voor deze vraag :");
+		
+		setViewToQuiz(quiz, alleOpdrachten);
 		
 		//INIT KNOPPENVELD
 		opdrachtKnoppenVeld = new JPanel();
@@ -311,15 +313,21 @@ public class QuizAanpassingView extends JFrame {
 	}
 	
 	public void setLblAantalOpdrachten() {
-		aantalOpdrachten = new String("Aantal toegevoegde opdrachten : " + geselecteerdeOpdrachtenTabel.getRowCount());
+		int aantal = 0;
+		if (geselecteerdeOpdrachtenTabel.getRowCount()>0) {
+			aantal = geselecteerdeOpdrachtenTabel.getRowCount();
+		}
+		aantalOpdrachten = String.format("%s%d","Aantal toegevoegde opdrachten : ", aantal);
 		lblAantalOpdrachten.setText(aantalOpdrachten);
-		//lblAantalOpdrachten.setText("test");
 	}
 	
 	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Quiz quiz) {
 		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
+		geselecteerdeOpdrachtenTabel.setModel(geselecteerdeOpdrachtenTabelModel);
+		geselecteerdeOpdrachtenTabelModel.fireTableDataChanged();
 		alleOpdrachten.removeAll(quiz.getOpdrachten());
 		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
+		alleOpdrachtenTabelModel.fireTableDataChanged();
 		//TODO setLblAantalOpdrachten();
 		//TODO refresh graphics
 	}
@@ -399,13 +407,19 @@ public class QuizAanpassingView extends JFrame {
 		
 		//SET FIELDS
 		txtOnderwerp.setText(quiz.getOnderwerp());
-		txtLeraar.setText(leraar.toString());
+		txtOnderwerp.setEditable(quiz.isAanpasbaar());
+		txtLeraar.setText(quiz.getAuteur().toString());
 		txtKlas.setText(quiz.getDoelLeerjaren().toString());
+		txtKlas.setEditable(quiz.isAanpasbaar());
 		cmbStatus.setSelectedItem(quiz.getQuizStatus());
 		ckbIsTest.setSelected(quiz.getIsTest());
+		ckbIsTest.setEnabled(quiz.isAanpasbaar());
 		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
+		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
+		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
+		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
 		setOpdrachtTabellen(alleOpdrachten, quiz);
-		//TODO tabellen worden wel aangepast, maar pas zichtbaar als je de kolombreedte verandert.
+		setLblAantalOpdrachten();
 	}
 
 }
