@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
@@ -271,6 +272,8 @@ public class OpdrachtAanpassingView extends JFrame {
 		txtMaxAntwoordTijd.setEditable(false);
 	}
 	
-	
+	public void toonErrorMessage(String boodschap, String titel) {
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.ERROR_MESSAGE);
+	}
 
 }

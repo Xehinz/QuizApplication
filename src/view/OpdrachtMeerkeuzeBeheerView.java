@@ -34,8 +34,7 @@ public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView {
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
 		txtMogelijkeAntwoordenMeerkeuze = new JTextField();
-		txtMogelijkeAntwoordenMeerkeuze
-				.setPreferredSize(new Dimension(600, 75));
+		txtMogelijkeAntwoordenMeerkeuze.setPreferredSize(new Dimension (600, 25));
 		middenPanel.add(txtMogelijkeAntwoordenMeerkeuze, c);
 
 		GridBagConstraints b = new GridBagConstraints();

@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import controller.OpdrachtBeheerController.BekijkDetailsKnopListener;
 import controller.OpdrachtBeheerController.NieuweKlassiekeKnopListener;
@@ -33,7 +34,8 @@ public class OpdrachtAanpassingController {
 	private OpdrachtBeheerController opdrachtBeheerController;
 
 	public OpdrachtAanpassingController(Opdracht opdracht, Leraar leraar,
-			DBHandler dbHandler, OpdrachtBeheerController opdrachtBeheerController) {
+			DBHandler dbHandler,
+			OpdrachtBeheerController opdrachtBeheerController) {
 		this.opdracht = opdracht;
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
@@ -88,15 +90,21 @@ public class OpdrachtAanpassingController {
 	public Opdracht getOpdracht() {
 		return opdracht;
 	}
-	
-	public OpdrachtAanpassingView getView(){
+
+	public OpdrachtAanpassingView getView() {
 		return this.view;
 	}
 
 	public void setOpdracht(OpdrachtCategorie oc, String vraag,
 			String juisteAntwoord, ArrayList<String> hints,
 			int maxAantalPogingen, int maxAntwoordTijd) {
-		opdracht.setJuisteAntwoord(juisteAntwoord);
+		try {
+			opdracht.setJuisteAntwoord(juisteAntwoord);
+		} catch (Exception e) {
+			view.toonErrorMessage(
+					String.format("Fout bij het opslaan van de opdracht:\n%s",
+							e.getMessage()), "Fout bij Opslaan");
+		}
 		opdracht.setVraag(vraag);
 		opdracht.setMaxAantalPogingen(maxAantalPogingen);
 		opdracht.setMaxAntwoordTijd(maxAntwoordTijd);
@@ -132,16 +140,17 @@ public class OpdrachtAanpassingController {
 					view.getJuisteAntwoord(), view.getHints(),
 					view.getMaxAantalPogingen(), view.getMaxAntwoordTijd());
 			if (opdracht instanceof Meerkeuze) {
-				if (((Meerkeuze) opdracht).isValide(view.getJuisteAntwoord())) {
-					setMeerkeuze(((OpdrachtMeerkeuzeBeheerView) view)
-							.getMogelijkeAntwoordenMeerkeuze());
+				setMeerkeuze(((OpdrachtMeerkeuzeBeheerView) view)
+						.getMogelijkeAntwoordenMeerkeuze());
+				if (!((Meerkeuze) opdracht).isValide(view.getJuisteAntwoord())) {
+				view.toonErrorMessage("Fout bij het opslaan van de opdracht:\nDe meerkeuzeoptie bevatten het juiste antwoord niet", "Fout bij Opslaan");
 				}
 			}
 			if (opdracht instanceof Opsomming) {
-				
-					setOpsomming(((OpdrachtOpsommingBeheerView) view)
-							.getInJuisteVolgorde());
-				
+
+				setOpsomming(((OpdrachtOpsommingBeheerView) view)
+						.getInJuisteVolgorde());
+
 			}
 			if (opdracht instanceof Reproductie) {
 				setReproductie(((OpdrachtReproductieBeheerView) view)
@@ -149,7 +158,8 @@ public class OpdrachtAanpassingController {
 			}
 			dbHandler.getOpdrachtCatalogus().addOpdracht(opdracht);
 			view.setVisible(false);
-			opdrachtBeheerController.getView().setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten());
+			opdrachtBeheerController.getView().setOpdrachten(
+					dbHandler.getOpdrachtCatalogus().getOpdrachten());
 		}
 	}
 }

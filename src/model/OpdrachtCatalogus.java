@@ -80,7 +80,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 		}
 		this.opdrachtcatalogus.remove(opdracht);
 	}
-
+	
 	/**
 	 * Check of de catalogus een bepaalde opdracht bevat
 	 *
