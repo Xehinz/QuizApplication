@@ -156,7 +156,7 @@ public class OpdrachtAanpassingController {
 				setReproductie(((OpdrachtReproductieBeheerView) view)
 						.getMinimumAantalTrefwoorden());
 			}
-			dbHandler.getOpdrachtCatalogus().addOpdracht(opdracht);
+			if (opdracht.getID() == 0) {dbHandler.getOpdrachtCatalogus().addOpdracht(opdracht);}
 			view.setVisible(false);
 			opdrachtBeheerController.getView().setOpdrachten(
 					dbHandler.getOpdrachtCatalogus().getOpdrachten());

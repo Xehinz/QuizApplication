@@ -13,6 +13,7 @@ import javax.swing.event.ListSelectionListener;
 
 import persistency.DBHandler;
 import controller.OpdrachtBeheerController;
+import controller.OpstartController;
 import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
@@ -32,8 +33,7 @@ public class OpdrachtBeheerView extends JFrame {
 	private JButton btnBekijkDetails = new JButton("Bekijk details");
 
 	private JList<Opdracht> lijstOpdrachten = new JList<>();
-	private JComboBox<OpdrachtCategorie> selecteerCategorie = new JComboBox<>(
-			OpdrachtCategorie.values());
+	private JComboBox<String> selecteerCategorie = new JComboBox<>();
 
 	public OpdrachtBeheerView() {
 		super("Opdrachtenbeheer");
@@ -93,7 +93,7 @@ public class OpdrachtBeheerView extends JFrame {
 		c.anchor = GridBagConstraints.WEST;
 		newPanel.add(new JScrollPane(lijstOpdrachten), c);
 
-		this.add(newPanel);		
+		this.add(newPanel);
 	}
 
 	public void setOpdrachten(ArrayList<Opdracht> opdrachten) {
@@ -102,19 +102,26 @@ public class OpdrachtBeheerView extends JFrame {
 			model.addElement(O);
 		}
 		lijstOpdrachten.setModel(model);
-		lijstOpdrachten.setSelectedIndex(0);	
-		
+		lijstOpdrachten.setSelectedIndex(0);
+
+	}
+	
+	public void setOpdrachtCategorie(){
+		selecteerCategorie.addItem("Alle categorieën");
+		for (OpdrachtCategorie a : OpdrachtCategorie.values()){
+			selecteerCategorie.addItem(a.toString());			
+		}
 	}
 
 	public Opdracht getGeselecteerdeOpdracht() {
 		return (Opdracht) lijstOpdrachten.getSelectedValue();
 	}
-	
-	public OpdrachtCategorie getOpdrachtCategorie(){
-		return (OpdrachtCategorie) selecteerCategorie.getSelectedItem();
+
+	public String getOpdrachtCategorie() {
+		return (String) selecteerCategorie.getSelectedItem();
 	}
-	
-	public void setListCellRenderer(ListCellRenderer<Opdracht> LCR){
+
+	public void setListCellRenderer(ListCellRenderer<Opdracht> LCR) {
 		lijstOpdrachten.setCellRenderer(LCR);
 	}
 
@@ -145,17 +152,17 @@ public class OpdrachtBeheerView extends JFrame {
 	public void addBekijkDetailsKnopActionListener(ActionListener listener) {
 		btnBekijkDetails.addActionListener(listener);
 	}
-	
-	public void addSelecteerCategorieActionlistener(ActionListener listener){
+
+	public void addSelecteerCategorieActionlistener(ActionListener listener) {
 		selecteerCategorie.addActionListener(listener);
 	}
-	
-	public void addListSelectionListener(ListSelectionListener listener){
+
+	public void addListSelectionListener(ListSelectionListener listener) {
 		lijstOpdrachten.addListSelectionListener(listener);
 	}
-	
-	public void disableAanpassen(boolean b){
+
+	public void disableAanpassen(boolean b) {
 		btnPasOpdrachtAan.setEnabled(b);
 	}
-
+	
 }

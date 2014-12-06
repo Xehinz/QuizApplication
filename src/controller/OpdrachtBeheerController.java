@@ -36,6 +36,7 @@ public class OpdrachtBeheerController {
 		this.opdracht = null;
 
 		view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten());
+		view.setOpdrachtCategorie();
 
 		view.setListCellRenderer(new OpdrachtListCellRenderer());
 		view.addNieuweKlassiekeKnopActionListener(new NieuweKlassiekeKnopListener());
@@ -47,7 +48,10 @@ public class OpdrachtBeheerController {
 		view.addBekijkDetailsKnopActionListener(new BekijkDetailsKnopListener());
 		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
 		view.addListSelectionListener(new OpdrachtGeselecteerd());
-		view.disableAanpassen(view.getGeselecteerdeOpdracht().isAanpasbaar());
+		if (!view.getGeselecteerdeOpdracht().equals(null)) {
+			view.disableAanpassen(view.getGeselecteerdeOpdracht()
+					.isAanpasbaar());
+		}
 		view.setVisible(true);
 	}
 
@@ -151,9 +155,16 @@ public class OpdrachtBeheerController {
 	class SelecteerCategorieListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			OpdrachtCategorie OC = view.getOpdrachtCategorie();
-			view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten(
-					OC));
+			String opdrachtCategorieString = view.getOpdrachtCategorie();
+			if (opdrachtCategorieString.equals("Alle categorieën")) {
+				view.setOpdrachten(dbHandler.getOpdrachtCatalogus()
+						.getOpdrachten());
+			} else {
+				OpdrachtCategorie OC = OpdrachtCategorie
+						.valueOf(opdrachtCategorieString);
+				view.setOpdrachten(dbHandler.getOpdrachtCatalogus()
+						.getOpdrachten(OC));
+			}
 		}
 	}
 
@@ -162,18 +173,19 @@ public class OpdrachtBeheerController {
 		@Override
 		public void valueChanged(ListSelectionEvent arg0) {
 			if (view.getGeselecteerdeOpdracht() != null) {
-			opdracht = view.getGeselecteerdeOpdracht();
+				opdracht = view.getGeselecteerdeOpdracht();
 			}
 			view.disableAanpassen(opdracht.isAanpasbaar());
 		}
 
 	}
-	
-	class OpdrachtListCellRenderer extends JLabel implements ListCellRenderer<Opdracht> {
-		
-		  public OpdrachtListCellRenderer() {
-		         setOpaque(true);
-		     }	
+
+	class OpdrachtListCellRenderer extends JLabel implements
+			ListCellRenderer<Opdracht> {
+
+		public OpdrachtListCellRenderer() {
+			setOpaque(true);
+		}
 
 		@Override
 		public Component getListCellRendererComponent(
@@ -181,27 +193,26 @@ public class OpdrachtBeheerController {
 				boolean isSelected, boolean cellHasFocus) {
 			Color background;
 			Color foreground;
-			
+
 			Opdracht opdracht = null;
 			if (value instanceof Opdracht) {
-				opdracht = (Opdracht)value;
+				opdracht = (Opdracht) value;
 			}
 			this.setText(opdracht.toStringVoorLijst());
-			
-			UIDefaults defaults = UIManager.getDefaults();
-			
-	       if (isSelected) {
-	             background = defaults.getColor("List.selectionBackground");
-	             foreground = defaults.getColor("List.selectionForeground");	        
-	         } else {
-	             background = Color.WHITE;
-	             foreground = Color.BLACK;
-	         }
-	       
-	       setBackground(background);
-	         setForeground(foreground);
-			return this;
-		}		
-	}
 
+			UIDefaults defaults = UIManager.getDefaults();
+
+			if (isSelected) {
+				background = defaults.getColor("List.selectionBackground");
+				foreground = defaults.getColor("List.selectionForeground");
+			} else {
+				background = Color.WHITE;
+				foreground = Color.BLACK;
+			}
+
+			setBackground(background);
+			setForeground(foreground);
+			return this;
+		}
+	}
 }
