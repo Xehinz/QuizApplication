@@ -102,8 +102,6 @@ public class OpdrachtBeheerView extends JFrame {
 			model.addElement(O);
 		}
 		lijstOpdrachten.setModel(model);
-		lijstOpdrachten.setSelectedIndex(0);
-
 	}
 	
 	public void setOpdrachtCategorie(){

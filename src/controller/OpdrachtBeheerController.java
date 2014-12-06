@@ -48,10 +48,6 @@ public class OpdrachtBeheerController {
 		view.addBekijkDetailsKnopActionListener(new BekijkDetailsKnopListener());
 		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
 		view.addListSelectionListener(new OpdrachtGeselecteerd());
-		if (!view.getGeselecteerdeOpdracht().equals(null)) {
-			view.disableAanpassen(view.getGeselecteerdeOpdracht()
-					.isAanpasbaar());
-		}
 		view.setVisible(true);
 	}
 
@@ -128,7 +124,7 @@ public class OpdrachtBeheerController {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			opdracht = view.getGeselecteerdeOpdracht();
-			if (opdracht == null) {
+			if (opdracht.equals(null)) {
 				return;
 			}
 			if (!opdracht.isVerwijderbaar()) {
@@ -161,7 +157,7 @@ public class OpdrachtBeheerController {
 						.getOpdrachten());
 			} else {
 				OpdrachtCategorie OC = OpdrachtCategorie
-						.valueOf(opdrachtCategorieString);
+						.valueOf(opdrachtCategorieString.toUpperCase());
 				view.setOpdrachten(dbHandler.getOpdrachtCatalogus()
 						.getOpdrachten(OC));
 			}
@@ -169,15 +165,12 @@ public class OpdrachtBeheerController {
 	}
 
 	class OpdrachtGeselecteerd implements ListSelectionListener {
-
 		@Override
 		public void valueChanged(ListSelectionEvent arg0) {
-			if (view.getGeselecteerdeOpdracht() != null) {
-				opdracht = view.getGeselecteerdeOpdracht();
-			}
-			view.disableAanpassen(opdracht.isAanpasbaar());
+			Opdracht O = view.getGeselecteerdeOpdracht();
+			//opdracht = view.getGeselecteerdeOpdracht();
+			//view.disableAanpassen(O.isAanpasbaar());
 		}
-
 	}
 
 	class OpdrachtListCellRenderer extends JLabel implements
