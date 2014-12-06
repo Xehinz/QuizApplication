@@ -58,7 +58,7 @@ public class QuizDeelnameView extends JFrame implements IQuizDeelnameView {
 			
 		tblQuizzen = new JTable();			
 		tblQuizzen.setAutoCreateRowSorter(true);
-		tblQuizzen.setFillsViewportHeight(true);	
+		tblQuizzen.setFillsViewportHeight(true);		
 		
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
