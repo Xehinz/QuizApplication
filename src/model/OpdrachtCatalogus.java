@@ -19,14 +19,14 @@ import java.util.Iterator;
  */
 public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 		Cloneable, Iterable<Opdracht> {
-	private HashSet<Opdracht> opdrachtcatalogus;
+	private ArrayList<Opdracht> opdrachtcatalogus;
 	private int hoogsteID;
 
 	/**
 	 * Maakt een nieuwe OpdrachtCatalogus aan
 	 */
 	public OpdrachtCatalogus() {
-		this.opdrachtcatalogus = new HashSet<Opdracht>();
+		this.opdrachtcatalogus = new ArrayList<Opdracht>();
 		hoogsteID = 0;
 	}
 
@@ -38,7 +38,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 	 *            een lijst van opdrachten
 	 */
 	public OpdrachtCatalogus(Collection<Opdracht> oc) {
-		this.opdrachtcatalogus = new HashSet<Opdracht>();
+		this.opdrachtcatalogus = new ArrayList<Opdracht>();
 		hoogsteID = 0;
 		for (Opdracht opdracht : oc) {
 			addOpdracht(opdracht);
@@ -243,7 +243,7 @@ public class OpdrachtCatalogus implements Comparable<OpdrachtCatalogus>,
 		OpdrachtCatalogus clone = null;
 		try {
 			clone = (OpdrachtCatalogus) super.clone();
-			clone.opdrachtcatalogus = new HashSet<Opdracht>();
+			clone.opdrachtcatalogus = new ArrayList<Opdracht>();
 			for (Opdracht opdracht : this.opdrachtcatalogus) {
 				clone.opdrachtcatalogus.add(opdracht.clone());
 			}

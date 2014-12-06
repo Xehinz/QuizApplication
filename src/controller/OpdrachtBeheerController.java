@@ -167,9 +167,10 @@ public class OpdrachtBeheerController {
 	class OpdrachtGeselecteerd implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent arg0) {
-			Opdracht O = view.getGeselecteerdeOpdracht();
-			//opdracht = view.getGeselecteerdeOpdracht();
-			//view.disableAanpassen(O.isAanpasbaar());
+			if (view.getGeselecteerdeOpdracht() != null) {
+				opdracht = view.getGeselecteerdeOpdracht();
+				view.disableAanpassen(opdracht.isAanpasbaar());
+			}
 		}
 	}
 
