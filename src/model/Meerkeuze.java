@@ -22,7 +22,7 @@ import util.datumWrapper.Datum;
  */
 public class Meerkeuze extends Opdracht implements Valideerbaar {
 
-	private String meerkeuzeOpties;
+	private String meerkeuzeOpties = "";
 	private String juisteOptie = "";
 
 	/**
@@ -196,7 +196,7 @@ public class Meerkeuze extends Opdracht implements Valideerbaar {
 			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");
 		}
-		if (this.getAantalOpties() > 0) {
+		if (this.meerkeuzeOpties != "") {
 			// verificatie of het meegegeven antwoord wel als optie beschikbaar
 			// is
 			boolean bevat = false;
