@@ -9,8 +9,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
 import model.Leerling;
@@ -58,6 +61,11 @@ public class QuizScoresRapportView extends JFrame implements
 		tblDeelnamen.setAutoCreateRowSorter(true);
 		tblDeelnamen.setFillsViewportHeight(true);
 		
+		
+
+		
+		
+		
 		constraints = new GridBagConstraints();
 		constraints.gridy = 10;
 		constraints.gridx = 0;
@@ -101,12 +109,19 @@ public class QuizScoresRapportView extends JFrame implements
 		
 		tblDeelnamen.setModel(quizDeelnameTableModel);
 		tblDeelnamen.getColumnModel().getColumn(0).setPreferredWidth(200);	
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tblDeelnamen.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
 	}
 	
 	public void setTableModel1(TableModel quizScoreTableModel) {
 		
 		tblQuizzen.setModel(quizScoreTableModel);
-		tblQuizzen.getColumnModel().getColumn(0).setPreferredWidth(300);
+		tblQuizzen.getColumnModel().getColumn(0).setPreferredWidth(250);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tblQuizzen.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
 	}
 	
 	public void setLeerling(Leerling leerling) {
@@ -123,13 +138,17 @@ public class QuizScoresRapportView extends JFrame implements
 
 	@Override
 	public void toonInformationDialog(String boodschap, String titel) {
-		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
 	@Override
 	public int getGeselecteerdeRij() {
 		return tblDeelnamen.convertRowIndexToModel(tblDeelnamen.getSelectedRow());
+	}
+	
+	public void addSelectionListener(ListSelectionListener listener) {
+		tblDeelnamen.getSelectionModel().addListSelectionListener(listener);
 	}
 
 }
