@@ -8,15 +8,11 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import controller.MainLeerlingController.DeelnemenKnopListener;
-import controller.QuizDeelnameController.QuizTableModel;
 import model.Leerling;
 import model.Quiz;
 import model.QuizDeelname;
 import persistency.DBHandler;
-import view.OverzichtScoresLeerlingenView;
 import view.QuizScoresRapportView;
-import view.viewInterfaces.IOverzichtScoresLeerlingenView;
 import view.viewInterfaces.IQuizScoresRapportView;
 
 public class QuizScoresRapportController {
@@ -24,47 +20,56 @@ public class QuizScoresRapportController {
 	private DBHandler dBHandler;
 	private Leerling leerling; 
 
-	private IQuizScoresRapportView quizScoresRapportView;
-
+	private IQuizScoresRapportView View;
 	
 	public QuizScoresRapportController(DBHandler dbHandler, Leerling leerling, IQuizScoresRapportView view ) {
 		
 		this.dBHandler = dbHandler;
 		this.leerling = leerling;
-		this.quizScoresRapportView = view;
-		this.quizScoresRapportView.setLeerling(leerling);
-		this.quizScoresRapportView.setTableModel(new QuizDeelnameScoresTableModel(leerling.getQuizDeelnames()));
-		this.quizScoresRapportView.setVisible(true);
+		View = view;
+		View.setLeerling(leerling);
+		View.setTableModel(new QuizDeelnameTableModel(leerling.getQuizDeelnames()));
+		View.setTableModel1(new QuizDeelnameQuizScoresTableModel(leerling.getDeelgenomenQuizzen()));
+		View.setVisible(true);
 	}
 	
 }
 
 @SuppressWarnings("serial")
-	class QuizDeelnameScoresTableModel extends AbstractTableModel {
+	class QuizDeelnameTableModel extends AbstractTableModel {
+	
 	private ArrayList<QuizDeelname> deelnamenVanLeerling;
-	private String[] headers = new String[] {"Quiz", "Datum deelname"};
+	private String[] headersDeelnames;
 	
-	
-	public QuizDeelnameScoresTableModel(ArrayList<QuizDeelname> deelnames) {
+	public QuizDeelnameTableModel(ArrayList<QuizDeelname> deelnames) {
 		super();
-	
-		deelnamenVanLeerling = deelnames;
+		
+		headersDeelnames = new String[] {"Quiz", "Leerling", "Datum deelname", "Tijdstip Deelname"};		
+		deelnamenVanLeerling = new ArrayList<QuizDeelname>();
 	}
 	
 	@Override   
 	public String getColumnName(int col) {
-	        return headers[col];
+	        return headersDeelnames[col];
 	    }
 	
 	@Override
 	public int getColumnCount() {
-		return 2;
+		return 4;
 	}
 
 	@Override
 	public int getRowCount() {
 		return deelnamenVanLeerling.size();
 	}
+	
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+		if (deelnamenVanLeerling.isEmpty()) {
+            return Object.class;
+        }
+        return getValueAt(0, columnIndex).getClass();
+    }
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -73,5 +78,51 @@ public class QuizScoresRapportController {
 	}
 	
 	
+
+}
+//Afwerken!
+@SuppressWarnings("serial")
+class QuizDeelnameQuizScoresTableModel extends AbstractTableModel {
+	
+private ArrayList<Quiz> quizzenVanLeerling;
+private String[] headersQuizScores;
+
+public QuizDeelnameQuizScoresTableModel(ArrayList<Quiz> quizzen) {
+	super();
+
+	headersQuizScores = new String[] {"Opdracht", "Behaalde Score"};
+	quizzenVanLeerling = quizzen;
+}
+
+@Override
+public String getColumnName(int col) {
+        return headersQuizScores[col];
+    }
+
+@Override
+public int getColumnCount() {
+	return 2;
+}
+
+@Override
+public int getRowCount() {
+	return quizzenVanLeerling.size();
+}
+
+@Override
+public Class<?> getColumnClass(int columnIndex) {
+	if (quizzenVanLeerling.isEmpty()) {
+        return Object.class;
+    }
+    return getValueAt(0, columnIndex).getClass();
+}
+
+@Override
+public Object getValueAt(int rowIndex, int columnIndex) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+
 
 }
