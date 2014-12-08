@@ -34,7 +34,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *            een lijst van quizzen
 	 */
 	public QuizCatalogus(Collection<Quiz> qc) {
-		this.quizcatalogus = new ArrayList<Quiz>(qc);
+		this.quizcatalogus = new ArrayList<Quiz>();
 		hoogsteID = 0;
 		for (Quiz quiz : qc) {
 			addQuiz(quiz);
