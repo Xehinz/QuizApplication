@@ -136,30 +136,43 @@ public class OpdrachtAanpassingController {
 	class OpslaanKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			setOpdracht(view.getOpdrachtCategorie(), view.getVraag(),
-					view.getJuisteAntwoord(), view.getHints(),
-					view.getMaxAantalPogingen(), view.getMaxAntwoordTijd());
-			if (opdracht instanceof Meerkeuze) {
-				setMeerkeuze(((OpdrachtMeerkeuzeBeheerView) view)
-						.getMogelijkeAntwoordenMeerkeuze());
-				if (!((Meerkeuze) opdracht).isValide(view.getJuisteAntwoord())) {
-				view.toonErrorMessage("Fout bij het opslaan van de opdracht:\nDe meerkeuzeoptie bevatten het juiste antwoord niet", "Fout bij Opslaan");
+			try {
+				setOpdracht(view.getOpdrachtCategorie(), view.getVraag(),
+						view.getJuisteAntwoord(), view.getHints(),
+						view.getMaxAantalPogingen(), view.getMaxAntwoordTijd());
+				if (opdracht instanceof Meerkeuze) {
+					setMeerkeuze(((OpdrachtMeerkeuzeBeheerView) view)
+							.getMogelijkeAntwoordenMeerkeuze());
+					if (!((Meerkeuze) opdracht).isValide(view
+							.getJuisteAntwoord())) {
+						view.toonErrorMessage(
+								"Fout bij het opslaan van de opdracht:\nDe meerkeuzeoptie bevatten het juiste antwoord niet",
+								"Fout bij Opslaan");
+					}
 				}
-			}
-			if (opdracht instanceof Opsomming) {
+				if (opdracht instanceof Opsomming) {
 
-				setOpsomming(((OpdrachtOpsommingBeheerView) view)
-						.getInJuisteVolgorde());
+					setOpsomming(((OpdrachtOpsommingBeheerView) view)
+							.getInJuisteVolgorde());
 
+				}
+				if (opdracht instanceof Reproductie) {
+
+					setReproductie(((OpdrachtReproductieBeheerView) view)
+							.getMinimumAantalTrefwoorden());
+
+				}
+				if (opdracht.getID() == 0) {
+					dbHandler.getOpdrachtCatalogus().addOpdracht(opdracht);
+				}
+				view.dispose();
+				opdrachtBeheerController.getView().setOpdrachten(
+						dbHandler.getOpdrachtCatalogus().getOpdrachten());
+			} catch (Exception e) {
+				view.toonErrorMessage(String.format(
+						"Fout bij het opslaan van de opdracht:\n%s",
+						e.getMessage()), "Fout bij Opslaan");
 			}
-			if (opdracht instanceof Reproductie) {
-				setReproductie(((OpdrachtReproductieBeheerView) view)
-						.getMinimumAantalTrefwoorden());
-			}
-			if (opdracht.getID() == 0) {dbHandler.getOpdrachtCatalogus().addOpdracht(opdracht);}
-			view.setVisible(false);
-			opdrachtBeheerController.getView().setOpdrachten(
-					dbHandler.getOpdrachtCatalogus().getOpdrachten());
 		}
 	}
 }
