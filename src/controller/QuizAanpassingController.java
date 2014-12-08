@@ -1,7 +1,16 @@
 package controller;
 
+/**
+ * 
+ * @author Adriaan Kuipers
+ * @version 08/12/2014
+ * 
+ */
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -10,6 +19,7 @@ import persistency.DBHandler;
 import view.QuizAanpassingView;
 import model.Leraar;
 import model.Opdracht;
+import model.OpdrachtCategorie;
 import model.Quiz;
 import model.quizStatus.QuizStatus;
 
@@ -24,7 +34,7 @@ public class QuizAanpassingController {
 	public QuizAanpassingController(Quiz quiz, Leraar leraar,
 			DBHandler dbHandler) {
 		view = new QuizAanpassingView(quiz, leraar,
-				(dbHandler.getOpdrachtCatalogus()).getOpdrachten());
+				dbHandler);
 		this.quiz = quiz;
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
@@ -34,7 +44,9 @@ public class QuizAanpassingController {
 		view.addopdrachtVerwijderenKnopActionListener(new OpdrachtVerwijderenKnopListener());
 		view.addQuizBewarenKnopActionListener(new QuizBewaarKnopListener());
 
-		//TODO Set comboboxlisteners
+		//Set comboboxlisteners
+		view.addCategorieLijstSelectieActionListener(new CategorieLijstSelectieListener());
+		view.addSorteerLijstSelectieActionListener(new SorteerLijstSelectieListener());
 
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
@@ -49,7 +61,7 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			
+			//TODO add opdracht to quizOpdrachten
 		}
 	}
 
@@ -116,9 +128,29 @@ public class QuizAanpassingController {
 			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {
 				dbHandler.getQuizCatalogus().addQuiz(quiz);
 			}
-			view.setViewToQuiz(new Quiz(leraar),
+			view.initViewForQuiz(new Quiz(leraar),
 					(dbHandler.getOpdrachtCatalogus()).getOpdrachten()); // Geef nieuwe quiz aan view
 		}
+	}
+	
+	class CategorieLijstSelectieListener implements ItemListener {
+
+		@Override
+		public void itemStateChanged(ItemEvent event) {
+		       if (event.getStateChange() == ItemEvent.SELECTED) {
+		          OpdrachtCategorie cat = (OpdrachtCategorie) event.getItem();
+		          view.filterOpCategorie(cat);
+		       }
+		    }       
+	}
+	
+	class SorteerLijstSelectieListener implements ItemListener {
+		@Override
+		public void itemStateChanged(ItemEvent event) {
+		       if (event.getStateChange() == ItemEvent.SELECTED) {
+		          //TODO
+		       }
+		    } 
 	}
 
 }

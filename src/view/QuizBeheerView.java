@@ -3,7 +3,7 @@ package view;
 /**
  * 
  * @author Adriaan Kuipers
- * @version 26/11/2014
+ * @version 08/12/2014
  * 
  */
 
@@ -112,6 +112,8 @@ public class QuizBeheerView extends JFrame {
 		
 	}	
 	
+	//TODO btnVerwijderQuiz disabled als quiz niet verwijderbaar is.
+	
 	public void addNieuweQuizKnopActionListener(ActionListener listener) {
 		btnNieuweQuiz.addActionListener(listener);
 	}
@@ -125,7 +127,8 @@ public class QuizBeheerView extends JFrame {
 	}
 	
 	public void setQuizzen(Collection<Quiz> quizzen) {
-		tabelModel.setQuizzen(quizzen);		
+		tabelModel.setQuizzen(quizzen);
+		tabelModel.fireTableDataChanged();
 	}
 	
 	public Quiz getGeselecteerdeQuiz() {

@@ -1,5 +1,12 @@
 package controller;
 
+/**
+ * 
+ * @author Adriaan Kuipers
+ * @version 08/12/2014
+ * 
+ */
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
@@ -45,6 +52,12 @@ public class QuizBeheerController {
 		QuizAanpassingController qac = new QuizAanpassingController(quiz,
 				leraar, dbHandler);
 	}
+	
+	public void updateTabel() {
+		view.setQuizzen(dbHandler.getQuizCatalogus().getQuizzen());
+	}
+	
+	//TODO updateTabel() bij sluiten/update in QuizAanpassing.
 
 	class NieuweQuizKnopListener implements ActionListener {
 		@Override
@@ -89,8 +102,11 @@ public class QuizBeheerController {
 			int bevestig = JOptionPane.showConfirmDialog(null,"Weet u zeker dat u deze quiz wil verwijderen","Verwijder",2);
 			if(bevestig == JOptionPane.YES_OPTION) {
 				dbHandler.getQuizCatalogus().removeQuiz(quiz);
+				updateTabel();
 			}
 		}
 	}
+	
+	
 
 }

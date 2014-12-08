@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,6 +23,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 
+import persistency.DBHandler;
 import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
@@ -37,7 +39,7 @@ import util.tableModels.QuizAanpassingTableModel;
 /**
  * 
  * @author Adriaan Kuipers
- * @version 29/11/2014
+ * @version 08/12/2014
  * 
  */
 
@@ -46,6 +48,7 @@ public class QuizAanpassingView extends JFrame {
 	
 	//FIELDS
 	private ArrayList<Opdracht> alleOpdrachten;
+	private DBHandler dbHandler;
 	private Quiz quiz;
 	private Leraar leraar;
 	private String aantalOpdrachten;
@@ -66,7 +69,7 @@ public class QuizAanpassingView extends JFrame {
 	
 	
 	
-	public QuizAanpassingView(Quiz quiz, Leraar leraar, ArrayList<Opdracht> alleOpdrachten) {
+	public QuizAanpassingView(Quiz quiz, Leraar leraar, DBHandler dbHandler) {
 		super("Quiz");
 		this.setSize(1200, 800);		
 		this.setLocationRelativeTo(null);
@@ -74,7 +77,9 @@ public class QuizAanpassingView extends JFrame {
 		layout = new GridBagLayout();
 		this.setLayout(layout);				
 		
+		this.dbHandler = dbHandler;
 		this.leraar = leraar;
+		this.quiz = quiz;
 		
 		//set labels
 		//init buttons
@@ -90,6 +95,7 @@ public class QuizAanpassingView extends JFrame {
 		QuizStatus[] status = {new Afgesloten(), new Afgewerkt(), new InConstructie(), new LaatsteKans(), new Opengesteld()};
 		cmbStatus = new JComboBox<QuizStatus>(status);
 		cmbCategorie = new JComboBox<OpdrachtCategorie>(OpdrachtCategorie.values());
+		cmbCategorie.insertItemAt(null, 0);
 		String[] sorteerOpties = {"geen", "categorie", "vraag"};
 		cmbSorteer = new JComboBox<String>(sorteerOpties);
 		
@@ -131,7 +137,7 @@ public class QuizAanpassingView extends JFrame {
 		lblAantalOpdrachten = new JLabel();
 		lblMaxPunten = new JLabel("Max score voor deze vraag :");
 		
-		setViewToQuiz(quiz, alleOpdrachten);
+		initViewForQuiz(quiz, dbHandler.getOpdrachtCatalogus().getOpdrachten());
 		
 		//INIT KNOPPENVELD
 		opdrachtKnoppenVeld = new JPanel();
@@ -333,6 +339,20 @@ public class QuizAanpassingView extends JFrame {
 		setLblAantalOpdrachten();
 	}
 	
+	public void filterOpCategorie(OpdrachtCategorie cat) {
+		if (cat == null) {
+			setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+		}
+		else {
+			setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(cat),quiz);
+		}
+		//TODO check ROWFILTER
+	}
+	
+	public void sorteerAlleOpdrachten() {
+		//TODO check ROWSORTER
+	}
+	
 	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten() {
 			return alleOpdrachtenTabelModel.getOpdracht(alleOpdrachtenTabel.getSelectedRow());
 	}
@@ -353,8 +373,8 @@ public class QuizAanpassingView extends JFrame {
 		btnOpdrachtVerwijderen.addActionListener(listener);
 	}
 	
-	public void addCategorieLijstSelectieActionListener(ActionListener listener) {
-		cmbCategorie.addActionListener(listener);
+	public void addCategorieLijstSelectieActionListener(ItemListener listener) {
+		cmbCategorie.addItemListener(listener);
 	}
 	
 	public void addSorteerLijstSelectieActionListener(ActionListener listener) {
@@ -410,7 +430,7 @@ public class QuizAanpassingView extends JFrame {
 		return this.quiz;
 	}
 		
-	public void setViewToQuiz(Quiz quiz, ArrayList<Opdracht> alleOpdrachten) {
+	public void initViewForQuiz(Quiz quiz, ArrayList<Opdracht> alleOpdrachten) {
 		this.quiz = quiz;
 		this.alleOpdrachten = alleOpdrachten;
 		
