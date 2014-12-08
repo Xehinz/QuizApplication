@@ -3,7 +3,6 @@ package persistency;
 import java.io.IOException;
 
 import model.OpdrachtAntwoord;
-import model.QuizOpdracht;
 
 public class DBOpdrachtAntwoordLeesSchrijf extends DBTemplate {
 
@@ -37,7 +36,7 @@ public class DBOpdrachtAntwoordLeesSchrijf extends DBTemplate {
 					"Het object om weg te schrijven is geen OpdrachtAntwoord");
 		}
 		return String.format(
-				"INSERT INTO opdracht_antwoorden VALUES(%d, %d, %d, %d, %s)",
+				"INSERT INTO opdracht_antwoorden VALUES(%d, %d, %d, %d, '%s')",
 				opdrachtAntwoord.getQuizDeelname().getID(), opdrachtAntwoord
 						.getQuizOpdracht().getID(), opdrachtAntwoord
 						.getAantalPogingen(), opdrachtAntwoord

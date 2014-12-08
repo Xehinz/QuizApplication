@@ -15,7 +15,7 @@ import java.util.Iterator;
  */
 
 public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iterable<Quiz> {
-	private HashSet<Quiz> quizcatalogus;
+	private ArrayList<Quiz> quizcatalogus;
 	private int hoogsteID;
 
 	/**
@@ -23,7 +23,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *
 	 */
 	public QuizCatalogus() {
-		this.quizcatalogus = new HashSet<Quiz>();
+		this.quizcatalogus = new ArrayList<Quiz>();
 		hoogsteID = 0;
 	}
 
@@ -34,7 +34,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 *            een lijst van quizzen
 	 */
 	public QuizCatalogus(Collection<Quiz> qc) {
-		this.quizcatalogus = new HashSet<Quiz>();
+		this.quizcatalogus = new ArrayList<Quiz>(qc);
 		hoogsteID = 0;
 		for (Quiz quiz : qc) {
 			addQuiz(quiz);
@@ -51,7 +51,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 		QuizCatalogus clone = null;
 		try {
 			clone = (QuizCatalogus) super.clone();
-			clone.quizcatalogus = new HashSet<Quiz>();
+			clone.quizcatalogus = new ArrayList<Quiz>();
 			for (Quiz quiz : this.quizcatalogus) {
 				clone.quizcatalogus.add(quiz.clone());
 			}

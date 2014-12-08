@@ -100,11 +100,11 @@ public class DBHandlerTest {
 		quizA = new Quiz(Leraar.MIEKE_WITTEMANS, "Priemgetallen en steden",
 				false);
 		quizA.setDoelLeerjaren(1, 2);
-		quizA.setQuizStatus(new Opengesteld());
+		quizA.setQuizStatus(new InConstructie());
 		quizB = new Quiz(Leraar.CHARLOTTE_NEVEN, "Bananen en croque monsieurs",
 				false);
 		quizB.setDoelLeerjaren(5, 6);
-		quizB.setQuizStatus(new Opengesteld());
+		quizB.setQuizStatus(new InConstructie());
 
 		quizCatalogus = new QuizCatalogus();
 		quizCatalogus.addQuiz(quizA);
@@ -114,7 +114,7 @@ public class DBHandlerTest {
 		quizA.setIsUniekeDeelname(true);
 		quizA.setIsTest(true);
 		quizB.setDoelLeerjaren(4,5,6);
-		quizB.setQuizStatus(new LaatsteKans());
+		//quizB.setQuizStatus(new LaatsteKans());
 		quizB.setOnderwerp("Eten");		
 
 		QuizOpdracht A1 = QuizOpdracht.koppelOpdrachtAanQuiz(quizA, opsomming,
@@ -125,6 +125,9 @@ public class DBHandlerTest {
 				10);
 		QuizOpdracht B2 = QuizOpdracht.koppelOpdrachtAanQuiz(quizB,
 				reproductie, 15);
+		
+		quizA.setQuizStatus(new Opengesteld());
+		quizB.setQuizStatus(new Opengesteld());
 
 		QuizDeelname BenAanA = QuizDeelname.koppelQuizAanLeerling(quizA, Ben);
 		QuizDeelname BertAanA = QuizDeelname.koppelQuizAanLeerling(quizA, Bert);

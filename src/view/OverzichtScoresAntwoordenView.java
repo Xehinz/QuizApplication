@@ -94,7 +94,7 @@ public class OverzichtScoresAntwoordenView extends JFrame implements IOverzichtS
 	}
 	
 	public void setGemiddeldeScore(double gemiddeldeScore, int maxScore) {
-		lblGemiddeldeScore.setText("Gemiddelde score: " + gemiddeldeScore + "/" + maxScore);
+		lblGemiddeldeScore.setText(String.format("Gemiddelde score: %.2f/%d", gemiddeldeScore, maxScore));
 	}
 	
 	public void setTitel(String leerlingNaam, String quizOnderwerp) {
