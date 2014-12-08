@@ -239,7 +239,7 @@ public class OpdrachtAanpassingView extends JFrame {
 		try {
 			Integer.parseInt(txtMaxAantalPogingen.getText());
 		} catch (Exception e) {
-			throw new IllegalArgumentException(
+			throw new NumberFormatException(
 					"Gelieve een positief geheel getal in te geven voor maximum aantal pogingen");
 		}
 		return Integer.parseInt(txtMaxAantalPogingen.getText());
@@ -253,7 +253,7 @@ public class OpdrachtAanpassingView extends JFrame {
 		try {
 			Integer.parseInt(txtMaxAntwoordTijd.getText());
 		} catch (Exception e) {
-			throw new IllegalArgumentException(
+			throw new NumberFormatException(
 					"Gelieve een positief geheel getal in te geven voor maximum antwoordtijd");
 		}
 		return Integer.parseInt(txtMaxAntwoordTijd.getText());
