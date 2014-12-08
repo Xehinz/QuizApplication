@@ -51,6 +51,7 @@ public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView {
 	}
 	
 	public String getMogelijkeAntwoordenMeerkeuze(){
+		if (txtMogelijkeAntwoordenMeerkeuze.getText().equals("")){throw new IllegalArgumentException("Gelieve mogelijke antwoordkeuzes in te geven");}
 		return txtMogelijkeAntwoordenMeerkeuze.getText();
 	}
 }

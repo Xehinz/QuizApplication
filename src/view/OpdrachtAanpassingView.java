@@ -56,10 +56,10 @@ public class OpdrachtAanpassingView extends JFrame {
 		grootPanel = new JPanel();
 		grootPanel.setLayout(new GridBagLayout());
 		GridBagConstraints b = new GridBagConstraints();
-		
+
 		bovenPanel = new JPanel();
 		bovenPanel.setLayout(new GridBagLayout());
-		
+
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 0;
@@ -72,7 +72,7 @@ public class OpdrachtAanpassingView extends JFrame {
 		c.anchor = GridBagConstraints.WEST;
 		lblLeraar = new JLabel();
 		bovenPanel.add(lblNaamLeraar, c);
-		
+
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 1;
@@ -101,13 +101,13 @@ public class OpdrachtAanpassingView extends JFrame {
 
 		b.gridx = 1;
 		b.gridy = 1;
-		b.insets = new Insets (10, 10, 10, 10);
+		b.insets = new Insets(10, 10, 10, 10);
 		b.fill = GridBagConstraints.BOTH;
 		grootPanel.add(bovenPanel, b);
-		
+
 		onderPanel = new JPanel();
 		onderPanel.setLayout(new GridBagLayout());
-		
+
 		c = new GridBagConstraints();
 		c.gridy = 1;
 		c.gridx = 1;
@@ -177,12 +177,12 @@ public class OpdrachtAanpassingView extends JFrame {
 		onderPanel.add(txtMaxAntwoordTijd, c);
 
 		c.gridy = 7;
-		c.insets = new Insets (10, 10, 10, 10);
+		c.insets = new Insets(10, 10, 10, 10);
 		onderPanel.add(btnOpslaan, c);
-		
+
 		b.gridy = 3;
 		grootPanel.add(onderPanel, b);
-		
+
 		this.add(grootPanel);
 		this.setVisible(true);
 	}
@@ -192,6 +192,9 @@ public class OpdrachtAanpassingView extends JFrame {
 	}
 
 	public String getVraag() {
+		if (txtVraag.getText().equals("")) {
+			throw new IllegalArgumentException("Gelieve een vraag in te geven");
+		}
 		return txtVraag.getText();
 	}
 
@@ -200,6 +203,10 @@ public class OpdrachtAanpassingView extends JFrame {
 	}
 
 	public String getJuisteAntwoord() {
+		if (txtJuisteAntwoord.getText().equals("")) {
+			throw new IllegalArgumentException(
+					"Gelieve een oplossing voor de vraag in te geven");
+		}
 		return txtJuisteAntwoord.getText();
 	}
 
@@ -214,8 +221,8 @@ public class OpdrachtAanpassingView extends JFrame {
 	public ArrayList<String> getHints() {
 		ListModel<String> lijst = lijstHints.getModel();
 		ArrayList<String> s = new ArrayList<>();
-		for(int i = 0; i < lijst.getSize(); i++){
-		    s.add(lijst.getElementAt(i)); 
+		for (int i = 0; i < lijst.getSize(); i++) {
+			s.add(lijst.getElementAt(i));
 		}
 		return s;
 	}
@@ -229,6 +236,12 @@ public class OpdrachtAanpassingView extends JFrame {
 	}
 
 	public int getMaxAantalPogingen() {
+		try {
+			Integer.parseInt(txtMaxAantalPogingen.getText());
+		} catch (Exception e) {
+			throw new IllegalArgumentException(
+					"Gelieve een positief geheel getal in te geven voor maximum aantal pogingen");
+		}
 		return Integer.parseInt(txtMaxAantalPogingen.getText());
 	}
 
@@ -237,17 +250,27 @@ public class OpdrachtAanpassingView extends JFrame {
 	}
 
 	public int getMaxAntwoordTijd() {
+		try {
+			Integer.parseInt(txtMaxAntwoordTijd.getText());
+		} catch (Exception e) {
+			throw new IllegalArgumentException(
+					"Gelieve een positief geheel getal in te geven voor maximum antwoordtijd");
+		}
 		return Integer.parseInt(txtMaxAntwoordTijd.getText());
 	}
 
 	public OpdrachtCategorie getOpdrachtCategorie() {
+		if (((OpdrachtCategorie) cbbOpdrachtCategorie.getSelectedItem()) == null) {
+			throw new IllegalArgumentException(
+					"Gelieve een opdrachtcategorie te selecteren");
+		}
 		return (OpdrachtCategorie) cbbOpdrachtCategorie.getSelectedItem();
 	}
 
 	public void setOpdrachtCategorie(OpdrachtCategorie oc) {
 		cbbOpdrachtCategorie.setSelectedItem(oc);
 	}
-	
+
 	public void NieuweHintKnopActionListener(ActionListener listener) {
 		btnAddHint.addActionListener(listener);
 	}
@@ -255,12 +278,12 @@ public class OpdrachtAanpassingView extends JFrame {
 	public void OpslaanKnopActionListener(ActionListener listener) {
 		btnOpslaan.addActionListener(listener);
 	}
-	
-	public void setAuteur(Leraar leraar){
+
+	public void setAuteur(Leraar leraar) {
 		lblNaamLeraar.setText(leraar.toString());
 	}
-	
-	public void disableAanpassen(){
+
+	public void disableAanpassen() {
 		btnOpslaan.setEnabled(false);
 		btnAddHint.setEnabled(false);
 		cbbOpdrachtCategorie.setEnabled(false);
@@ -271,9 +294,10 @@ public class OpdrachtAanpassingView extends JFrame {
 		txtMaxAantalPogingen.setEditable(false);
 		txtMaxAntwoordTijd.setEditable(false);
 	}
-	
+
 	public void toonErrorMessage(String boodschap, String titel) {
-		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, boodschap, titel,
+				JOptionPane.ERROR_MESSAGE);
 	}
 
 }

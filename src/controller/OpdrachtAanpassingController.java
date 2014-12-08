@@ -98,13 +98,7 @@ public class OpdrachtAanpassingController {
 	public void setOpdracht(OpdrachtCategorie oc, String vraag,
 			String juisteAntwoord, ArrayList<String> hints,
 			int maxAantalPogingen, int maxAntwoordTijd) {
-		try {
-			opdracht.setJuisteAntwoord(juisteAntwoord);
-		} catch (Exception e) {
-			view.toonErrorMessage(
-					String.format("Fout bij het opslaan van de opdracht:\n%s",
-							e.getMessage()), "Fout bij Opslaan");
-		}
+		opdracht.setJuisteAntwoord(juisteAntwoord);
 		opdracht.setVraag(vraag);
 		opdracht.setMaxAantalPogingen(maxAantalPogingen);
 		opdracht.setMaxAntwoordTijd(maxAntwoordTijd);
@@ -143,12 +137,6 @@ public class OpdrachtAanpassingController {
 				if (opdracht instanceof Meerkeuze) {
 					setMeerkeuze(((OpdrachtMeerkeuzeBeheerView) view)
 							.getMogelijkeAntwoordenMeerkeuze());
-					if (!((Meerkeuze) opdracht).isValide(view
-							.getJuisteAntwoord())) {
-						view.toonErrorMessage(
-								"Fout bij het opslaan van de opdracht:\nDe meerkeuzeoptie bevatten het juiste antwoord niet",
-								"Fout bij Opslaan");
-					}
 				}
 				if (opdracht instanceof Opsomming) {
 
