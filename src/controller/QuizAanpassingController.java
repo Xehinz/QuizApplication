@@ -62,8 +62,7 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			String ID = "ID"; //TODO  ID ?
-			QuizOpdracht.koppelOpdrachtAanQuiz(ID, view.getQuiz(), view.getGeselecteerdeOpdrachtAlleOpdrachten(), view.getMaxScore(),false);
+			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), view.getGeselecteerdeOpdrachtAlleOpdrachten(), view.getMaxScore());
 			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
 	}
@@ -77,7 +76,7 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om te verwijderen", "Fout");
 				return;
 			}
-			//TODO QuizOpdracht.ontkoppelOpdrachtVanQuiz()   moet dit ook geen public static method zijn ?
+			.ontkoppelOpdrachtVanQuiz()
 		}
 	}
 
@@ -151,7 +150,8 @@ public class QuizAanpassingController {
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 		       if (event.getStateChange() == ItemEvent.SELECTED) {
-		          //TODO RowSorter
+		          String selectie = (String)event.getItem();
+		          view.sorteerAlleOpdrachten(selectie);
 		       }
 		    } 
 	}

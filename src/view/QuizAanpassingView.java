@@ -358,8 +358,16 @@ public class QuizAanpassingView extends JFrame {
 		//TODO check ROWFILTER
 	}
 	
-	public void sorteerAlleOpdrachten() {
-		
+	public void sorteerAlleOpdrachten(String selectie) {
+		switch (selectie) {
+		case "geen" :
+			break;
+		case "categorie" :
+			break;
+		case "vraag" :
+			break;
+		default: break;
+		}
 	}
 	
 	public void checkTxtMaxPunten () {
@@ -485,7 +493,7 @@ public class QuizAanpassingView extends JFrame {
 			warn();
 		}
 		public void warn() {
-			if (txtMaxScore.getText().length()>0) {
+			if (txtMaxScore.getText().length()<1) {
 			       JOptionPane.showMessageDialog(null,
 			          "Geef het maximaal aantal punten voor deze opdracht aan", "Error",
 			          JOptionPane.ERROR_MESSAGE);
