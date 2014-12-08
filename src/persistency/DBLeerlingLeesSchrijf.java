@@ -33,7 +33,7 @@ public class DBLeerlingLeesSchrijf extends DBTemplate {
 	}
 
 	@Override
-	protected <T> String getSchrijfStatement(T object) throws IOException {
+	protected String getSchrijfStatement(Object object) throws IOException {
 		Leerling leerling = null;
 		if (object instanceof Leerling) {
 			leerling = (Leerling) object;
