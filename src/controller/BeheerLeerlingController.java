@@ -2,19 +2,21 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.AbstractTableModel;
 
-import controller.QuizBeheerController.AanpassenQuizKnopListener;
-import controller.QuizBeheerController.NieuweQuizKnopListener;
-import controller.QuizBeheerController.VerwijderQuizKnopListener;
 import model.Leerling;
 import model.Leraar;
-import model.Quiz;
 import persistency.DBHandler;
 import view.BeheerLeerlingView;
-import view.QuizBeheerView;
 
 /**
  * 
@@ -28,6 +30,7 @@ public class BeheerLeerlingController {
 	private BeheerLeerlingView aView;
 	private Leerling aLeerling;
 	private Leraar aLeraar;
+	private BeheerLeerlingTableModel aTabelModel = new BeheerLeerlingTableModel();
 	
 	/**
 	 * Default constructor met parameters
@@ -42,20 +45,24 @@ public class BeheerLeerlingController {
 		this.setLeraar(aLeraar);
 		
 		AddListeners(aView);
+
+		aTabelModel.setLeerlingen(aDBHandler.getLeerlingContainer().getLeerlingen());
+
 	}
-	
+		
 	/**
 	 * Toevoegen van action listeners en loaden van tabel
 	 */
 	private void AddListeners(BeheerLeerlingView aView){
-		// Set Tabel
-		aView.setLeerlingen(getDBHandler().getLeerlingContainer().getLeerlingen());
+		aView.setTableModel(aTabelModel);
+		// Windows
+		aView.addFrameWindowListener(new FrameWindowListener());
 		// Set Knoppen
 		aView.addNieuweLeerlingListener(new NieuweLeerlingListener());
 		aView.addAanpassenLeerlingListener(new AanpassenLeerlingListener());
 		aView.addVerwijderLeerlingListener(new VerwijderLeerlingListener());
-
-		aView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//aView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		aView.setVisible(true);		
 	}
 	
@@ -66,6 +73,19 @@ public class BeheerLeerlingController {
 	/**
 	 * listener subclasses 
 	 */
+	class FrameWindowListener implements WindowFocusListener {
+
+		@Override
+		public void windowGainedFocus(WindowEvent arg0) {
+			aTabelModel.fireTableDataChanged();
+		}
+
+		@Override
+		public void windowLostFocus(WindowEvent arg0) {
+		}
+
+	}
+	
 	class NieuweLeerlingListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
@@ -77,7 +97,7 @@ public class BeheerLeerlingController {
 	class AanpassenLeerlingListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			aLeerling = aView.getGeselecteerdeLeerling();
+			aLeerling =  aTabelModel.getLeerling(aView.getGeselecteerdeRij());
 			if (aLeerling == null) {
 				aView.toonInformationDialog(
 						"Selecteer een leerling om aan te passen", "Fout");
@@ -90,7 +110,7 @@ public class BeheerLeerlingController {
 	class VerwijderLeerlingListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			aLeerling = aView.getGeselecteerdeLeerling();
+			aLeerling = aTabelModel.getLeerling(aView.getGeselecteerdeRij());
 			if (aLeerling == null) {
 				aView.toonInformationDialog(
 						"Selecteer een leerling om te verwijderen", "Fout");
@@ -104,6 +124,7 @@ public class BeheerLeerlingController {
 			int bevestig = JOptionPane.showConfirmDialog(null,"Weet u zeker dat u deze leerling wil verwijderen","Verwijder",2);
 			if(bevestig == JOptionPane.YES_OPTION) {
 				getDBHandler().getLeerlingContainer().removeLeerling(aLeerling);
+				aTabelModel.fireTableDataChanged();
 			}
 		}
 	}
@@ -139,4 +160,71 @@ public class BeheerLeerlingController {
 	private void setLeraar(Leraar aLeraar) {
 		this.aLeraar = aLeraar;
 	}
+	
+	@SuppressWarnings("serial")
+	public class BeheerLeerlingTableModel extends AbstractTableModel  {
+
+		private ArrayList<Leerling> leerlingen;
+		private String[] headers;
+
+		/**
+		 * Default constructor, instellen van de tabel-headers
+		 */
+		public BeheerLeerlingTableModel () {
+			headers = new String[]{"ID","Voornaam","Familienaam","Leerjaar"};
+			leerlingen = new ArrayList<Leerling>();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return headers.length;
+		}
+
+		@Override
+		public int getRowCount() {
+			return leerlingen.size();
+		}
+
+		@Override   
+		public String getColumnName(int col) {
+		        return headers[col];
+		}
+
+		/**
+		 * Ophalen van een eigenschap van een leerling uit de collectie
+		 */
+		@Override
+		public Object getValueAt(int row, int col) {
+			Leerling aLeerling = leerlingen.get(row);
+		     switch (col) {
+			     case 0: return aLeerling.getID();
+			     case 1: return aLeerling.getLeerlingVoornaam();
+			     case 2: return aLeerling.getLeerlingFamilienaam();
+			     case 3: return aLeerling.getLeerjaar();
+			     default: return null;
+		    }
+		}
+
+		/**
+		 * Ophalen van 1 leerling uit de collectie
+		 * @param selectedRow
+		 * @return
+		 */
+		public Leerling getLeerling(int selectedRow) {
+			if (selectedRow < leerlingen.size() && selectedRow >= 0) {
+				return leerlingen.get(selectedRow);
+			}
+			return null;
+		}
+
+		/**
+		 * Instellen van de lijst met leerlingen
+		 * @param leerlingen
+		 */
+		public void setLeerlingen(Collection<Leerling> leerlingen) {
+			this.leerlingen = new ArrayList<Leerling>(leerlingen);
+		}
+
+	}
+	
 }

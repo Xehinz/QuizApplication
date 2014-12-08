@@ -5,6 +5,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
 import java.util.Collection;
 
 import javax.swing.JButton;
@@ -14,9 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import model.Leerling;
-import util.tableModels.BeheerLeerlingTableModel;
 
 /**
  * @author Johan Boogers
@@ -24,21 +27,21 @@ import util.tableModels.BeheerLeerlingTableModel;
  */
 
 @SuppressWarnings("serial")
-public class BeheerLeerlingView extends JFrame  {
+public class BeheerLeerlingView extends JFrame {
 
 	private JPanel aKnoppenVeld = new JPanel();
 	private GridBagLayout aGBLayout = new GridBagLayout();
 	private GridBagConstraints aGBConstraints;
 	private JButton btnNieuweLeerling, btnAanpassenLeerling, btnVerwijderLeerling;
 	//volgende objecten hangen in cascade aan elkaar vast
-	private BeheerLeerlingTableModel aTabelModel = new BeheerLeerlingTableModel();
-	private JTable aLeerlingTabel = new JTable(aTabelModel);
+	private JTable aLeerlingTabel = new JTable();
 	private JScrollPane aTabelVeld = new JScrollPane(aLeerlingTabel);
 
 	/**
 	 * Default constructor
 	 */
 	public BeheerLeerlingView() {
+		
 		
 		//Set Window
 		super("Beheer Leerlingen");
@@ -47,7 +50,6 @@ public class BeheerLeerlingView extends JFrame  {
 		//Set Layout
 		this.setLayout(aGBLayout); //layout @JFrame
 		//Set JTable
-		setKolomBreedte(aLeerlingTabel);
 		aLeerlingTabel.setFillsViewportHeight(true);
 
 		//Set JScrollPane
@@ -99,6 +101,14 @@ public class BeheerLeerlingView extends JFrame  {
 	}
 
 	/**
+	 * Toevoegen van de verschillende listeners voor het window
+	 * @param listener
+	 */
+	public void addFrameWindowListener(WindowFocusListener listener) {
+		this.addWindowFocusListener(listener);
+	}
+
+	/**
 	 * Toevoegen van de verschillende listeners voor de buttons
 	 * @param listener
 	 */
@@ -114,20 +124,18 @@ public class BeheerLeerlingView extends JFrame  {
 		btnVerwijderLeerling.addActionListener(listener);
 	}
 	
-	/**
-	 * Opvullen van de JTable met een collectie van leerlingen
-	 * @param leerlingen
-	 */
-	public void setLeerlingen(Collection<Leerling> leerlingen) {
-		aTabelModel.setLeerlingen(leerlingen);		
+	public void setTableModel (TableModel aModel)
+	{
+		aLeerlingTabel.setModel(aModel);
+		setKolomBreedte(aLeerlingTabel);
 	}
-	
+		
 	/**
 	 * Ophalen van de geselecteerde leerling uit de JTable
 	 * @return Leerling
 	 */
-	public Leerling getGeselecteerdeLeerling() {
-		return aTabelModel.getLeerling(aLeerlingTabel.getSelectedRow());
+	public int getGeselecteerdeRij() {
+		return aLeerlingTabel.getSelectedRow();
 	}
 	
 	/**
@@ -148,6 +156,6 @@ public class BeheerLeerlingView extends JFrame  {
 	 */
 	public void toonInformationDialog(String boodschap, String titel) {
 		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
-	}	
+	}
 	
 }

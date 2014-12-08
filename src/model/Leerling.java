@@ -58,7 +58,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	 * @author Johan Boogers
 	 */
 	public Leerling() {
-		
+		setID(0);
 	}
 
 	/**
