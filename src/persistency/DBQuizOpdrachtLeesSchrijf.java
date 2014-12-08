@@ -17,7 +17,7 @@ public class DBQuizOpdrachtLeesSchrijf extends DBTemplate {
 
 	@Override
 	protected PseudoQuizOpdracht maakObject(Object[] rij) {
-		int ID = ((Double) rij[0]).intValue();
+		String ID = rij[0].toString();
 		int quizID = (Integer) rij[1];
 		int opdrachtID = (Integer) rij[2];
 		int maxScore = (Integer) rij[3];
@@ -34,7 +34,7 @@ public class DBQuizOpdrachtLeesSchrijf extends DBTemplate {
 					"Het object om weg te schrijven is geen QuizOpdracht");
 		}
 		return String.format(
-				"INSERT INTO quiz_opdrachten VALUES(%d, %d, %d, %d)",
+				"INSERT INTO quiz_opdrachten VALUES('%s', %d, %d, %d)",
 				quizOpdracht.getID(), quizOpdracht.getQuiz().getID(),
 				quizOpdracht.getOpdracht().getID(), quizOpdracht.getMaxScore());
 	}

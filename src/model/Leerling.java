@@ -211,10 +211,10 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	 * @return de QuizDeelname met matchende ID. Null als die niet gevonden
 	 *         wordt
 	 */
-	public QuizDeelname getQuizDeelname(int quizDeelnameID) {
+	public QuizDeelname getQuizDeelname(String quizDeelnameID) {
 		QuizDeelname toReturn = null;
 		for (QuizDeelname quizDeelname : quizDeelnames) {
-			if (quizDeelname.getID() == quizDeelnameID) {
+			if (quizDeelname.getID().equals(quizDeelnameID)) {
 				toReturn = quizDeelname;
 			}
 		}

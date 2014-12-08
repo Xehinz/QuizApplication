@@ -524,10 +524,10 @@ public abstract class Opdracht implements Comparable<Opdracht>, Cloneable {
 	 * @return de QuizOpdracht met matchende ID. Null als die niet gevonden
 	 *         wordt
 	 */
-	public QuizOpdracht getQuizOpdracht(int quizOpdrachtID) {
+	public QuizOpdracht getQuizOpdracht(String quizOpdrachtID) {
 		QuizOpdracht toReturn = null;
 		for (QuizOpdracht quizOpdracht : quizOpdrachten) {
-			if (quizOpdracht.getID() == quizOpdrachtID) {
+			if (quizOpdracht.getID().equals(quizOpdrachtID)) {
 				toReturn = quizOpdracht;
 			}
 		}

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * De QuizOpdracht klasse koppelt een Quiz aan een Opdracht. Een zelfde opdracht
@@ -12,15 +13,17 @@ import java.util.ArrayList;
  */
 public class QuizOpdracht implements Comparable<QuizOpdracht> {
 
-	private int ID;
+	private String ID;
 	private Quiz quiz;
 	private Opdracht opdracht;
 	private final int maxScore;
 	private ArrayList<OpdrachtAntwoord> opdrachtAntwoorden;
 
 	/**
-	 * Constructor QuizOpdracht met 3 parameters
+	 * Constructor QuizOpdracht met 4 parameters
 	 *
+	 * @param ID
+	 *            de String met de ID (java.util.UUID)
 	 * @param quiz
 	 *            de Quiz
 	 * @param opdracht
@@ -28,18 +31,20 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	 * @param maxScore
 	 *            de maximum te behalen score
 	 */
-	private QuizOpdracht(Quiz quiz, Opdracht opdracht, int maxScore) {
+	private QuizOpdracht(String ID, Quiz quiz, Opdracht opdracht, int maxScore) {
 		this.quiz = quiz;
 		this.opdracht = opdracht;
 		this.maxScore = maxScore;
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
-		ID = this.hashCode();
+		this.ID = ID;
 	}
 
 	/**
 	 * Deze method koppelt een Quiz aan een Opdracht en kent aan de associatie
 	 * een maximum score toe
 	 * 
+	 * @param ID
+	 *            de String met de ID (java.util.UUID)
 	 * @param quiz
 	 *            de Quiz om te koppelen
 	 * @param opdracht
@@ -54,7 +59,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	 *             als de status van de Quiz het toevoegen van een Opdracht niet
 	 *             toelaat
 	 */
-	public static QuizOpdracht koppelOpdrachtAanQuiz(Quiz quiz,
+	public static QuizOpdracht koppelOpdrachtAanQuiz(String ID, Quiz quiz,
 			Opdracht opdracht, int maxScore, boolean uitStorage)
 			throws IllegalStateException {
 
@@ -65,7 +70,8 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 			}
 		}
 
-		QuizOpdracht quizOpdracht = new QuizOpdracht(quiz, opdracht, maxScore);
+		QuizOpdracht quizOpdracht = new QuizOpdracht(ID, quiz, opdracht,
+				maxScore);
 		quiz.addQuizOpdracht(quizOpdracht);
 		opdracht.addQuizOpdracht(quizOpdracht);
 		return quizOpdracht;
@@ -88,7 +94,8 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	 */
 	public static QuizOpdracht koppelOpdrachtAanQuiz(Quiz quiz,
 			Opdracht opdracht, int maxScore) {
-		return koppelOpdrachtAanQuiz(quiz, opdracht, maxScore, false);
+		return koppelOpdrachtAanQuiz(UUID.randomUUID().toString(), quiz,
+				opdracht, maxScore, false);
 	}
 
 	/**
@@ -163,7 +170,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	 * 
 	 * @return de ID van de QuizOpdracht op
 	 */
-	public int getID() {
+	public String getID() {
 		return ID;
 	}
 

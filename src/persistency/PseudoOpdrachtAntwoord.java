@@ -2,11 +2,11 @@ package persistency;
 
 class PseudoOpdrachtAntwoord {
 
-	private int quizDeelnameID, quizOpdrachtID;
+	private String quizDeelnameID, quizOpdrachtID;
 	private int aantalPogingen, antwoordTijd;
 	private String laatsteAntwoord;	
 
-	public PseudoOpdrachtAntwoord(int quizDeelnameID, int quizOpdrachtID, int aantalPogingen, int antwoordTijd,
+	public PseudoOpdrachtAntwoord(String quizDeelnameID, String quizOpdrachtID, int aantalPogingen, int antwoordTijd,
 			String laatsteAntwoord) {
 		this.quizDeelnameID = quizDeelnameID;
 		this.quizOpdrachtID = quizOpdrachtID;
@@ -16,11 +16,11 @@ class PseudoOpdrachtAntwoord {
 
 	}
 
-	public int getQuizDeelnameID() {
+	public String getQuizDeelnameID() {
 		return quizDeelnameID;
 	}
 
-	public int getQuizOpdrachtID() {
+	public String getQuizOpdrachtID() {
 		return quizOpdrachtID;
 	}
 

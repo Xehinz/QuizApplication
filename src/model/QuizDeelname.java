@@ -2,6 +2,7 @@ package model;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import util.datumWrapper.Datum;
 
@@ -14,36 +15,31 @@ import util.datumWrapper.Datum;
  */
 public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 
-	private final int ID;
+	private final String ID;
 	private final Leerling leerling;
 	private final Quiz quiz;
 	private final Datum datum;
 	private ArrayList<OpdrachtAntwoord> opdrachtAntwoorden;
-	// Omdat we hashCode() gebruiken om ID's te genereren, hebben we de tijd
-	// nodig om te differentiëren tussen twee deelnames op dezelfde dag, door
-	// dezelfde leerling, aan de zelfde quiz.
-	private LocalTime tijdstipDeelname;
 
 	/**
 	 * Constructor QuizDeelname met 4 parameters
 	 *
+	 * @param ID
+	 *            de String met de ID (java.util.UUID)
 	 * @param quiz
 	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
 	 *            de Leerling die deelneemt aan een Quiz
 	 * @param deelnameDatum
 	 *            de Datum van deelname
-	 * @param tijdstipDeelname
-	 *            de LocalTime met het tijdstip van deelname
 	 */
-	private QuizDeelname(Quiz quiz, Leerling leerling, Datum deelnameDatum,
-			LocalTime tijdstipDeelname) {
+	private QuizDeelname(String ID, Quiz quiz, Leerling leerling,
+			Datum deelnameDatum) {
 		this.datum = deelnameDatum;
 		this.quiz = quiz;
 		this.leerling = leerling;
-		this.tijdstipDeelname = tijdstipDeelname;
 		opdrachtAntwoorden = new ArrayList<OpdrachtAntwoord>();
-		ID = this.hashCode();
+		this.ID = ID;
 	}
 
 	/**
@@ -75,17 +71,6 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	}
 
 	/**
-	 * Haalt het tijdstip van deelname op
-	 * 
-	 * @return de LocalTime met het tijdstip van deelname
-	 */
-	public LocalTime getTijdstipDeelname() {
-		return LocalTime.of(tijdstipDeelname.getHour(),
-				tijdstipDeelname.getMinute(), tijdstipDeelname.getSecond(),
-				tijdstipDeelname.getNano());
-	}
-
-	/**
 	 * Geeft de score terug die voor deze quizdeelname behaald werd. De score
 	 * staat op 10 en is afgerond tot op het gehele getal
 	 *
@@ -105,7 +90,7 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * 
 	 * @return de ID van de QuizDeelname op
 	 */
-	public int getID() {
+	public String getID() {
 		return ID;
 	}
 
@@ -114,14 +99,14 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 * een Leerling te laten deelnemen aan een Quiz. Zet uitStorage op true om
 	 * een koppeling vanuit storage (tekst / DB) te maken
 	 *
+	 * @param ID
+	 *            de String met de ID (java.util.UUID)
 	 * @param quiz
 	 *            de Quiz waaraan de Leerling deelneemt
 	 * @param leerling
 	 *            de deelnemende Leerling
 	 * @param deelnameDatum
 	 *            de Datum van deelname
-	 * @param tijdstipDeelname
-	 *            de LocalTime met het tijdstip van deelname
 	 * @param uitStorage
 	 *            zet op true om een koppeling vanuit storage (tekst / DB) te
 	 *            maken
@@ -131,9 +116,9 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 *             wanneer de Leerling niet in het juiste leerjaar zit om deel
 	 *             te nemen
 	 */
-	public static QuizDeelname koppelQuizAanLeerling(Quiz quiz,
-			Leerling leerling, Datum deelnameDatum, LocalTime tijdstipDeelname,
-			boolean uitStorage) throws IllegalStateException {
+	public static QuizDeelname koppelQuizAanLeerling(String ID, Quiz quiz,
+			Leerling leerling, Datum deelnameDatum, boolean uitStorage)
+			throws IllegalStateException {
 		if (!uitStorage) {
 			if (!quiz.isDeelnameMogelijk()) {
 				throw new IllegalStateException(
@@ -148,8 +133,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 							"De quiz is niet opengesteld voor het leerjaar waarin de leerling zich bevindt (%d)",
 							leerling.getLeerjaar()));
 		}
-		QuizDeelname quizDeelname = new QuizDeelname(quiz, leerling,
-				deelnameDatum, tijdstipDeelname);
+		QuizDeelname quizDeelname = new QuizDeelname(ID, quiz, leerling,
+				deelnameDatum);
 		leerling.addQuizDeelname(quizDeelname);
 		quiz.addQuizDeelname(quizDeelname);
 		return quizDeelname;
@@ -171,8 +156,8 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 	 */
 	public static QuizDeelname koppelQuizAanLeerling(Quiz quiz,
 			Leerling leerling) throws IllegalStateException {
-		return koppelQuizAanLeerling(quiz, leerling, new Datum(),
-				LocalTime.now(), false);
+		return koppelQuizAanLeerling(UUID.randomUUID().toString(), quiz,
+				leerling, new Datum(), false);
 	}
 
 	/**
@@ -240,9 +225,6 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		if (!other.getDatum().equals(this.datum)) {
 			return false;
 		}
-		if (!other.getTijdstipDeelname().equals(this.tijdstipDeelname)) {
-			return false;
-		}
 		return true;
 	}
 
@@ -269,7 +251,6 @@ public class QuizDeelname implements Comparable<QuizDeelname>, Cloneable {
 		hash = hash * 7 + leerling.hashCode();
 		hash = hash * 31 + quiz.hashCode();
 		hash = hash * 19 + datum.toString().hashCode();
-		hash = hash * 13 + tijdstipDeelname.toString().hashCode();
 		hash %= Integer.MAX_VALUE;
 		return (int) hash;
 	}

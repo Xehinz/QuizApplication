@@ -170,7 +170,7 @@ public class DBHandler {
 			huidigeOpdracht = opdrachtCatalogus.getOpdracht(quizOpdracht
 					.getOpdrachtID());
 
-			QuizOpdracht.koppelOpdrachtAanQuiz(huidigeQuiz, huidigeOpdracht,
+			QuizOpdracht.koppelOpdrachtAanQuiz(quizOpdracht.getID(), huidigeQuiz, huidigeOpdracht,
 					quizOpdracht.getMaxScore(), true);
 		}
 	}
@@ -191,8 +191,8 @@ public class DBHandler {
 			huidigeLeerling = leerlingContainer.getLeerling(quizDeelname
 					.getLeerlingID());
 
-			QuizDeelname.koppelQuizAanLeerling(huidigeQuiz, huidigeLeerling,
-					quizDeelname.getDeelnameDatum(), quizDeelname.getTijdstipDeelname(), true);
+			QuizDeelname.koppelQuizAanLeerling(quizDeelname.getQuizDeelnameID(), huidigeQuiz, huidigeLeerling,
+					quizDeelname.getDeelnameDatum(), true);
 		}
 	}
 
@@ -215,14 +215,14 @@ public class DBHandler {
 
 		for (PseudoOpdrachtAntwoord opdrachtAntwoord : opdrachtAntwoorden) {
 			for (QuizOpdracht quizOpdracht : quizOpdrachten) {
-				if (quizOpdracht.getID() == opdrachtAntwoord
-						.getQuizOpdrachtID()) {
+				if (quizOpdracht.getID().equals(opdrachtAntwoord
+						.getQuizOpdrachtID())) {
 					huidigeQuizOpdracht = quizOpdracht;
 				}
 			}
 			for (QuizDeelname quizDeelname : quizDeelnames) {
-				if (quizDeelname.getID() == opdrachtAntwoord
-						.getQuizDeelnameID()) {
+				if (quizDeelname.getID().equals(opdrachtAntwoord
+						.getQuizDeelnameID())) {
 					huidigeQuizDeelname = quizDeelname;
 				}
 			}

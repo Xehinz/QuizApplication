@@ -18,7 +18,7 @@ class TxtQuizOpdrachtLeesSchrijf extends TxtTemplate {
 	@Override
 	protected PseudoQuizOpdracht maakObject(String[] fields) throws IOException {
 		try {
-			return new PseudoQuizOpdracht(Integer.parseInt(fields[0]), Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), Integer.parseInt(fields[3]));
+			return new PseudoQuizOpdracht(fields[0], Integer.parseInt(fields[1]), Integer.parseInt(fields[2]), Integer.parseInt(fields[3]));
 		} catch (NumberFormatException Nex) {
 			throw new IOException("Fout bij het parsen van quizOpdrachtID / quizID / opdrachtID of maxScore", Nex);
 		} catch (IndexOutOfBoundsException Iex) {
@@ -36,7 +36,7 @@ class TxtQuizOpdrachtLeesSchrijf extends TxtTemplate {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen QuizOpdracht");
 		}
-		return String.format("%d\t%d\t%d\t%d", quizOpdracht.getID(), quizOpdracht.getQuiz().getID(), quizOpdracht.getOpdracht().getID(), quizOpdracht.getMaxScore());
+		return String.format("%s\t%d\t%d\t%d", quizOpdracht.getID(), quizOpdracht.getQuiz().getID(), quizOpdracht.getOpdracht().getID(), quizOpdracht.getMaxScore());
  	}
 
 	@Override
