@@ -93,11 +93,6 @@ public class QuizBeheerController {
 				view.toonInformationDialog(
 						"Kan deze quiz niet verwijderen", "Fout");
 				return;
-			}			
-			if (!quiz.isVerwijderbaar()) {
-				view.toonInformationDialog(
-						"Kan deze quiz niet verwijderen", "Fout");
-				return;
 			}
 			int bevestig = JOptionPane.showConfirmDialog(null,"Weet u zeker dat u deze quiz wil verwijderen","Verwijder",2);
 			if(bevestig == JOptionPane.YES_OPTION) {

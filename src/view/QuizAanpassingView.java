@@ -19,6 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
@@ -58,13 +63,14 @@ public class QuizAanpassingView extends JFrame {
 	private GridBagConstraints constraints;
 	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten, lblMaxPunten;
 	private JButton btnOpdrachtToevoegen, btnOpdrachtVerwijderen, btnQuizBewaren;
-	private JTextField txtOnderwerp, txtLeraar, txtKlas, txtMaxPunten;
+	private JTextField txtOnderwerp, txtLeraar, txtKlas, txtMaxScore;
 	private JComboBox cmbStatus, cmbCategorie, cmbSorteer;
 	private JCheckBox ckbIsTest, ckbIsUniekeDeelname;
 	private JTable alleOpdrachtenTabel, geselecteerdeOpdrachtenTabel;
 	private QuizAanpassingTableModel alleOpdrachtenTabelModel, geselecteerdeOpdrachtenTabelModel;	
 	private JScrollPane alleOpdrachtenVeld, geselecteerdeOpdrachtenVeld;
 	private JPanel opdrachtKnoppenVeld, quizInfoVeld, sorteerVeld;
+	private RowSorter<TableModel> rowSorter;
 	
 	
 	
@@ -106,8 +112,9 @@ public class QuizAanpassingView extends JFrame {
 		txtLeraar.setEditable(false);
 		txtKlas = new JTextField();
 		txtKlas.setEditable(quiz.isAanpasbaar());
-		txtMaxPunten = new JTextField();
-		txtMaxPunten.setEditable(quiz.isAanpasbaar());
+		txtMaxScore = new JTextField();
+		txtMaxScore.setEditable(quiz.isAanpasbaar());
+		txtMaxScore.getDocument().addDocumentListener((new TxtMaxScoreUpdateListener()));
 		
 		//INIT CHECKBOX
 		ckbIsTest = new JCheckBox("Test");
@@ -118,6 +125,7 @@ public class QuizAanpassingView extends JFrame {
 		//INIT TABLE + SCROLLPANE
 		alleOpdrachtenTabelModel = new QuizAanpassingTableModel();
 		alleOpdrachtenTabel = new JTable(alleOpdrachtenTabelModel);
+		rowSorter = new TableRowSorter<TableModel>(alleOpdrachtenTabelModel);
 		setKolomBreedte(alleOpdrachtenTabel);
 		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);
 		alleOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
@@ -194,8 +202,8 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridy = 1;
 		constraints.gridx = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		txtMaxPunten.setText("1");
-		sorteerVeld.add(txtMaxPunten, constraints);
+		txtMaxScore.setText("1");
+		sorteerVeld.add(txtMaxScore, constraints);
 		
 		//INIT QUIZINFOVELD
 		quizInfoVeld = new JPanel();
@@ -350,8 +358,16 @@ public class QuizAanpassingView extends JFrame {
 		//TODO check ROWFILTER
 	}
 	
-	public void sorteerAlleOpdrachten() {
-		//TODO check ROWSORTER
+	public void sorteerAlleOpdrachten(String selectie) {
+		switch (selectie) {
+		case "geen" :
+			break;
+		case "categorie" :
+			break;
+		case "vraag" :
+			break;
+		default: break;
+		}
 	}
 	
 	public void checkTxtMaxPunten () {
@@ -364,10 +380,6 @@ public class QuizAanpassingView extends JFrame {
 	
 	public Opdracht getGeselecteerdeOpdrachtQuizOpdrachten() {		
 			return geselecteerdeOpdrachtenTabelModel.getOpdracht(geselecteerdeOpdrachtenTabel.getSelectedRow());
-	}
-	
-	public void addtxtMaxPuntenActionListener (ActionListener listener) {
-		txtMaxPunten.addActionListener(listener);
 	}
 	
 	public void addQuizBewarenKnopActionListener(ActionListener listener) {
@@ -440,7 +452,7 @@ public class QuizAanpassingView extends JFrame {
 	}
 	
 	public int getMaxScore() {
-		return Integer.parseInt(txtMaxPunten.getText());
+		return Integer.parseInt(txtMaxScore.getText());
 	}
 		
 	public void initViewForQuiz(Quiz quiz, ArrayList<Opdracht> alleOpdrachten) {
@@ -464,6 +476,38 @@ public class QuizAanpassingView extends JFrame {
 		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
 		setOpdrachtTabellen(alleOpdrachten, quiz);
 		setLblAantalOpdrachten();
+	}
+	
+	class TxtMaxScoreUpdateListener implements DocumentListener {
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			warn();
+		}
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			warn();
+		}
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			warn();
+		}
+		public void warn() {
+			if (txtMaxScore.getText().length()<1) {
+			       JOptionPane.showMessageDialog(null,
+			          "Geef het maximaal aantal punten voor deze opdracht aan", "Error",
+			          JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				try {
+					getMaxScore();
+				}
+				catch (Exception ex) {
+					toonInformationDialog("Maximum score moet een natuurlijk getal zijn.","Error");
+				}
+			}
+		}
+		
 	}
 
 }
