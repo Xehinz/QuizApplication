@@ -53,7 +53,7 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView {
 		try {
 			Integer.parseInt(txtMinimumAantalTrefwoorden.getText());
 		} catch (Exception e) {
-			throw new IllegalArgumentException(
+			throw new NumberFormatException(
 					"Gelieve een positief geheel getal in te geven voor minimum aantal trefwoorden");
 		}
 		return Integer.parseInt(txtMinimumAantalTrefwoorden.getText());
