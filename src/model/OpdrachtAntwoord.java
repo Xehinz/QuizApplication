@@ -1,5 +1,8 @@
 package model;
 
+import model.score.OpdrachtScoreRegelsFactory;
+import model.score.ScoreStrategy;
+
 /**
  * Klasse die een QuizDeelname aan een QuizOpdracht verbindt. Eenmaal er een
  * instantie van OpdrachtAntwoord is aangemaakt, is het antwoord van de Leerling
@@ -13,9 +16,7 @@ package model;
  * <li>De behaalde score</li>
  * </ul>
  *
- * Het algoritme om tot deze score te komen is voorlopig hard-coded opgenomen in
- * deze klasse. Wanneer we het Strategy pattern gaan implementeren, is het de
- * bedoeling om de scoreberekening met behulp van klasses flexibeler te maken.
+ * De behaalde score wordt berekend op basis van een ScoreStrategy die gemaakt wordt door de OpdrachtScoreRegelsFactory
  *
  * @author Tim Cool, Ben Vandenberk
  * @version 01/11/2014
@@ -24,12 +25,13 @@ package model;
 public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 		Cloneable {
 
+	private ScoreStrategy scoreStrategy;
+	
 	private final QuizDeelname quizDeelname;
 	private final QuizOpdracht quizOpdracht;
 	private final String laatsteAntwoord;
 	private final int aantalPogingen;
 	private final int antwoordTijd;
-	private final double behaaldeScore;
 
 	private OpdrachtAntwoord(QuizDeelname quizDeelname,
 			QuizOpdracht quizOpdracht, int aantalPogingen, int antwoordTijd,
@@ -47,7 +49,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 		this.aantalPogingen = aantalPogingen;
 		this.antwoordTijd = antwoordTijd;
 		this.laatsteAntwoord = laatsteAntwoord;
-		behaaldeScore = berekenScore();
+		this.scoreStrategy = OpdrachtScoreRegelsFactory.getEnigeInstantie().maakScoreStrategy();
 	}
 
 	/**
@@ -110,7 +112,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 	 * @return de double die de behaalde score voorstelt
 	 */
 	public double getBehaaldeScore() {
-		return behaaldeScore;
+		return scoreStrategy.berekenScore(this);
 	}
 
 	/**
@@ -220,7 +222,7 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 		result += "\n\nDefinitieve antwoord: " + laatsteAntwoord;
 		result += "\nAantal pogingen: " + aantalPogingen;
 		result += "\nGebruikte tijd (s): " + antwoordTijd;
-		result += "\nBehaalde score: " + behaaldeScore;
+		result += "\nBehaalde score: " + getBehaaldeScore();
 		return result;
 	}
 
@@ -251,34 +253,5 @@ public class OpdrachtAntwoord implements Comparable<OpdrachtAntwoord>,
 		}
 		return clone;
 	}
-
-	/**
-	 * Uitwerking van het scoreberekeningsalgoritme op pagina 5 van de opgave
-	 */
-	private double berekenScore() {
-		if (!quizOpdracht.getOpdracht().isJuisteAntwoord(laatsteAntwoord)) { // FOUT
-																				// ANTWOORD
-			return 0.0;
-		} else { // JUIST ANTWOORD
-			if (quizOpdracht.getOpdracht().heeftTijdsbeperking()
-					&& antwoordTijd > quizOpdracht.getOpdracht()
-							.getMaxAntwoordTijd()) { // TE VEEL TIJD GEBRUIKT
-				return 0.0;
-			} else { // TIJD OKE
-				if (aantalPogingen == 1) {
-					return quizOpdracht.getMaxScore();
-				} else {
-					if (!quizOpdracht.getOpdracht().heeftPogingBeperking()) { // ONBEPERKT
-																				// AANTAL
-																				// POGINGEN
-						return quizOpdracht.getMaxScore() / 2.0;
-					} else { // BEPERKT AANTAL POGINGEN
-						return aantalPogingen <= quizOpdracht.getOpdracht()
-								.getMaxAantalPogingen() ? quizOpdracht
-								.getMaxScore() / 2.0 : 0.0;
-					}
-				}
-			}
-		}
-	}
+	
 }

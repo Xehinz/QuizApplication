@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 
 import model.Leerling;
 import model.Leraar;
+import model.score.OpdrachtScoreRegelsFactory;
+import model.score.ScoreStrategyType;
 import persistency.DBHandler;
 import persistency.StorageStrategy;
 import view.ViewFactory;
@@ -38,6 +40,8 @@ public class OpstartController {
 
 	public OpstartController() {	
 		loadSettings();
+		
+		OpdrachtScoreRegelsFactory.getEnigeInstantie().setScoreStrategyType(ScoreStrategyType.valueOf(settings.getProperty("scoreregel")));
 		
 		this.dbHandler = new DBHandler();		
 		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings

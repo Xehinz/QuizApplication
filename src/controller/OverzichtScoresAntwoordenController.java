@@ -94,7 +94,7 @@ public class OverzichtScoresAntwoordenController {
 			case 1:
 				return opdrachtAntwoord.getLaatsteAntwoord();
 			case 2:
-				return opdrachtAntwoord.getBehaaldeScore() + "/" + opdrachtAntwoord.getQuizOpdracht().getMaxScore();
+				return String.format("%.2f/%d", opdrachtAntwoord.getBehaaldeScore(), opdrachtAntwoord.getQuizOpdracht().getMaxScore());
 			default: 
 				return "";
 			}
