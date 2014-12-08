@@ -4,11 +4,27 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.MenuSelectionManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
+import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
+import persistency.StorageStrategy;
+import model.score.ScoreStrategyType;
 import view.viewInterfaces.IMainLeraarView;
 
 /**
@@ -21,6 +37,11 @@ public class MainLeraarView extends JFrame implements IMainLeraarView {
 	
 	private JLabel lblLeraar;
 	private JButton btnLogout, btnOpdrachtBeheer, btnQuizBeheer, btnLeerlingbeheer, btnOverzichtScores, btnAfsluiten;
+	private JMenuBar menuBar;
+	private JMenu instellingenMenu, viewMenu, opslagMenu, scoreMenu;
+	private JCheckBoxMenuItem mCbxRodeLogin;
+	private JRadioButtonMenuItem[] mRbtnScoreKeuzes, mRbtnOpslagKeuzes;
+	private JMenuItem menuitConnectionString;
 	
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
@@ -104,6 +125,56 @@ public class MainLeraarView extends JFrame implements IMainLeraarView {
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets = new Insets(10, 0, 10, 20);
 		this.add(btnAfsluiten, constraints);
+		
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);		
+		
+		instellingenMenu = new JMenu("Instellingen");
+		instellingenMenu.setMnemonic('I');		
+		menuBar.add(instellingenMenu);
+		
+		viewMenu = new JMenu("Views");
+		viewMenu.setMnemonic('V');
+		instellingenMenu.add(viewMenu);
+		instellingenMenu.addSeparator();
+		
+		opslagMenu = new JMenu("Opslag");
+		opslagMenu.setMnemonic('O');		
+		instellingenMenu.add(opslagMenu);
+		instellingenMenu.addSeparator();
+		
+		scoreMenu = new JMenu("Scoreberekening");
+		scoreMenu.setMnemonic('S');
+		instellingenMenu.add(scoreMenu);
+		
+		mCbxRodeLogin = new JCheckBoxMenuItem("Rood loginschermpje");
+		mCbxRodeLogin.setUI(new MenuCheckBoxBlijftOpenUI());
+		viewMenu.add(mCbxRodeLogin);
+		
+		ButtonGroup opslagKeuzesGroep = new ButtonGroup();
+		StorageStrategy[] opslagKeuzes = StorageStrategy.values();
+		mRbtnOpslagKeuzes = new JRadioButtonMenuItem[opslagKeuzes.length];
+		for (int i = 0; i < opslagKeuzes.length; i++) {
+			mRbtnOpslagKeuzes[i] = new JRadioButtonMenuItem(opslagKeuzes[i].toString());
+			mRbtnOpslagKeuzes[i].setUI(new MenuRadioButtonBlijftOpenUI());
+			opslagKeuzesGroep.add(mRbtnOpslagKeuzes[i]);
+			opslagMenu.add(mRbtnOpslagKeuzes[i]);
+		}
+		opslagMenu.addSeparator();
+		
+		menuitConnectionString = new JMenuItem("Database connectie gegevens");
+		opslagMenu.add(menuitConnectionString);		
+		
+		ButtonGroup scoreKeuzesGroep = new ButtonGroup();
+		ScoreStrategyType[] scoreKeuzes = ScoreStrategyType.values();
+		mRbtnScoreKeuzes = new JRadioButtonMenuItem[scoreKeuzes.length];
+		for (int i = 0; i < scoreKeuzes.length; i++) {
+			mRbtnScoreKeuzes[i] = new JRadioButtonMenuItem(scoreKeuzes[i].toString());
+			mRbtnScoreKeuzes[i].setUI(new MenuRadioButtonBlijftOpenUI());
+			scoreKeuzesGroep.add(mRbtnScoreKeuzes[i]);
+			scoreMenu.add(mRbtnScoreKeuzes[i]);
+		}	
+				
 	}
 	
 	public void setLeraar(String leraar) {
@@ -133,5 +204,67 @@ public class MainLeraarView extends JFrame implements IMainLeraarView {
 	public void addOverzichtScoresKnopActionListener(ActionListener listener) {
 		btnOverzichtScores.addActionListener(listener);
 	}
-
+	
+	public void addRodeLoginClickedListener(ActionListener listener) {
+		mCbxRodeLogin.addActionListener(listener);
+	}
+	
+	public void setRodeLoginSelected(boolean selected) {
+		mCbxRodeLogin.setSelected(selected);
+	}
+	
+	public void setScoreBerekeningSelected(ScoreStrategyType scoreStrategyType) {
+		for (JRadioButtonMenuItem mRbtn : mRbtnScoreKeuzes) {
+			if (mRbtn.getText().equals(scoreStrategyType.toString())) {
+				mRbtn.setSelected(true);
+			}
+		}
+	}
+	
+	public void addScoreStrategieChangedListener(ItemListener listener) {
+		for (JRadioButtonMenuItem mRbtn : mRbtnScoreKeuzes) {
+			mRbtn.addItemListener(listener);
+		}
+	}
+	
+	public void setOpslagStrategySelected(StorageStrategy storageStrategy) {
+		for (JRadioButtonMenuItem mRbtn : mRbtnOpslagKeuzes) {
+			if (mRbtn.getText().equals(storageStrategy.toString())) {
+				mRbtn.setSelected(true);				
+			}
+		}
+		
+		if (!storageStrategy.equals(StorageStrategy.DATABASE)) {
+			menuitConnectionString.setEnabled(false);
+		}
+	}
+	
+	public void addOpslagStrategyChangedListener(ItemListener listener) {
+		for (JRadioButtonMenuItem mRbtn : mRbtnOpslagKeuzes) {
+			mRbtn.addItemListener(listener);
+		}
+	}
+	
+	public void setEnabledDBConnectieGegevens(boolean isEnabled) {
+		menuitConnectionString.setEnabled(isEnabled);
+	}
+	
+	class MenuCheckBoxBlijftOpenUI extends BasicCheckBoxMenuItemUI {
+		
+		  @Override
+		   protected void doClick(MenuSelectionManager msm) {
+		      menuItem.doClick(0);
+		   }
+		  
+	}
+	
+	class MenuRadioButtonBlijftOpenUI extends BasicRadioButtonMenuItemUI {
+		
+		 @Override
+		   protected void doClick(MenuSelectionManager msm) {
+		      menuItem.doClick(0);
+		   }
+		 
+	}
+	
 }

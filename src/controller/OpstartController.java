@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -78,6 +79,10 @@ public class OpstartController {
 		loginView.setVisible(true);
 	}
 	
+	public Properties getSettings() {
+		return settings;
+	}
+	
 	private void loadSettings() {
 		settings = new Properties();
 		try {
@@ -138,8 +143,11 @@ public class OpstartController {
 		public void windowClosing(WindowEvent event) {
 			try {
 			dbHandler.saveCatalogi();
+			settings.store(new FileOutputStream("resources/settings.ini"), null);
+			} catch (FileNotFoundException fEx) {
+				JOptionPane.showConfirmDialog(null, "setting.ini niet gevonden:\n" + fEx.getMessage(), "Fout", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
 			} catch (IOException iEx) {
-				loginView.toonErrorMessage(String.format("Fout bij het opslaan van de data:\n%s", iEx.getMessage()), "Fout bij Opslaan");
+				loginView.toonErrorMessage(String.format("Fout bij het opslaan van de data of de settings:\n%s", iEx.getMessage()), "Fout bij Opslaan");
 			}
 		}
 	}
