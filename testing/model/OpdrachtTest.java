@@ -243,14 +243,14 @@ public class OpdrachtTest {
 
 	@Test
 	public void testGetQuizOpdracht_BestaandeID_GeeftJuisteQuizOpdrachtTerug() {
-		int ID = gelinkteOpdrachtQuizOpdracht.getID();
+		String ID = gelinkteOpdrachtQuizOpdracht.getID();
 		assertEquals(gelinkteOpdrachtQuizOpdracht,
 				gelinkteOpdracht.getQuizOpdracht(ID));
 	}
 
 	@Test
 	public void testGetQuizOpdracht_OnbestaandeID_GeeftNullTerug() {
-		assertEquals(null, gelinkteOpdracht.getQuizOpdracht(1));
+		assertEquals(null, gelinkteOpdracht.getQuizOpdracht("1"));
 	}
 
 	@Test

@@ -5,19 +5,18 @@ import java.time.LocalTime;
 import util.datumWrapper.Datum;
 
 class PseudoQuizDeelname {
-	private int quizDeelnameID, quizID, leerlingID;
+	private int quizID, leerlingID;
 	private Datum deelnameDatum;
-	private LocalTime tijdstipDeelname;
+	private String quizDeelnameID;
 
-	public PseudoQuizDeelname(int quizDeelnameID, int quizID, int leerlingID, Datum deelnameDatum, LocalTime tijdstipDeelname) {
+	public PseudoQuizDeelname(String quizDeelnameID, int quizID, int leerlingID, Datum deelnameDatum) {
 		this.quizDeelnameID = quizDeelnameID;
 		this.quizID = quizID;
 		this.leerlingID = leerlingID;
 		this.deelnameDatum = deelnameDatum;
-		this.tijdstipDeelname = tijdstipDeelname;
 	}
 
-	public int getQuizDeelnameID() {
+	public String getQuizDeelnameID() {
 		return quizDeelnameID;
 	}
 
@@ -31,9 +30,5 @@ class PseudoQuizDeelname {
 	
 	public Datum getDeelnameDatum() {
 		return deelnameDatum;
-	}
-	
-	public LocalTime getTijdstipDeelname() {
-		return tijdstipDeelname;
 	}
 }

@@ -59,7 +59,7 @@ class QuizDeelnameSelectionListener implements ListSelectionListener {
 	public void valueChanged(ListSelectionEvent event) {
 		//View.toonInformationDialog(event.getFirstIndex() + " " + View.getGeselecteerdeRij() + " ---- " + model.getValueAt(event.getFirstIndex(), 3).toString(), "event");
 		
-		View.setTableModel1(new QuizDeelnameQuizScoresTableModel(leerling.getQuizDeelname((int)(model.getValueAt(View.getGeselecteerdeRij(), 3))).getOpdrachtAntwoorden()));
+		View.setTableModel1(new QuizDeelnameQuizScoresTableModel(leerling.getQuizDeelname(model.getValueAt(View.getGeselecteerdeRij(), 3).toString()).getOpdrachtAntwoorden()));
 	}
 	
 }

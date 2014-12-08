@@ -99,11 +99,11 @@ public class DBHandlerTest {
 
 		quizA = new Quiz(Leraar.MIEKE_WITTEMANS, "Priemgetallen en steden",
 				false);
-		quizA.setDoelLeerjaren(1, 2);
+		//quizA.setDoelLeerjaren(1, 2);
 		quizA.setQuizStatus(new InConstructie());
 		quizB = new Quiz(Leraar.CHARLOTTE_NEVEN, "Bananen en croque monsieurs",
 				false);
-		quizB.setDoelLeerjaren(5, 6);
+		//quizB.setDoelLeerjaren(5, 6);
 		quizB.setQuizStatus(new InConstructie());
 
 		quizCatalogus = new QuizCatalogus();
@@ -154,8 +154,8 @@ public class DBHandlerTest {
 				30, "kaas ham boter");
 
 		// Quizzen sluiten
-		quizA.setQuizStatus(new Afgesloten());
-		quizB.setQuizStatus(new Afgesloten());
+		//quizA.setQuizStatus(new Afgesloten());
+		//quizB.setQuizStatus(new Afgesloten());
 
 		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer,
 				quizCatalogus);

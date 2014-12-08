@@ -18,7 +18,7 @@ class TxtOpdrachtAntwoordLeesSchrijf extends TxtTemplate {
 	@Override
 	protected PseudoOpdrachtAntwoord maakObject(String[] fields) throws IOException {
 		try {
-			return new PseudoOpdrachtAntwoord(Integer.parseInt(fields[0]), Integer.parseInt(fields[1]),
+			return new PseudoOpdrachtAntwoord(fields[0], fields[1],
 					Integer.parseInt(fields[2]), Integer.parseInt(fields[3]), fields[4]);
 		} catch (NumberFormatException Nex) {
 			throw new IOException("Fout bij het parsen vanuit tekstbestand", Nex);
