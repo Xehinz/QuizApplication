@@ -52,10 +52,7 @@ import util.tableModels.QuizAanpassingTableModel;
 public class QuizAanpassingView extends JFrame {
 	
 	//FIELDS
-	private ArrayList<Opdracht> alleOpdrachten;
-	private DBHandler dbHandler;
 	private Quiz quiz;
-	private Leraar leraar;
 	private String aantalOpdrachten;
 	
 	//SWINGFIELDS	
@@ -64,7 +61,8 @@ public class QuizAanpassingView extends JFrame {
 	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten, lblMaxPunten;
 	private JButton btnOpdrachtToevoegen, btnOpdrachtVerwijderen, btnQuizBewaren;
 	private JTextField txtOnderwerp, txtLeraar, txtKlas, txtMaxScore;
-	private JComboBox cmbStatus, cmbCategorie, cmbSorteer;
+	private JComboBox<QuizStatus> cmbStatus;
+	private JComboBox<String> cmbCategorie, cmbSorteer;
 	private JCheckBox ckbIsTest, ckbIsUniekeDeelname;
 	private JTable alleOpdrachtenTabel, geselecteerdeOpdrachtenTabel;
 	private QuizAanpassingTableModel alleOpdrachtenTabelModel, geselecteerdeOpdrachtenTabelModel;	
@@ -81,15 +79,8 @@ public class QuizAanpassingView extends JFrame {
 		this.setLocationRelativeTo(null);
 		
 		layout = new GridBagLayout();
-		this.setLayout(layout);				
-		
-		this.dbHandler = dbHandler;
-		this.leraar = leraar;
-		this.quiz = quiz;
-		
-		//set labels
-		//init buttons
-		
+		this.setLayout(layout);	
+				
 		//INIT BUTTONS
 		btnOpdrachtToevoegen = new JButton(">>>");
 		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
@@ -100,8 +91,11 @@ public class QuizAanpassingView extends JFrame {
 		//INIT COMBOBOX
 		QuizStatus[] status = {new Afgesloten(), new Afgewerkt(), new InConstructie(), new LaatsteKans(), new Opengesteld()};
 		cmbStatus = new JComboBox<QuizStatus>(status);
-		cmbCategorie = new JComboBox<OpdrachtCategorie>(OpdrachtCategorie.values());
-		cmbCategorie.insertItemAt(null, 0);
+		cmbCategorie = new JComboBox<>();
+		cmbCategorie.addItem("Alle categorieën");
+		for (OpdrachtCategorie a : OpdrachtCategorie.values()){
+			cmbCategorie.addItem(a.toString());			
+		}
 		String[] sorteerOpties = {"geen", "categorie", "vraag"};
 		cmbSorteer = new JComboBox<String>(sorteerOpties);
 		
@@ -338,8 +332,8 @@ public class QuizAanpassingView extends JFrame {
 		lblAantalOpdrachten.setText(aantalOpdrachten);
 	}
 	
-	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Quiz quiz) {
-		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
+	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Collection<Opdracht> quizOpdrachten) {		
+		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quizOpdrachten);
 		geselecteerdeOpdrachtenTabel.setModel(geselecteerdeOpdrachtenTabelModel);
 		geselecteerdeOpdrachtenTabelModel.fireTableDataChanged();
 		alleOpdrachten.removeAll(quiz.getOpdrachten());
@@ -348,26 +342,12 @@ public class QuizAanpassingView extends JFrame {
 		setLblAantalOpdrachten();
 	}
 	
-	public void filterOpCategorie(OpdrachtCategorie cat) {
-		if (cat.equals(null)) { //TODO werkt niet
-			setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
-		}
-		else {
-			setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(cat),quiz);
-		}
-		//TODO check ROWFILTER
+	public String getOpdrachtCategorie() {
+		return (String) cmbCategorie.getSelectedItem();
 	}
 	
-	public void sorteerAlleOpdrachten(String selectie) {
-		switch (selectie) {
-		case "geen" :
-			break;
-		case "categorie" :
-			break;
-		case "vraag" :
-			break;
-		default: break;
-		}
+	public String getSorteerString () {
+		return (String) cmbSorteer.getSelectedItem();
 	}
 	
 	public void checkTxtMaxPunten () {
@@ -394,8 +374,8 @@ public class QuizAanpassingView extends JFrame {
 		btnOpdrachtVerwijderen.addActionListener(listener);
 	}
 	
-	public void addCategorieLijstSelectieActionListener(ItemListener listener) {
-		cmbCategorie.addItemListener(listener);
+	public void addSelecteerCategorieActionlistener(ActionListener listener) {
+		cmbCategorie.addActionListener(listener);
 	}
 	
 	public void addSorteerLijstSelectieActionListener(ItemListener listener) {
@@ -455,9 +435,8 @@ public class QuizAanpassingView extends JFrame {
 		return Integer.parseInt(txtMaxScore.getText());
 	}
 		
-	public void initViewForQuiz(Quiz quiz, ArrayList<Opdracht> alleOpdrachten) {
+	public void initViewForQuiz(ArrayList<Opdracht> alleOpdrachten, ArrayList<Opdracht> quizOpdrachten, Quiz quiz) {
 		this.quiz = quiz;
-		this.alleOpdrachten = alleOpdrachten;
 		
 		//SET FIELDS
 		txtOnderwerp.setText(quiz.getOnderwerp());
@@ -474,11 +453,11 @@ public class QuizAanpassingView extends JFrame {
 		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
 		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
 		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
-		setOpdrachtTabellen(alleOpdrachten, quiz);
+		setOpdrachtTabellen(alleOpdrachten, quizOpdrachten);
 		setLblAantalOpdrachten();
 	}
 	
-	class TxtMaxScoreUpdateListener implements DocumentListener {
+	class TxtMaxScoreUpdateListener implements DocumentListener { //TODO moet hoe dan ook een int in staan!
 
 		@Override
 		public void changedUpdate(DocumentEvent e) {

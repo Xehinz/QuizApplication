@@ -31,6 +31,7 @@ public class QuizAanpassingController {
 	private Quiz quiz;
 	private Leraar leraar;
 	private Opdracht opdracht;
+	private ArrayList<Opdracht> quizOpdrachten;
 
 	public QuizAanpassingController(Quiz quiz, Leraar leraar,
 			DBHandler dbHandler) {
@@ -39,6 +40,8 @@ public class QuizAanpassingController {
 		this.quiz = quiz;
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
+		this.quizOpdrachten = new ArrayList<Opdracht>();
+		quizOpdrachten.addAll(quiz.getOpdrachten());
 
 		// Set buttonlisteners
 		view.addOpdrachtToevoegenKnopActionListener(new OpdrachtToevoegenKnopListener());
@@ -46,7 +49,7 @@ public class QuizAanpassingController {
 		view.addQuizBewarenKnopActionListener(new QuizBewaarKnopListener());
 
 		//Set comboboxlisteners
-		view.addCategorieLijstSelectieActionListener(new CategorieLijstSelectieListener());
+		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
 		view.addSorteerLijstSelectieActionListener(new SorteerLijstSelectieListener());
 
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,8 +65,8 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), view.getGeselecteerdeOpdrachtAlleOpdrachten(), view.getMaxScore());
-			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
+			quizOpdrachten.add(opdracht);
+			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachten);
 		}
 	}
 
@@ -76,7 +79,8 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om te verwijderen", "Fout");
 				return;
 			}
-			.ontkoppelOpdrachtVanQuiz()
+			quizOpdrachten.remove(opdracht);
+			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachten);
 		}
 	}
 
@@ -125,25 +129,34 @@ public class QuizAanpassingController {
 			quiz.setOnderwerp(onderwerp);
 			quiz.setIsTest(isTest);
 			quiz.setIsUniekeDeelname(isUniekeDeelname);
-			view.toonInformationDialog("Quiz bewaard", "Ok");
+			// SET QuizOpdrachten
+			for(Opdracht o : quizOpdrachten) {
+				Error QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), o, view.getMaxScore()); //TODO KLOPT NIET, maxScore per quiz ?
+			}			
 			//ADD QUIZ TO DB
 			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {
 				dbHandler.getQuizCatalogus().addQuiz(quiz);
 			}
-			view.initViewForQuiz(new Quiz(leraar),
-					(dbHandler.getOpdrachtCatalogus()).getOpdrachten()); // Geef nieuwe quiz aan view
+			view.toonInformationDialog("Quiz bewaard", "Ok");
+			quizOpdrachten = new ArrayList<Opdracht>();
+			view.initViewForQuiz((dbHandler.getOpdrachtCatalogus()).getOpdrachten(), quizOpdrachten, new Quiz(leraar)); // Geef nieuwe, lege quiz aan view
 		}
 	}
 	
-	class CategorieLijstSelectieListener implements ItemListener {
-
+	class SelecteerCategorieListener implements ActionListener {
 		@Override
-		public void itemStateChanged(ItemEvent event) {
-		       if (event.getStateChange() == ItemEvent.SELECTED) {
-		          OpdrachtCategorie cat = (OpdrachtCategorie) event.getItem();
-		          view.filterOpCategorie(cat);
-		       }
-		    }       
+		public void actionPerformed(ActionEvent event) {
+			String opdrachtCategorieString = view.getOpdrachtCategorie();
+			if (opdrachtCategorieString.equals("Alle categorieën")) {
+				view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus()
+						.getOpdrachten(), quizOpdrachten);
+			} else {
+				OpdrachtCategorie OC = OpdrachtCategorie
+						.valueOf(opdrachtCategorieString.toUpperCase());
+				view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus()
+						.getOpdrachten(OC), quizOpdrachten);
+			}
+		}
 	}
 	
 	class SorteerLijstSelectieListener implements ItemListener {
@@ -151,7 +164,7 @@ public class QuizAanpassingController {
 		public void itemStateChanged(ItemEvent event) {
 		       if (event.getStateChange() == ItemEvent.SELECTED) {
 		          String selectie = (String)event.getItem();
-		          view.sorteerAlleOpdrachten(selectie);
+		          //TODO sorteer
 		       }
 		    } 
 	}
