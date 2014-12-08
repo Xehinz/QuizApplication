@@ -194,6 +194,7 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridy = 1;
 		constraints.gridx = 2;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
+		txtMaxPunten.setText("1");
 		sorteerVeld.add(txtMaxPunten, constraints);
 		
 		//INIT QUIZINFOVELD
@@ -340,7 +341,7 @@ public class QuizAanpassingView extends JFrame {
 	}
 	
 	public void filterOpCategorie(OpdrachtCategorie cat) {
-		if (cat == null) {
+		if (cat.equals(null)) { //TODO werkt niet
 			setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
 		}
 		else {
@@ -353,12 +354,20 @@ public class QuizAanpassingView extends JFrame {
 		//TODO check ROWSORTER
 	}
 	
+	public void checkTxtMaxPunten () {
+		//TODO check int na input
+	}
+	
 	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten() {
 			return alleOpdrachtenTabelModel.getOpdracht(alleOpdrachtenTabel.getSelectedRow());
 	}
 	
 	public Opdracht getGeselecteerdeOpdrachtQuizOpdrachten() {		
 			return geselecteerdeOpdrachtenTabelModel.getOpdracht(geselecteerdeOpdrachtenTabel.getSelectedRow());
+	}
+	
+	public void addtxtMaxPuntenActionListener (ActionListener listener) {
+		txtMaxPunten.addActionListener(listener);
 	}
 	
 	public void addQuizBewarenKnopActionListener(ActionListener listener) {
@@ -377,8 +386,8 @@ public class QuizAanpassingView extends JFrame {
 		cmbCategorie.addItemListener(listener);
 	}
 	
-	public void addSorteerLijstSelectieActionListener(ActionListener listener) {
-		cmbSorteer.addActionListener(listener);
+	public void addSorteerLijstSelectieActionListener(ItemListener listener) {
+		cmbSorteer.addItemListener(listener);
 	}
 	
 	public void addAlleOpdrachtenTabelSelectieListener(TableModelListener listener) {
@@ -428,6 +437,10 @@ public class QuizAanpassingView extends JFrame {
 	
 	public Quiz getQuiz() {
 		return this.quiz;
+	}
+	
+	public int getMaxScore() {
+		return Integer.parseInt(txtMaxPunten.getText());
 	}
 		
 	public void initViewForQuiz(Quiz quiz, ArrayList<Opdracht> alleOpdrachten) {

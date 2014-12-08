@@ -21,6 +21,7 @@ import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
 import model.Quiz;
+import model.QuizOpdracht;
 import model.quizStatus.QuizStatus;
 
 public class QuizAanpassingController {
@@ -61,7 +62,9 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			//TODO add opdracht to quizOpdrachten
+			String ID = "ID"; //TODO  ID ?
+			QuizOpdracht.koppelOpdrachtAanQuiz(ID, view.getQuiz(), view.getGeselecteerdeOpdrachtAlleOpdrachten(), view.getMaxScore(),false);
+			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
 	}
 
@@ -71,10 +74,10 @@ public class QuizAanpassingController {
 			opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
 			if (opdracht == null) {
 				view.toonInformationDialog(
-						"Selecteer een opdracht om toe te voegen", "Fout");
+						"Selecteer een opdracht om te verwijderen", "Fout");
 				return;
 			}
-			// TODO remove opdracht from quizOpdrachten
+			//TODO QuizOpdracht.ontkoppelOpdrachtVanQuiz()   moet dit ook geen public static method zijn ?
 		}
 	}
 
@@ -148,7 +151,7 @@ public class QuizAanpassingController {
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 		       if (event.getStateChange() == ItemEvent.SELECTED) {
-		          //TODO
+		          //TODO RowSorter
 		       }
 		    } 
 	}
