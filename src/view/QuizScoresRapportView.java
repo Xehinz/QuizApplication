@@ -2,19 +2,24 @@ package view;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
 import model.Leerling;
 import view.viewInterfaces.IOverzichtScoresQuizzenView;
 import view.viewInterfaces.IQuizScoresRapportView;
+import controller.QuizScoresRapportController;
 
 @SuppressWarnings("serial")
 public class QuizScoresRapportView extends JFrame implements
@@ -54,50 +59,69 @@ public class QuizScoresRapportView extends JFrame implements
 		
 		tblDeelnamen = new JTable();			
 		tblDeelnamen.setAutoCreateRowSorter(true);
-		tblDeelnamen.setFillsViewportHeight(true);	
+		tblDeelnamen.setFillsViewportHeight(true);
+		
+		
+
+		
+		
 		
 		constraints = new GridBagConstraints();
-		constraints.gridy = 1;
+		constraints.gridy = 10;
 		constraints.gridx = 0;
 		constraints.weighty = 10;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		constraints.insets = new Insets(0, 10, 10, 10);
 		constraints.fill = GridBagConstraints.BOTH;
 		
-		JScrollPane scroller = new JScrollPane(tblQuizzen);
-		this.add(scroller, constraints);	
+		JScrollPane scroller1 = new JScrollPane(tblDeelnamen);
+		this.add(scroller1, constraints);	
 
 		
-//		lblQuizzenRapport = new JLabel("Quizzen Rapport");
-//		constraints = new GridBagConstraints();
-//		constraints.insets = new Insets(10, 10, 0, 0);
-//		constraints.gridy = 1;
-//		constraints.gridx = 0;		
-//		constraints.weighty = 0.5;
-//		constraints.anchor = GridBagConstraints.NORTHWEST;
-//		this.add(lblQuizzenRapport, constraints);		
+		lblQuizzenRapport = new JLabel("Quiz Scores Rapport: ");
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(0, 10, -10, 0);
+		constraints.gridy = 400;
+		constraints.gridx = 0;		
+		constraints.weighty = 0.5;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
+		this.add(lblQuizzenRapport, constraints);		
 			
-//		tblQuizzen = new JTable();			
-//		tblQuizzen.setAutoCreateRowSorter(true);
-//		tblQuizzen.setFillsViewportHeight(true);	
-//		
-//		constraints = new GridBagConstraints();
-//		constraints.insets = new Insets(10, 10, 10, 10);
-//		constraints.gridy = 2;
-//		constraints.gridx = 0;
-//		constraints.weighty = 10;
-//		constraints.fill = GridBagConstraints.BOTH;
-//		constraints.anchor = GridBagConstraints.NORTHWEST;
-//		
-//		JScrollPane scroller1 = new JScrollPane(tblQuizzen);
-//		this.add(scroller1, constraints);	
+		tblQuizzen = new JTable();			
+		tblQuizzen.setAutoCreateRowSorter(true);
+		tblQuizzen.setFillsViewportHeight(true);	
+		
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(0, 10, 10, 10);
+		constraints.gridy = 410;
+		constraints.gridx = 0;
+		constraints.weighty = 10;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.SOUTHWEST;
+		
+		JScrollPane scroller2 = new JScrollPane(tblQuizzen);
+		this.add(scroller2, constraints);	
 
 	}
 	
 	@Override
-	public void setTableModel(TableModel quizScoreTableModel) {
-		tblDeelnamen.setModel(quizScoreTableModel);
-		//tblDeelnamen.getColumnModel().getColumn(0).setPreferredWidth(300);
+	public void setTableModel(TableModel quizDeelnameTableModel) {
+		
+		tblDeelnamen.setModel(quizDeelnameTableModel);
+		tblDeelnamen.getColumnModel().getColumn(0).setPreferredWidth(200);	
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tblDeelnamen.getColumnModel().getColumn(2).setCellRenderer( centerRenderer );
+	}
+	
+	public void setTableModel1(TableModel quizScoreTableModel) {
+		
+		tblQuizzen.setModel(quizScoreTableModel);
+		tblQuizzen.getColumnModel().getColumn(0).setPreferredWidth(250);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		tblQuizzen.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
 	}
 	
 	public void setLeerling(Leerling leerling) {
@@ -114,13 +138,17 @@ public class QuizScoresRapportView extends JFrame implements
 
 	@Override
 	public void toonInformationDialog(String boodschap, String titel) {
-		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
 	@Override
 	public int getGeselecteerdeRij() {
 		return tblDeelnamen.convertRowIndexToModel(tblDeelnamen.getSelectedRow());
+	}
+	
+	public void addSelectionListener(ListSelectionListener listener) {
+		tblDeelnamen.getSelectionModel().addListSelectionListener(listener);
 	}
 
 }
