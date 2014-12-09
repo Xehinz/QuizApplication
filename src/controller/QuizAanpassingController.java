@@ -26,22 +26,22 @@ import model.quizStatus.QuizStatus;
 
 public class QuizAanpassingController {
 
+	//TODO update window bij veranderen status
+	
 	private QuizAanpassingView view;
 	private DBHandler dbHandler;
-	private Quiz quiz;
+	private Quiz quiz, quizClone; //quizClone laat toe om opdrachten toe te voegen en te verwijderen zonder de quiz te veranderen (pas bij bewaren quiz aanpassen)
 	private Leraar leraar;
 	private Opdracht opdracht;
-	private ArrayList<Opdracht> quizOpdrachten;
 
 	public QuizAanpassingController(Quiz quiz, Leraar leraar,
 			DBHandler dbHandler) {
 		view = new QuizAanpassingView(quiz, leraar,
 				dbHandler);
 		this.quiz = quiz;
+		this.quizClone = quiz.clone();
 		this.leraar = leraar;
-		this.dbHandler = dbHandler;
-		this.quizOpdrachten = new ArrayList<Opdracht>();
-		quizOpdrachten.addAll(quiz.getOpdrachten());
+		this.dbHandler = dbHandler;		
 
 		// Set buttonlisteners
 		view.addOpdrachtToevoegenKnopActionListener(new OpdrachtToevoegenKnopListener());
@@ -65,8 +65,8 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			quizOpdrachten.add(opdracht);
-			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachten);
+			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), opdracht, 1); //TODO Implement MaxScore
+			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
 	}
 
@@ -79,8 +79,8 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om te verwijderen", "Fout");
 				return;
 			}
-			quizOpdrachten.remove(opdracht);
-			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachten);
+			opdracht.getQuizOpdrachten(); //TODO verwijder opdracht uit quizClone opdrachtenLijst (Ontkoppel via QuizOpdracht)
+			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
 	}
 
@@ -123,23 +123,22 @@ public class QuizAanpassingController {
 			// TEST & UNIEKEDEELNAME
 			boolean isTest = view.getIsTestckb();
 			boolean isUniekeDeelname = view.getIsUniekeDeelnameckb();
-			// SETQUIZ
-			quiz.setQuizStatus(status);
-			quiz.setDoelLeerjaren(klassenArray);
-			quiz.setOnderwerp(onderwerp);
-			quiz.setIsTest(isTest);
-			quiz.setIsUniekeDeelname(isUniekeDeelname);
-			// SET QuizOpdrachten
-			for(Opdracht o : quizOpdrachten) {
-				Error QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), o, view.getMaxScore()); //TODO KLOPT NIET, maxScore per quiz ?
-			}			
+			// SETQUIZCLONE
+			quizClone.setQuizStatus(status);
+			quizClone.setDoelLeerjaren(klassenArray);
+			quizClone.setOnderwerp(onderwerp);
+			quizClone.setIsTest(isTest);
+			quizClone.setIsUniekeDeelname(isUniekeDeelname);
+			// SET QUIZ
+			quiz = quizClone;			
 			//ADD QUIZ TO DB
 			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {
 				dbHandler.getQuizCatalogus().addQuiz(quiz);
 			}
 			view.toonInformationDialog("Quiz bewaard", "Ok");
-			quizOpdrachten = new ArrayList<Opdracht>();
-			view.initViewForQuiz((dbHandler.getOpdrachtCatalogus()).getOpdrachten(), quizOpdrachten, new Quiz(leraar)); // Geef nieuwe, lege quiz aan view
+			quiz = new Quiz(leraar);
+			quizClone = quiz.clone();
+			view.initViewForQuiz((dbHandler.getOpdrachtCatalogus()).getOpdrachten(), quizClone); // Geef nieuwe, lege quiz aan view
 		}
 	}
 	

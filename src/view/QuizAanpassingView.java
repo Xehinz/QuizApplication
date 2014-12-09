@@ -139,7 +139,7 @@ public class QuizAanpassingView extends JFrame {
 		lblAantalOpdrachten = new JLabel();
 		lblMaxPunten = new JLabel("Max score voor deze vraag :");
 		
-		initViewForQuiz(quiz, dbHandler.getOpdrachtCatalogus().getOpdrachten());
+		initViewForQuiz(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
 		
 		//INIT KNOPPENVELD
 		opdrachtKnoppenVeld = new JPanel();
@@ -332,8 +332,8 @@ public class QuizAanpassingView extends JFrame {
 		lblAantalOpdrachten.setText(aantalOpdrachten);
 	}
 	
-	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Collection<Opdracht> quizOpdrachten) {		
-		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quizOpdrachten);
+	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Quiz quiz) {		
+		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
 		geselecteerdeOpdrachtenTabel.setModel(geselecteerdeOpdrachtenTabelModel);
 		geselecteerdeOpdrachtenTabelModel.fireTableDataChanged();
 		alleOpdrachten.removeAll(quiz.getOpdrachten());
@@ -435,7 +435,7 @@ public class QuizAanpassingView extends JFrame {
 		return Integer.parseInt(txtMaxScore.getText());
 	}
 		
-	public void initViewForQuiz(ArrayList<Opdracht> alleOpdrachten, ArrayList<Opdracht> quizOpdrachten, Quiz quiz) {
+	public void initViewForQuiz(ArrayList<Opdracht> alleOpdrachten, Quiz quiz) {
 		this.quiz = quiz;
 		
 		//SET FIELDS
@@ -453,7 +453,7 @@ public class QuizAanpassingView extends JFrame {
 		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
 		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
 		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
-		setOpdrachtTabellen(alleOpdrachten, quizOpdrachten);
+		setOpdrachtTabellen(alleOpdrachten, quiz);
 		setLblAantalOpdrachten();
 	}
 	
