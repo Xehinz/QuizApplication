@@ -32,6 +32,8 @@ public class QuizBeheerController {
 		this.view = new QuizBeheerView();
 		this.quiz = null;
 
+		//TODO afdwingen dat maar 1 aanpassingsvenster open mag staan.
+		
 		// Vul Tabel
 		view.setQuizzen(dbHandler.getQuizCatalogus().getQuizzen());
 		// Set Knoppen
@@ -42,22 +44,19 @@ public class QuizBeheerController {
 		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
 	}
-	
-	// Adriaan, dit had ik even nodig
+		
 	public QuizBeheerView getView() {
 		return view;
 	}
 
 	private void openQuizAanpassing(Quiz quiz, Leraar leraar) {
-		QuizAanpassingController qac = new QuizAanpassingController(quiz,
-				leraar, dbHandler);
+		new QuizAanpassingController(quiz,
+				leraar, dbHandler, this);
 	}
 	
 	public void updateTabel() {
 		view.setQuizzen(dbHandler.getQuizCatalogus().getQuizzen());
 	}
-	
-	//TODO updateTabel() bij sluiten/update in QuizAanpassing.
 
 	class NieuweQuizKnopListener implements ActionListener {
 		@Override

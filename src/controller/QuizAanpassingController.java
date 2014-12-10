@@ -14,6 +14,9 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.RowSorter;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import persistency.DBHandler;
 import view.QuizAanpassingView;
@@ -33,26 +36,30 @@ public class QuizAanpassingController {
 	private Quiz quiz, quizClone; //quizClone laat toe om opdrachten toe te voegen en te verwijderen zonder de quiz te veranderen (pas bij bewaren quiz aanpassen)
 	private Leraar leraar;
 	private Opdracht opdracht;
+	private QuizBeheerController quizBeheerController;
 
 	public QuizAanpassingController(Quiz quiz, Leraar leraar,
-			DBHandler dbHandler) {
-		view = new QuizAanpassingView(quiz, leraar,
-				dbHandler);
+			DBHandler dbHandler, QuizBeheerController quizBeheerController) {		
 		this.quiz = quiz;
 		this.quizClone = quiz.clone();
 		this.leraar = leraar;
-		this.dbHandler = dbHandler;		
+		this.dbHandler = dbHandler;	
+		this.quizBeheerController = quizBeheerController;
+		view = new QuizAanpassingView(quizClone, leraar,
+				dbHandler);
 
 		// Set buttonlisteners
 		view.addOpdrachtToevoegenKnopActionListener(new OpdrachtToevoegenKnopListener());
-		view.addopdrachtVerwijderenKnopActionListener(new OpdrachtVerwijderenKnopListener());
+		view.addOpdrachtVerwijderenKnopActionListener(new OpdrachtVerwijderenKnopListener());
 		view.addQuizBewarenKnopActionListener(new QuizBewaarKnopListener());
 
 		//Set comboboxlisteners
 		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
-		view.addSorteerLijstSelectieActionListener(new SorteerLijstSelectieListener());
+		view.addSelecteerSorteringActionListener(new SelecteerSorteringListener());
+		
+		//Set spinnerlistener
+		view.addVeranderMaxScoreChangeListener(new VeranderMaxScoreSpinnerListener());
 
-		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
 	}
 
@@ -66,8 +73,30 @@ public class QuizAanpassingController {
 				return;
 			}
 			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), opdracht, view.getMaxScore());
+			view.toonInformationDialog(view.getQuiz().getOpdrachten().toString(), "TESTADD");
+			quiz = view.getQuiz();
+			view.toonInformationDialog(quiz.getOpdrachten().toString(), "TEST ADD");
 			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
+	}
+	
+	//TODO update maxscore bij andere selectie
+	
+	class VeranderMaxScoreSpinnerListener implements ChangeListener {
+		@Override
+		public void stateChanged(ChangeEvent arg0) {
+			opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
+			if (opdracht == null) {
+				view.toonInformationDialog(
+						"Selecteer een opdracht om de maximum score voor aan te passen", "Fout");
+				return;
+			}
+			for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
+				if ((qo.getQuiz()).equals(quiz)) {
+					qo.setMaxScore(view.getMaxScore());
+				}
+			}		
+		}		
 	}
 
 	class OpdrachtVerwijderenKnopListener implements ActionListener {
@@ -80,11 +109,10 @@ public class QuizAanpassingController {
 				return;
 			}
 			for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
-				if (qo.getQuiz() == quiz) {
+				if ((qo.getQuiz()).equals(quiz)) {
 					qo.ontkoppelOpdrachtVanQuiz();
 				}
-			}
-			
+			}			
 			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
 	}
@@ -95,20 +123,18 @@ public class QuizAanpassingController {
 			quiz = view.getQuiz();
 			// STATUS
 			QuizStatus status = view.getQuizStatuscmb();
-			if (status == null) {
-				// TODO Checken of status geldig is.
-				return;
-			}
+			// TODO Checken of status geldig is.				
 			// KLAS
 			String klas = view.getKlasTxt();
-			if (klas == null) {
+			if (klas.equals("")) {
 				view.toonInformationDialog("Geef een klas in", "Fout");
 				return;
 			}
-			klas = klas.substring(1, klas.length() - 1);
-			String[] klassen = klas.split(", ");
-			int[] klassenArray = new int[klassen.length];
+			int[] klassenArray;
 			try {
+				klas = klas.substring(1, klas.length() - 1);
+				String[] klassen = klas.split(", ");
+				klassenArray = new int[klassen.length];			
 				for (int i = 0; i < (klassen.length); i++) {					
 					klassenArray[i] = Integer.parseInt(klassen[i]);
 					if (klassenArray[i]<0 || klassenArray[i]>6) {
@@ -121,7 +147,7 @@ public class QuizAanpassingController {
 			}
 			// ONDERWERP
 			String onderwerp = view.getOnderwerpTxt();
-			if (onderwerp == null) {
+			if (onderwerp.equals("")) {
 				view.toonInformationDialog("Geef een onderwerp in", "Fout");
 				return;
 			}
@@ -137,12 +163,13 @@ public class QuizAanpassingController {
 			// SET QUIZ
 			quiz = quizClone;			
 			//ADD QUIZ TO DB
-			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {
+			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {  //TODO loopt hier fout bij aanpassen quiz
 				dbHandler.getQuizCatalogus().addQuiz(quiz);
 			}
 			view.toonInformationDialog("Quiz bewaard", "Ok");
 			quiz = new Quiz(leraar);
 			quizClone = quiz.clone();
+			quizBeheerController.updateTabel();
 			view.initViewForQuiz((dbHandler.getOpdrachtCatalogus()).getOpdrachten(), quizClone); // Geef nieuwe, lege quiz aan view
 		}
 	}
@@ -163,14 +190,24 @@ public class QuizAanpassingController {
 		}
 	}
 	
-	class SorteerLijstSelectieListener implements ItemListener {
+	class SelecteerSorteringListener implements ActionListener {
 		@Override
-		public void itemStateChanged(ItemEvent event) {
-		       if (event.getStateChange() == ItemEvent.SELECTED) {
-		          String selectie = (String)event.getItem();
-		          //TODO sorteer
-		       }
-		    } 
+		public void actionPerformed(ActionEvent event) {
+			String sorteerString = view.getSorteerString();
+			switch (sorteerString) {
+			case "geen":
+				view.setRowSorter(1);
+				break;
+			case "vraag":
+				view.setRowSorter(2);
+				break;
+			case "categorie":
+				view.setRowSorter(0);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 }

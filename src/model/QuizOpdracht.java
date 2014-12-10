@@ -16,7 +16,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	private String ID;
 	private Quiz quiz;
 	private Opdracht opdracht;
-	private final int maxScore;
+	private int maxScore;
 	private ArrayList<OpdrachtAntwoord> opdrachtAntwoorden;
 
 	/**
@@ -163,6 +163,16 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	 */
 	public int getMaxScore() {
 		return maxScore;
+	}
+	
+	/**
+	 * verandert de maximum score van deze QuizOpdracht
+	 * 
+	 * @param int
+	 * 			de maximum score
+	 */
+	public void setMaxScore(int maxScore) {
+		this.maxScore = maxScore;
 	}
 
 	/**
