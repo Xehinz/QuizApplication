@@ -17,14 +17,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 
 import persistency.DBHandler;
@@ -52,15 +54,14 @@ public class QuizAanpassingView extends JFrame {
 	
 	//FIELDS
 	private Quiz quiz;
-	private String aantalOpdrachten;
+	private String aantalOpdrachten, maxScoreString;
 	
 	//SWINGFIELDS	
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
-	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten, lblMaxPunten;
-	private JButton btnOpdrachtToevoegen, btnOpdrachtVerwijderen, btnQuizBewaren;
+	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten, lblMaxScore;
+	private JButton btnOpdrachtToevoegen, btnOpdrachtVerwijderen, btnQuizBewaren, btnWijzigMaxScore;
 	private JTextField txtOnderwerp, txtLeraar, txtKlas;
-	private JSpinner txtMaxScore;
 	private JComboBox<QuizStatus> cmbStatus;
 	private JComboBox<String> cmbCategorie, cmbSorteer;
 	private JCheckBox ckbIsTest, ckbIsUniekeDeelname;
@@ -70,6 +71,7 @@ public class QuizAanpassingView extends JFrame {
 	private JPanel opdrachtKnoppenVeld, quizInfoVeld, sorteerVeld;
 	private TableRowSorter<TableModel> rowSorter;
 	private List<RowSorter.SortKey> sortKeys;
+	private ListSelectionModel listSelectionModel;
 	
 	
 	
@@ -88,6 +90,8 @@ public class QuizAanpassingView extends JFrame {
 		btnOpdrachtVerwijderen = new JButton("<<<");
 		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
 		btnQuizBewaren = new JButton("Quiz bewaren");
+		btnWijzigMaxScore = new JButton("Wijzig Max. score voor deze opdracht");
+		btnWijzigMaxScore.setEnabled(quiz.isAanpasbaar());
 		
 		//INIT COMBOBOX
 		QuizStatus[] status = {new Afgesloten(), new Afgewerkt(), new InConstructie(), new LaatsteKans(), new Opengesteld()};
@@ -106,9 +110,7 @@ public class QuizAanpassingView extends JFrame {
 		txtLeraar = new JTextField();
 		txtLeraar.setEditable(false);
 		txtKlas = new JTextField();
-		txtKlas.setEditable(quiz.isAanpasbaar());
-		txtMaxScore = new JSpinner();
-		txtMaxScore.enableInputMethods(quiz.isAanpasbaar());
+		txtKlas.setEditable(quiz.isAanpasbaar());			
 		
 		//INIT CHECKBOX
 		ckbIsTest = new JCheckBox("Test");
@@ -120,11 +122,11 @@ public class QuizAanpassingView extends JFrame {
 		alleOpdrachtenTabelModel = new QuizAanpassingTableModel();
 		alleOpdrachtenTabel = new JTable(alleOpdrachtenTabelModel);
 		rowSorter = new TableRowSorter<TableModel>(alleOpdrachtenTabel.getModel());		
-		alleOpdrachtenTabel.setRowSorter(rowSorter);
+		alleOpdrachtenTabel.setRowSorter(rowSorter);			
 		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);
 		alleOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
 		geselecteerdeOpdrachtenTabelModel = new QuizAanpassingTableModel();
-		geselecteerdeOpdrachtenTabel = new JTable(geselecteerdeOpdrachtenTabelModel);
+		geselecteerdeOpdrachtenTabel = new JTable(geselecteerdeOpdrachtenTabelModel);		
 		geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
 		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));		
 		
@@ -136,7 +138,7 @@ public class QuizAanpassingView extends JFrame {
 		lblFilterOpCategorie = new JLabel("Toon opdrachten van categorie :");
 		lblSorteer = new JLabel("Sorteer opdrachten op :");
 		lblAantalOpdrachten = new JLabel();
-		lblMaxPunten = new JLabel("Max score voor deze vraag :");
+		lblMaxScore = new JLabel("Max. score voor deze opdracht : ");
 		
 		initViewForQuiz(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
 		
@@ -185,18 +187,16 @@ public class QuizAanpassingView extends JFrame {
 		
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 1;
-		constraints.gridx = 1;
-		sorteerVeld.add(lblMaxPunten, constraints);
+		constraints.gridy = 0;
+		constraints.gridx = 2;
+		sorteerVeld.add(lblMaxScore, constraints);
 		
-			//ADD TEXTFIELD
+			//ADD BUTTON
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
 		constraints.gridx = 2;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		txtMaxScore.setValue(1);
-		sorteerVeld.add(txtMaxScore, constraints);
+		sorteerVeld.add(btnWijzigMaxScore, constraints);
 		
 		//INIT QUIZINFOVELD
 		quizInfoVeld = new JPanel();
@@ -331,6 +331,11 @@ public class QuizAanpassingView extends JFrame {
 		lblAantalOpdrachten.setText(aantalOpdrachten);
 	}
 	
+	public void setLblMaxScore(int maxScore) {
+		maxScoreString = String.format("%s%d", "Max. score voor deze opdracht : ", maxScore);
+		lblMaxScore.setText(maxScoreString);
+	}
+	
 	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Quiz quiz) {		
 		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
 		geselecteerdeOpdrachtenTabel.setModel(geselecteerdeOpdrachtenTabelModel);
@@ -357,11 +362,7 @@ public class QuizAanpassingView extends JFrame {
 		}
 		rowSorter.sort();
 	}
-	
-	public void checkTxtMaxPunten () {
-		//TODO check int na input
-	}
-	
+		
 	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten() {
 			return alleOpdrachtenTabelModel.getOpdracht(alleOpdrachtenTabel.getSelectedRow());
 	}
@@ -373,6 +374,12 @@ public class QuizAanpassingView extends JFrame {
 	public void toonInformationDialog(String boodschap, String titel) {
 		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	public String vraagMaxScore() {
+		return (String)JOptionPane.showInputDialog(this, "Geef de maximale voor deze opdracht aan."); //TODO weg met cancel & X
+	}
+	
+	//TODO Update lblMaxScore bij wijziging selectie in tabel
 		
 	public void initViewForQuiz(ArrayList<Opdracht> alleOpdrachten, Quiz quiz) {
 		this.quiz = quiz;
@@ -406,21 +413,18 @@ public class QuizAanpassingView extends JFrame {
 	public void addOpdrachtVerwijderenKnopActionListener(ActionListener listener) {
 		btnOpdrachtVerwijderen.addActionListener(listener);
 	}	
+	public void addWijzigMaxScoreKnopActionListener(ActionListener listener) {
+		btnWijzigMaxScore.addActionListener(listener);
+	}
 	public void addSelecteerCategorieActionlistener(ActionListener listener) {
 		cmbCategorie.addActionListener(listener);
 	}	
 	public void addSelecteerSorteringActionListener(ActionListener listener) {
 		cmbSorteer.addActionListener(listener);
+	}			
+	public void addGeselecteerdeOpdrachtenTabelSelectieListener(ListSelectionListener listener) {
+		geselecteerdeOpdrachtenTabel.getSelectionModel().addListSelectionListener(listener);
 	}	
-	public void addAlleOpdrachtenTabelSelectieListener(TableModelListener listener) {
-		alleOpdrachtenTabelModel.addTableModelListener(listener);
-	}	
-	public void addGeselecteerdeOpdrachtenTabelSelectieListener(TableModelListener listener) {
-		geselecteerdeOpdrachtenTabelModel.addTableModelListener(listener);
-	}
-	public void addVeranderMaxScoreChangeListener(ChangeListener listener) {
-		txtMaxScore.addChangeListener(listener);
-	}
 	
 	//GETTERS
 	public String getOnderwerpTxt() {
@@ -445,10 +449,6 @@ public class QuizAanpassingView extends JFrame {
 	
 	public Quiz getQuiz() {
 		return this.quiz;
-	}
-	
-	public int getMaxScore() {
-		return (Integer) txtMaxScore.getValue();		
-	}
+	}		
 
 }

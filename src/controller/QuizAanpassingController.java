@@ -9,14 +9,9 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.RowSorter;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import persistency.DBHandler;
 import view.QuizAanpassingView;
@@ -57,8 +52,8 @@ public class QuizAanpassingController {
 		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
 		view.addSelecteerSorteringActionListener(new SelecteerSorteringListener());
 		
-		//Set spinnerlistener
-		view.addVeranderMaxScoreChangeListener(new VeranderMaxScoreSpinnerListener());
+		//Set tabellistener
+		view.addGeselecteerdeOpdrachtenTabelSelectieListener(new GeselecteerdeOpdrachtenTabelListSelectionListener());
 
 		view.setVisible(true);
 	}
@@ -72,32 +67,22 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), opdracht, view.getMaxScore());
-			view.toonInformationDialog(view.getQuiz().getOpdrachten().toString(), "TESTADD");
-			quiz = view.getQuiz();
-			view.toonInformationDialog(quiz.getOpdrachten().toString(), "TEST ADD");
+			int maxScore = 0;
+			do{
+				try {
+					maxScore = Integer.parseInt(view.vraagMaxScore());
+					if(maxScore < 1 || maxScore > 100) {
+						throw new IllegalArgumentException();
+					}
+				}
+				catch  (Exception ex) {
+					view.toonInformationDialog("De maximum score moet een geheel getal tussen 1 & 100 zijn", "Error");
+				}
+			}while (maxScore < 1 || maxScore > 100);
+			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), opdracht, maxScore);
 			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
-	}
-	
-	//TODO update maxscore bij andere selectie
-	
-	class VeranderMaxScoreSpinnerListener implements ChangeListener {
-		@Override
-		public void stateChanged(ChangeEvent arg0) {
-			opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
-			if (opdracht == null) {
-				view.toonInformationDialog(
-						"Selecteer een opdracht om de maximum score voor aan te passen", "Fout");
-				return;
-			}
-			for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
-				if ((qo.getQuiz()).equals(quiz)) {
-					qo.setMaxScore(view.getMaxScore());
-				}
-			}		
-		}		
-	}
+	}	
 
 	class OpdrachtVerwijderenKnopListener implements ActionListener {
 		@Override
@@ -208,6 +193,50 @@ public class QuizAanpassingController {
 				break;
 			}
 		}
+	}
+	
+	class WijzigMaxScoreKnopListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			Opdracht opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
+			if (opdracht == null) {
+				view.toonInformationDialog(
+						"Selecteer een opdracht om de maximum score  voor aan te passen", "Fout");
+				return;
+			}
+			int maxScore = 0;
+			do{
+				try {
+					maxScore = Integer.parseInt(view.vraagMaxScore());
+					if(maxScore < 1 || maxScore > 100) {
+						throw new IllegalArgumentException();
+					}
+				}
+				catch  (Exception ex) {
+					view.toonInformationDialog("De maximum score moet een geheel getal tussen 1 & 100 zijn", "Error");
+				}
+			}while (maxScore < 1 || maxScore > 100);
+			
+			for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
+				if ((qo.getQuiz()).equals(quiz)) {
+					qo.setMaxScore(maxScore);
+				}
+			}
+		}		
+	}
+	
+	class GeselecteerdeOpdrachtenTabelListSelectionListener implements ListSelectionListener {
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			Opdracht opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
+			if (!(opdracht == null)) {
+				for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
+					if ((qo.getQuiz()).equals(quiz)) {
+						view.setLblMaxScore(qo.getMaxScore());
+					}
+				}				
+			}			
+		}		
 	}
 
 }
