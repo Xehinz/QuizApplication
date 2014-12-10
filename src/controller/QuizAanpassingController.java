@@ -65,7 +65,7 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), opdracht, 1); //TODO Implement MaxScore
+			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), opdracht, view.getMaxScore());
 			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
 	}
@@ -79,7 +79,12 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om te verwijderen", "Fout");
 				return;
 			}
-			opdracht.getQuizOpdrachten(); //TODO verwijder opdracht uit quizClone opdrachtenLijst (Ontkoppel via QuizOpdracht)
+			for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
+				if (qo.getQuiz() == quiz) {
+					qo.ontkoppelOpdrachtVanQuiz();
+				}
+			}
+			
 			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
 		}
 	}
@@ -148,12 +153,12 @@ public class QuizAanpassingController {
 			String opdrachtCategorieString = view.getOpdrachtCategorie();
 			if (opdrachtCategorieString.equals("Alle categorieën")) {
 				view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(), quizOpdrachten);
+						.getOpdrachten(), view.getQuiz());
 			} else {
 				OpdrachtCategorie OC = OpdrachtCategorie
 						.valueOf(opdrachtCategorieString.toUpperCase());
 				view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(OC), quizOpdrachten);
+						.getOpdrachten(OC), view.getQuiz());
 			}
 		}
 	}

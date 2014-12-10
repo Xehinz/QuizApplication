@@ -108,7 +108,6 @@ public class QuizAanpassingView extends JFrame {
 		txtKlas.setEditable(quiz.isAanpasbaar());
 		txtMaxScore = new JTextField();
 		txtMaxScore.setEditable(quiz.isAanpasbaar());
-		txtMaxScore.getDocument().addDocumentListener((new TxtMaxScoreUpdateListener()));
 		
 		//INIT CHECKBOX
 		ckbIsTest = new JCheckBox("Test");
@@ -120,12 +119,10 @@ public class QuizAanpassingView extends JFrame {
 		alleOpdrachtenTabelModel = new QuizAanpassingTableModel();
 		alleOpdrachtenTabel = new JTable(alleOpdrachtenTabelModel);
 		rowSorter = new TableRowSorter<TableModel>(alleOpdrachtenTabelModel);
-		setKolomBreedte(alleOpdrachtenTabel);
 		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);
 		alleOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
 		geselecteerdeOpdrachtenTabelModel = new QuizAanpassingTableModel();
 		geselecteerdeOpdrachtenTabel = new JTable(geselecteerdeOpdrachtenTabelModel);
-		setKolomBreedte(geselecteerdeOpdrachtenTabel);
 		geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
 		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));		
 		
@@ -360,53 +357,58 @@ public class QuizAanpassingView extends JFrame {
 	
 	public Opdracht getGeselecteerdeOpdrachtQuizOpdrachten() {		
 			return geselecteerdeOpdrachtenTabelModel.getOpdracht(geselecteerdeOpdrachtenTabel.getSelectedRow());
-	}
-	
-	public void addQuizBewarenKnopActionListener(ActionListener listener) {
-		btnQuizBewaren.addActionListener(listener);
-	}
-	
-	public void addOpdrachtToevoegenKnopActionListener(ActionListener listener) {
-		btnOpdrachtToevoegen.addActionListener(listener);
-	}
-	
-	public void addopdrachtVerwijderenKnopActionListener(ActionListener listener) {
-		btnOpdrachtVerwijderen.addActionListener(listener);
-	}
-	
-	public void addSelecteerCategorieActionlistener(ActionListener listener) {
-		cmbCategorie.addActionListener(listener);
-	}
-	
-	public void addSorteerLijstSelectieActionListener(ItemListener listener) {
-		cmbSorteer.addItemListener(listener);
-	}
-	
-	public void addAlleOpdrachtenTabelSelectieListener(TableModelListener listener) {
-		alleOpdrachtenTabelModel.addTableModelListener(listener);
-	}
-	
-	public void addGeselecteerdeOpdrachtenTabelSelectieListener(TableModelListener listener) {
-		geselecteerdeOpdrachtenTabelModel.addTableModelListener(listener);
-	}
+	}	
 	
 	public void toonInformationDialog(String boodschap, String titel) {
 		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 	}
-	
-	public void setKolomBreedte (JTable table) {   //TODO werkt niet
-		TableColumn kolom = null;
-		for (int i = 0; i < 2; i++) {
-			    kolom = table.getColumnModel().getColumn(i);
-			    if (i == 0 || i == 1) {
-			        kolom.setPreferredWidth(40); //Categorie + type
-			    }
-			    if (i == 2) {
-				    kolom.setPreferredWidth(320); //vraag
-			    }
-			}
+		
+	public void initViewForQuiz(ArrayList<Opdracht> alleOpdrachten, Quiz quiz) {
+		this.quiz = quiz;
+		
+		//SET FIELDS
+		txtOnderwerp.setText(quiz.getOnderwerp());
+		txtOnderwerp.setEditable(quiz.isAanpasbaar());
+		txtLeraar.setEditable(true);
+		txtLeraar.setText(quiz.getAuteur().toString());
+		txtLeraar.setEditable(false);
+		txtKlas.setText(quiz.getDoelLeerjaren().toString());
+		txtKlas.setEditable(quiz.isAanpasbaar());
+		cmbStatus.setSelectedItem(quiz.getQuizStatus());
+		ckbIsTest.setSelected(quiz.getIsTest());
+		ckbIsTest.setEnabled(quiz.isAanpasbaar());
+		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
+		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
+		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
+		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
+		setOpdrachtTabellen(alleOpdrachten, quiz);
+		setLblAantalOpdrachten();
 	}
 	
+	//LISTENERS
+	public void addQuizBewarenKnopActionListener(ActionListener listener) {
+		btnQuizBewaren.addActionListener(listener);
+	}	
+	public void addOpdrachtToevoegenKnopActionListener(ActionListener listener) {
+		btnOpdrachtToevoegen.addActionListener(listener);
+	}	
+	public void addopdrachtVerwijderenKnopActionListener(ActionListener listener) {
+		btnOpdrachtVerwijderen.addActionListener(listener);
+	}	
+	public void addSelecteerCategorieActionlistener(ActionListener listener) {
+		cmbCategorie.addActionListener(listener);
+	}	
+	public void addSorteerLijstSelectieActionListener(ItemListener listener) {
+		cmbSorteer.addItemListener(listener);
+	}	
+	public void addAlleOpdrachtenTabelSelectieListener(TableModelListener listener) {
+		alleOpdrachtenTabelModel.addTableModelListener(listener);
+	}	
+	public void addGeselecteerdeOpdrachtenTabelSelectieListener(TableModelListener listener) {
+		geselecteerdeOpdrachtenTabelModel.addTableModelListener(listener);
+	}
+	
+	//GETTERS
 	public String getOnderwerpTxt() {
 		return txtOnderwerp.getText();
 	}
@@ -433,60 +435,6 @@ public class QuizAanpassingView extends JFrame {
 	
 	public int getMaxScore() {
 		return Integer.parseInt(txtMaxScore.getText());
-	}
-		
-	public void initViewForQuiz(ArrayList<Opdracht> alleOpdrachten, Quiz quiz) {
-		this.quiz = quiz;
-		
-		//SET FIELDS
-		txtOnderwerp.setText(quiz.getOnderwerp());
-		txtOnderwerp.setEditable(quiz.isAanpasbaar());
-		txtLeraar.setEditable(true);
-		txtLeraar.setText(quiz.getAuteur().toString());
-		txtLeraar.setEditable(false);
-		txtKlas.setText(quiz.getDoelLeerjaren().toString());
-		txtKlas.setEditable(quiz.isAanpasbaar());
-		cmbStatus.setSelectedItem(quiz.getQuizStatus());
-		ckbIsTest.setSelected(quiz.getIsTest());
-		ckbIsTest.setEnabled(quiz.isAanpasbaar());
-		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
-		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
-		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
-		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
-		setOpdrachtTabellen(alleOpdrachten, quiz);
-		setLblAantalOpdrachten();
-	}
-	
-	class TxtMaxScoreUpdateListener implements DocumentListener { //TODO moet hoe dan ook een int in staan!
-
-		@Override
-		public void changedUpdate(DocumentEvent e) {
-			warn();
-		}
-		@Override
-		public void removeUpdate(DocumentEvent e) {
-			warn();
-		}
-		@Override
-		public void insertUpdate(DocumentEvent e) {
-			warn();
-		}
-		public void warn() {
-			if (txtMaxScore.getText().length()<1) {
-			       JOptionPane.showMessageDialog(null,
-			          "Geef het maximaal aantal punten voor deze opdracht aan", "Error",
-			          JOptionPane.ERROR_MESSAGE);
-			}
-			else {
-				try {
-					getMaxScore();
-				}
-				catch (Exception ex) {
-					toonInformationDialog("Maximum score moet een natuurlijk getal zijn.","Error");
-				}
-			}
-		}
-		
 	}
 
 }
