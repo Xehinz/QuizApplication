@@ -108,14 +108,13 @@ public class OpdrachtBeheerController {
 	class PasOpdrachtAanKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			opdracht = view.getGeselecteerdeOpdracht();
-			if (opdracht == null) {
-				return;
-			}
-			if (!opdracht.isAanpasbaar()) {
-				return;
-			} else {
+			try {
+				opdracht = view.getGeselecteerdeOpdracht();
 				openOpdrachtAanpassing(opdracht, opdracht.getAuteur());
+			} catch (Exception e) {
+				view.toonErrorMessage(String.format(
+						"Fout bij het aanpassen van de opdracht:\n%s",
+						e.getMessage()), "Fout bij aanpassen");
 			}
 		}
 	}
@@ -123,16 +122,15 @@ public class OpdrachtBeheerController {
 	class VerwijderOpdrachtKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			opdracht = view.getGeselecteerdeOpdracht();
-			if (opdracht.equals(null)) {
-				return;
-			}
-			if (!opdracht.isVerwijderbaar()) {
-				return;
-			} else {
+			try {
+				opdracht = view.getGeselecteerdeOpdracht();
 				dbHandler.getOpdrachtCatalogus().removeOpdracht(opdracht);
 				view.setOpdrachten(dbHandler.getOpdrachtCatalogus()
 						.getOpdrachten());
+			} catch (Exception e) {
+				view.toonErrorMessage(String.format(
+						"Fout bij het verwijderen van de opdracht:\n%s",
+						e.getMessage()), "Fout bij verwijderen");
 			}
 		}
 	}
@@ -140,11 +138,14 @@ public class OpdrachtBeheerController {
 	class BekijkDetailsKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			opdracht = view.getGeselecteerdeOpdracht();
-			if (opdracht == null) {
-				return;
+			try {
+				opdracht = view.getGeselecteerdeOpdracht();
+				openOpdrachtBekijken(opdracht, opdracht.getAuteur());
+			} catch (Exception e) {
+				view.toonErrorMessage(
+						String.format("Fout bij het details bekijken:\n%s",
+								e.getMessage()), "Fout bij details bekijken");
 			}
-			openOpdrachtBekijken(opdracht, opdracht.getAuteur());
 		}
 	}
 

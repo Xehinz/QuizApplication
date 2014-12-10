@@ -112,6 +112,10 @@ public class OpdrachtBeheerView extends JFrame {
 	}
 
 	public Opdracht getGeselecteerdeOpdracht() {
+		if (lijstOpdrachten.getSelectedValue() == null){
+			throw new IllegalArgumentException(
+					"Gelieve een opdracht te selecteren");
+		}
 		return (Opdracht) lijstOpdrachten.getSelectedValue();
 	}
 
@@ -161,6 +165,11 @@ public class OpdrachtBeheerView extends JFrame {
 
 	public void disableAanpassen(boolean b) {
 		btnPasOpdrachtAan.setEnabled(b);
+	}
+	
+	public void toonErrorMessage(String boodschap, String titel) {
+		JOptionPane.showMessageDialog(this, boodschap, titel,
+				JOptionPane.ERROR_MESSAGE);
 	}
 	
 }
