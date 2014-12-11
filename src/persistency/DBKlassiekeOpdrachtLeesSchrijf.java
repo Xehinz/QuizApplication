@@ -13,16 +13,14 @@ import java.io.IOException;
 
 import util.datumWrapper.Datum;
 import model.KlassiekeOpdracht;
-import model.Leerling;
 import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
 
-public class DBKlassiekeOpdrachtLeesSchrijf extends DBTemplate {
+public class DBKlassiekeOpdrachtLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	DBKlassiekeOpdrachtLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -41,15 +39,20 @@ public class DBKlassiekeOpdrachtLeesSchrijf extends DBTemplate {
 		Leraar auteur = Leraar.valueOf((String)rij[6]);
 		String hints = (String) rij[7];
 		String antwoord = (String) rij[8];
-		Opdracht opdracht =  new KlassiekeOpdracht(ID, datum, vraag, antwoord, maxPogingen, maxTijd, categorie, auteur);
+		KlassiekeOpdracht opdracht =  new KlassiekeOpdracht(ID, datum, vraag, antwoord, maxPogingen, maxTijd, categorie, auteur);
 		voegHintsToe(opdracht, hints);
 		return opdracht;
 	}
 
 	@Override
 	protected <T> String getSchrijfStatement(T object) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		KlassiekeOpdracht opdracht = null;
+		if (object instanceof KlassiekeOpdracht) {
+			opdracht = (KlassiekeOpdracht) object;
+		} else {
+			throw new IOException("Het object om weg te schrijven is geen KlassiekeOpdracht");
+		}
+		return String.format("%s%s)", this.opdrachtSchrijfStatement(opdracht), opdracht.getJuisteAntwoord());
 	}
 
 	@Override

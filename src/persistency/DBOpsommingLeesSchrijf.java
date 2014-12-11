@@ -18,7 +18,7 @@ import model.OpdrachtCategorie;
 import model.Opsomming;
 import util.datumWrapper.Datum;
 
-public class DBOpsommingLeesSchrijf extends DBTemplate {
+public class DBOpsommingLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	DBOpsommingLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);
@@ -41,15 +41,20 @@ public class DBOpsommingLeesSchrijf extends DBTemplate {
 		String hints = (String) rij[7];
 		String antwoord = (String) rij[8];
 		boolean inJuisteVolgorde = (Boolean) rij[9];
-		Opdracht opdracht =  new Opsomming(ID, datum, vraag, antwoord, maxPogingen, maxTijd, categorie, auteur, inJuisteVolgorde);
+		Opsomming opdracht =  new Opsomming(ID, datum, vraag, antwoord, maxPogingen, maxTijd, categorie, auteur, inJuisteVolgorde);
 		voegHintsToe(opdracht, hints);
 		return opdracht;
 	}
 
 	@Override
 	protected <T> String getSchrijfStatement(T object) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		Opsomming opdracht = null;
+		if (object instanceof Opsomming) {
+			opdracht = (Opsomming) object;
+		} else {
+			throw new IOException("Het object om weg te schrijven is geen Opsomming");
+		}
+		return String.format("%s%s, %s)", this.opdrachtSchrijfStatement(opdracht), opdracht.getJuisteAntwoord(), opdracht.getInJuisteVolgorde());
 	}
 
 	@Override

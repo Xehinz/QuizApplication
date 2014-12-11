@@ -11,6 +11,12 @@ package persistency;
 
 import java.io.IOException;
 
+import model.KlassiekeOpdracht;
+import model.Meerkeuze;
+import model.Opdracht;
+import model.Opsomming;
+import model.Reproductie;
+
 abstract class DBOpdrachtLeesSchrijf extends DBTemplate {
 
 	DBOpdrachtLeesSchrijf(String jdbcConnectionString) {
@@ -28,5 +34,40 @@ abstract class DBOpdrachtLeesSchrijf extends DBTemplate {
 
 	@Override
 	protected abstract String getDeleteStatement();
+	
+	protected void voegHintsToe(Opdracht opdracht, String hintsLijst) {
+		String[] hints = hintsLijst.split("[\\x7C]");
+		for (String hint : hints) {
+			if (!hint.equals("")) {
+			opdracht.addHint(hint);
+			}
+		}
+	}
+	
+	protected String opdrachtSchrijfStatement (Opdracht opdracht) {		
+		String hints = new String();
+		for (int i = 0; i < opdracht.getHints().size(); i++) {
+			if (i < opdracht.getHints().size() - 1) {
+			hints += String.format("%s|", opdracht.getHints().get(i));	
+			}
+			else {
+				hints += opdracht.getHints().get(i);
+			}
+		}
+		String tabel = new String();
+		if (opdracht instanceof KlassiekeOpdracht) {
+			tabel = "klassiekeopdrachten";
+		}
+		if (opdracht instanceof Meerkeuze) {
+			tabel = "meerkeuze";
+		}
+		if (opdracht instanceof Opsomming) {
+			tabel = "opsomming";
+		}
+		if (opdracht instanceof Reproductie) {
+			tabel = "reproductie";
+		}
+		return String.format("INSERT INTO %s VALUES('%d', %s, %s, %d, %d, %s, %s, %s, ", tabel, opdracht.getID(),(opdracht.getAanmaakDatum()).getDatumInEuropeesFormaat(),opdracht.getVraag(),opdracht.getMaxAantalPogingen(), opdracht.getMaxAntwoordTijd(),(opdracht.getOpdrachtCategorie()).name(),(opdracht.getAuteur()).name(),hints);
+	}
 
 }
