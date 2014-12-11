@@ -18,15 +18,21 @@ import util.datumWrapper.*;
  */
 public class QuizTest {
 
-	private Quiz myQuiz, otherQuiz;
-	private Opdracht opdracht, opdracht2;
+	private Quiz myQuiz, otherQuiz, quizMet3Opdrachten;
+	private Opdracht opdracht, opdracht2, opdracht3;
 
 	@Before
 	public void setUp() throws Exception {
 		myQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "nieuwe quiz");
 		otherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "andere quiz");
+		quizMet3Opdrachten = new Quiz(Leraar.CHARLOTTE_NEVEN, "Quiz met 3 opdrachten");
 		opdracht = new KlassiekeOpdracht(OpdrachtCategorie.NEDERLANDS, Leraar.CHARLOTTE_NEVEN);
 		opdracht2 = new KlassiekeOpdracht(OpdrachtCategorie.WETENSCHAPPEN, Leraar.CHARLOTTE_NEVEN);
+		opdracht3 = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.JOS_VERBEEK);
+		
+		QuizOpdracht.koppelOpdrachtAanQuiz(quizMet3Opdrachten, opdracht, 10);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quizMet3Opdrachten, opdracht2, 5);
+		QuizOpdracht.koppelOpdrachtAanQuiz(quizMet3Opdrachten, opdracht3, 15);
 	}
 
 	@Test
@@ -143,6 +149,32 @@ public class QuizTest {
 	@Test
 	public void test_equals_true_false() {
 		//TODO;
+	}
+	
+	@Test
+	public void testVerplaatsOpdrachtEenHoger_OpdrachtOpTweedePlaats_KomtOpEerstePlaats() {
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(0).equals(opdracht));
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(1).equals(opdracht2));
+		quizMet3Opdrachten.verplaatsOpdrachtEenHoger(opdracht2);
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(0).equals(opdracht2));
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(1).equals(opdracht));
+	}
+	
+	@Test
+	public void testVerplaatsOpdrachtEenHoger_OpdrachtOpEerstePlaats_KomtOpLaatsePlaats() {
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(0).equals(opdracht));
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(1).equals(opdracht2));
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(2).equals(opdracht3));
+		quizMet3Opdrachten.verplaatsOpdrachtEenHoger(opdracht);
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(0).equals(opdracht2));
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(1).equals(opdracht3));
+		assertTrue(quizMet3Opdrachten.getOpdrachten().get(2).equals(opdracht));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testVerplaatsOpdrachtEenHoger_OpdrachtDieNietInQuizZit_ThrowsIllegalArgumentException() {
+		Opdracht opdrachtNietInQuiz = new KlassiekeOpdracht(OpdrachtCategorie.WISKUNDE, Leraar.STEVEN_OPDEBEEK);
+		quizMet3Opdrachten.verplaatsOpdrachtEenHoger(opdrachtNietInQuiz);
 	}
 	
 	@Test

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import model.quizStatus.InConstructie;
 import model.quizStatus.QuizStatus;
@@ -472,6 +473,37 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Method om de volgorde van opdrachten in een quiz te veranderen. Roep de
+	 * method aan om de meegegeven opdracht 1 plaats eerder te zetten. Als de
+	 * opdracht al op de eerste plaats stond, schuift ze op naar de laatste
+	 * plaats.
+	 * 
+	 * @param opdracht
+	 *            de Opdracht om te verplaatsen
+	 * @throws IllegalArgumentException
+	 *             als de opdracht niet in de quiz opgenomen is
+	 */
+	public void verplaatsOpdrachtEenHoger(Opdracht opdracht) {
+		QuizOpdracht teVerplaatsen = null;
+		int teVerplaatsenIndex = -1;
+		for (int i = 0; i < quizOpdrachten.size(); i++) {
+			if (quizOpdrachten.get(i).getOpdracht().equals(opdracht)) {
+				teVerplaatsen = quizOpdrachten.get(i);
+				teVerplaatsenIndex = i;
+			}
+		}
+		if (teVerplaatsenIndex == -1) {
+			throw new IllegalArgumentException("De opdracht om te verplaatsen zit niet in deze quiz.");
+		}
+		if (teVerplaatsenIndex == 0) {
+			quizOpdrachten.remove(0);
+			quizOpdrachten.add(teVerplaatsen);			
+		} else {
+			Collections.swap(quizOpdrachten, teVerplaatsenIndex, teVerplaatsenIndex - 1);
+		}
 	}
 
 	/**
