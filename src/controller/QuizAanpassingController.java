@@ -9,20 +9,72 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
 
 import persistency.DBHandler;
 import view.QuizAanpassingView;
+import model.KlassiekeOpdracht;
 import model.Leraar;
+import model.Meerkeuze;
 import model.Opdracht;
 import model.OpdrachtCategorie;
+import model.Opsomming;
 import model.Quiz;
 import model.QuizOpdracht;
+import model.Reproductie;
 import model.quizStatus.QuizStatus;
 
 public class QuizAanpassingController {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	private QuizAanpassingView view;
 	private DBHandler dbHandler;
@@ -45,6 +97,7 @@ public class QuizAanpassingController {
 		view.addOpdrachtToevoegenKnopActionListener(new OpdrachtToevoegenKnopListener());
 		view.addOpdrachtVerwijderenKnopActionListener(new OpdrachtVerwijderenKnopListener());
 		view.addQuizBewarenKnopActionListener(new QuizBewaarKnopListener());
+		view.addWijzigVolgordeKnopActionListener(new WijzigVolgordeKnopListener());
 
 		//Set comboboxlisteners
 		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
@@ -227,6 +280,15 @@ public class QuizAanpassingController {
 		}		
 	}
 	
+	class WijzigVolgordeKnopListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+		}
+		
+	}
+	
 	class GeselecteerdeOpdrachtenTabelListSelectionListener implements ListSelectionListener {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
@@ -240,5 +302,146 @@ public class QuizAanpassingController {
 			}			
 		}		
 	}
+	
+	//TABELMODELLEN
+	class QuizAanpassingAlleOpdrachtenTableModel extends AbstractTableModel {
+		private ArrayList<Opdracht> opdrachten;
+		private String[] headers;
+
+		public QuizAanpassingAlleOpdrachtenTableModel() {
+			headers = new String[] { "Cat.", "Type", "Vraag" };
+			opdrachten = new ArrayList<Opdracht>();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return headers.length;
+		}
+
+		@Override
+		public int getRowCount() {
+			return opdrachten.size();
+		}
+
+		@Override
+		public String getColumnName(int col) {
+			return headers[col];
+		}
+
+		@Override
+		public Object getValueAt(int row, int col) {
+			Opdracht opdracht = opdrachten.get(row);
+			switch (col) {
+			case 0: {
+				String cat = new String(opdracht.getOpdrachtCategorie().toString());
+				cat = cat.toUpperCase();
+				return cat.substring(0, 3);
+			}
+			case 1: {
+				String type = new String();
+				if (opdracht instanceof Meerkeuze) {
+					type = "MK";
+				}
+				if (opdracht instanceof Opsomming) {
+					type = "OP";
+				}
+				if (opdracht instanceof Reproductie) {
+					type = "RE";
+				} 
+				if (opdracht instanceof KlassiekeOpdracht) {
+					type = "KL";
+				}
+				return type;
+			}
+			case 2:
+				return opdracht.getVraag();
+			default:
+				return null;
+			}
+		}
+
+		public void setOpdrachten(Collection<Opdracht> opdrachten) {
+			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
+		}
+
+		public Opdracht getOpdracht(int row) {
+			if (row < opdrachten.size() && row >= 0) {
+				return opdrachten.get(row);
+			}
+			return null;
+		}
+	}
+		
+	class QuizAanpassingGeselecteerdeOpdrachtenTableModel extends AbstractTableModel {
+		private ArrayList<Opdracht> opdrachten;
+		private String[] headers;
+
+		public QuizAanpassingGeselecteerdeOpdrachtenTableModel() {
+			headers = new String[] { "Cat.", "Type", "Vraag", "Max. Score" };
+			opdrachten = new ArrayList<Opdracht>();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return headers.length;
+		}
+
+		@Override
+		public int getRowCount() {
+			return opdrachten.size();
+		}
+
+		@Override
+		public String getColumnName(int col) {
+			return headers[col];
+		}
+
+		@Override
+		public Object getValueAt(int row, int col) {
+			Opdracht opdracht = opdrachten.get(row);
+			switch (col) {
+			case 0: {
+				String cat = new String(opdracht.getOpdrachtCategorie().toString());
+				cat = cat.toUpperCase();
+				return cat.substring(0, 3);
+			}
+			case 1: {
+				String type = new String();
+				if (opdracht instanceof Meerkeuze) {
+					type = "MK";
+				}
+				if (opdracht instanceof Opsomming) {
+					type = "OP";
+				}
+				if (opdracht instanceof Reproductie) {
+					type = "RE";
+				} 
+				if (opdracht instanceof KlassiekeOpdracht) {
+					type = "KL";
+				}
+				return type;
+			}
+			case 2:
+				return opdracht.getVraag();
+			case 3: //TODO return maxScore
+				return null;
+			default:
+				return null;
+			}
+		}
+
+		public void setOpdrachten(Collection<Opdracht> opdrachten) {
+			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
+		}
+
+		public Opdracht getOpdracht(int row) {
+			if (row < opdrachten.size() && row >= 0) {
+				return opdrachten.get(row);
+			}
+			return null;
+		}
+	}
+		
+		
 
 }

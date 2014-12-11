@@ -54,46 +54,43 @@ import model.quizStatus.QuizStatus;
 public class QuizAanpassingView extends JFrame {
 	
 	//FIELDS
-	private Quiz quiz;
-	private String aantalOpdrachten, maxScoreString;
+	private String aantalOpdrachten;
 	
-	//SWINGFIELDS	
+	//SWINGFIELDS
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
-	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten, lblMaxScore;
-	private JButton btnOpdrachtToevoegen, btnOpdrachtVerwijderen, btnQuizBewaren, btnWijzigMaxScore;
+	private JLabel lblOnderwerp, lblLeraar, lblStatus, lblKlas, lblFilterOpCategorie, lblSorteer, lblAantalOpdrachten, lblFoutboodschap;
+	private JButton btnOpdrachtToevoegen, btnOpdrachtVerwijderen, btnQuizBewaren, btnWijzigVolgorde;
 	private JTextField txtOnderwerp, txtLeraar, txtKlas;
 	private JComboBox<QuizStatus> cmbStatus;
 	private JComboBox<String> cmbCategorie, cmbSorteer;
 	private JCheckBox ckbIsTest, ckbIsUniekeDeelname;
 	private JTable alleOpdrachtenTabel, geselecteerdeOpdrachtenTabel;
-	private QuizAanpassingAlleQuizzenTableModel alleOpdrachtenTabelModel;
-	private QuizAanpassingGeselecteerdeQuizzenTableModel geselecteerdeOpdrachtenTabelModel;	
 	private JScrollPane alleOpdrachtenVeld, geselecteerdeOpdrachtenVeld;
 	private JPanel opdrachtKnoppenVeld, quizInfoVeld, sorteerVeld;
-	private TableRowSorter<TableModel> rowSorter;
-	private List<RowSorter.SortKey> sortKeys;
-	private ListSelectionModel listSelectionModel;
 	
-	
-	
-	
+	/**
+	 * Default constructor met parameters
+	 * @param quiz
+	 * @param leraar
+	 * @param dbHandler
+	 * 
+	 */
 	public QuizAanpassingView(Quiz quiz, Leraar leraar, DBHandler dbHandler) {
+		//Set JFrame
 		super("Quiz");
 		this.setSize(1200, 800);		
 		this.setLocationRelativeTo(null);
 		
+		//Set layout
 		layout = new GridBagLayout();
 		this.setLayout(layout);	
-				
-		//INIT BUTTONS
+		
+		//INIT BUTTON
 		btnOpdrachtToevoegen = new JButton(">>>");
-		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
 		btnOpdrachtVerwijderen = new JButton("<<<");
-		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
 		btnQuizBewaren = new JButton("Quiz bewaren");
-		btnWijzigMaxScore = new JButton("Wijzig Max. score voor deze opdracht");
-		btnWijzigMaxScore.setEnabled(quiz.isAanpasbaar());
+		btnWijzigVolgorde = new JButton("^^^^");
 		
 		//INIT COMBOBOX
 		QuizStatus[] status = {new Afgesloten(), new Afgewerkt(), new InConstructie(), new LaatsteKans(), new Opengesteld()};
@@ -104,35 +101,27 @@ public class QuizAanpassingView extends JFrame {
 			cmbCategorie.addItem(a.toString());			
 		}
 		String[] sorteerOpties = {"geen", "categorie", "vraag"};
-		cmbSorteer = new JComboBox<String>(sorteerOpties);
+		cmbSorteer = new JComboBox<String>(sorteerOpties);		
 		
 		//INIT TEXTFIELD
 		txtOnderwerp = new JTextField();
-		txtOnderwerp.setEditable(quiz.isAanpasbaar());
 		txtLeraar = new JTextField();
 		txtLeraar.setEditable(false);
 		txtKlas = new JTextField();
-		txtKlas.setEditable(quiz.isAanpasbaar());			
 		
 		//INIT CHECKBOX
 		ckbIsTest = new JCheckBox("Test");
-		ckbIsTest.setEnabled(quiz.isAanpasbaar());
 		ckbIsUniekeDeelname = new JCheckBox("Unieke Deelname");
-		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
 		
-		//INIT TABLE + SCROLLPANE
-		alleOpdrachtenTabelModel = new QuizAanpassingAlleQuizzenTableModel();
-		alleOpdrachtenTabel = new JTable(alleOpdrachtenTabelModel);
-		rowSorter = new TableRowSorter<TableModel>(alleOpdrachtenTabel.getModel());		
-		alleOpdrachtenTabel.setRowSorter(rowSorter);			
-		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);
-		alleOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
-		geselecteerdeOpdrachtenTabelModel = new QuizAanpassingGeselecteerdeQuizzenTableModel();
-		geselecteerdeOpdrachtenTabel = new JTable(geselecteerdeOpdrachtenTabelModel);		
+		//INIT TABLE
+		alleOpdrachtenTabel = new JTable();		
+		geselecteerdeOpdrachtenTabel = new JTable();
+		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);		
 		geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
-		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));		
+		alleOpdrachtenVeld.setPreferredSize(new Dimension(380, 400));
+		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(420, 400));
 		
-		//INIT LABELS
+		//INIT LABEL
 		lblOnderwerp = new JLabel("Onderwerp");
 		lblLeraar = new JLabel("Auteur");
 		lblStatus = new JLabel("Status");
@@ -140,9 +129,9 @@ public class QuizAanpassingView extends JFrame {
 		lblFilterOpCategorie = new JLabel("Toon opdrachten van categorie :");
 		lblSorteer = new JLabel("Sorteer opdrachten op :");
 		lblAantalOpdrachten = new JLabel();
-		lblMaxScore = new JLabel("Max. score voor deze opdracht : ");
-		
-		initViewForQuiz(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+		lblFoutboodschap = new JLabel();
+		lblSorteer = new JLabel("Sorteer opdrachten op:");
+		lblFilterOpCategorie = new JLabel("Toon opdrachten van categorie:");
 		
 		//INIT KNOPPENVELD
 		opdrachtKnoppenVeld = new JPanel();
@@ -169,14 +158,14 @@ public class QuizAanpassingView extends JFrame {
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		sorteerVeld.add(cmbCategorie, constraints);
 				
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		sorteerVeld.add(cmbSorteer, constraints);
 		
@@ -184,27 +173,33 @@ public class QuizAanpassingView extends JFrame {
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 0;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		sorteerVeld.add(lblAantalOpdrachten, constraints);
 		
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 0;
-		constraints.gridx = 2;
-		sorteerVeld.add(lblMaxScore, constraints);
+		constraints.gridx = 0;
+		sorteerVeld.add(lblFilterOpCategorie, constraints);
+		
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.gridy = 1;
+		constraints.gridx = 0;
+		sorteerVeld.add(lblSorteer, constraints);
 		
 			//ADD BUTTON
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
 		constraints.gridx = 2;
-		sorteerVeld.add(btnWijzigMaxScore, constraints);
+		sorteerVeld.add(btnWijzigVolgorde, constraints);
 		
 		//INIT QUIZINFOVELD
 		quizInfoVeld = new JPanel();
 		quizInfoVeld.setLayout(layout);
 		
-		//ADD LABELS
+			//ADD LABELS
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 0;
@@ -227,9 +222,16 @@ public class QuizAanpassingView extends JFrame {
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
 		constraints.gridx = 2;
-		quizInfoVeld.add(lblKlas, constraints);			
+		quizInfoVeld.add(lblKlas, constraints);	
 		
-		//ADD BUTTON
+		constraints = new GridBagConstraints();
+		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.gridy = 3;
+		constraints.gridx = 0;
+		constraints.gridwidth = 6;
+		quizInfoVeld.add(lblFoutboodschap, constraints);	
+		
+			//ADD BUTTON
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
@@ -239,15 +241,15 @@ public class QuizAanpassingView extends JFrame {
 		constraints.fill = GridBagConstraints.BOTH;
 		quizInfoVeld.add(btnQuizBewaren, constraints);
 		
-		//ADD COMBOBOX
+			//ADD COMBOBOX
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
 		constraints.gridx = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		quizInfoVeld.add(cmbStatus, constraints);	
+		quizInfoVeld.add(cmbStatus, constraints);			
 		
-		//ADD CHECKBOX
+			//ADD CHECKBOX
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 2;
@@ -260,7 +262,7 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridx = 2;
 		quizInfoVeld.add(ckbIsUniekeDeelname, constraints);
 		
-		//ADD TEXTFIELDS
+			//ADD TEXTFIELDS
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 0;
@@ -283,7 +285,6 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridx = 3;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		quizInfoVeld.add(txtKlas, constraints);
-		
 		
 		//BUILD WINDOW
 		constraints = new GridBagConstraints();
@@ -322,12 +323,61 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridy = 2;
 		constraints.gridx = 1;
 		this.add(opdrachtKnoppenVeld, constraints);
+		
+		setViewToQuiz(quiz);
+		//TODO setTabellen
+		setKolomBreedteAlleOpdrachten(alleOpdrachtenTabel);
+		setKolomBreedteGeselecteerdeOpdrachten(geselecteerdeOpdrachtenTabel);
+		//TODO setViewToQuiz		
+			
 	}
 	
+	/**
+	 * Instellen van de breedten van de verschillende kolommen van de JTable
+	 * @param table
+	 */
+	private void setKolomBreedteAlleOpdrachten(JTable table) {
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);  //Categorie
+		table.getColumnModel().getColumn(1).setPreferredWidth(40); //OpdrachtType
+		table.getColumnModel().getColumn(2).setPreferredWidth(300); //Vraag
+	}
+	private void setKolomBreedteGeselecteerdeOpdrachten(JTable table) {
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);  //Categorie
+		table.getColumnModel().getColumn(1).setPreferredWidth(40); //OpdrachtType
+		table.getColumnModel().getColumn(2).setPreferredWidth(300); //Vraag
+		table.getColumnModel().getColumn(3).setPreferredWidth(40);  //MaxScore
+	}
+	
+	/**
+	 * Een message tonen op het scherm (JOptionPane)
+	 * @param boodschap
+	 * @param titel
+	 */
+	public void toonInformationDialog(String boodschap, String titel) {
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	/**
+	 * Ophalen van de geselecteerde opdracht uit de JTable
+	 * @return geselecteerde rij
+	 */
+	public int getSelectieAlleOpdrachten() {
+		return alleOpdrachtenTabel.getSelectedRow();
+	}
+	public int getSelectieGeselecteerdeOpdrachten() {
+		return geselecteerdeOpdrachtenTabel.getSelectedRow();
+	}
+	
+	/**
+	 * Toon foutboodschap als Quizbewaren ongeldig is.
+	 */
 	public void toonFoutBoodschap(String fout) {
 		//TODO foutboodschap in rood op scherm tonen
 	}
 	
+	/**
+	 * Update de counter voor het aantal opdrachten
+	 */
 	public void setLblAantalOpdrachten() {
 		int aantal = 0;
 		if (geselecteerdeOpdrachtenTabel.getRowCount()>0) {
@@ -337,100 +387,13 @@ public class QuizAanpassingView extends JFrame {
 		lblAantalOpdrachten.setText(aantalOpdrachten);
 	}
 	
-	public void setLblMaxScore(int maxScore) {
-		maxScoreString = String.format("%s%d", "Max. score voor deze opdracht : ", maxScore);
-		lblMaxScore.setText(maxScoreString);
-	}
-	
-	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Quiz quiz) {		
-		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
-		geselecteerdeOpdrachtenTabel.setModel(geselecteerdeOpdrachtenTabelModel);
-		geselecteerdeOpdrachtenTabelModel.fireTableDataChanged();
-		alleOpdrachten.removeAll(quiz.getOpdrachten());
-		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
-		alleOpdrachtenTabelModel.fireTableDataChanged();
-		setLblAantalOpdrachten();
-	}
-	
+	//GETTERS
 	public String getOpdrachtCategorie() {
 		return (String) cmbCategorie.getSelectedItem();
-	}
-	
+	}	
 	public String getSorteerString () {
 		return (String) cmbSorteer.getSelectedItem();
 	}
-	public void setRowSorter (int columnIndex) {		
-		sortKeys = new ArrayList<>();
-		rowSorter.setSortKeys(null);	
-		if (!(columnIndex == 1)) {
-			sortKeys.add(new RowSorter.SortKey(columnIndex, SortOrder.ASCENDING));
-			rowSorter.setSortKeys(sortKeys);
-		}
-		rowSorter.sort();
-	}
-		
-	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten() {
-			return alleOpdrachtenTabelModel.getOpdracht(alleOpdrachtenTabel.getSelectedRow());
-	}
-	
-	public Opdracht getGeselecteerdeOpdrachtQuizOpdrachten() {		
-			return geselecteerdeOpdrachtenTabelModel.getOpdracht(geselecteerdeOpdrachtenTabel.getSelectedRow());
-	}	
-	
-	public void toonInformationDialog(String boodschap, String titel) {
-		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
-	}
-	
-	public String vraagMaxScore() {
-		return (String)JOptionPane.showInputDialog(this, "Geef de maximale voor deze opdracht aan."); //TODO weg met cancel & X
-	}
-	
-	public void initViewForQuiz(ArrayList<Opdracht> alleOpdrachten, Quiz quiz) {
-		this.quiz = quiz;
-		
-		//SET FIELDS
-		txtOnderwerp.setText(quiz.getOnderwerp());
-		txtOnderwerp.setEditable(quiz.isAanpasbaar());
-		txtLeraar.setEditable(true);
-		txtLeraar.setText(quiz.getAuteur().toString());
-		txtLeraar.setEditable(false);
-		txtKlas.setText(quiz.getDoelLeerjaren().toString());
-		txtKlas.setEditable(quiz.isAanpasbaar());
-		cmbStatus.setSelectedItem(quiz.getQuizStatus());
-		ckbIsTest.setSelected(quiz.getIsTest());
-		ckbIsTest.setEnabled(quiz.isAanpasbaar());
-		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
-		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
-		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
-		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
-		setOpdrachtTabellen(alleOpdrachten, quiz);
-		setLblAantalOpdrachten();
-	}
-	
-	//LISTENERS
-	public void addQuizBewarenKnopActionListener(ActionListener listener) {
-		btnQuizBewaren.addActionListener(listener);
-	}	
-	public void addOpdrachtToevoegenKnopActionListener(ActionListener listener) {
-		btnOpdrachtToevoegen.addActionListener(listener);
-	}	
-	public void addOpdrachtVerwijderenKnopActionListener(ActionListener listener) {
-		btnOpdrachtVerwijderen.addActionListener(listener);
-	}	
-	public void addWijzigMaxScoreKnopActionListener(ActionListener listener) {
-		btnWijzigMaxScore.addActionListener(listener);
-	}
-	public void addSelecteerCategorieActionlistener(ActionListener listener) {
-		cmbCategorie.addActionListener(listener);
-	}	
-	public void addSelecteerSorteringActionListener(ActionListener listener) {
-		cmbSorteer.addActionListener(listener);
-	}			
-	public void addGeselecteerdeOpdrachtenTabelSelectieListener(ListSelectionListener listener) {
-		geselecteerdeOpdrachtenTabel.getSelectionModel().addListSelectionListener(listener);
-	}	
-	
-	//GETTERS
 	public String getOnderwerpTxt() {
 		return txtOnderwerp.getText();
 	}
@@ -451,149 +414,151 @@ public class QuizAanpassingView extends JFrame {
 		return (QuizStatus)cmbStatus.getSelectedItem();
 	}
 	
+	/**
+	 * Set venster voor nieuwe quiz (gegevens & isAanpasbaar)
+	 * @param quiz
+	 * 
+	 */	
+	public void setViewToQuiz(Quiz quiz) {
+		txtOnderwerp.setText(quiz.getOnderwerp());
+		txtOnderwerp.setEditable(quiz.isAanpasbaar());
+		txtLeraar.setEditable(true); //TODO testen of dit nodig is
+		txtLeraar.setText(quiz.getAuteur().toString());
+		txtLeraar.setEditable(false);
+		txtKlas.setText(quiz.getDoelLeerjaren().toString());
+		txtKlas.setEditable(quiz.isAanpasbaar());
+		cmbStatus.setSelectedItem(quiz.getQuizStatus());
+		ckbIsTest.setSelected(quiz.getIsTest());
+		ckbIsTest.setEnabled(quiz.isAanpasbaar());
+		ckbIsUniekeDeelname.setSelected(quiz.getIsUniekeDeelname());
+		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
+		btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
+		btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
+		btnWijzigVolgorde.setEnabled(quiz.isAanpasbaar());
+	}
+	
+	//Listeners
+	public void addQuizBewarenKnopActionListener(ActionListener listener) {
+		btnQuizBewaren.addActionListener(listener);
+	}	
+	public void addOpdrachtToevoegenKnopActionListener(ActionListener listener) {
+		btnOpdrachtToevoegen.addActionListener(listener);
+	}	
+	public void addOpdrachtVerwijderenKnopActionListener(ActionListener listener) {
+		btnOpdrachtVerwijderen.addActionListener(listener);
+	}	
+	public void addWijzigVolgordeKnopActionListener(ActionListener listener) {
+		btnWijzigVolgorde.addActionListener(listener);
+	}
+	public void addSelecteerCategorieActionlistener(ActionListener listener) {
+		cmbCategorie.addActionListener(listener);
+	}	
+	public void addSelecteerSorteringActionListener(ActionListener listener) {
+		cmbSorteer.addActionListener(listener);
+	}			
+	public void addGeselecteerdeOpdrachtenTabelSelectieListener(ListSelectionListener listener) {
+		geselecteerdeOpdrachtenTabel.getSelectionModel().addListSelectionListener(listener);
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	
+	btnOpdrachtToevoegen.setEnabled(quiz.isAanpasbaar());
+	btnOpdrachtVerwijderen.setEnabled(quiz.isAanpasbaar());
+			
+	txtOnderwerp.setEditable(quiz.isAanpasbaar());
+			
+	ckbIsTest.setEnabled(quiz.isAanpasbaar());
+	ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
+	
+	//INIT TABLE + SCROLLPANE
+	alleOpdrachtenTabelModel = new QuizAanpassingAlleQuizzenTableModel();
+	alleOpdrachtenTabel = new JTable(alleOpdrachtenTabelModel);
+	rowSorter = new TableRowSorter<TableModel>(alleOpdrachtenTabel.getModel());		
+	alleOpdrachtenTabel.setRowSorter(rowSorter);			
+	alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);
+	alleOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
+	geselecteerdeOpdrachtenTabelModel = new QuizAanpassingGeselecteerdeQuizzenTableModel();
+	geselecteerdeOpdrachtenTabel = new JTable(geselecteerdeOpdrachtenTabelModel);		
+	geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
+	geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));			
+	
+	initViewForQuiz(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+	
+	
+	
+	
+	//FIELDS
+	private Quiz quiz;
+	private String aantalOpdrachten, maxScoreString;
+	
+	//SWINGFIELDS	
+	
+	
+	private QuizAanpassingAlleQuizzenTableModel alleOpdrachtenTabelModel;
+	private QuizAanpassingGeselecteerdeQuizzenTableModel geselecteerdeOpdrachtenTabelModel;	
+	
+	private TableRowSorter<TableModel> rowSorter;
+	private List<RowSorter.SortKey> sortKeys;
+	private ListSelectionModel listSelectionModel;
+	
+	
+	
+	
+	
+		
+	
+	public void setOpdrachtTabellen(Collection<Opdracht> alleOpdrachten, Quiz quiz) {		
+		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
+		geselecteerdeOpdrachtenTabel.setModel(geselecteerdeOpdrachtenTabelModel);
+		geselecteerdeOpdrachtenTabelModel.fireTableDataChanged();
+		alleOpdrachten.removeAll(quiz.getOpdrachten());
+		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
+		alleOpdrachtenTabelModel.fireTableDataChanged();
+		setLblAantalOpdrachten();
+	}	
+	
+	public void setRowSorter (int columnIndex) {		
+		sortKeys = new ArrayList<>();
+		rowSorter.setSortKeys(null);	
+		if (!(columnIndex == 1)) {
+			sortKeys.add(new RowSorter.SortKey(columnIndex, SortOrder.ASCENDING));
+			rowSorter.setSortKeys(sortKeys);
+		}
+		rowSorter.sort();
+	}
+		
+	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten() {
+			return alleOpdrachtenTabelModel.getOpdracht(alleOpdrachtenTabel.getSelectedRow());
+	}
+	
+	public Opdracht getGeselecteerdeOpdrachtQuizOpdrachten() {		
+			return geselecteerdeOpdrachtenTabelModel.getOpdracht(geselecteerdeOpdrachtenTabel.getSelectedRow());
+	}	
+	
+		
+	
+	
+	
 	public Quiz getQuiz() {
 		return this.quiz;
 	}	
 	
-	//TABELMODELLEN
-	public class QuizAanpassingAlleQuizzenTableModel extends AbstractTableModel {
-
-		private ArrayList<Opdracht> opdrachten;
-		private String[] headers;
-
-		public QuizAanpassingAlleQuizzenTableModel() {
-			headers = new String[] { "Cat.", "Type", "Vraag" };
-			opdrachten = new ArrayList<Opdracht>();
-		}
-
-		@Override
-		public int getColumnCount() {
-			return headers.length;
-		}
-
-		@Override
-		public int getRowCount() {
-			return opdrachten.size();
-		}
-
-		@Override
-		public String getColumnName(int col) {
-			return headers[col];
-		}
-
-		@Override
-		public Object getValueAt(int row, int col) {
-			Opdracht opdracht = opdrachten.get(row);
-			switch (col) {
-			case 0: {
-				String cat = new String(opdracht.getOpdrachtCategorie().toString());
-				cat = cat.toUpperCase();
-				return cat.substring(0, 3);
-			}
-			case 1: {
-				String type = new String();
-				if (opdracht instanceof Meerkeuze) {
-					type = "MK";
-				}
-				if (opdracht instanceof Opsomming) {
-					type = "OP";
-				}
-				if (opdracht instanceof Reproductie) {
-					type = "RE";
-				} 
-				if (opdracht instanceof KlassiekeOpdracht) {
-					type = "KL";
-				}
-				return type;
-			}
-			case 2:
-				return opdracht.getVraag();
-			default:
-				return null;
-			}
-		}
-
-		public void setOpdrachten(Collection<Opdracht> opdrachten) {
-			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
-		}
-
-		public Opdracht getOpdracht(int row) {
-			if (row < opdrachten.size() && row >= 0) {
-				return opdrachten.get(row);
-			}
-			return null;
-		}
-
-	}
-	
-	public class QuizAanpassingGeselecteerdeQuizzenTableModel extends AbstractTableModel {
-
-		private ArrayList<Opdracht> opdrachten;
-		private String[] headers;
-
-		public QuizAanpassingGeselecteerdeQuizzenTableModel() {
-			headers = new String[] { "Cat.", "Type", "Vraag" };
-			opdrachten = new ArrayList<Opdracht>();
-		}
-
-		@Override
-		public int getColumnCount() {
-			return headers.length;
-		}
-
-		@Override
-		public int getRowCount() {
-			return opdrachten.size();
-		}
-
-		@Override
-		public String getColumnName(int col) {
-			return headers[col];
-		}
-
-		@Override
-		public Object getValueAt(int row, int col) {
-			Opdracht opdracht = opdrachten.get(row);
-			switch (col) {
-			case 0: {
-				String cat = new String(opdracht.getOpdrachtCategorie().toString());
-				cat = cat.toUpperCase();
-				return cat.substring(0, 3);
-			}
-			case 1: {
-				String type = new String();
-				if (opdracht instanceof Meerkeuze) {
-					type = "MK";
-				}
-				if (opdracht instanceof Opsomming) {
-					type = "OP";
-				}
-				if (opdracht instanceof Reproductie) {
-					type = "RE";
-				} 
-				if (opdracht instanceof KlassiekeOpdracht) {
-					type = "KL";
-				}
-				return type;
-			}
-			case 2:
-				return opdracht.getVraag();
-			default:
-				return null;
-			}
-		}
-
-		public void setOpdrachten(Collection<Opdracht> opdrachten) {
-			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
-		}
-
-		public Opdracht getOpdracht(int row) {
-			if (row < opdrachten.size() && row >= 0) {
-				return opdrachten.get(row);
-			}
-			return null;
-		}
-
-	}
+	*/
 
 }
