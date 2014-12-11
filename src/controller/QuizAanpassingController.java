@@ -82,13 +82,18 @@ public class QuizAanpassingController {
 	private Leraar leraar;
 	private Opdracht opdracht;
 	private QuizBeheerController quizBeheerController;
+	private AlleOpdrachtenTableModel alleOpdrachtenTabelModel;
+	private GeselecteerdeOpdrachtenTableModel geselecteerdeOpdrachtenTabelModel;
+	
 
 	public QuizAanpassingController(Quiz quiz, Leraar leraar,
 			DBHandler dbHandler, QuizBeheerController quizBeheerController) {		
 		this.quiz = quiz;
-		this.quizClone = quiz.clone();
+		quizClone = quiz.clone();
 		this.leraar = leraar;
-		this.dbHandler = dbHandler;	
+		this.dbHandler = dbHandler;
+		alleOpdrachtenTabelModel = new AlleOpdrachtenTableModel();
+		geselecteerdeOpdrachtenTabelModel = new GeselecteerdeOpdrachtenTableModel();
 		this.quizBeheerController = quizBeheerController;
 		view = new QuizAanpassingView(quizClone, leraar,
 				dbHandler);
@@ -103,10 +108,22 @@ public class QuizAanpassingController {
 		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
 		view.addSelecteerSorteringActionListener(new SelecteerSorteringListener());
 		
-		//Set tabellistener
-		view.addGeselecteerdeOpdrachtenTabelSelectieListener(new GeselecteerdeOpdrachtenTabelListSelectionListener());
+		//Set TableModels
+		view.setTableModels(alleOpdrachtenTabelModel, geselecteerdeOpdrachtenTabelModel);
+		
+		loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+		
 
 		view.setVisible(true);
+	}
+	
+	public void loadTables(Collection<Opdracht> alleOpdrachten, Quiz quiz) {		
+		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
+		geselecteerdeOpdrachtenTabelModel.fireTableDataChanged();
+		alleOpdrachten.removeAll(quiz.getOpdrachten());
+		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
+		alleOpdrachtenTabelModel.fireTableDataChanged();
+		view.setLblAantalOpdrachten();
 	}
 	
 	public QuizAanpassingView getView() {
@@ -250,6 +267,7 @@ public class QuizAanpassingController {
 		}
 	}
 	
+	/*
 	class WijzigMaxScoreKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -279,36 +297,28 @@ public class QuizAanpassingController {
 			}
 		}		
 	}
+	*/
 	
 	class WijzigVolgordeKnopListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			
-		}
-		
-	}
-	
-	class GeselecteerdeOpdrachtenTabelListSelectionListener implements ListSelectionListener {
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			Opdracht opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
-			if (!(opdracht == null)) {
-				for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
-					if ((qo.getQuiz()).equals(quiz)) {
-						view.setLblMaxScore(qo.getMaxScore());
-					}
-				}				
-			}			
+			opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
+			if (opdracht == null) {
+				view.toonInformationDialog(
+						"Geen opdracht geselecteerd", "Fout");
+				return;
+			}
+			quizClone.verplaatsOpdrachtEenHoger(opdracht);
 		}		
-	}
+	}	
 	
 	//TABELMODELLEN
-	class QuizAanpassingAlleOpdrachtenTableModel extends AbstractTableModel {
+	class AlleOpdrachtenTableModel extends AbstractTableModel {
 		private ArrayList<Opdracht> opdrachten;
 		private String[] headers;
 
-		public QuizAanpassingAlleOpdrachtenTableModel() {
+		public AlleOpdrachtenTableModel() {
 			headers = new String[] { "Cat.", "Type", "Vraag" };
 			opdrachten = new ArrayList<Opdracht>();
 		}
@@ -372,11 +382,11 @@ public class QuizAanpassingController {
 		}
 	}
 		
-	class QuizAanpassingGeselecteerdeOpdrachtenTableModel extends AbstractTableModel {
+	class GeselecteerdeOpdrachtenTableModel extends AbstractTableModel {
 		private ArrayList<Opdracht> opdrachten;
 		private String[] headers;
 
-		public QuizAanpassingGeselecteerdeOpdrachtenTableModel() {
+		public GeselecteerdeOpdrachtenTableModel() {
 			headers = new String[] { "Cat.", "Type", "Vraag", "Max. Score" };
 			opdrachten = new ArrayList<Opdracht>();
 		}
