@@ -1,0 +1,60 @@
+package persistency;
+
+/**
+ * Klasse om Klassieke Opdracht objecten weg te schrijven of in te lezen in
+ * databaseformaat
+ *
+ * @author Adriaan Kuipers
+ * @version 11/12/2014
+ *
+ */
+
+import java.io.IOException;
+
+import util.datumWrapper.Datum;
+import model.KlassiekeOpdracht;
+import model.Leerling;
+import model.Leraar;
+import model.Opdracht;
+import model.OpdrachtCategorie;
+
+public class DBKlassiekeOpdrachtLeesSchrijf extends DBTemplate {
+
+	DBKlassiekeOpdrachtLeesSchrijf(String jdbcConnectionString) {
+		super(jdbcConnectionString);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	protected String getLeesQuery() {
+		return "SELECT * FROM klassiekeopdrachten"; //TODO check tblName 
+	}
+
+	@Override
+	protected Opdracht maakObject(Object[] rij) {
+		int ID = (Integer) rij[0];
+		Datum datum = new Datum((String) rij[1]);
+		String vraag = (String) rij[2];
+		int maxPogingen = (Integer) rij[3];
+		int maxTijd	= (Integer) rij[4];
+		OpdrachtCategorie categorie = OpdrachtCategorie.valueOf((String)rij[5]);
+		Leraar auteur = Leraar.valueOf((String)rij[6]);
+		String hints = (String) rij[7];
+		String antwoord = (String) rij[8];
+		Opdracht opdracht =  new KlassiekeOpdracht(ID, datum, vraag, antwoord, maxPogingen, maxTijd, categorie, auteur);
+		voegHintsToe(opdracht, hints);
+		return opdracht;
+	}
+
+	@Override
+	protected <T> String getSchrijfStatement(T object) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getDeleteStatement() {
+		return "TRUNCATE klassiekeopdrachten";
+	}
+
+}
