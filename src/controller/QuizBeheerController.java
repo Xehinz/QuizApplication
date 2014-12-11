@@ -9,6 +9,8 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
@@ -25,14 +27,15 @@ public class QuizBeheerController {
 	private QuizBeheerView view;
 	private Quiz quiz;
 	private Leraar leraar;
+	private boolean quizAanpassingStaatOpen;
+	private QuizAanpassingController quizAanpassingController;
 
 	public QuizBeheerController(DBHandler dbHandler, Leraar leraar) {
 		this.dbHandler = dbHandler;
 		this.leraar = leraar;
 		this.view = new QuizBeheerView();
 		this.quiz = null;
-
-		//TODO afdwingen dat maar 1 aanpassingsvenster open mag staan.
+		quizAanpassingStaatOpen = false;
 		
 		// Vul Tabel
 		view.setQuizzen(dbHandler.getQuizCatalogus().getQuizzen());
@@ -41,7 +44,6 @@ public class QuizBeheerController {
 		view.addAanpassenQuizKnopActionListener(new AanpassenQuizKnopListener());
 		view.addVerwijderQuizKnopActionListener(new VerwijderQuizKnopListener());
 
-		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		view.setVisible(true);
 	}
 		
@@ -50,8 +52,20 @@ public class QuizBeheerController {
 	}
 
 	private void openQuizAanpassing(Quiz quiz, Leraar leraar) {
-		new QuizAanpassingController(quiz,
-				leraar, dbHandler, this);
+		if(quizAanpassingStaatOpen) {
+			quizAanpassingController.getView().toFront();
+		}
+		else {
+			quizAanpassingStaatOpen = true;
+			quizAanpassingController = new QuizAanpassingController(quiz,
+					leraar, dbHandler, this);
+			quizAanpassingController.getView().addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent event) {
+					quizAanpassingStaatOpen = false;
+				}
+			});
+		}
 	}
 	
 	public void updateTabel() {
@@ -81,26 +95,29 @@ public class QuizBeheerController {
 
 	class VerwijderQuizKnopListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent event) {
-			quiz = view.getGeselecteerdeQuiz();
-			if (quiz == null) {
-				view.toonInformationDialog(
-						"Selecteer een quiz om te verwijderen", "Fout");
-				return;
+		public void actionPerformed(ActionEvent event) {			
+			if(quizAanpassingStaatOpen) {
+				quizAanpassingController.getView().toFront();
 			}
-			if (!quiz.isVerwijderbaar()) {
-				view.toonInformationDialog(
-						"Kan deze quiz niet verwijderen", "Fout");
-				return;
-			}
-			int bevestig = JOptionPane.showConfirmDialog(null,"Weet u zeker dat u deze quiz wil verwijderen","Verwijder",2);
-			if(bevestig == JOptionPane.YES_OPTION) {
-				dbHandler.getQuizCatalogus().removeQuiz(quiz);
-				updateTabel();
-			}
+			else {
+				quiz = view.getGeselecteerdeQuiz();
+				if (quiz == null) {
+					view.toonInformationDialog(
+							"Selecteer een quiz om te verwijderen", "Fout");
+					return;
+				}
+				if (!quiz.isVerwijderbaar()) {
+					view.toonInformationDialog(
+							"Kan deze quiz niet verwijderen", "Fout");
+					return;
+				}
+				int bevestig = JOptionPane.showConfirmDialog(null,"Weet u zeker dat u deze quiz wil verwijderen","Verwijder",2);
+				if(bevestig == JOptionPane.YES_OPTION) {
+					dbHandler.getQuizCatalogus().removeQuiz(quiz);
+					updateTabel();
+				}				
+			}			
 		}
-	}
-	
-	
+	}	
 
 }
