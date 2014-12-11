@@ -5,27 +5,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import util.tableModels.QuizAanpassingTableModel;
 import model.Leerling;
 import model.Leraar;
-import model.OpdrachtCategorie;
-import model.quizStatus.Afgesloten;
-import model.quizStatus.Afgewerkt;
-import model.quizStatus.InConstructie;
-import model.quizStatus.LaatsteKans;
-import model.quizStatus.Opengesteld;
-import model.quizStatus.QuizStatus;
 
 @SuppressWarnings("serial")
 public class LeerlingAanpassingView extends JFrame  {

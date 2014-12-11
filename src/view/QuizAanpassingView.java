@@ -22,25 +22,26 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableModelListener;
 
 import persistency.DBHandler;
+import model.KlassiekeOpdracht;
 import model.Leraar;
+import model.Meerkeuze;
 import model.Opdracht;
 import model.OpdrachtCategorie;
+import model.Opsomming;
 import model.Quiz;
+import model.Reproductie;
 import model.quizStatus.Afgesloten;
 import model.quizStatus.Afgewerkt;
 import model.quizStatus.InConstructie;
 import model.quizStatus.LaatsteKans;
 import model.quizStatus.Opengesteld;
 import model.quizStatus.QuizStatus;
-import util.tableModels.QuizAanpassingTableModel;
 
 /**
  * 
@@ -66,7 +67,8 @@ public class QuizAanpassingView extends JFrame {
 	private JComboBox<String> cmbCategorie, cmbSorteer;
 	private JCheckBox ckbIsTest, ckbIsUniekeDeelname;
 	private JTable alleOpdrachtenTabel, geselecteerdeOpdrachtenTabel;
-	private QuizAanpassingTableModel alleOpdrachtenTabelModel, geselecteerdeOpdrachtenTabelModel;	
+	private QuizAanpassingAlleQuizzenTableModel alleOpdrachtenTabelModel;
+	private QuizAanpassingGeselecteerdeQuizzenTableModel geselecteerdeOpdrachtenTabelModel;	
 	private JScrollPane alleOpdrachtenVeld, geselecteerdeOpdrachtenVeld;
 	private JPanel opdrachtKnoppenVeld, quizInfoVeld, sorteerVeld;
 	private TableRowSorter<TableModel> rowSorter;
@@ -119,13 +121,13 @@ public class QuizAanpassingView extends JFrame {
 		ckbIsUniekeDeelname.setEnabled(quiz.isAanpasbaar());
 		
 		//INIT TABLE + SCROLLPANE
-		alleOpdrachtenTabelModel = new QuizAanpassingTableModel();
+		alleOpdrachtenTabelModel = new QuizAanpassingAlleQuizzenTableModel();
 		alleOpdrachtenTabel = new JTable(alleOpdrachtenTabelModel);
 		rowSorter = new TableRowSorter<TableModel>(alleOpdrachtenTabel.getModel());		
 		alleOpdrachtenTabel.setRowSorter(rowSorter);			
 		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);
 		alleOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));
-		geselecteerdeOpdrachtenTabelModel = new QuizAanpassingTableModel();
+		geselecteerdeOpdrachtenTabelModel = new QuizAanpassingGeselecteerdeQuizzenTableModel();
 		geselecteerdeOpdrachtenTabel = new JTable(geselecteerdeOpdrachtenTabelModel);		
 		geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
 		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(400, 400));		
@@ -322,6 +324,10 @@ public class QuizAanpassingView extends JFrame {
 		this.add(opdrachtKnoppenVeld, constraints);
 	}
 	
+	public void toonFoutBoodschap(String fout) {
+		//TODO foutboodschap in rood op scherm tonen
+	}
+	
 	public void setLblAantalOpdrachten() {
 		int aantal = 0;
 		if (geselecteerdeOpdrachtenTabel.getRowCount()>0) {
@@ -379,8 +385,6 @@ public class QuizAanpassingView extends JFrame {
 		return (String)JOptionPane.showInputDialog(this, "Geef de maximale voor deze opdracht aan."); //TODO weg met cancel & X
 	}
 	
-	//TODO Update lblMaxScore bij wijziging selectie in tabel
-		
 	public void initViewForQuiz(ArrayList<Opdracht> alleOpdrachten, Quiz quiz) {
 		this.quiz = quiz;
 		
@@ -449,6 +453,147 @@ public class QuizAanpassingView extends JFrame {
 	
 	public Quiz getQuiz() {
 		return this.quiz;
-	}		
+	}	
+	
+	//TABELMODELLEN
+	public class QuizAanpassingAlleQuizzenTableModel extends AbstractTableModel {
+
+		private ArrayList<Opdracht> opdrachten;
+		private String[] headers;
+
+		public QuizAanpassingAlleQuizzenTableModel() {
+			headers = new String[] { "Cat.", "Type", "Vraag" };
+			opdrachten = new ArrayList<Opdracht>();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return headers.length;
+		}
+
+		@Override
+		public int getRowCount() {
+			return opdrachten.size();
+		}
+
+		@Override
+		public String getColumnName(int col) {
+			return headers[col];
+		}
+
+		@Override
+		public Object getValueAt(int row, int col) {
+			Opdracht opdracht = opdrachten.get(row);
+			switch (col) {
+			case 0: {
+				String cat = new String(opdracht.getOpdrachtCategorie().toString());
+				cat = cat.toUpperCase();
+				return cat.substring(0, 3);
+			}
+			case 1: {
+				String type = new String();
+				if (opdracht instanceof Meerkeuze) {
+					type = "MK";
+				}
+				if (opdracht instanceof Opsomming) {
+					type = "OP";
+				}
+				if (opdracht instanceof Reproductie) {
+					type = "RE";
+				} 
+				if (opdracht instanceof KlassiekeOpdracht) {
+					type = "KL";
+				}
+				return type;
+			}
+			case 2:
+				return opdracht.getVraag();
+			default:
+				return null;
+			}
+		}
+
+		public void setOpdrachten(Collection<Opdracht> opdrachten) {
+			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
+		}
+
+		public Opdracht getOpdracht(int row) {
+			if (row < opdrachten.size() && row >= 0) {
+				return opdrachten.get(row);
+			}
+			return null;
+		}
+
+	}
+	
+	public class QuizAanpassingGeselecteerdeQuizzenTableModel extends AbstractTableModel {
+
+		private ArrayList<Opdracht> opdrachten;
+		private String[] headers;
+
+		public QuizAanpassingGeselecteerdeQuizzenTableModel() {
+			headers = new String[] { "Cat.", "Type", "Vraag" };
+			opdrachten = new ArrayList<Opdracht>();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return headers.length;
+		}
+
+		@Override
+		public int getRowCount() {
+			return opdrachten.size();
+		}
+
+		@Override
+		public String getColumnName(int col) {
+			return headers[col];
+		}
+
+		@Override
+		public Object getValueAt(int row, int col) {
+			Opdracht opdracht = opdrachten.get(row);
+			switch (col) {
+			case 0: {
+				String cat = new String(opdracht.getOpdrachtCategorie().toString());
+				cat = cat.toUpperCase();
+				return cat.substring(0, 3);
+			}
+			case 1: {
+				String type = new String();
+				if (opdracht instanceof Meerkeuze) {
+					type = "MK";
+				}
+				if (opdracht instanceof Opsomming) {
+					type = "OP";
+				}
+				if (opdracht instanceof Reproductie) {
+					type = "RE";
+				} 
+				if (opdracht instanceof KlassiekeOpdracht) {
+					type = "KL";
+				}
+				return type;
+			}
+			case 2:
+				return opdracht.getVraag();
+			default:
+				return null;
+			}
+		}
+
+		public void setOpdrachten(Collection<Opdracht> opdrachten) {
+			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
+		}
+
+		public Opdracht getOpdracht(int row) {
+			if (row < opdrachten.size() && row >= 0) {
+				return opdrachten.get(row);
+			}
+			return null;
+		}
+
+	}
 
 }

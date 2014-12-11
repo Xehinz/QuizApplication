@@ -24,8 +24,6 @@ import model.quizStatus.QuizStatus;
 
 public class QuizAanpassingController {
 
-	//TODO update window bij veranderen status
-	
 	private QuizAanpassingView view;
 	private DBHandler dbHandler;
 	private Quiz quiz, quizClone; //quizClone laat toe om opdrachten toe te voegen en te verwijderen zonder de quiz te veranderen (pas bij bewaren quiz aanpassen)
@@ -57,6 +55,10 @@ public class QuizAanpassingController {
 
 		view.setVisible(true);
 	}
+	
+	public QuizAanpassingView getView() {
+		return view;
+	}	
 
 	class OpdrachtToevoegenKnopListener implements ActionListener {
 		@Override
@@ -139,12 +141,12 @@ public class QuizAanpassingController {
 			// TEST & UNIEKEDEELNAME
 			boolean isTest = view.getIsTestckb();
 			boolean isUniekeDeelname = view.getIsUniekeDeelnameckb();
-			// SETQUIZCLONE
-			quizClone.setQuizStatus(status);
+			// SETQUIZCLONE			
 			quizClone.setDoelLeerjaren(klassenArray);
 			quizClone.setOnderwerp(onderwerp);
 			quizClone.setIsTest(isTest);
 			quizClone.setIsUniekeDeelname(isUniekeDeelname);
+			quizClone.setQuizStatus(status);
 			// SET QUIZ
 			quiz = quizClone;			
 			//ADD QUIZ TO DB

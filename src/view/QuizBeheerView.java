@@ -16,19 +16,16 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JFrame;  // Window
+import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
 import model.Quiz;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.swing.JScrollPane;
-
-import util.tableModels.QuizBeheerTableModel;
-
-import javax.swing.table.TableColumn;
-
 
 @SuppressWarnings("serial")
 public class QuizBeheerView extends JFrame {
@@ -153,6 +150,62 @@ public class QuizBeheerView extends JFrame {
 			        kolom.setPreferredWidth(250); //Onderwerp
 			    }
 			}
+	}
+	
+	//TABELMODEL
+	public class QuizBeheerTableModel extends AbstractTableModel {
+
+		private ArrayList<Quiz> quizzen;
+		private String[] headers;
+		
+		
+		public QuizBeheerTableModel () {
+			headers = new String[]{"Auteur","Onderwerp","Klas","Vragen","Status","Test","Unieke Deelname"};
+			quizzen = new ArrayList<Quiz>();
+		}
+		
+		
+		@Override
+		public int getColumnCount() {
+			return headers.length;
+		}
+		@Override
+		public int getRowCount() {
+			return quizzen.size();
+		}
+		
+		@Override   
+		public String getColumnName(int col) {
+		        return headers[col];
+		}
+		
+		@Override
+		public Object getValueAt(int row, int col) {
+			Quiz quiz = quizzen.get(row);
+		     switch (col) {
+		     case 0: return quiz.getAuteur();
+		     case 1: return quiz.getOnderwerp();
+		     case 2: return quiz.getDoelLeerjaren();
+		     case 3: return (quiz.getQuizOpdrachten()).size();
+		     case 4: return quiz.getQuizStatus();
+		     case 5: return quiz.getIsTest();
+		     case 6: return quiz.getIsUniekeDeelname();
+		     
+		     default: return null;
+		    }
+		}
+
+		public void setQuizzen (Collection<Quiz> quizzen) {
+			this.quizzen = new ArrayList<Quiz>(quizzen);
+		}
+		
+		public Quiz getQuiz(int row) {
+			if (row < quizzen.size() && row >= 0) {
+				return quizzen.get(row);
+			}
+			return null;
+		}
+			
 	}
 
 }
