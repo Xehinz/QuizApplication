@@ -1,5 +1,6 @@
 package persistency;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -39,8 +40,7 @@ class MySQLDB implements DBStrategy {
 	}
 
 	@Override
-	public ArrayList<Opdracht> leesOpdrachten() {
-		try {
+	public ArrayList<Opdracht> leesOpdrachten() throws IOException {		
 			ArrayList<Object> opdrachtObjecten = new ArrayList<Object>();
 			opdrachtObjecten.addAll(dbKlassiekeOpdrachtLeesSchrijf.lees());
 			opdrachtObjecten.addAll(dbReproductieLeesSchrijf.lees());
@@ -50,72 +50,36 @@ class MySQLDB implements DBStrategy {
 			for (Object opdracht : opdrachtObjecten) {
 				opdrachten.add((Opdracht) opdracht);
 			}
-			return opdrachten;
-		}
-		catch (SQLException e) {
-			e.printStackTrace();			
-			return new ArrayList<Opdracht>();
-		}
+			return opdrachten;	
 	}
 
 	@Override
-	public ArrayList<Leerling> leesLeerlingen() {
-		try {
+	public ArrayList<Leerling> leesLeerlingen() throws IOException {
 			return dbLeerlingLeesSchrijf.lees();
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();			
-			return new ArrayList<Leerling>();
-		}	
 	}
 
 	@Override
-	public ArrayList<Quiz> leesQuizzen() {
-		try {
+	public ArrayList<Quiz> leesQuizzen() throws IOException {
 			return dbQuizLeesSchrijf.lees();
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();			
-			return new ArrayList<Quiz>();
-		}	
 	}
 
 	@Override
-	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames() {
-		try {
-			return dbQuizDeelnameLeesSchrijf.lees();
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();			
-			return new ArrayList<PseudoQuizDeelname>();
-		}	
+	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames() throws IOException {
+			return dbQuizDeelnameLeesSchrijf.lees();	
 	}
 
 	@Override
-	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten() {
-		try {
+	public ArrayList<PseudoQuizOpdracht> leesQuizOpdrachten() throws IOException {
 			return dbQuizOpdrachtLeesSchrijf.lees();
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();			
-			return new ArrayList<PseudoQuizOpdracht>();
-		}	
 	}
 
 	@Override
-	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden() {
-		try {
+	public ArrayList<PseudoOpdrachtAntwoord> leesOpdrachtAntwoorden() throws IOException {
 			return dbOpdrachtAntwoordLeesSchrijf.lees();
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();			
-			return new ArrayList<PseudoOpdrachtAntwoord>();
-		}	
 	}
 
 	@Override
-	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) {
-		try {
+	public void schrijfOpdrachten(ArrayList<Opdracht> opdrachten) throws IOException {
 			ArrayList<Opdracht> klassiekeopdrachten = new ArrayList<Opdracht>();
 			ArrayList<Opdracht> meerkeuzeopdrachten = new ArrayList<Opdracht>();
 			ArrayList<Opdracht> opsommingsopdrachten = new ArrayList<Opdracht>();
@@ -138,61 +102,32 @@ class MySQLDB implements DBStrategy {
 			dbMeerkeuzeLeesSchrijf.schrijf(meerkeuzeopdrachten);
 			dbOpsommingLeesSchrijf.schrijf(opsommingsopdrachten);
 			dbReproductieLeesSchrijf.schrijf(reproductieopdrachten);
-		}
-		catch (SQLException e) {
-			e.printStackTrace();			
-		}
 	}
 
 	@Override
-	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen) {
-		try {
+	public void schrijfLeerlingen(ArrayList<Leerling> leerlingen) throws IOException {
 			dbLeerlingLeesSchrijf.schrijf(leerlingen);
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
-	public void schrijfQuizzen(ArrayList<Quiz> quizzen) {
-		try {
+	public void schrijfQuizzen(ArrayList<Quiz> quizzen) throws IOException {
 			dbQuizLeesSchrijf.schrijf(quizzen);
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
-	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames) {
-		try {
+	public void schrijfQuizDeelnames(ArrayList<QuizDeelname> quizDeelnames) throws IOException {
 			dbQuizDeelnameLeesSchrijf.schrijf(quizDeelnames);
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
-	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten) {
-		try {
+	public void schrijfQuizOpdrachten(ArrayList<QuizOpdracht> quizOpdrachten) throws IOException {
 			dbQuizOpdrachtLeesSchrijf.schrijf(quizOpdrachten);
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	public void schrijfOpdrachtAntwoorden(
-			ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) {
-		try {
+			ArrayList<OpdrachtAntwoord> opdrachtAntwoorden) throws IOException {
 			dbOpdrachtAntwoordLeesSchrijf.schrijf(opdrachtAntwoorden);
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

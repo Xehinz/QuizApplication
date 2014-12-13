@@ -8,6 +8,7 @@ import java.awt.Insets;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 /**
  * 
@@ -38,6 +39,8 @@ public class DeelnameReproductieView extends DeelnameKlassiekOpsommingView {
 		constraints.gridy = 0;
 		constraints.gridy = 0;				
 		pnlCentrum.add(new JScrollPane(txtAntwoordGroot), constraints);
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	@Override

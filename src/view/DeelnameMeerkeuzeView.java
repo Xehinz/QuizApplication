@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.SwingUtilities;
 
 /**
  * 
@@ -24,6 +25,8 @@ public class DeelnameMeerkeuzeView extends DeelnameKlassiekOpsommingView {
 		// Het middelste deel varieert naargelang type opdracht
 		pnlCentrum = new JPanel(layout);
 		add(pnlCentrum, BorderLayout.CENTER);	
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	@Override

@@ -6,19 +6,25 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Properties;
 
 import javax.swing.ButtonModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import model.Leraar;
 import model.score.ScoreStrategyType;
 import persistency.DBHandler;
 import persistency.StorageStrategy;
 import view.BeheerLeerlingView;
+import view.DBConnectieGegevensView;
 import view.OpdrachtBeheerView;
 import view.QuizBeheerView;
 import view.ViewFactory;
@@ -36,6 +42,7 @@ public class MainLeraarController extends Observable {
 			quizBeheerStaatOpen, leerlingBeheerStaatOpen;
 	private DBHandler dbHandler;
 	private Properties settings;
+	private HashMap<String, String> lookAndFeelClassNames;
 
 	private OverzichtScoresQuizzenController overzichtScoresController;
 	private OpdrachtBeheerController opdrachtBeheerController;
@@ -46,6 +53,7 @@ public class MainLeraarController extends Observable {
 	private QuizBeheerView quizBeheerView;
 	private OpdrachtBeheerView opdrachtBeheerView;
 	private BeheerLeerlingView beheerLeerlingView;
+	private DBConnectieGegevensView connectieGegevensView;
 
 	private ViewFactory viewFactory;
 
@@ -55,7 +63,7 @@ public class MainLeraarController extends Observable {
 	public MainLeraarController(DBHandler dbHandler, Leraar leraar,
 			OpstartController opstartController, ViewFactory viewFactory) {
 		mainView = (IMainLeraarView) viewFactory
-				.maakView(ViewType.MainLeraarView);
+				.maakView(ViewType.MainLeraarView);		
 		overzichtScoresStaatOpen = false;
 		opdrachtBeheerStaatOpen = false;
 		quizBeheerStaatOpen = false;
@@ -65,6 +73,11 @@ public class MainLeraarController extends Observable {
 		this.leraar = leraar;
 		this.viewFactory = viewFactory;
 		this.settings = opstartController.getSettings();
+		
+		lookAndFeelClassNames = new HashMap<String, String>();
+		for (LookAndFeelInfo lafInfo : UIManager.getInstalledLookAndFeels()) {
+			lookAndFeelClassNames.put(lafInfo.getName(), lafInfo.getClassName());
+		}
 
 		this.addObserver(dbHandler);
 
@@ -79,6 +92,9 @@ public class MainLeraarController extends Observable {
 		mainView.addRodeLoginClickedListener(new RodeLoginClickedHandler());
 		mainView.addScoreStrategieChangedListener(new ScoreRegelChangedHandler());
 		mainView.addOpslagStrategyChangedListener(new StorageStrategyChangedHandler());
+		mainView.addConnectieGegevensKlikListener(new ConnectieGegevensKlikHandler());
+		mainView.addLookAndFeelChangedListener(new LookAndFeelChangedListener());
+		
 		mainView.addOverzichtScoresKnopActionListener(new OverzichtScoresKnopListener());
 		mainView.addWindowListener(new MainWindowClosingListener());
 		mainView.addAfsluitenKnopActionListener(ae -> opstartController
@@ -260,6 +276,53 @@ public class MainLeraarController extends Observable {
 			}
 		}
 
+	}
+	
+	class ConnectieGegevensOpslaanHandler implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			settings.put("connectiestring", connectieGegevensView.getConnectieString());
+			settings.put("gebruiker", connectieGegevensView.getGebruiker());
+			settings.put("paswoord", new String(connectieGegevensView.getPaswoord()));
+			connectieGegevensView.dispose();
+		}
+		
+	}
+	
+	class ConnectieGegevensKlikHandler implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			connectieGegevensView = new DBConnectieGegevensView((JFrame)mainView);
+			connectieGegevensView.setConnectieString(settings.getProperty("connectiestring"));
+			connectieGegevensView.setGebruiker(settings.getProperty("gebruiker"));
+			connectieGegevensView.setPaswoord(settings.getProperty("paswoord"));
+			connectieGegevensView.addOpslaanKlikListener(new ConnectieGegevensOpslaanHandler());
+			connectieGegevensView.setVisible(true);
+		}
+		
+	}
+	
+	class LookAndFeelChangedListener implements ItemListener {
+
+		@Override
+		public void itemStateChanged(ItemEvent event) {
+			if (event.getSource() instanceof JRadioButtonMenuItem) {
+				JRadioButtonMenuItem source = (JRadioButtonMenuItem)event.getSource();
+				String simpleClassName = source.getText();
+				
+				try {
+				UIManager.setLookAndFeel(lookAndFeelClassNames.get(simpleClassName));
+				} catch (Exception ex) {
+					JOptionPane.showConfirmDialog(null, "Fout bij het veranderen van look and feel", "Fout", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+				}
+				SwingUtilities.updateComponentTreeUI((JFrame)mainView);
+				
+				settings.put("lookandfeel", lookAndFeelClassNames.get(simpleClassName));
+			}
+		}
+		
 	}
 
 }

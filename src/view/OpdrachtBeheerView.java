@@ -94,6 +94,7 @@ public class OpdrachtBeheerView extends JFrame {
 		newPanel.add(new JScrollPane(lijstOpdrachten), c);
 
 		this.add(newPanel);
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	public void setOpdrachten(ArrayList<Opdracht> opdrachten) {

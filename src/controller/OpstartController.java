@@ -12,6 +12,9 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import model.Leerling;
 import model.Leraar;
@@ -46,13 +49,18 @@ public class OpstartController {
 				ScoreStrategyType.valueOf(settings.getProperty("scoreregel")));
 
 		this.dbHandler = new DBHandler();
+		this.dbHandler.setConnectionString(getConnectieString());
 		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings
 				.getProperty("dbstrategy")));
+		
+		try {
+			UIManager.setLookAndFeel(settings.getProperty("lookandfeel"));
+			} catch (Exception ex) {
+				JOptionPane.showConfirmDialog(null, "Fout bij het veranderen van look and feel", "Fout", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+			}		
 
 		viewFactory = new ViewFactory(settings);
-		loginView = (ILoginView) viewFactory.maakView(ViewType.LoginView);
-
-		loginView.addWindowListener(new LoginViewClosedHandler());
+		login();
 
 		try {
 			dbHandler.vulCatalogi();
@@ -63,8 +71,7 @@ public class OpstartController {
 		} catch (Exception ex) {
 			loginView.toonErrorMessage("Fout:\n" + ex.getMessage(), "Fout");
 		}
-
-		login();
+		
 	}
 
 	public static void main(String[] args) {
@@ -77,7 +84,7 @@ public class OpstartController {
 		loginView.addWindowListener(new LoginViewClosedHandler());
 		loginView.addLoginActionListener(new LoginKnopListener());
 
-		loginView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		loginView.setVisible(true);
 	}
 
@@ -147,6 +154,16 @@ public class OpstartController {
 		}
 
 		return false;
+	}
+	
+	private String getConnectieString() {
+		String connectieString = null;
+		if (settings != null) {
+			connectieString = "";
+			connectieString += settings.getProperty("connectiestring");
+			connectieString += String.format("?user=%s&password=%s", settings.getProperty("gebruiker"), settings.getProperty("paswoord"));
+		}
+		return connectieString;
 	}
 
 	class LoginKnopListener implements ActionListener {

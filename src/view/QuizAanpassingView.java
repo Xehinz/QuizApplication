@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -326,7 +327,9 @@ public class QuizAanpassingView extends JFrame {
 		this.add(opdrachtKnoppenVeld, constraints);
 		
 		//SET VIEW + TABELS
-		setViewToQuiz(quiz);					
+		setViewToQuiz(quiz);	
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	

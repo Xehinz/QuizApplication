@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
 
 import view.viewInterfaces.IQuizDeelnameView;
@@ -78,6 +79,8 @@ public class QuizDeelnameView extends JFrame implements IQuizDeelnameView {
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;				
 		this.add(btnDeelnemen, constraints);
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	public void setLeerling(String volledigeNaam) {

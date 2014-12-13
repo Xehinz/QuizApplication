@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 
 import view.viewInterfaces.IMainLeerlingView;
 
@@ -82,6 +83,8 @@ public class MainLeerlingView extends JFrame implements IMainLeerlingView {
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets = new Insets(10, 0, 10, 20);
 		this.add(btnAfsluiten, constraints);
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	public void setLeerling(String leerling) {

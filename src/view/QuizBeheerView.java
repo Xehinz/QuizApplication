@@ -19,6 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
@@ -107,6 +108,7 @@ public class QuizBeheerView extends JFrame {
 		constraints.anchor = GridBagConstraints.NORTHEAST;
 		this.add (knoppenVeld, constraints);
 		
+		SwingUtilities.updateComponentTreeUI(this);		
 	}	
 	
 	//TODO btnVerwijderQuiz disabled als quiz niet verwijderbaar is.

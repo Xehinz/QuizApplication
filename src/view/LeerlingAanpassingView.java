@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import model.Leerling;
 import model.Leraar;
@@ -157,6 +158,8 @@ public class LeerlingAanpassingView extends JFrame  {
 //		constraints.gridy = 5;
 //		constraints.gridx = 0;
 //		this.add(opdrachtKnoppenVeld, constraints);
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	/**

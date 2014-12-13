@@ -8,6 +8,7 @@ import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import view.OpdrachtAanpassingView;
 
@@ -43,7 +44,8 @@ public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView {
 		b.insets = new Insets(10, 10, 10, 10);
 		b.fill = GridBagConstraints.BOTH;
 		grootPanel.add(middenPanel, b);
-
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	public void setMogelijkeAntwoordenMeerkeuze(String mogelijkeAntwoorden){

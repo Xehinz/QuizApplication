@@ -6,9 +6,7 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -18,8 +16,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.MenuSelectionManager;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
@@ -40,15 +39,17 @@ public class MainLeraarView extends JFrame implements IMainLeraarView {
 	private JMenuBar menuBar;
 	private JMenu instellingenMenu, viewMenu, opslagMenu, scoreMenu;
 	private JCheckBoxMenuItem mCbxRodeLogin;
-	private JRadioButtonMenuItem[] mRbtnScoreKeuzes, mRbtnOpslagKeuzes;
+	private JRadioButtonMenuItem[] mRbtnScoreKeuzes, mRbtnOpslagKeuzes, mRbtnLookAndFeels;
 	private JMenuItem menuitConnectionString;
 	
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
 	
+	private LookAndFeelInfo[] lookAndFeelNames;
+	
 	public MainLeraarView() {
 		super("Quiz applicatie (Leraar)");
-		this.setSize(450, 300);		
+		this.setSize(550, 425);		
 		
 		layout = new GridBagLayout();
 		this.setLayout(layout);
@@ -147,6 +148,17 @@ public class MainLeraarView extends JFrame implements IMainLeraarView {
 		scoreMenu.setMnemonic('S');
 		instellingenMenu.add(scoreMenu);
 		
+		ButtonGroup lookAndFeelsGroup = new ButtonGroup();
+		lookAndFeelNames = UIManager.getInstalledLookAndFeels();
+		mRbtnLookAndFeels = new JRadioButtonMenuItem[lookAndFeelNames.length];
+		for (int i = 0; i < lookAndFeelNames.length; i++) {
+			mRbtnLookAndFeels[i] = new JRadioButtonMenuItem(lookAndFeelNames[i].getName());
+			mRbtnLookAndFeels[i].setUI(new MenuRadioButtonBlijftOpenUI());;
+			lookAndFeelsGroup.add(mRbtnLookAndFeels[i]);
+			viewMenu.add(mRbtnLookAndFeels[i]);
+		}
+		
+		viewMenu.addSeparator();
 		mCbxRodeLogin = new JCheckBoxMenuItem("Rood loginschermpje");
 		mCbxRodeLogin.setUI(new MenuCheckBoxBlijftOpenUI());
 		viewMenu.add(mCbxRodeLogin);
@@ -174,7 +186,8 @@ public class MainLeraarView extends JFrame implements IMainLeraarView {
 			scoreKeuzesGroep.add(mRbtnScoreKeuzes[i]);
 			scoreMenu.add(mRbtnScoreKeuzes[i]);
 		}	
-				
+		
+		SwingUtilities.updateComponentTreeUI(this);				
 	}
 	
 	public void setLeraar(String leraar) {
@@ -247,6 +260,24 @@ public class MainLeraarView extends JFrame implements IMainLeraarView {
 	
 	public void setEnabledDBConnectieGegevens(boolean isEnabled) {
 		menuitConnectionString.setEnabled(isEnabled);
+	}
+	
+	public void addConnectieGegevensKlikListener(ActionListener listener) {
+		menuitConnectionString.addActionListener(listener);
+	}
+	
+	public void addLookAndFeelChangedListener(ItemListener listener) {
+		for (JRadioButtonMenuItem mRbtn : mRbtnLookAndFeels) {
+			mRbtn.addItemListener(listener);
+		}
+	}
+	
+	public void setSelectedLookAndFeel(String className) {
+		for (int i = 0; i < lookAndFeelNames.length; i++) {
+			if (className.equals(lookAndFeelNames[i].getClassName())) {
+				mRbtnLookAndFeels[i].setSelected(true);
+			}
+		}
 	}
 	
 	class MenuCheckBoxBlijftOpenUI extends BasicCheckBoxMenuItemUI {

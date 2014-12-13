@@ -35,6 +35,7 @@ public class DBHandler implements Observer {
 	private QuizCatalogus quizCatalogus;
 	private StorageStrategy storageStrategyBijStart,
 			storageStrategyBijAfsluiten;
+	private String connectionString;
 
 	/**
 	 * Maakt een DBHandler object aan. Gebruik deze constructor als je enkel wil
@@ -100,7 +101,7 @@ public class DBHandler implements Observer {
 		}
 
 		boolean storageStrategySwitched = !(storageStrategyBijAfsluiten == null || storageStrategyBijStart == storageStrategyBijAfsluiten);
-		for (int i = 2; i > 0; i--) {			
+		for (int i = 2; i > 0; i--) {
 			if (storageStrategySwitched) {
 				if (i == 1) {
 					setDBStrategy(storageStrategyBijAfsluiten);
@@ -131,8 +132,11 @@ public class DBHandler implements Observer {
 	 * @param storageStrategy
 	 *            de StorageStrategy (StorageStrategy.TEKST of
 	 *            StorageStrategy.CSV of StorageStrategy.DATABASE)
+	 * @throws IllegalStateException
+	 *             als er nog geen connection string is ingesteld
 	 */
-	public void setDBStrategy(StorageStrategy storageStrategy) {
+	public void setDBStrategy(StorageStrategy storageStrategy)
+			throws IllegalStateException {
 		if (storageStrategyBijStart == null) {
 			storageStrategyBijStart = storageStrategy;
 		}
@@ -144,8 +148,11 @@ public class DBHandler implements Observer {
 			dbStrategy = new TxtDB(true);
 			break;
 		case DATABASE:
-			dbStrategy = new MySQLDB(
-					"jdbc:mysql://localhost:3306/quiz?user=deitel&password=deitel");
+			if (connectionString == null) {
+				throw new IllegalStateException(
+						"Er moet een connection string ingesteld zijn");
+			}
+			dbStrategy = new MySQLDB(connectionString);
 			break;
 		}
 	}
@@ -175,6 +182,16 @@ public class DBHandler implements Observer {
 	 */
 	public LeerlingContainer getLeerlingContainer() {
 		return leerlingContainer;
+	}
+
+	/**
+	 * Stelt de connection string in
+	 * 
+	 * @param connectionString
+	 *            de connection string
+	 */
+	public void setConnectionString(String connectionString) {
+		this.connectionString = connectionString;
 	}
 
 	@Override

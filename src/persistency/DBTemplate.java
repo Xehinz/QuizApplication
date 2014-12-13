@@ -25,16 +25,16 @@ abstract class DBTemplate {
 	
 	protected abstract String getDeleteStatement();
 	
-	public <T> ArrayList<T> lees() throws SQLException {
+	public <T> ArrayList<T> lees() throws IOException {
 		
 		ArrayList<T> objecten = new ArrayList<T>();
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (ClassNotFoundException cnfEx) {
-			throw new SQLException("jdbc Driver niet gevonden", cnfEx);
+			throw new IOException("jdbc Driver niet gevonden", cnfEx);
 		} catch (Exception ex) {
-			throw new SQLException("Fout bij het registreren van de Driver:\n" + ex.getMessage(), ex);
+			throw new IOException("Fout bij het registreren van de Driver:\n" + ex.getMessage(), ex);
 		}
 		
 		try (Connection connection = DriverManager.getConnection(JDBCConnectionString);
@@ -54,18 +54,18 @@ abstract class DBTemplate {
 			return objecten;
 			
 		} catch (Exception ex) {
-			throw new SQLException("Fout bij het lezen van data uit de database:\n" + ex.getMessage(), ex);
+			throw new IOException("Fout bij het lezen van data uit de database:\n" + ex.getMessage(), ex);
 		}
 	}
 	
-	public <T> void schrijf(ArrayList<T> objecten) throws SQLException{
+	public <T> void schrijf(ArrayList<T> objecten) throws IOException {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (ClassNotFoundException cnfEx) {
-			throw new SQLException("jdbc Driver niet gevonden", cnfEx);
+			throw new IOException("jdbc Driver niet gevonden", cnfEx);
 		} catch (Exception ex) {
-			throw new SQLException("Fout bij het registreren van de Driver:\n" + ex.getMessage(), ex);
+			throw new IOException("Fout bij het registreren van de Driver:\n" + ex.getMessage(), ex);
 		}
 		
 		try (Connection connection = DriverManager.getConnection(JDBCConnectionString);
@@ -74,12 +74,11 @@ abstract class DBTemplate {
 			statement.executeUpdate(getDeleteStatement());
 			
 			for (T object : objecten) {
-				//System.out.println(getSchrijfStatement(object));
 				statement.executeUpdate(getSchrijfStatement(object));
 			}
 			
 		} catch (Exception ex) {
-			throw new SQLException("Fout bij het schrijven van data naar de database:\n" + ex.getMessage(), ex);
+			throw new IOException("Fout bij het schrijven van data naar de database:\n" + ex.getMessage(), ex);
 		}
 		
 	}

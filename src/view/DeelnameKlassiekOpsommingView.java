@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.ToolTipManager;
 
@@ -148,7 +149,8 @@ public class DeelnameKlassiekOpsommingView extends JFrame implements IOpdrachtDe
 		constraints.weightx = 0.5;
 		constraints.anchor = GridBagConstraints.EAST;
 		pnlGemeenschappelijkOnder.add(btnAntwoord, constraints);
-
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	public void setVraagCounter(int count) {

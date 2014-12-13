@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 
 import model.Leraar;
 import model.Opdracht;
@@ -185,6 +186,7 @@ public class OpdrachtAanpassingView extends JFrame {
 
 		this.add(grootPanel);
 		this.setVisible(true);
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	public void setVraag(String vraag) {

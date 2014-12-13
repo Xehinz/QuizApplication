@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
@@ -73,6 +74,8 @@ public class OverzichtScoresAntwoordenView extends JFrame implements IOverzichtS
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets = new Insets(10, 10, 10, 10);
 		this.add(lblGemiddeldeScore, constraints);
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	

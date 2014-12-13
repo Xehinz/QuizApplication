@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
@@ -81,6 +82,8 @@ public class RapportNaDeelnameView extends JFrame {
 		constraints.anchor = GridBagConstraints.SOUTHEAST;
 		constraints.insets = new Insets(10, 0, 10, 10);
 		add(btnDeelnameMenu, constraints);
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	public void setLeerling(String volledigeNaam) {

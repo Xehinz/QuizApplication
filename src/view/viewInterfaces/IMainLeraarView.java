@@ -3,6 +3,9 @@ package view.viewInterfaces;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.UIManager.LookAndFeelInfo;
+
 import persistency.StorageStrategy;
 import model.score.ScoreStrategyType;
 
@@ -35,5 +38,11 @@ public interface IMainLeraarView extends IView {
 	public void addOpslagStrategyChangedListener(ItemListener listener);
 	
 	public void setEnabledDBConnectieGegevens(boolean isEnabled);
+	
+	public void addConnectieGegevensKlikListener(ActionListener listener);
+	
+	public void addLookAndFeelChangedListener(ItemListener listener);
+	
+	public void setSelectedLookAndFeel(String className);
 
 }

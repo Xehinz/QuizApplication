@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
@@ -101,7 +102,8 @@ public class QuizScoresRapportView extends JFrame implements
 		
 		JScrollPane scroller2 = new JScrollPane(tblQuizzen);
 		this.add(scroller2, constraints);	
-
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	@Override

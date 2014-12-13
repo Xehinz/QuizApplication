@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
@@ -67,7 +68,9 @@ public class OverzichtScoresLeerlingenView extends JFrame implements IOverzichtS
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets = new Insets(0, 0, 10, 10);
-		this.add(btnDetail, constraints);			
+		this.add(btnDetail, constraints);	
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	public void setTableModel(TableModel leerlingScoreTableModel) {

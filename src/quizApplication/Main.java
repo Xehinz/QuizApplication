@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javax.swing.UIManager;
+
 import util.datumWrapper.Datum;
 import controller.OpstartController;
 import controller.OverzichtScoresQuizzenController;
 import controller.QuizAanpassingController;
 import controller.QuizBeheerController;
+import view.DBConnectieGegevensView;
 //import view.MainView;
 import view.OverzichtScoresQuizzenView;
 import view.QuizBeheerView;
@@ -30,7 +33,10 @@ public class Main {
 	
 	public static void main(String[] args) {		
 		
-		OpstartController boot = new OpstartController();
+		  UIManager.LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
+		    for (UIManager.LookAndFeelInfo look : looks) {
+		      System.out.println(look.getName());
+		    }
 		
 	}
 }

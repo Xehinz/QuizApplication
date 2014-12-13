@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
@@ -106,6 +107,8 @@ public class BeheerLeerlingView extends JFrame {
 		aGBConstraints.fill = GridBagConstraints.BOTH;
 		aGBConstraints.anchor = GridBagConstraints.NORTHEAST;
 		this.add (aKnoppenVeld, aGBConstraints); //JPanel @JFrame
+		
+		SwingUtilities.updateComponentTreeUI(this);
 	}
 
 	/**
