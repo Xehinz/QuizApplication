@@ -32,7 +32,7 @@ public class BeheerLeerlingView extends JFrame {
 	private JPanel aKnoppenVeld = new JPanel();
 	private GridBagLayout aGBLayout = new GridBagLayout();
 	private GridBagConstraints aGBConstraints;
-	private JButton btnNieuweLeerling, btnAanpassenLeerling, btnVerwijderLeerling;
+	private JButton btnNieuweLeerling, btnAanpassenLeerling, btnVerwijderLeerling, btnLeerlingScores;
 	//volgende objecten hangen in cascade aan elkaar vast
 	private JTable aLeerlingTabel = new JTable();
 	private JScrollPane aTabelVeld = new JScrollPane(aLeerlingTabel);
@@ -90,6 +90,14 @@ public class BeheerLeerlingView extends JFrame {
 		aGBConstraints.anchor = GridBagConstraints.CENTER;
 		aKnoppenVeld.add(btnVerwijderLeerling, aGBConstraints);
 		
+		btnLeerlingScores = new JButton("Quizscores leerling");
+		aGBConstraints = new GridBagConstraints();
+		aGBConstraints.insets = new Insets(10, 10, 10, 10);
+		aGBConstraints.gridy = 4;
+		aGBConstraints.gridx = 0;
+		aGBConstraints.anchor = GridBagConstraints.CENTER;
+		aKnoppenVeld.add(btnLeerlingScores, aGBConstraints);
+
 		//Add knoppenVeld
 		aGBConstraints = new GridBagConstraints();
 		aGBConstraints.insets = new Insets(10, 10, 10, 10);
@@ -124,6 +132,10 @@ public class BeheerLeerlingView extends JFrame {
 		btnVerwijderLeerling.addActionListener(listener);
 	}
 	
+	public void addLeerlingScoresListener(ActionListener listener) {
+		btnLeerlingScores.addActionListener(listener);
+	}
+
 	public void setTableModel (TableModel aModel)
 	{
 		aLeerlingTabel.setModel(aModel);

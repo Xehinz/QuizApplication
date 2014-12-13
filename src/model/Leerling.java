@@ -309,11 +309,17 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	/**
 	 * Controle of deze leerling verwijderd kan worden (enkel indien er geen deelnames zijn aan quizen)
 	 * @author Johan Boogers
-	 * @return
+	 * @return ja, indien de leerling verwijderd kan worden (en geen deelnames meer heeft met een quiz)
 	 */
 	public boolean isVerwijderbaar() {
-		if (this.getDeelgenomenQuizzen().size() == 0) {return true;}
-		else { return false; }
+		try {
+			if (this.getDeelgenomenQuizzen().size() == 0) {return true;}
+			else { return false; }
+		}
+		catch (NullPointerException e) {
+			e.printStackTrace();
+			return true;
+		}
 	}
 
 }
