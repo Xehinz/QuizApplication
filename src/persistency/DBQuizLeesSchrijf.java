@@ -31,9 +31,9 @@ public class DBQuizLeesSchrijf extends DBTemplate {
 	@Override
 	protected Quiz maakObject(Object[] rij) {
 		int ID = (Integer) rij[0];
-		Datum aanmaakDatum = (Datum) rij[1];
-		QuizStatus status = (QuizStatus) rij[2];
-		Leraar auteurNaam = (Leraar) rij[3];
+		Datum aanmaakDatum = new Datum(rij[1].toString());
+		QuizStatus status = QuizStatus.getInstance(rij[2].toString());
+		Leraar auteurNaam = Leraar.getLeraar(rij[3].toString().replace("_"," "));
 		String onderwerp = (String) rij[4];
 		Boolean isuniekeDeelname = (Boolean) rij[5];
 		// Boolean isTest = (Boolean) rij [6];
@@ -60,11 +60,15 @@ public class DBQuizLeesSchrijf extends DBTemplate {
 				
 		
 		return String.format(
-				"INSERT INTO quiz VALUES('%d', '%tF', %s, %s, %s, %s)", quiz
-						.getID(), quiz.getAanmaakDatum()
-						.getDatumInEuropeesFormaat(), quiz.getQuizStatus()
-						.toString(), quiz.getAuteur().name(), quiz.getOnderwerp(),
-				quiz.getIsUniekeDeelname(), quiz.getIsTest(), doelLeerjaren);
+				"INSERT INTO quiz VALUES('%s', '%s', '%s', '%s', '%s', %s, %s, '%s')", 
+					quiz.getID(), 
+					quiz.getAanmaakDatum().getDatumInMySQLFormaat(), 
+					quiz.getQuizStatus().toString(), 
+					quiz.getAuteur().name(), 
+					quiz.getOnderwerp(),
+					quiz.getIsUniekeDeelname(), 
+					quiz.getIsTest(), 
+					doelLeerjaren);
 	}
 
 	@Override

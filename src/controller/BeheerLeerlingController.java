@@ -78,7 +78,6 @@ public class BeheerLeerlingController {
 		public void windowGainedFocus(WindowEvent arg0) {
 			aTabelModel.setLeerlingen(aDBHandler.getLeerlingContainer().getLeerlingen());
 			aTabelModel.fireTableDataChanged();
-			System.out.println("windowGainedFocus");
 		}
 
 		@Override

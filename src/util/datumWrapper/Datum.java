@@ -71,7 +71,7 @@ public class Datum implements Comparable<Datum> {
 	 *             als de input String van een foutief formaat is of als de datumwaarde ongeldig is
 	 */
 	public Datum(String datum) {
-		String[] parts = datum.replaceAll("'", "").split("/|-");
+		String[] parts = datum.replace("'","").substring(0,10).split("/|-");
 		
 		//Europese notatie = DD/MM/YYYY
 		String dag = parts[0];

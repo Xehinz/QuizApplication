@@ -26,13 +26,13 @@ public class DBOpsommingLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	@Override
 	protected String getLeesQuery() {
-		return "SELECT * FROM opsomming";
+		return "SELECT * FROM opsomming_opdrachten";
 	}
 
 	@Override
 	protected Opdracht maakObject(Object[] rij) {
 		int ID = (Integer) rij[0];
-		Datum datum = new Datum((String) rij[1]);
+		Datum datum = new Datum(rij[1].toString());
 		String vraag = (String) rij[2];
 		int maxPogingen = (Integer) rij[3];
 		int maxTijd	= (Integer) rij[4];
@@ -54,12 +54,12 @@ public class DBOpsommingLeesSchrijf extends DBOpdrachtLeesSchrijf {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen Opsomming");
 		}
-		return String.format("%s%s, %s)", this.opdrachtSchrijfStatement(opdracht), opdracht.getJuisteAntwoord(), opdracht.getInJuisteVolgorde());
+		return String.format("%s'%s', %s)", this.opdrachtSchrijfStatement(opdracht), opdracht.getJuisteAntwoord(), opdracht.getInJuisteVolgorde());
 	}
 
 	@Override
 	protected String getDeleteStatement() {
-		return "TRUNCATE opsomming";
+		return "TRUNCATE opsomming_opdrachten";
 	}
 
 }

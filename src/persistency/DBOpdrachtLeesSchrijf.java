@@ -56,18 +56,18 @@ abstract class DBOpdrachtLeesSchrijf extends DBTemplate {
 		}
 		String tabel = new String();
 		if (opdracht instanceof KlassiekeOpdracht) {
-			tabel = "klassiekeopdrachten";
+			tabel = "klassieke_opdracht";
 		}
 		if (opdracht instanceof Meerkeuze) {
-			tabel = "meerkeuze";
+			tabel = "meerkeuze_opdracht";
 		}
 		if (opdracht instanceof Opsomming) {
-			tabel = "opsomming";
+			tabel = "opsomming_opdrachten";
 		}
 		if (opdracht instanceof Reproductie) {
-			tabel = "reproductie";
+			tabel = "reproductie_opdracht";
 		}
-		return String.format("INSERT INTO %s VALUES('%d', %s, %s, %d, %d, %s, %s, %s, ", tabel, opdracht.getID(),(opdracht.getAanmaakDatum()).getDatumInEuropeesFormaat(),opdracht.getVraag(),opdracht.getMaxAantalPogingen(), opdracht.getMaxAntwoordTijd(),(opdracht.getOpdrachtCategorie()).name(),(opdracht.getAuteur()).name(),hints);
+		return String.format("INSERT INTO %s VALUES('%d', '%s', '%s', %d, %d, '%s', '%s', '%s', ", tabel, opdracht.getID(),(opdracht.getAanmaakDatum()).getDatumInMySQLFormaat(),opdracht.getVraag(),opdracht.getMaxAantalPogingen(), opdracht.getMaxAntwoordTijd(),(opdracht.getOpdrachtCategorie()).name(),(opdracht.getAuteur()).name(),hints);
 	}
 
 }

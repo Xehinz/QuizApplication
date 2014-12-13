@@ -40,7 +40,7 @@ public class DBHandler {
 		opdrachtCatalogus = new OpdrachtCatalogus();
 		leerlingContainer = new LeerlingContainer();
 		quizCatalogus = new QuizCatalogus();
-		dbStrategy = new TxtDB(useCSV);
+		//dbStrategy = new TxtDB(useCSV);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class DBHandler {
 		this.opdrachtCatalogus = opdrachtCatalogus;
 		this.leerlingContainer = leerlingContainer;
 		this.quizCatalogus = quizCatalogus;
-		dbStrategy = new TxtDB(useCSV);
+		//dbStrategy = new TxtDB(useCSV);
 	}
 
 	/**
@@ -101,16 +101,19 @@ public class DBHandler {
 	 * buitenwereld werken we met een enum: StorageStrategy
 	 * 
 	 * @param storageStrategy
-	 *            de StorageStrategy (StorageStrategy.TEKST of
+	 *            de StorageStrategy (StorageStrategy.TEKST of StorageStrategy.CSV of 
 	 *            StorageStrategy.DATABASE)
 	 */
 	public void setDBStrategy(StorageStrategy storageStrategy) {
 		switch (storageStrategy) {
 		case TEKST:
-			dbStrategy = new TxtDB(useCSV);			
+			dbStrategy = new TxtDB(false);	
+			break;
+		case CSV:
+			dbStrategy = new TxtDB(true);	
 			break;
 		case DATABASE:
-			dbStrategy = new MySQLDB("nog mee te geven: connectionstring");
+			dbStrategy = new MySQLDB("jdbc:mysql://localhost:3306/quiz?user=deitel&password=deitel");
 			break;
 		}
 	}

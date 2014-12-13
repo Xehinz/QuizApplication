@@ -83,7 +83,7 @@ class MySQLDB implements DBStrategy {
 	@Override
 	public ArrayList<PseudoQuizDeelname> leesQuizDeelnames() {
 		try {
-			return dbQuizLeesSchrijf.lees();
+			return dbQuizDeelnameLeesSchrijf.lees();
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();			

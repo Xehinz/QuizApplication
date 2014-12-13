@@ -25,13 +25,13 @@ public class DBKlassiekeOpdrachtLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	@Override
 	protected String getLeesQuery() {
-		return "SELECT * FROM klassiekeopdrachten"; //TODO check tblName 
+		return "SELECT * FROM klassieke_opdracht"; //TODO check tblName 
 	}
 
 	@Override
 	protected Opdracht maakObject(Object[] rij) {
 		int ID = (Integer) rij[0];
-		Datum datum = new Datum((String) rij[1]);
+		Datum datum = new Datum(rij[1].toString());
 		String vraag = (String) rij[2];
 		int maxPogingen = (Integer) rij[3];
 		int maxTijd	= (Integer) rij[4];
@@ -52,12 +52,12 @@ public class DBKlassiekeOpdrachtLeesSchrijf extends DBOpdrachtLeesSchrijf {
 		} else {
 			throw new IOException("Het object om weg te schrijven is geen KlassiekeOpdracht");
 		}
-		return String.format("%s%s)", this.opdrachtSchrijfStatement(opdracht), opdracht.getJuisteAntwoord());
+		return String.format("%s '%s')", this.opdrachtSchrijfStatement(opdracht), opdracht.getJuisteAntwoord());
 	}
 
 	@Override
 	protected String getDeleteStatement() {
-		return "TRUNCATE klassiekeopdrachten";
+		return "TRUNCATE klassieke_opdracht";
 	}
 
 }
