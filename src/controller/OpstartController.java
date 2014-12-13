@@ -47,7 +47,7 @@ public class OpstartController {
 		this.dbHandler = new DBHandler();		
 		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings
 				.getProperty("dbstrategy")));
-		dbHandler.setUseCSV(true);
+		//dbHandler.setUseCSV(true);
 		
 		viewFactory = new ViewFactory(settings);
 		loginView = (ILoginView)viewFactory.maakView(ViewType.LoginView);

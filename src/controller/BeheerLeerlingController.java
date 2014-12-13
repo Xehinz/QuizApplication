@@ -72,13 +72,12 @@ public class BeheerLeerlingController {
 
 	/**
 	 * listener subclasses 
-	 */
+	 */	
 	class FrameWindowListener implements WindowFocusListener {
 		@Override
 		public void windowGainedFocus(WindowEvent arg0) {
 			aTabelModel.setLeerlingen(aDBHandler.getLeerlingContainer().getLeerlingen());
 			aTabelModel.fireTableDataChanged();
-			System.out.println("windowGainedFocus");
 		}
 
 		@Override

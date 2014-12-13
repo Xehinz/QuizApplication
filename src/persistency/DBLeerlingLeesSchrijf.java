@@ -42,7 +42,7 @@ public class DBLeerlingLeesSchrijf extends DBTemplate {
 					"Het object om weg te schrijven is geen Leerling");
 		}
 		return String.format(
-				"INSERT INTO leerling VALUES('%d', %s, %s, %d)",
+				"INSERT INTO leerling VALUES(%d, '%s', '%s', %d)",
 				leerling.getID(), leerling.getLeerlingVoornaam(),
 				leerling.getLeerlingFamilienaam(), leerling.getLeerjaar());
 	}

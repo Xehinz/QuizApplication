@@ -61,18 +61,29 @@ public class Datum implements Comparable<Datum> {
 	}
 
 	/**
-	 * Maakt een datum object aan op basis van een string. Format: DD/MM/YYYY of DD-MM-YYYY
+	 * Maakt een datum object aan op basis van een string. 
+	 * Format: DD/MM/YYYY of DD-MM-YYYY of in MySQL notatie YYYY-MM-DD of 'YYYY-MM-DD'
 	 *
 	 * @param datum
 	 *            de String met een datum waarde (DD/MM/YYYY of DD-MM-YYYY)
+	 *            de String met een MySQL datum waarde (YYYY-MM-DD of 'YYYY-MM-DD')
 	 * @throws IllegalArgumentException
 	 *             als de input String van een foutief formaat is of als de datumwaarde ongeldig is
 	 */
 	public Datum(String datum) {
-		String[] parts = datum.split("/|-");
+		String[] parts = datum.replace("'","").substring(0,10).split("/|-");
+		
+		//Europese notatie = DD/MM/YYYY
 		String dag = parts[0];
 		String maand = parts[1];
 		String jaar = parts[2];
+		
+		//MySQL notatie = YYYY-MM-DD
+		if (dag.length() == 4 && jaar.length() <= 2) {
+			dag = parts[2];
+			jaar = parts[0];
+		}
+		
 		try {
 			boolean b = this.setDatum(Integer.parseInt(dag), Integer.parseInt(maand), Integer.parseInt(jaar));
 			if (!b) {
@@ -164,6 +175,15 @@ public class Datum implements Comparable<Datum> {
 		return this.getDag() + "/" + this.getMaand() + "/" + this.getJaar();
 	}
 
+	/**
+	 * Geeft een niet-afgebakende string in MySQL formaat ("YYYY-MM-DD")
+	 * Te gebruiken voor vb. MySQL datum notatie
+	 * @return een niet-afgebakende string in MySQL formaat ("YYY-MM-DD")
+	 */
+	public String getDatumInMySQLFormaat() {
+		return String.format("%d-%02d-%02d", this.getJaar(), this.getMaand(), this.getDag());
+	}
+	
 	@Override
 	public String toString() {
 		DateFormatSymbols dateFormatSymbols = DateFormatSymbols.getInstance(locale);

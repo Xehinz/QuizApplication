@@ -25,13 +25,13 @@ public class DBMeerkeuzeLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	@Override
 	protected String getLeesQuery() {
-		return "SELECT * FROM meerkeuze";
+		return "SELECT * FROM meerkeuze_opdracht";
 	}
 
 	@Override
 	protected Opdracht maakObject(Object[] rij) {
 		int ID = (Integer) rij[0];
-		Datum datum = new Datum((String) rij[1]);
+		Datum datum = new Datum(rij[1].toString());
 		String vraag = (String) rij[2];
 		int maxPogingen = (Integer) rij[3];
 		int maxTijd	= (Integer) rij[4];
@@ -63,12 +63,12 @@ public class DBMeerkeuzeLeesSchrijf extends DBOpdrachtLeesSchrijf {
 				opties += opdracht.getOpties().get(i);
 			}
 		}
-		return String.format("%s%s, %s)", this.opdrachtSchrijfStatement(opdracht), opties, opdracht.getJuisteAntwoord());
+		return String.format("%s'%s', '%s')", this.opdrachtSchrijfStatement(opdracht), opties, opdracht.getJuisteAntwoord());
 	}
 
 	@Override
 	protected String getDeleteStatement() {
-		return "TRUNCATE meerkeuze";
+		return "TRUNCATE meerkeuze_opdracht";
 	}
 
 }
