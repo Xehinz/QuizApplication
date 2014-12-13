@@ -74,7 +74,7 @@ abstract class DBTemplate {
 			statement.executeUpdate(getDeleteStatement());
 			
 			for (T object : objecten) {
-				System.out.println(getSchrijfStatement(object));
+				//System.out.println(getSchrijfStatement(object));
 				statement.executeUpdate(getSchrijfStatement(object));
 			}
 			
