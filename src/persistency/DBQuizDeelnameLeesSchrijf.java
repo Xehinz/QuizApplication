@@ -5,7 +5,7 @@ import java.io.IOException;
 import model.QuizDeelname;
 import util.datumWrapper.Datum;
 
-public class DBQuizDeelnameLeesSchrijf extends DBTemplate {
+class DBQuizDeelnameLeesSchrijf extends DBTemplate {
 
 	DBQuizDeelnameLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);

@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -11,12 +12,16 @@ import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 import model.Leerling;
 import model.Leraar;
 import persistency.DBHandler;
 import view.BeheerLeerlingView;
+import view.QuizScoresRapportView;
+import view.viewInterfaces.IQuizScoresRapportView;
 
 /**
  * 
@@ -61,6 +66,7 @@ public class BeheerLeerlingController {
 		aView.addNieuweLeerlingListener(new NieuweLeerlingListener());
 		aView.addAanpassenLeerlingListener(new AanpassenLeerlingListener());
 		aView.addVerwijderLeerlingListener(new VerwijderLeerlingListener());
+		aView.addLeerlingScoresListener(new ScoresLeerlingListener());
 		
 		//aView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		aView.setVisible(true);		
@@ -128,6 +134,27 @@ public class BeheerLeerlingController {
 		}
 	}
 	
+	class ScoresLeerlingListener implements ActionListener {
+		
+		private QuizScoresRapportController quizScoresRapportController;
+		private QuizScoresRapportView quizScoresRapportView;
+		
+		public ScoresLeerlingListener() {
+			quizScoresRapportView =  new QuizScoresRapportView();			
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			aLeerling =  aTabelModel.getLeerling(aView.getGeselecteerdeRij());
+			if (aLeerling == null) {
+				aView.toonInformationDialog(
+						"Selecteer een leerling om scores op te vragen", "Fout");
+				return;
+			}
+			quizScoresRapportController = new QuizScoresRapportController(getDBHandler(), aLeerling, quizScoresRapportView);
+		}
+	}
+
 	/**
 	 * getters & setters
 	 * 

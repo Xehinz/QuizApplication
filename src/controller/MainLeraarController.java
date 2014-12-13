@@ -6,15 +6,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.Observable;
 import java.util.Properties;
 
 import javax.swing.ButtonModel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
 import model.Leraar;
@@ -33,7 +30,7 @@ import view.viewInterfaces.IMainLeraarView;
  * @author Ben Vandenberk
  *
  */
-public class MainLeraarController {
+public class MainLeraarController extends Observable {
 
 	private boolean overzichtScoresStaatOpen, opdrachtBeheerStaatOpen,
 			quizBeheerStaatOpen, leerlingBeheerStaatOpen;
@@ -69,6 +66,8 @@ public class MainLeraarController {
 		this.viewFactory = viewFactory;
 		this.settings = opstartController.getSettings();
 
+		this.addObserver(dbHandler);
+
 		mainView.setLeraar(leraar.toString());
 		mainView.setRodeLoginSelected(settings.getProperty("login").equals(
 				"LoginView2") ? true : false);
@@ -82,7 +81,8 @@ public class MainLeraarController {
 		mainView.addOpslagStrategyChangedListener(new StorageStrategyChangedHandler());
 		mainView.addOverzichtScoresKnopActionListener(new OverzichtScoresKnopListener());
 		mainView.addWindowListener(new MainWindowClosingListener());
-		mainView.addAfsluitenKnopActionListener(ae -> opstartController.saveEnSluitAf());
+		mainView.addAfsluitenKnopActionListener(ae -> opstartController
+				.saveEnSluitAf());
 		mainView.addLogoutKnopActionListener(new LogoutKnopListener());
 		mainView.addOpdrachtBeheerKnopActionListener(new OpdrachtBeheerKnopListener());
 		mainView.addQuizBeheerKnopActionListener(new QuizBeheerKnopListener());
@@ -236,14 +236,21 @@ public class MainLeraarController {
 
 		@Override
 		public void itemStateChanged(ItemEvent event) {
+			
 			if (event.getSource() instanceof JRadioButtonMenuItem) {
 				JRadioButtonMenuItem opslagRadioButton = (JRadioButtonMenuItem) event
 						.getSource();
 				ButtonModel opslagRadioButtonModel = opslagRadioButton
 						.getModel();
-				if (event.getStateChange() == ItemEvent.SELECTED) {
-					 settings.put("dbstrategy",
-					 opslagRadioButton.getText().toUpperCase());
+				
+				if (event.getStateChange() == ItemEvent.SELECTED) {	
+					StorageStrategy naar = Enum.valueOf(StorageStrategy.class,
+							opslagRadioButton.getText().toUpperCase());
+					
+					settings.put("dbstrategy", opslagRadioButton.getText()
+							.toUpperCase());
+					setChanged();
+					notifyObservers(naar);
 				}
 				if (opslagRadioButton.getText().equals(
 						StorageStrategy.DATABASE.toString())) {

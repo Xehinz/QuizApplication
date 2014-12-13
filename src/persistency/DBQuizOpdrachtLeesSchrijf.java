@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import model.QuizOpdracht;
 
-public class DBQuizOpdrachtLeesSchrijf extends DBTemplate {
+class DBQuizOpdrachtLeesSchrijf extends DBTemplate {
 
 	public DBQuizOpdrachtLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);

@@ -17,7 +17,7 @@ import model.Opdracht;
 import model.OpdrachtCategorie;
 import util.datumWrapper.Datum;
 
-public class DBMeerkeuzeLeesSchrijf extends DBOpdrachtLeesSchrijf {
+class DBMeerkeuzeLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	DBMeerkeuzeLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);

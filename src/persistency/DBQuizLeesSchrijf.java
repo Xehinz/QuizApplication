@@ -15,7 +15,7 @@ import model.quizStatus.QuizStatus;
  *
  */
 
-public class DBQuizLeesSchrijf extends DBTemplate {
+class DBQuizLeesSchrijf extends DBTemplate {
 
 	DBQuizLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);

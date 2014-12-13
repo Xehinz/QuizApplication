@@ -5,7 +5,7 @@ import java.io.IOException;
 import model.Leerling;
 import model.QuizOpdracht;
 
-public class DBLeerlingLeesSchrijf extends DBTemplate {
+class DBLeerlingLeesSchrijf extends DBTemplate {
 	/**
 	 * Klasse om Leerling objecten weg te schrijven of in te lezen in
 	 * databaseformaat
