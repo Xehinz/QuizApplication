@@ -17,7 +17,7 @@ import model.OpdrachtCategorie;
 import model.Reproductie;
 import util.datumWrapper.Datum;
 
-public class DBReproductieLeesSchrijf extends DBOpdrachtLeesSchrijf {
+class DBReproductieLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	DBReproductieLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);

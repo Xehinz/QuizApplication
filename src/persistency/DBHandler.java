@@ -2,6 +2,8 @@ package persistency;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import model.Leerling;
 import model.LeerlingContainer;
@@ -25,12 +27,14 @@ import model.QuizOpdracht;
  * @version 17/11/2014
  *
  */
-public class DBHandler {
+public class DBHandler implements Observer {
 
 	private DBStrategy dbStrategy;
 	private OpdrachtCatalogus opdrachtCatalogus;
 	private LeerlingContainer leerlingContainer;
 	private QuizCatalogus quizCatalogus;
+	private StorageStrategy storageStrategyBijStart,
+			storageStrategyBijAfsluiten;
 
 	/**
 	 * Maakt een DBHandler object aan. Gebruik deze constructor als je enkel wil
@@ -94,15 +98,29 @@ public class DBHandler {
 		if (dbStrategy == null) {
 			throw new NullPointerException("Geen StorageStrategy ingesteld");
 		}
-		dbStrategy.schrijfOpdrachten(opdrachtCatalogus.getOpdrachten());
-		dbStrategy.schrijfLeerlingen(leerlingContainer.getLeerlingen());
-		dbStrategy.schrijfQuizzen(quizCatalogus.getQuizzen());
-		dbStrategy.schrijfQuizOpdrachten(opdrachtCatalogus
-				.getAlleQuizOpdrachten());
-		dbStrategy.schrijfQuizDeelnames(leerlingContainer
-				.getAlleQuizDeelnames());
-		dbStrategy.schrijfOpdrachtAntwoorden(leerlingContainer
-				.getAlleOpdrachtAntwoorden());
+
+		boolean storageStrategySwitched = !(storageStrategyBijAfsluiten == null || storageStrategyBijStart == storageStrategyBijAfsluiten);
+		for (int i = 2; i > 0; i--) {			
+			if (storageStrategySwitched) {
+				if (i == 1) {
+					setDBStrategy(storageStrategyBijAfsluiten);
+				}
+			} else {
+				if (i == 1) {
+					break;
+				}
+			}
+			dbStrategy.schrijfOpdrachten(opdrachtCatalogus.getOpdrachten());
+			dbStrategy.schrijfLeerlingen(leerlingContainer.getLeerlingen());
+			dbStrategy.schrijfQuizzen(quizCatalogus.getQuizzen());
+			dbStrategy.schrijfQuizOpdrachten(opdrachtCatalogus
+					.getAlleQuizOpdrachten());
+			dbStrategy.schrijfQuizDeelnames(leerlingContainer
+					.getAlleQuizDeelnames());
+			dbStrategy.schrijfOpdrachtAntwoorden(leerlingContainer
+					.getAlleOpdrachtAntwoorden());
+		}
+
 	}
 
 	/**
@@ -115,6 +133,9 @@ public class DBHandler {
 	 *            StorageStrategy.CSV of StorageStrategy.DATABASE)
 	 */
 	public void setDBStrategy(StorageStrategy storageStrategy) {
+		if (storageStrategyBijStart == null) {
+			storageStrategyBijStart = storageStrategy;
+		}
 		switch (storageStrategy) {
 		case TEKST:
 			dbStrategy = new TxtDB(false);
@@ -154,6 +175,13 @@ public class DBHandler {
 	 */
 	public LeerlingContainer getLeerlingContainer() {
 		return leerlingContainer;
+	}
+
+	@Override
+	public void update(Observable observable, Object dataObject) {
+		if (dataObject instanceof StorageStrategy) {
+			storageStrategyBijAfsluiten = (StorageStrategy) dataObject;
+		}
 	}
 
 	/**
@@ -244,4 +272,5 @@ public class DBHandler {
 		}
 
 	}
+
 }

@@ -17,7 +17,7 @@ import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
 
-public class DBKlassiekeOpdrachtLeesSchrijf extends DBOpdrachtLeesSchrijf {
+class DBKlassiekeOpdrachtLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	DBKlassiekeOpdrachtLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);

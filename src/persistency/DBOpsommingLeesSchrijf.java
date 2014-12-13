@@ -18,7 +18,7 @@ import model.OpdrachtCategorie;
 import model.Opsomming;
 import util.datumWrapper.Datum;
 
-public class DBOpsommingLeesSchrijf extends DBOpdrachtLeesSchrijf {
+class DBOpsommingLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	DBOpsommingLeesSchrijf(String jdbcConnectionString) {
 		super(jdbcConnectionString);
