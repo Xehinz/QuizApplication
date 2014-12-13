@@ -38,12 +38,12 @@ public class DBQuizDeelnameLeesSchrijf extends DBTemplate {
 					"Het object om weg te schrijven is geen QuizDeelname");			
 		}
 		return String.format(
-				"INSERT INTO quiz_deelname VALUES('%s', %d, %d, '%tF')",
+				"INSERT INTO quiz_deelname VALUES('%s', %d, %d, '%s')",
 				quizDeelname.getID(),
 				quizDeelname.getQuiz().getID(),
 				quizDeelname.getLeerling().getID(),
-				String.format("'%s-%s-%s'", quizDeelname.getDatum().getJaar(), quizDeelname.getDatum().getMaand(), quizDeelname.getDatum().getDag())
-				); //mss is een toStringYMD interessanter?
+				quizDeelname.getDatum().getDatumInMySQLFormaat()
+				); 
 	}
 
 	@Override
