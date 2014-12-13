@@ -81,7 +81,7 @@ public class QuizAanpassingController {
 		rowSorter = new TableRowSorter<TableModel>(view.getAlleOpdrachtenTabel().getModel());		
 		view.getAlleOpdrachtenTabel().setRowSorter(rowSorter);
 		
-		loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+		loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz.getOpdrachten());
 		
 
 		view.setVisible(true);
@@ -92,12 +92,10 @@ public class QuizAanpassingController {
 	 * @param quiz
 	 * @param lijst met alle opdrachten
 	 */
-	public void loadTables(Collection<Opdracht> alleOpdrachten, Quiz quiz) {		
-		quizOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
-		quizOpdrachtenTabelModel.fireTableDataChanged();
-		alleOpdrachten.removeAll(quiz.getOpdrachten());
+	public void loadTables(Collection<Opdracht> alleOpdrachten, Collection<Opdracht> quizOpdrachten) {		
+		quizOpdrachtenTabelModel.setOpdrachten(quizOpdrachten);
+		alleOpdrachten.removeAll(quizOpdrachten);
 		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
-		alleOpdrachtenTabelModel.fireTableDataChanged();
 		view.setLblAantalOpdrachten();
 	}
 	
@@ -142,25 +140,22 @@ public class QuizAanpassingController {
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdracht, 1); //TODO MaxScore
-			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+			quizOpdrachtenTabelModel.addOpdracht(opdracht);
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachtenTabelModel.getOpdrachten());
 		}
 	}
 	class OpdrachtVerwijderenKnopListener implements ActionListener {     //TODO redo (remove from list)
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			opdracht = getGeselecteerdeQuizOpdracht(view.getSelectieGeselecteerdeOpdrachten());
-			if (opdracht == null) {
+			//opdracht = getGeselecteerdeQuizOpdracht(view.getSelectieGeselecteerdeOpdrachten());
+			Integer selectie = view.getSelectieGeselecteerdeOpdrachten();
+			if (selectie == null) {
 				view.toonInformationDialog(
 						"Selecteer een opdracht om te verwijderen", "Fout");
 				return;
 			}
-			for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
-				if ((qo.getQuiz()).equals(quiz)) {
-					qo.ontkoppelOpdrachtVanQuiz();
-				}
-			}			
-			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+			quizOpdrachtenTabelModel.removeOpdracht(view.getSelectieGeselecteerdeOpdrachten());
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachtenTabelModel.getOpdrachten());
 		}
 	}
 	class QuizBewaarKnopListener implements ActionListener {   //TODO add quizopdrachten from list to quiz
@@ -214,7 +209,7 @@ public class QuizAanpassingController {
 			quiz = new Quiz(leraar);
 			quizBeheerController.updateTabel();
 			view.setViewToQuiz(quiz);
-			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz.getOpdrachten());
 		}
 	}
 	class SelecteerCategorieListener implements ActionListener {
@@ -223,12 +218,12 @@ public class QuizAanpassingController {
 			String opdrachtCategorieString = view.getOpdrachtCategorie();
 			if (opdrachtCategorieString.equals("Alle categorieën")) {
 				loadTables(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(), quiz);
+						.getOpdrachten(), quiz.getOpdrachten());
 			} else {
 				OpdrachtCategorie OC = OpdrachtCategorie
 						.valueOf(opdrachtCategorieString.toUpperCase());
 				loadTables(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(OC), quiz);
+						.getOpdrachten(OC), quiz.getOpdrachten());
 			}
 		}
 	}
@@ -261,7 +256,7 @@ public class QuizAanpassingController {
 				return;
 			}
 			quiz.verplaatsOpdrachtEenHoger(opdracht); //TODO verplaatsen binnen lijst
-			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz.getOpdrachten());
 		}		
 	}
 	
@@ -324,6 +319,7 @@ public class QuizAanpassingController {
 
 		public void setOpdrachten(Collection<Opdracht> opdrachten) {
 			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
+			this.fireTableDataChanged();
 		}
 
 		public Opdracht getOpdracht(int row) {
@@ -335,11 +331,17 @@ public class QuizAanpassingController {
 	}		
 	class QuizOpdrachtenTableModel extends AbstractTableModel {
 		private ArrayList<Opdracht> opdrachten;
+		private ArrayList<Integer> maxScores;
 		private String[] headers;
 
 		public QuizOpdrachtenTableModel() {
 			headers = new String[] { "Cat.", "Type", "Vraag", "Max. Score" };
-			opdrachten = new ArrayList<Opdracht>();
+			opdrachten = new ArrayList<>();
+			maxScores = new ArrayList<>();
+		}
+
+		public Collection<Opdracht> getOpdrachten() {
+			return opdrachten;
 		}
 
 		@Override
@@ -384,15 +386,35 @@ public class QuizAanpassingController {
 			}
 			case 2:
 				return opdracht.getVraag();
-			case 3: //TODO return maxScore
-				return null;
+			case 3:
+				if(row>maxScores.size()-1) {
+					maxScores.add(1);
+				}
+				return maxScores.get(row);
 			default:
 				return null;
 			}
 		}
+		
+		@Override
+		public boolean isCellEditable(int row, int col) {
+		     if(col == 3) {
+		    	 return true;
+		     } else {
+		    	 return false;
+		     }
+		}
 
 		public void setOpdrachten(Collection<Opdracht> opdrachten) {
 			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
+			for (Opdracht o : opdrachten) {
+				for (QuizOpdracht qo : o.getQuizOpdrachten()) {   //GET QUIZOPDRACHT MET DEZE OPDRACHT & QUIZ
+					if ((qo.getQuiz()).equals(quiz)) {   //GET QUIZOPDRACHT MET DEZE OPDRACHT & QUIZ
+						maxScores.add(qo.getMaxScore());
+					}
+				}
+			}
+			this.fireTableDataChanged();
 		}
 
 		public Opdracht getOpdracht(int row) {
@@ -401,6 +423,22 @@ public class QuizAanpassingController {
 			}
 			return null;
 		}
+		
+		public void setMaxScoreVoorRij(int row, int maxScore) {
+			maxScores.set(row, maxScore);
+		}
+		
+		public void addOpdracht(Opdracht opdracht) {
+			opdrachten.add(opdracht);
+			this.fireTableDataChanged();
+		}
+		
+		public void removeOpdracht(int row) {
+			opdrachten.remove(row);
+			maxScores.remove(row);
+			this.fireTableDataChanged();
+		}
+		
 	}
 	
 	
