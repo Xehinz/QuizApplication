@@ -110,7 +110,7 @@ public class DBHandler {
 			dbStrategy = new TxtDB(useCSV);			
 			break;
 		case DATABASE:
-			dbStrategy = new MySQLDB();
+			dbStrategy = new MySQLDB("nog mee te geven: connectionstring");
 			break;
 		}
 	}
