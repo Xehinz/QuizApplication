@@ -3,7 +3,6 @@ package persistency;
 import java.io.IOException;
 
 import util.datumWrapper.Datum;
-
 import model.Leraar;
 import model.Quiz;
 import model.quizStatus.QuizStatus;
@@ -36,9 +35,19 @@ public class DBQuizLeesSchrijf extends DBTemplate {
 		Leraar auteurNaam = Leraar.getLeraar(rij[3].toString().replace("_"," "));
 		String onderwerp = (String) rij[4];
 		Boolean isuniekeDeelname = (Boolean) rij[5];
-		// Boolean isTest = (Boolean) rij [6];
-		return new Quiz(ID, aanmaakDatum, status, auteurNaam, onderwerp,
+		
+		Quiz quiz = new Quiz(ID, aanmaakDatum, status, auteurNaam, onderwerp,
 				isuniekeDeelname);
+		quiz.setIsTest((Boolean)rij[6]);
+		
+		String[] doelLeerjarenStrings = rij[7].toString().split(",");
+		int[] doelLeerjaren = new int[doelLeerjarenStrings.length];
+		for (int i = 0; i < doelLeerjarenStrings.length; i++) {
+			doelLeerjaren[i] = Integer.parseInt(doelLeerjarenStrings[i]);
+		}
+		quiz.setDoelLeerjaren(doelLeerjaren);
+		
+		return quiz;		
 	}
 
 	@Override
@@ -52,7 +61,7 @@ public class DBQuizLeesSchrijf extends DBTemplate {
 		
 		String doelLeerjaren = "";
 		for (int i = 0; i < quiz.getDoelLeerjaren().size(); i++) {
-			if(i != quiz.getDoelLeerjaren().size())
+			if(i != quiz.getDoelLeerjaren().size() - 1)
 				doelLeerjaren += quiz.getDoelLeerjaren().get(i) + ",";
 			else
 				doelLeerjaren += quiz.getDoelLeerjaren().get(i).toString();
@@ -73,7 +82,6 @@ public class DBQuizLeesSchrijf extends DBTemplate {
 
 	@Override
 	protected String getDeleteStatement() {
-
 		return "TRUNCATE quiz";
 	}
 

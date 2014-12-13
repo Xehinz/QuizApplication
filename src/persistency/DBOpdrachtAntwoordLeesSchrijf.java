@@ -40,7 +40,7 @@ public class DBOpdrachtAntwoordLeesSchrijf extends DBTemplate {
 				opdrachtAntwoord.getQuizDeelname().getID(), opdrachtAntwoord
 						.getQuizOpdracht().getID(), opdrachtAntwoord
 						.getAantalPogingen(), opdrachtAntwoord
-						.getAantalPogingen(), opdrachtAntwoord
+						.getAntwoordTijd(), opdrachtAntwoord
 						.getLaatsteAntwoord());
 	}
 

@@ -99,23 +99,16 @@ public class DBHandlerTest {
 
 		quizA = new Quiz(Leraar.MIEKE_WITTEMANS, "Priemgetallen en steden",
 				false);
-		//quizA.setDoelLeerjaren(1, 2);
+		quizA.setDoelLeerjaren(1, 2);
 		quizA.setQuizStatus(new InConstructie());
 		quizB = new Quiz(Leraar.CHARLOTTE_NEVEN, "Bananen en croque monsieurs",
 				false);
-		//quizB.setDoelLeerjaren(5, 6);
+		quizB.setDoelLeerjaren(5, 6);
 		quizB.setQuizStatus(new InConstructie());
 
 		quizCatalogus = new QuizCatalogus();
 		quizCatalogus.addQuiz(quizA);
-		quizCatalogus.addQuiz(quizB);
-		
-		// Zaken wijzigen tijdens sessie
-		quizA.setIsUniekeDeelname(true);
-		quizA.setIsTest(true);
-		quizB.setDoelLeerjaren(4,5,6);
-		//quizB.setQuizStatus(new LaatsteKans());
-		quizB.setOnderwerp("Eten");		
+		quizCatalogus.addQuiz(quizB);	
 
 		QuizOpdracht A1 = QuizOpdracht.koppelOpdrachtAanQuiz(quizA, opsomming,
 				10);
@@ -125,6 +118,13 @@ public class DBHandlerTest {
 				10);
 		QuizOpdracht B2 = QuizOpdracht.koppelOpdrachtAanQuiz(quizB,
 				reproductie, 15);
+		
+		// Zaken wijzigen tijdens sessie
+		quizA.setIsUniekeDeelname(true);
+		quizA.setIsTest(true);
+		quizB.setDoelLeerjaren(4,5,6);
+		quizB.setQuizStatus(new LaatsteKans());
+		quizB.setOnderwerp("Eten");	
 		
 		quizA.setQuizStatus(new Opengesteld());
 		quizB.setQuizStatus(new Opengesteld());
@@ -154,12 +154,12 @@ public class DBHandlerTest {
 				30, "kaas ham boter");
 
 		// Quizzen sluiten
-		//quizA.setQuizStatus(new Afgesloten());
-		//quizB.setQuizStatus(new Afgesloten());
+		quizA.setQuizStatus(new Afgesloten());
+		quizB.setQuizStatus(new Afgesloten());
 
 		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer,
 				quizCatalogus);
-		dbHandler.setUseCSV(false);
+		dbHandler.setDBStrategy(StorageStrategy.DATABASE);
 
 		oorspronkelijkeProgrammaString = programmaString();
 	}

@@ -15,17 +15,17 @@ import model.QuizOpdracht;
 
 /**
  * Facade-klasse van persistency package. DBHandler voorziet in methods om de
- * staat van het programma op te slaan en weer uit te lezen. Gebruik de setter
- * setUseCSV(boolean useCSV) om, in geval van opslag in tekst, het .csv formaat
- * in plaats van het .txt formaat te gebruiken.
+ * staat van het programma op te slaan en weer uit te lezen. Gebruik de method
+ * setDBStrategy(StorageStrategy storageStrategy) om een StorageStrategy in te
+ * stellen. Keuze tussen StorageStrategy.TEKST, StorageStrategy.CSV en
+ * StorageStrategy.DATABASE. DBHandler werkt niet als er geen StorageStrategy
+ * ingesteld wordt.
  * 
  * @author Ben Vandenberk
  * @version 17/11/2014
  *
  */
 public class DBHandler {
-
-	private boolean useCSV;
 
 	private DBStrategy dbStrategy;
 	private OpdrachtCatalogus opdrachtCatalogus;
@@ -40,7 +40,6 @@ public class DBHandler {
 		opdrachtCatalogus = new OpdrachtCatalogus();
 		leerlingContainer = new LeerlingContainer();
 		quizCatalogus = new QuizCatalogus();
-		//dbStrategy = new TxtDB(useCSV);
 	}
 
 	/**
@@ -59,7 +58,6 @@ public class DBHandler {
 		this.opdrachtCatalogus = opdrachtCatalogus;
 		this.leerlingContainer = leerlingContainer;
 		this.quizCatalogus = quizCatalogus;
-		//dbStrategy = new TxtDB(useCSV);
 	}
 
 	/**
@@ -67,8 +65,14 @@ public class DBHandler {
 	 * 
 	 * @throws IOException
 	 *             als er zich bij het inlezen een fout voordoet
+	 * @throws NullPointerException
+	 *             als er geen StorageStrategy is ingesteld met behulp van de
+	 *             method setDBStrategy(StorageStrategy storageStrategy)
 	 */
-	public void vulCatalogi() throws IOException {
+	public void vulCatalogi() throws IOException, NullPointerException {
+		if (dbStrategy == null) {
+			throw new NullPointerException("Geen StorageStrategy ingesteld");
+		}
 		opdrachtCatalogus = new OpdrachtCatalogus(dbStrategy.leesOpdrachten());
 		leerlingContainer = new LeerlingContainer(dbStrategy.leesLeerlingen());
 		quizCatalogus = new QuizCatalogus(dbStrategy.leesQuizzen());
@@ -82,8 +86,14 @@ public class DBHandler {
 	 * 
 	 * @throws IOException
 	 *             als er zich bij het wegschrijven een fout voordoet
+	 * @throws NullPointerException
+	 *             als er geen StorageStrategy is ingesteld met behulp van de
+	 *             method setDBStrategy(StorageStrategy storageStrategy)
 	 */
-	public void saveCatalogi() throws IOException {
+	public void saveCatalogi() throws IOException, NullPointerException {
+		if (dbStrategy == null) {
+			throw new NullPointerException("Geen StorageStrategy ingesteld");
+		}
 		dbStrategy.schrijfOpdrachten(opdrachtCatalogus.getOpdrachten());
 		dbStrategy.schrijfLeerlingen(leerlingContainer.getLeerlingen());
 		dbStrategy.schrijfQuizzen(quizCatalogus.getQuizzen());
@@ -101,19 +111,20 @@ public class DBHandler {
 	 * buitenwereld werken we met een enum: StorageStrategy
 	 * 
 	 * @param storageStrategy
-	 *            de StorageStrategy (StorageStrategy.TEKST of StorageStrategy.CSV of 
-	 *            StorageStrategy.DATABASE)
+	 *            de StorageStrategy (StorageStrategy.TEKST of
+	 *            StorageStrategy.CSV of StorageStrategy.DATABASE)
 	 */
 	public void setDBStrategy(StorageStrategy storageStrategy) {
 		switch (storageStrategy) {
 		case TEKST:
-			dbStrategy = new TxtDB(false);	
+			dbStrategy = new TxtDB(false);
 			break;
 		case CSV:
-			dbStrategy = new TxtDB(true);	
+			dbStrategy = new TxtDB(true);
 			break;
 		case DATABASE:
-			dbStrategy = new MySQLDB("jdbc:mysql://localhost:3306/quiz?user=deitel&password=deitel");
+			dbStrategy = new MySQLDB(
+					"jdbc:mysql://localhost:3306/quiz?user=deitel&password=deitel");
 			break;
 		}
 	}
@@ -146,18 +157,6 @@ public class DBHandler {
 	}
 
 	/**
-	 * Geef true mee om in .csv formaat te werken. Enkel van toepassing indien
-	 * de StorageStrategy TEKST is
-	 * 
-	 * @param useCSV
-	 *            true voor .csv, false voor .txt
-	 */
-	public void setUseCSV(boolean useCSV) {
-		this.useCSV = useCSV;
-		dbStrategy = new TxtDB(useCSV);
-	}
-
-	/**
 	 * Deze method werkt enkel als ze pas wordt aangeroepen nadat de Catalogus
 	 * en Container klasses zijn opgevuld.
 	 */
@@ -173,8 +172,9 @@ public class DBHandler {
 			huidigeOpdracht = opdrachtCatalogus.getOpdracht(quizOpdracht
 					.getOpdrachtID());
 
-			QuizOpdracht.koppelOpdrachtAanQuiz(quizOpdracht.getID(), huidigeQuiz, huidigeOpdracht,
-					quizOpdracht.getMaxScore(), true);
+			QuizOpdracht.koppelOpdrachtAanQuiz(quizOpdracht.getID(),
+					huidigeQuiz, huidigeOpdracht, quizOpdracht.getMaxScore(),
+					true);
 		}
 	}
 
@@ -194,8 +194,9 @@ public class DBHandler {
 			huidigeLeerling = leerlingContainer.getLeerling(quizDeelname
 					.getLeerlingID());
 
-			QuizDeelname.koppelQuizAanLeerling(quizDeelname.getQuizDeelnameID(), huidigeQuiz, huidigeLeerling,
-					quizDeelname.getDeelnameDatum(), true);
+			QuizDeelname.koppelQuizAanLeerling(
+					quizDeelname.getQuizDeelnameID(), huidigeQuiz,
+					huidigeLeerling, quizDeelname.getDeelnameDatum(), true);
 		}
 	}
 
@@ -218,14 +219,14 @@ public class DBHandler {
 
 		for (PseudoOpdrachtAntwoord opdrachtAntwoord : opdrachtAntwoorden) {
 			for (QuizOpdracht quizOpdracht : quizOpdrachten) {
-				if (quizOpdracht.getID().equals(opdrachtAntwoord
-						.getQuizOpdrachtID())) {
+				if (quizOpdracht.getID().equals(
+						opdrachtAntwoord.getQuizOpdrachtID())) {
 					huidigeQuizOpdracht = quizOpdracht;
 				}
 			}
 			for (QuizDeelname quizDeelname : quizDeelnames) {
-				if (quizDeelname.getID().equals(opdrachtAntwoord
-						.getQuizDeelnameID())) {
+				if (quizDeelname.getID().equals(
+						opdrachtAntwoord.getQuizDeelnameID())) {
 					huidigeQuizDeelname = quizDeelname;
 				}
 			}
