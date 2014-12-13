@@ -34,28 +34,31 @@ import view.viewInterfaces.IMainLeraarView;
  *
  */
 public class MainLeraarController {
-	
-	private boolean overzichtScoresStaatOpen, opdrachtBeheerStaatOpen, quizBeheerStaatOpen, leerlingBeheerStaatOpen;
+
+	private boolean overzichtScoresStaatOpen, opdrachtBeheerStaatOpen,
+			quizBeheerStaatOpen, leerlingBeheerStaatOpen;
 	private DBHandler dbHandler;
 	private Properties settings;
-	
+
 	private OverzichtScoresQuizzenController overzichtScoresController;
 	private OpdrachtBeheerController opdrachtBeheerController;
 	private OpstartController opstartController;
 	private QuizBeheerController quizBeheerController;
 	private BeheerLeerlingController beheerLeerlingController;
-	
+
 	private QuizBeheerView quizBeheerView;
 	private OpdrachtBeheerView opdrachtBeheerView;
-	private BeheerLeerlingView beheerLeerlingView;	
-	
+	private BeheerLeerlingView beheerLeerlingView;
+
 	private ViewFactory viewFactory;
-	
-	private IMainLeraarView mainView;	
+
+	private IMainLeraarView mainView;
 	private Leraar leraar;
 
-	public MainLeraarController(DBHandler dbHandler, Leraar leraar, OpstartController opstartController, ViewFactory viewFactory) {
-		mainView = (IMainLeraarView)viewFactory.maakView(ViewType.MainLeraarView);
+	public MainLeraarController(DBHandler dbHandler, Leraar leraar,
+			OpstartController opstartController, ViewFactory viewFactory) {
+		mainView = (IMainLeraarView) viewFactory
+				.maakView(ViewType.MainLeraarView);
 		overzichtScoresStaatOpen = false;
 		opdrachtBeheerStaatOpen = false;
 		quizBeheerStaatOpen = false;
@@ -67,75 +70,47 @@ public class MainLeraarController {
 		this.settings = opstartController.getSettings();
 
 		mainView.setLeraar(leraar.toString());
-		mainView.setRodeLoginSelected(settings.getProperty("login").equals("LoginView2") ? true : false);
-		mainView.setScoreBerekeningSelected(Enum.valueOf(ScoreStrategyType.class, settings.getProperty("scoreregel")));
-		mainView.setOpslagStrategySelected(Enum.valueOf(StorageStrategy.class, settings.getProperty("dbstrategy")));
-		
+		mainView.setRodeLoginSelected(settings.getProperty("login").equals(
+				"LoginView2") ? true : false);
+		mainView.setScoreBerekeningSelected(Enum.valueOf(
+				ScoreStrategyType.class, settings.getProperty("scoreregel")));
+		mainView.setOpslagStrategySelected(Enum.valueOf(StorageStrategy.class,
+				settings.getProperty("dbstrategy")));
+
 		mainView.addRodeLoginClickedListener(new RodeLoginClickedHandler());
 		mainView.addScoreStrategieChangedListener(new ScoreRegelChangedHandler());
 		mainView.addOpslagStrategyChangedListener(new StorageStrategyChangedHandler());
-		mainView.addOverzichtScoresKnopActionListener(new OverzichtScoresKnopListener());	
+		mainView.addOverzichtScoresKnopActionListener(new OverzichtScoresKnopListener());
 		mainView.addWindowListener(new MainWindowClosingListener());
-		mainView.addAfsluitenKnopActionListener(new AfsluitenKnopListener());
+		mainView.addAfsluitenKnopActionListener(ae -> opstartController.saveEnSluitAf());
 		mainView.addLogoutKnopActionListener(new LogoutKnopListener());
 		mainView.addOpdrachtBeheerKnopActionListener(new OpdrachtBeheerKnopListener());
 		mainView.addQuizBeheerKnopActionListener(new QuizBeheerKnopListener());
-		mainView.addLeerlingBeheerKnopActionListener(new BeheerLeerlingenKnopListener());		
+		mainView.addLeerlingBeheerKnopActionListener(new BeheerLeerlingenKnopListener());
 
 		mainView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainView.setVisible(true);
 		mainView.setLocationRelativeTo(null);
 	}
-	
+
 	class LogoutKnopListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			mainView.dispose();			
+			mainView.dispose();
 			opstartController.login();
 		}
-		
+
 	}
-	
-	class AfsluitenKnopListener implements ActionListener {
+
+	class MainWindowClosingListener extends WindowAdapter {
 
 		@Override
-		public void actionPerformed(ActionEvent event) {
-			if (JOptionPane.showConfirmDialog(null, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-				try {
-				dbHandler.saveCatalogi();
-				settings.store(new FileOutputStream("resources/settings.ini"), null);
-				} catch (FileNotFoundException fEx) {
-					JOptionPane.showConfirmDialog(null, "setting.ini niet gevonden:\n" + fEx.getMessage(), "Fout", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-				} catch (IOException iEx) {
-					JOptionPane.showMessageDialog(null, "Fout bij het wegschrijven van data of de settings:\n" + iEx.getMessage());
-				} finally {
-				System.exit(0);
-				}
-			}
-		}
-		
-	}
-	
-	class MainWindowClosingListener extends WindowAdapter {
-		
-		@Override
 		public void windowClosing(WindowEvent event) {
-			if (JOptionPane.showConfirmDialog(null, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-				try {
-				dbHandler.saveCatalogi();
-				settings.store(new FileOutputStream("resources/settings.ini"), null);
-				} catch (FileNotFoundException fEx) {
-					JOptionPane.showConfirmDialog(null, "setting.ini niet gevonden:\n" + fEx.getMessage(), "Fout", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
-				} catch (IOException iEx) {
-					JOptionPane.showMessageDialog(null, "Fout bij het wegschrijven van data of de settings:\n" + iEx.getMessage());
-				} finally {
-				System.exit(0);
-				}
-			}
+			opstartController.saveEnSluitAf();
 		}
 	}
-	
+
 	class OverzichtScoresKnopListener implements ActionListener {
 
 		@Override
@@ -144,28 +119,30 @@ public class MainLeraarController {
 				overzichtScoresStaatOpen = true;
 				overzichtScoresController = new OverzichtScoresQuizzenController(
 						dbHandler, viewFactory);
-				
-				overzichtScoresController.getView().addWindowListener(new WindowAdapter() {
-					@Override
-					public void windowClosing(WindowEvent event) {
-						overzichtScoresStaatOpen = false;
-					}
-				});
+
+				overzichtScoresController.getView().addWindowListener(
+						new WindowAdapter() {
+							@Override
+							public void windowClosing(WindowEvent event) {
+								overzichtScoresStaatOpen = false;
+							}
+						});
 			} else {
 				overzichtScoresController.getView().toFront();
 			}
 		}
-		
+
 	}
-	
+
 	class OpdrachtBeheerKnopListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent event) {			
+		public void actionPerformed(ActionEvent event) {
 			if (!opdrachtBeheerStaatOpen) {
 				opdrachtBeheerStaatOpen = true;
 				opdrachtBeheerView = new OpdrachtBeheerView();
-				opdrachtBeheerController = new OpdrachtBeheerController(dbHandler, leraar, opdrachtBeheerView);
+				opdrachtBeheerController = new OpdrachtBeheerController(
+						dbHandler, leraar, opdrachtBeheerView);
 				opdrachtBeheerView.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
@@ -176,37 +153,40 @@ public class MainLeraarController {
 				opdrachtBeheerView.toFront();
 			}
 		}
-		
+
 	}
-	
+
 	class QuizBeheerKnopListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent event) {			
+		public void actionPerformed(ActionEvent event) {
 			if (!quizBeheerStaatOpen) {
 				quizBeheerStaatOpen = true;
-				quizBeheerController = new QuizBeheerController(dbHandler, leraar);
-				quizBeheerController.getView().addWindowListener(new WindowAdapter() {
-					@Override
-					public void windowClosing(WindowEvent event) {
-						quizBeheerStaatOpen = false;
-					}
-				});
+				quizBeheerController = new QuizBeheerController(dbHandler,
+						leraar);
+				quizBeheerController.getView().addWindowListener(
+						new WindowAdapter() {
+							@Override
+							public void windowClosing(WindowEvent event) {
+								quizBeheerStaatOpen = false;
+							}
+						});
 			} else {
 				quizBeheerController.getView().toFront();
 			}
 		}
-		
+
 	}
-	
+
 	class BeheerLeerlingenKnopListener implements ActionListener {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			if (!leerlingBeheerStaatOpen) {
 				leerlingBeheerStaatOpen = true;
 				beheerLeerlingView = new BeheerLeerlingView();
-				beheerLeerlingController = new BeheerLeerlingController(dbHandler, leraar, beheerLeerlingView);
+				beheerLeerlingController = new BeheerLeerlingController(
+						dbHandler, leraar, beheerLeerlingView);
 				beheerLeerlingView.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
@@ -218,54 +198,61 @@ public class MainLeraarController {
 			}
 		}
 	}
-	
+
 	class RodeLoginClickedHandler implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent event) {			
+		public void actionPerformed(ActionEvent event) {
 			if (event.getSource() instanceof JCheckBoxMenuItem) {
-				JCheckBoxMenuItem rodeLoginCheckBox = (JCheckBoxMenuItem)event.getSource();
+				JCheckBoxMenuItem rodeLoginCheckBox = (JCheckBoxMenuItem) event
+						.getSource();
 				if (rodeLoginCheckBox.isSelected()) {
 					settings.put("login", "LoginView2");
 				} else {
 					settings.put("login", "LoginView");
-				}				
+				}
 			}
 		}
-		
+
 	}
-	
+
 	class ScoreRegelChangedHandler implements ItemListener {
 
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 			if (event.getSource() instanceof JRadioButtonMenuItem) {
-				JRadioButtonMenuItem scoreRadioButton = (JRadioButtonMenuItem)event.getSource();
+				JRadioButtonMenuItem scoreRadioButton = (JRadioButtonMenuItem) event
+						.getSource();
 				if (event.getStateChange() == ItemEvent.SELECTED) {
-					settings.put("scoreregel", scoreRadioButton.getText().toUpperCase());
+					settings.put("scoreregel", scoreRadioButton.getText()
+							.toUpperCase());
 				}
-			}			
+			}
 		}
-		
+
 	}
-	
+
 	class StorageStrategyChangedHandler implements ItemListener {
 
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 			if (event.getSource() instanceof JRadioButtonMenuItem) {
-				JRadioButtonMenuItem opslagRadioButton = (JRadioButtonMenuItem)event.getSource();
-				ButtonModel opslagRadioButtonModel = opslagRadioButton.getModel();
+				JRadioButtonMenuItem opslagRadioButton = (JRadioButtonMenuItem) event
+						.getSource();
+				ButtonModel opslagRadioButtonModel = opslagRadioButton
+						.getModel();
 				if (event.getStateChange() == ItemEvent.SELECTED) {
-					// TERUG AAN ZETTEN WANNEER DB FUNCTIONEEL IS
-					//settings.put("dbstrategy", opslagRadioButton.getText().toUpperCase());
+					 settings.put("dbstrategy",
+					 opslagRadioButton.getText().toUpperCase());
 				}
-				if (opslagRadioButton.getText().equals(StorageStrategy.DATABASE.toString())) {
-					mainView.setEnabledDBConnectieGegevens(opslagRadioButtonModel.isSelected());
+				if (opslagRadioButton.getText().equals(
+						StorageStrategy.DATABASE.toString())) {
+					mainView.setEnabledDBConnectieGegevens(opslagRadioButtonModel
+							.isSelected());
 				}
-			}			
+			}
 		}
-		
+
 	}
 
 }

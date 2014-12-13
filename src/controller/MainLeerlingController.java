@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -45,7 +48,7 @@ public class MainLeerlingController {
 		quizDeelnameStaatOpen = false;
 		
 		mainView.setLeerling(leerling.getNaam());
-		mainView.addAfsluitenKnopActionListener(new AfsluitenKnopListener());
+		mainView.addAfsluitenKnopActionListener(ae -> opstartController.saveEnSluitAf());
 		mainView.addLogoutKnopActionListener(new LogoutKnopListener());
 		mainView.addDeelnemenKnopActionListener(new DeelnemenKnopListener());
 		mainView.addQuizRapportKnopActionListener(new QuizRapportKnopListener());
@@ -66,36 +69,11 @@ public class MainLeerlingController {
 		
 	}
 	
-	class AfsluitenKnopListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			if (JOptionPane.showConfirmDialog(null, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-				try {
-				dbHandler.saveCatalogi();
-				} catch (IOException iEx) {
-					JOptionPane.showMessageDialog(null, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
-				} finally {
-				System.exit(0);
-				}
-			}
-		}
-		
-	}
-	
 	class MainWindowClosingListener extends WindowAdapter {
 		
 		@Override
 		public void windowClosing(WindowEvent event) {
-			if (JOptionPane.showConfirmDialog(null, "Weet je zeker dat je het programma wil afsluiten?", "Programma Afsluiten?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-				try {
-				dbHandler.saveCatalogi();
-				} catch (IOException iEx) {
-					JOptionPane.showMessageDialog(null, "Fout bij het wegschrijven van data:\n" + iEx.getMessage());
-				} finally {
-				System.exit(0);
-				}
-			}
+			opstartController.saveEnSluitAf();
 		}
 	}
 	
