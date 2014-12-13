@@ -166,7 +166,7 @@ public class QuizAanpassingController {
 			// KLAS
 			String klas = view.getKlasTxt();
 			if (klas.equals("")) {
-				foutboodschap += "Geef een klas in";
+				foutboodschap += "Geef een klas in./n";
 			}
 			int[] klassenArray = new int[6];
 			try {
@@ -180,12 +180,12 @@ public class QuizAanpassingController {
 					}
 				}
 			} catch (Exception ex) {
-				foutboodschap += "Klassen in foutief formaat, gebruik [4] of [1, 2, 4]";
+				foutboodschap += "Klassen in foutief formaat, gebruik [4] of [1, 2, 4]./n";
 			}
 			// ONDERWERP
 			String onderwerp = view.getOnderwerpTxt();
 			if (onderwerp.equals("")) {
-				foutboodschap += "Geef een onderwerp in";
+				foutboodschap += "Geef een onderwerp in. /n";
 			}
 			// TEST & UNIEKEDEELNAME
 			boolean isTest = view.getIsTestckb();
@@ -372,15 +372,19 @@ public class QuizAanpassingController {
 			headers = new String[] { "Cat.", "Type", "Vraag", "Max. Score" };
 			opdrachten = new ArrayList<>();
 			maxScores = new ArrayList<>();
-		}
+		}		
 
 		public void wijzigVolgorde(Opdracht opdracht) {
 			int positie = opdrachten.indexOf(opdracht);
+			int maxScore = maxScores.get(positie);
 			opdrachten.remove(positie);
+			maxScores.remove(positie);
 			if (positie == 0) {
 				opdrachten.add(opdrachten.size(), opdracht);
+				maxScores.add(maxScores.size(), maxScore);
 			} else {
 				opdrachten.add(positie-1, opdracht);
+				maxScores.add(positie-1, maxScore);
 			}
 			this.fireTableDataChanged();
 		}
@@ -435,7 +439,7 @@ public class QuizAanpassingController {
 			}
 			case 2:
 				return opdracht.getVraag();
-			case 3:
+			case 3:	
 				if(row>maxScores.size()-1) {
 					maxScores.add(1);
 				}
@@ -453,9 +457,27 @@ public class QuizAanpassingController {
 		    	 return false;
 		     }
 		}
+		
+		@Override  
+	    public Class getColumnClass(int col) {  
+	        if (col == 3)       //MaxScore moet int zijn
+	            return Integer.class;  
+	        else return String.class;
+		}
+		
+		@Override
+		   public void setValueAt(Object maxScore, int row, int col)
+		   {		       
+				view.toonInformationDialog(maxScores.toString(), "TEST");
+				if(col == 3) {
+					maxScores.set(row, (Integer)maxScore);
+				}		       
+				view.toonInformationDialog(maxScores.toString(), "TEST");
+		   }
 
 		public void setOpdrachten(Collection<Opdracht> opdrachten) {
-			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
+			this.opdrachten = new ArrayList<>(opdrachten);
+			this.maxScores = new ArrayList<>();
 			for (Opdracht o : opdrachten) {
 				for (QuizOpdracht qo : o.getQuizOpdrachten()) {   //GET QUIZOPDRACHT MET DEZE OPDRACHT & QUIZ
 					if ((qo.getQuiz()).equals(quiz)) {   //GET QUIZOPDRACHT MET DEZE OPDRACHT & QUIZ
@@ -471,14 +493,11 @@ public class QuizAanpassingController {
 				return opdrachten.get(row);
 			}
 			return null;
-		}
-		
-		public void setMaxScoreVoorRij(int row, int maxScore) {
-			maxScores.set(row, maxScore);
-		}
+		}		
 		
 		public void addOpdracht(Opdracht opdracht) {
 			opdrachten.add(opdracht);
+			maxScores.add(1);
 			this.fireTableDataChanged();
 		}
 		
