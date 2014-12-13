@@ -33,10 +33,7 @@ public class Main {
 	
 	public static void main(String[] args) {		
 		
-		  UIManager.LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
-		    for (UIManager.LookAndFeelInfo look : looks) {
-		      System.out.println(look.getName());
-		    }
+		  OpstartController boot = new OpstartController();
 		
 	}
 }
