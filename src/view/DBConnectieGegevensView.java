@@ -27,7 +27,7 @@ public class DBConnectieGegevensView extends JDialog {
 	public DBConnectieGegevensView(JFrame owner) {
 		super(owner, "Database Connectie Gegevens", true);
 		setLocationRelativeTo(owner);
-		setSize(400, 170);
+		setSize(400, 185);
 		
 		layout = new GridBagLayout();
 		setLayout(layout);
