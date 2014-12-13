@@ -11,10 +11,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import persistency.DBHandler;
 import view.QuizAanpassingView;
@@ -31,72 +36,35 @@ import model.quizStatus.QuizStatus;
 
 public class QuizAanpassingController {
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	private QuizAanpassingView view;
 	private DBHandler dbHandler;
-	private Quiz quiz, quizClone; //quizClone laat toe om opdrachten toe te voegen en te verwijderen zonder de quiz te veranderen (pas bij bewaren quiz aanpassen)
+	private Quiz quiz;
 	private Leraar leraar;
 	private Opdracht opdracht;
 	private QuizBeheerController quizBeheerController;
 	private AlleOpdrachtenTableModel alleOpdrachtenTabelModel;
-	private GeselecteerdeOpdrachtenTableModel geselecteerdeOpdrachtenTabelModel;
+	private QuizOpdrachtenTableModel quizOpdrachtenTabelModel;
+	private TableRowSorter<TableModel> rowSorter;
+	private List<RowSorter.SortKey> sortKeys;
 	
-
+	
+	/**
+	 * Default constructor met parameters
+	 * @param quiz
+	 * @param ingelogde leraar
+	 * @param dbHandler
+	 * @param Controller die deze controller heeft opgeroepen	 
+	 */
 	public QuizAanpassingController(Quiz quiz, Leraar leraar,
 			DBHandler dbHandler, QuizBeheerController quizBeheerController) {		
 		this.quiz = quiz;
-		quizClone = quiz.clone();
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
 		alleOpdrachtenTabelModel = new AlleOpdrachtenTableModel();
-		geselecteerdeOpdrachtenTabelModel = new GeselecteerdeOpdrachtenTableModel();
+		quizOpdrachtenTabelModel = new QuizOpdrachtenTableModel();
 		this.quizBeheerController = quizBeheerController;
-		view = new QuizAanpassingView(quizClone, leraar,
-				dbHandler);
+		view = new QuizAanpassingView(quiz, leraar,
+				dbHandler);		
 
 		// Set buttonlisteners
 		view.addOpdrachtToevoegenKnopActionListener(new OpdrachtToevoegenKnopListener());
@@ -108,8 +76,10 @@ public class QuizAanpassingController {
 		view.addSelecteerCategorieActionlistener(new SelecteerCategorieListener());
 		view.addSelecteerSorteringActionListener(new SelecteerSorteringListener());
 		
-		//Set TableModels
-		view.setTableModels(alleOpdrachtenTabelModel, geselecteerdeOpdrachtenTabelModel);
+		//Set TableModels & rowSorter
+		view.setTableModels(alleOpdrachtenTabelModel, quizOpdrachtenTabelModel);
+		rowSorter = new TableRowSorter<TableModel>(view.getAlleOpdrachtenTabel().getModel());		
+		view.getAlleOpdrachtenTabel().setRowSorter(rowSorter);
 		
 		loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
 		
@@ -117,49 +87,69 @@ public class QuizAanpassingController {
 		view.setVisible(true);
 	}
 	
+	/**
+	 * geeft data aan tabellen & update
+	 * @param quiz
+	 * @param lijst met alle opdrachten
+	 */
 	public void loadTables(Collection<Opdracht> alleOpdrachten, Quiz quiz) {		
-		geselecteerdeOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
-		geselecteerdeOpdrachtenTabelModel.fireTableDataChanged();
+		quizOpdrachtenTabelModel.setOpdrachten(quiz.getOpdrachten());
+		quizOpdrachtenTabelModel.fireTableDataChanged();
 		alleOpdrachten.removeAll(quiz.getOpdrachten());
 		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
 		alleOpdrachtenTabelModel.fireTableDataChanged();
 		view.setLblAantalOpdrachten();
 	}
 	
+	/**
+	 * geeft de geselecteerde opdracht op basis van een rijnummer
+	 * @param geselecteerde rij
+	 * @return overeenkomstige Opdracht
+	 */
+	public Opdracht getGeselecteerdeOpdrachtAlleOpdrachten(int rij) {		
+		return alleOpdrachtenTabelModel.getOpdracht(rij);
+	}
+	public Opdracht getGeselecteerdeQuizOpdracht(int rij) {		
+		return quizOpdrachtenTabelModel.getOpdracht(rij);
+	}
+	
+	/**
+	 * Sorteer tabel
+	 * @param kolom om op te sorteren
+	 */
+	public void setRowSorter (int columnIndex) {		
+		sortKeys = new ArrayList<>();
+		rowSorter.setSortKeys(null);	
+		if (!(columnIndex == 1)) {
+			sortKeys.add(new RowSorter.SortKey(columnIndex, SortOrder.ASCENDING));
+			rowSorter.setSortKeys(sortKeys);
+		}
+		rowSorter.sort();
+	}	
+	
+	//GETTER
 	public QuizAanpassingView getView() {
 		return view;
-	}	
-
-	class OpdrachtToevoegenKnopListener implements ActionListener {
+	}
+	
+	//LISTENERCLASSES
+	class OpdrachtToevoegenKnopListener implements ActionListener {    //TODO redo (add to list)
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			opdracht = view.getGeselecteerdeOpdrachtAlleOpdrachten();
+			opdracht = getGeselecteerdeOpdrachtAlleOpdrachten(view.getSelectieAlleOpdrachten());
 			if (opdracht == null) {
 				view.toonInformationDialog(
 						"Selecteer een opdracht om toe te voegen", "Fout");
 				return;
 			}
-			int maxScore = 0;
-			do{
-				try {
-					maxScore = Integer.parseInt(view.vraagMaxScore());
-					if(maxScore < 1 || maxScore > 100) {
-						throw new IllegalArgumentException();
-					}
-				}
-				catch  (Exception ex) {
-					view.toonInformationDialog("De maximum score moet een geheel getal tussen 1 & 100 zijn", "Error");
-				}
-			}while (maxScore < 1 || maxScore > 100);
-			QuizOpdracht.koppelOpdrachtAanQuiz(view.getQuiz(), opdracht, maxScore);
-			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
+			QuizOpdracht.koppelOpdrachtAanQuiz(quiz, opdracht, 1); //TODO MaxScore
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
 		}
-	}	
-
-	class OpdrachtVerwijderenKnopListener implements ActionListener {
+	}
+	class OpdrachtVerwijderenKnopListener implements ActionListener {     //TODO redo (remove from list)
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
+			opdracht = getGeselecteerdeQuizOpdracht(view.getSelectieGeselecteerdeOpdrachten());
 			if (opdracht == null) {
 				view.toonInformationDialog(
 						"Selecteer een opdracht om te verwijderen", "Fout");
@@ -170,14 +160,12 @@ public class QuizAanpassingController {
 					qo.ontkoppelOpdrachtVanQuiz();
 				}
 			}			
-			view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus().getOpdrachten(), view.getQuiz());
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
 		}
 	}
-
-	class QuizBewaarKnopListener implements ActionListener {
+	class QuizBewaarKnopListener implements ActionListener {   //TODO add quizopdrachten from list to quiz
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			quiz = view.getQuiz();
 			// STATUS
 			QuizStatus status = view.getQuizStatuscmb();
 			// TODO Checken of status geldig is.				
@@ -211,107 +199,71 @@ public class QuizAanpassingController {
 			// TEST & UNIEKEDEELNAME
 			boolean isTest = view.getIsTestckb();
 			boolean isUniekeDeelname = view.getIsUniekeDeelnameckb();
-			// SETQUIZCLONE			
-			quizClone.setDoelLeerjaren(klassenArray);
-			quizClone.setOnderwerp(onderwerp);
-			quizClone.setIsTest(isTest);
-			quizClone.setIsUniekeDeelname(isUniekeDeelname);
-			quizClone.setQuizStatus(status);
-			// SET QUIZ
-			quiz = quizClone;			
+			// SET		
+			quiz.setDoelLeerjaren(klassenArray);
+			quiz.setOnderwerp(onderwerp);
+			quiz.setIsTest(isTest);
+			quiz.setIsUniekeDeelname(isUniekeDeelname);
+			quiz.setQuizStatus(status);						
 			//ADD QUIZ TO DB
-			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {  //TODO loopt hier fout bij aanpassen quiz
-				dbHandler.getQuizCatalogus().addQuiz(quiz);
-			}
+			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {  
+				dbHandler.getQuizCatalogus().addQuiz(quiz); //Add quiz to DB
+			}			
 			view.toonInformationDialog("Quiz bewaard", "Ok");
+			//SET VIEW WITH NEW QUIZ
 			quiz = new Quiz(leraar);
-			quizClone = quiz.clone();
 			quizBeheerController.updateTabel();
-			view.initViewForQuiz((dbHandler.getOpdrachtCatalogus()).getOpdrachten(), quizClone); // Geef nieuwe, lege quiz aan view
+			view.setViewToQuiz(quiz);
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
 		}
 	}
-	
 	class SelecteerCategorieListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			String opdrachtCategorieString = view.getOpdrachtCategorie();
 			if (opdrachtCategorieString.equals("Alle categorieën")) {
-				view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(), view.getQuiz());
+				loadTables(dbHandler.getOpdrachtCatalogus()
+						.getOpdrachten(), quiz);
 			} else {
 				OpdrachtCategorie OC = OpdrachtCategorie
 						.valueOf(opdrachtCategorieString.toUpperCase());
-				view.setOpdrachtTabellen(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(OC), view.getQuiz());
+				loadTables(dbHandler.getOpdrachtCatalogus()
+						.getOpdrachten(OC), quiz);
 			}
 		}
 	}
-	
 	class SelecteerSorteringListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			String sorteerString = view.getSorteerString();
 			switch (sorteerString) {
 			case "geen":
-				view.setRowSorter(1);
+				setRowSorter(1);
 				break;
 			case "vraag":
-				view.setRowSorter(2);
+				setRowSorter(2);
 				break;
 			case "categorie":
-				view.setRowSorter(0);
+				setRowSorter(0);
 				break;
 			default:
 				break;
 			}
 		}
 	}
-	
-	/*
-	class WijzigMaxScoreKnopListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			Opdracht opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
-			if (opdracht == null) {
-				view.toonInformationDialog(
-						"Selecteer een opdracht om de maximum score  voor aan te passen", "Fout");
-				return;
-			}
-			int maxScore = 0;
-			do{
-				try {
-					maxScore = Integer.parseInt(view.vraagMaxScore());
-					if(maxScore < 1 || maxScore > 100) {
-						throw new IllegalArgumentException();
-					}
-				}
-				catch  (Exception ex) {
-					view.toonInformationDialog("De maximum score moet een geheel getal tussen 1 & 100 zijn", "Error");
-				}
-			}while (maxScore < 1 || maxScore > 100);
-			
-			for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
-				if ((qo.getQuiz()).equals(quiz)) {
-					qo.setMaxScore(maxScore);
-				}
-			}
-		}		
-	}
-	*/
-	
 	class WijzigVolgordeKnopListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
+			opdracht = getGeselecteerdeQuizOpdracht(view.getSelectieGeselecteerdeOpdrachten());
 			if (opdracht == null) {
 				view.toonInformationDialog(
 						"Geen opdracht geselecteerd", "Fout");
 				return;
 			}
-			quizClone.verplaatsOpdrachtEenHoger(opdracht);
+			quiz.verplaatsOpdrachtEenHoger(opdracht); //TODO verplaatsen binnen lijst
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz);
 		}		
-	}	
+	}
 	
 	//TABELMODELLEN
 	class AlleOpdrachtenTableModel extends AbstractTableModel {
@@ -380,13 +332,12 @@ public class QuizAanpassingController {
 			}
 			return null;
 		}
-	}
-		
-	class GeselecteerdeOpdrachtenTableModel extends AbstractTableModel {
+	}		
+	class QuizOpdrachtenTableModel extends AbstractTableModel {
 		private ArrayList<Opdracht> opdrachten;
 		private String[] headers;
 
-		public GeselecteerdeOpdrachtenTableModel() {
+		public QuizOpdrachtenTableModel() {
 			headers = new String[] { "Cat.", "Type", "Vraag", "Max. Score" };
 			opdrachten = new ArrayList<Opdracht>();
 		}
@@ -451,6 +402,94 @@ public class QuizAanpassingController {
 			return null;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+		
+
+		
+
+	
+
+	
+	
+	
+	
+	
+	
+	/*
+	class WijzigMaxScoreKnopListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			Opdracht opdracht = view.getGeselecteerdeOpdrachtQuizOpdrachten();
+			if (opdracht == null) {
+				view.toonInformationDialog(
+						"Selecteer een opdracht om de maximum score  voor aan te passen", "Fout");
+				return;
+			}
+			int maxScore = 0;
+			do{
+				try {
+					maxScore = Integer.parseInt(view.vraagMaxScore());
+					if(maxScore < 1 || maxScore > 100) {
+						throw new IllegalArgumentException();
+					}
+				}
+				catch  (Exception ex) {
+					view.toonInformationDialog("De maximum score moet een geheel getal tussen 1 & 100 zijn", "Error");
+				}
+			}while (maxScore < 1 || maxScore > 100);
+			
+			for (QuizOpdracht qo : opdracht.getQuizOpdrachten()) {
+				if ((qo.getQuiz()).equals(quiz)) {
+					qo.setMaxScore(maxScore);
+				}
+			}
+		}		
+	}
+	*/
+	
+		
+	
+	//TABELMODELLEN
+	
 		
 		
 

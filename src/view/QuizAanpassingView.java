@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -72,7 +73,7 @@ public class QuizAanpassingView extends JFrame {
 	/**
 	 * Default constructor met parameters
 	 * @param quiz
-	 * @param leraar
+	 * @param ingelogde leraar
 	 * @param dbHandler
 	 * 
 	 */
@@ -325,9 +326,7 @@ public class QuizAanpassingView extends JFrame {
 		this.add(opdrachtKnoppenVeld, constraints);
 		
 		//SET VIEW + TABELS
-		setViewToQuiz(quiz);
-		//TODO setTabellen
-					
+		setViewToQuiz(quiz);					
 	}
 	
 	
@@ -356,7 +355,8 @@ public class QuizAanpassingView extends JFrame {
 	 * Toon foutboodschap als Quizbewaren ongeldig is.
 	 */
 	public void toonFoutBoodschap(String fout) {
-		//TODO foutboodschap in rood op scherm tonen
+		lblFoutboodschap.setText(fout);
+		lblFoutboodschap.setForeground(Color.RED);
 	}
 	
 	/**
@@ -369,34 +369,7 @@ public class QuizAanpassingView extends JFrame {
 		}
 		aantalOpdrachten = String.format("%s%d","Aantal toegevoegde opdrachten : ", aantal);
 		lblAantalOpdrachten.setText(aantalOpdrachten);
-	}
-	
-	//GETTERS
-	public String getOpdrachtCategorie() {
-		return (String) cmbCategorie.getSelectedItem();
 	}	
-	public String getSorteerString () {
-		return (String) cmbSorteer.getSelectedItem();
-	}
-	public String getOnderwerpTxt() {
-		return txtOnderwerp.getText();
-	}
-	
-	public String getKlasTxt() {
-		return txtKlas.getText();
-	}
-	
-	public boolean getIsTestckb() {
-		return ckbIsTest.isSelected();
-	}
-	
-	public boolean getIsUniekeDeelnameckb() {
-		return ckbIsUniekeDeelname.isSelected();
-	}
-	
-	public QuizStatus getQuizStatuscmb() {
-		return (QuizStatus)cmbStatus.getSelectedItem();
-	}
 	
 	/**
 	 * Set venster voor nieuwe quiz (gegevens & isAanpasbaar)
@@ -468,8 +441,33 @@ public class QuizAanpassingView extends JFrame {
 	}	
 	public void addSelecteerSorteringActionListener(ActionListener listener) {
 		cmbSorteer.addActionListener(listener);
-	}			
-		
+	}	
+	
+	//Getters
+	public String getOpdrachtCategorie() {
+		return (String) cmbCategorie.getSelectedItem();
+	}	
+	public String getSorteerString () {
+		return (String) cmbSorteer.getSelectedItem();
+	}
+	public String getOnderwerpTxt() {
+		return txtOnderwerp.getText();
+	}	
+	public String getKlasTxt() {
+		return txtKlas.getText();
+	}	
+	public boolean getIsTestckb() {
+		return ckbIsTest.isSelected();
+	}	
+	public boolean getIsUniekeDeelnameckb() {
+		return ckbIsUniekeDeelname.isSelected();
+	}	
+	public QuizStatus getQuizStatuscmb() {
+		return (QuizStatus)cmbStatus.getSelectedItem();
+	}
+	public JTable getAlleOpdrachtenTabel() {
+		return alleOpdrachtenTabel;
+	}
 	
 	
 	

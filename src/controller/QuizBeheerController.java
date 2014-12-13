@@ -44,6 +44,7 @@ public class QuizBeheerController {
 		view.addAanpassenQuizKnopActionListener(new AanpassenQuizKnopListener());
 		view.addVerwijderQuizKnopActionListener(new VerwijderQuizKnopListener());
 
+		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //TODO  REMOVE
 		view.setVisible(true);
 	}
 		
