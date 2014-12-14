@@ -1,17 +1,15 @@
 package view;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import view.OpdrachtAanpassingView;
 
+@SuppressWarnings("serial")
 public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView {
 
 	protected JLabel lblMogelijkeAntwoordenMeerkeuze;
@@ -20,30 +18,23 @@ public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView {
 	public OpdrachtMeerkeuzeBeheerView() {
 		super();
 		this.setTitle("Meerkeuze opdracht");
-		middenPanel = new JPanel();
-		middenPanel.setLayout(new GridBagLayout());
 
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridy = 1;
+		c.gridy = 3;
 		c.gridx = 1;
-		c.weightx = 0.2;
-		c.insets = new Insets(10, 10, 0, 0);
+		c.insets = new Insets(10, 10, 0, 10);
 		c.anchor = GridBagConstraints.EAST;
-		lblMogelijkeAntwoordenMeerkeuze = new JLabel("Mogelijke antwoorden: ");
-		middenPanel.add(lblMogelijkeAntwoordenMeerkeuze, c);
+		lblMogelijkeAntwoordenMeerkeuze = new JLabel("Mogelijke antwoorden:");
+		this.add(lblMogelijkeAntwoordenMeerkeuze, c);
+		c = new GridBagConstraints();
 		c.gridx = 2;
-		c.weightx = 0.8;
+		c.gridy = 3;
+		c.insets = new Insets(10, 10, 0, 10);
+		c.weightx = 10;
 		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		txtMogelijkeAntwoordenMeerkeuze = new JTextField();
-		txtMogelijkeAntwoordenMeerkeuze.setPreferredSize(new Dimension (600, 25));
-		middenPanel.add(txtMogelijkeAntwoordenMeerkeuze, c);
-
-		GridBagConstraints b = new GridBagConstraints();
-		b.gridx = 1;
-		b.gridy = 2;
-		b.insets = new Insets(10, 10, 10, 10);
-		b.fill = GridBagConstraints.BOTH;
-		grootPanel.add(middenPanel, b);
+		this.add(txtMogelijkeAntwoordenMeerkeuze, c);
 		
 		SwingUtilities.updateComponentTreeUI(this);
 	}

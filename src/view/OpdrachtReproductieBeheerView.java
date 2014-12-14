@@ -2,16 +2,15 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import view.OpdrachtAanpassingView;
 
+@SuppressWarnings("serial")
 public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView {
 
 	protected JLabel lblMinimumAantalTrefwoorden;
@@ -20,30 +19,25 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView {
 	public OpdrachtReproductieBeheerView() {
 		super();
 		this.setTitle("Reproductie opdracht");
-		middenPanel = new JPanel();
-		middenPanel.setLayout(new GridBagLayout());
 		
 		GridBagConstraints c = new GridBagConstraints();
-		c.gridy = 1;
+		c.gridy = 3;
 		c.gridx = 1;
-		c.weightx = 0.2;
-		c.insets = new Insets(10, 10, 0, 0);
+		c.insets = new Insets(10, 0, 0, 10);
 		c.anchor = GridBagConstraints.EAST;
-		lblMinimumAantalTrefwoorden = new JLabel("Minimum aantal trefwoorden: ");
-		middenPanel.add(lblMinimumAantalTrefwoorden, c);
+		lblMinimumAantalTrefwoorden = new JLabel("Min aantal trefwoorden: ");
+		this.add(lblMinimumAantalTrefwoorden, c);
+		c = new GridBagConstraints();
+		c.insets = new Insets(10, 10, 0, 0);
 		c.gridx = 2;
-		c.weightx = 0.8;
+		c.gridy = 3;
+		c.weightx = 10;
 		c.anchor = GridBagConstraints.WEST;
+		c.fill = GridBagConstraints.NONE;
 		txtMinimumAantalTrefwoorden = new JTextField();
-		txtMinimumAantalTrefwoorden.setPreferredSize(new Dimension(200, 25));
-		middenPanel.add(txtMinimumAantalTrefwoorden, c);
-
-		GridBagConstraints b = new GridBagConstraints();
-		b.gridx = 1;
-		b.gridy = 2;
-		b.insets = new Insets(10, 10, 10, 10);
-		b.fill = GridBagConstraints.BOTH;
-		grootPanel.add(middenPanel, b);
+		txtMinimumAantalTrefwoorden.setPreferredSize(new Dimension(100, 20));
+		txtMinimumAantalTrefwoorden.setMinimumSize(new Dimension(100, 20));
+		this.add(txtMinimumAantalTrefwoorden, c);
 		
 		SwingUtilities.updateComponentTreeUI(this);
 	}

@@ -96,9 +96,13 @@ public class QuizDeelnameController {
 	}
 
 	private void neemDeel() {
+		if (quiz.getOpdrachten().size() > 0) {
 		quizDeelnameView.setVisible(false);
 		quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
 		volgendeOpdracht();
+		} else {
+			quizDeelnameView.toonInformationDialog("Deze quiz bevat geen opdrachten", "Quiz Heeft geen Opdrachten");
+		}
 	}
 
 	private void volgendeOpdracht() {
