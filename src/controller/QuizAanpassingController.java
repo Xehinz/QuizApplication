@@ -166,20 +166,20 @@ public class QuizAanpassingController {
 	class QuizBewaarKnopListener implements ActionListener {   
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			String foutboodschap = new String("");
+			String foutboodschap = new String("<html>");
 			// STATUS
 			QuizStatus status = view.getQuizStatuscmb();
 			// TODO Checken of status geldig is.	
 			//ONDERWERP
 			String onderwerp = view.getOnderwerpTxt();
 			if (onderwerp.equals("")) {
-				foutboodschap += "<html>Geef een onderwerp in.<br></html>";
+				foutboodschap += "Geef een onderwerp in.<br/>";
 			}
 			// KLAS
 			String klas = view.getKlasTxt();
 			int[] klassenArray = new int[6];
 			if (klas.equals("")) {
-				foutboodschap.concat("<html>Klassen in foutief formaat, gebruik [4] of [1, 2, 4].<br></html>");  //TODO foutboodschap toont slechts 1 fout
+				foutboodschap.concat("Klassen in foutief formaat, gebruik [4] of [1, 2, 4].<br/>");  //TODO foutboodschap toont slechts 1 fout
 			} else {				
 				try {
 					klas = klas.substring(1, klas.length() - 1);
@@ -192,7 +192,7 @@ public class QuizAanpassingController {
 						}
 					}
 				} catch (Exception ex) {
-					foutboodschap += "<html>Klassen in foutief formaat, gebruik [4] of [1, 2, 4].<br></html>";
+					foutboodschap += "Klassen in foutief formaat, gebruik [4] of [1, 2, 4].<br/>";
 				}
 			}
 			
@@ -201,11 +201,12 @@ public class QuizAanpassingController {
 			boolean isUniekeDeelname = view.getIsUniekeDeelnameckb();
 			// TEST MINSTENS 1 OPDRACHT IN AFGEWERKT
 			if(quizOpdrachtenTabelModel.getOpdrachten().size() == 0 && view.getQuizStatuscmb().toString().equals("Afgewerkt")) {
-				foutboodschap += "<html>ongeldige status, voeg minstens 1 opdracht toe voor <i>afgewerkt</i>.<br></html>";
+				foutboodschap += "ongeldige status, voeg minstens 1 opdracht toe voor <i>afgewerkt</i>.<br/>";
 			}
 			
 			// TEST OP FOUT
-			if (!foutboodschap.equals("")) {
+			if (!foutboodschap.equals("<html>")) {
+				foutboodschap += "</html>";
 				view.toonFoutBoodschap(foutboodschap);
 				view.toonInformationDialog(foutboodschap, "FOUT");
 				return;
