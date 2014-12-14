@@ -3,7 +3,7 @@ package view;
 /**
  * 
  * @author Adriaan Kuipers
- * @version 08/12/2014
+ * @version 14/12/2014
  * 
  */
 
@@ -20,13 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-
-import model.Quiz;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.swing.table.TableModel;
 
 @SuppressWarnings("serial")
 public class QuizBeheerView extends JFrame {
@@ -35,9 +30,8 @@ public class QuizBeheerView extends JFrame {
 	private GridBagLayout layout;
 	private GridBagConstraints constraints;
 	private JButton btnNieuweQuiz, btnAanpassenQuiz, btnVerwijderQuiz;
-	private JTable quiztabel;
+	private JTable quizTabel;
 	private JScrollPane tabelVeld;
-	private QuizBeheerTableModel tabelModel;
 	
 	public QuizBeheerView() {
 		//Set window
@@ -51,14 +45,12 @@ public class QuizBeheerView extends JFrame {
 		this.setLayout(layout);
 				
 		//Set Table
-		tabelModel = new QuizBeheerTableModel();
-		quiztabel = new JTable(tabelModel);
-		setKolomBreedte(quiztabel);
+		quizTabel = new JTable();
 				
 		//Set TabelVeld
 				
-		tabelVeld = new JScrollPane(quiztabel);
-		quiztabel.setFillsViewportHeight(true);
+		tabelVeld = new JScrollPane(quizTabel);
+		quizTabel.setFillsViewportHeight(true);
 		//table.setAutoCreateRowSorter(true);
 				//Set constraints
 		constraints = new GridBagConstraints();
@@ -125,89 +117,27 @@ public class QuizBeheerView extends JFrame {
 		btnVerwijderQuiz.addActionListener(listener);
 	}
 	
-	public void setQuizzen(Collection<Quiz> quizzen) {
-		tabelModel.setQuizzen(quizzen);
-		tabelModel.fireTableDataChanged();
+	public void setTabelModel(TableModel model) {
+		quizTabel.setModel(model);
+		setKolomBreedte(quizTabel);
 	}
 	
-	public Quiz getGeselecteerdeQuiz() {
-		return tabelModel.getQuiz(quiztabel.getSelectedRow());
+	public int getGeselecteerdeRij() {
+		return quizTabel.getSelectedRow();
 	}
 	
 	public void toonInformationDialog(String boodschap, String titel) {
 		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
-	}
+	}	
 	
-	public void setKolomBreedte (JTable table) {
-		TableColumn kolom = null;
-		for (int i = 0; i < 6; i++) {
-			    kolom = table.getColumnModel().getColumn(i);
-			    if (i == 3 || i == 5 || i == 6) {
-			        kolom.setPreferredWidth(50); //Vragen, Test, Unieke Deelname
-			    }
-			    if (i == 0 || i == 2) {
-				        kolom.setPreferredWidth(140); //Auteur, Klas
-			    }
-			    if (i == 1) {
-			        kolom.setPreferredWidth(250); //Onderwerp
-			    }
-			}
-	}
-	
-	//TABELMODEL
-	public class QuizBeheerTableModel extends AbstractTableModel {
-
-		private ArrayList<Quiz> quizzen;
-		private String[] headers;
-		
-		
-		public QuizBeheerTableModel () {
-			headers = new String[]{"Auteur","Onderwerp","Klas","Vragen","Status","Test","Unieke Deelname"};
-			quizzen = new ArrayList<Quiz>();
-		}
-		
-		
-		@Override
-		public int getColumnCount() {
-			return headers.length;
-		}
-		@Override
-		public int getRowCount() {
-			return quizzen.size();
-		}
-		
-		@Override   
-		public String getColumnName(int col) {
-		        return headers[col];
-		}
-		
-		@Override
-		public Object getValueAt(int row, int col) {
-			Quiz quiz = quizzen.get(row);
-		     switch (col) {
-		     case 0: return quiz.getAuteur();
-		     case 1: return quiz.getOnderwerp();
-		     case 2: return quiz.getDoelLeerjaren();
-		     case 3: return (quiz.getQuizOpdrachten()).size();
-		     case 4: return quiz.getQuizStatus();
-		     case 5: return quiz.getIsTest();
-		     case 6: return quiz.getIsUniekeDeelname();
-		     
-		     default: return null;
-		    }
-		}
-
-		public void setQuizzen (Collection<Quiz> quizzen) {
-			this.quizzen = new ArrayList<Quiz>(quizzen);
-		}
-		
-		public Quiz getQuiz(int row) {
-			if (row < quizzen.size() && row >= 0) {
-				return quizzen.get(row);
-			}
-			return null;
-		}
-			
+	private void setKolomBreedte(JTable table) {
+		table.getColumnModel().getColumn(0).setPreferredWidth(140);  //Auteur
+		table.getColumnModel().getColumn(1).setPreferredWidth(250); //Onderwerp
+		table.getColumnModel().getColumn(2).setPreferredWidth(140); //klas
+		table.getColumnModel().getColumn(3).setPreferredWidth(50);  //vragen
+		//table.getColumnModel().getColumn(4).setPreferredWidth(50);  
+		table.getColumnModel().getColumn(5).setPreferredWidth(50);  //test
+		table.getColumnModel().getColumn(6).setPreferredWidth(50);  //isuniekedeelname
 	}
 
 }

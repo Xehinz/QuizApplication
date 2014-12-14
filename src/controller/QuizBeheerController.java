@@ -3,7 +3,7 @@ package controller;
 /**
  * 
  * @author Adriaan Kuipers
- * @version 08/12/2014
+ * @version 14/12/2014
  * 
  */
 
@@ -11,10 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.AbstractTableModel;
 
 import model.Leraar;
 import model.Quiz;
@@ -29,6 +31,7 @@ public class QuizBeheerController {
 	private Leraar leraar;
 	private boolean quizAanpassingStaatOpen;
 	private QuizAanpassingController quizAanpassingController;
+	private QuizBeheerTableModel tabelModel;
 
 	public QuizBeheerController(DBHandler dbHandler, Leraar leraar) {
 		this.dbHandler = dbHandler;
@@ -38,13 +41,13 @@ public class QuizBeheerController {
 		quizAanpassingStaatOpen = false;
 		
 		// Vul Tabel
-		view.setQuizzen(dbHandler.getQuizCatalogus().getQuizzen());
+		tabelModel = new QuizBeheerTableModel();
+		view.setTabelModel(tabelModel);
+		tabelModel.setQuizzen(dbHandler.getQuizCatalogus().getQuizzen());
 		// Set Knoppen
 		view.addNieuweQuizKnopActionListener(new NieuweQuizKnopListener());
 		view.addAanpassenQuizKnopActionListener(new AanpassenQuizKnopListener());
 		view.addVerwijderQuizKnopActionListener(new VerwijderQuizKnopListener());
-
-		view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //TODO  REMOVE
 		view.setVisible(true);
 	}
 		
@@ -70,7 +73,7 @@ public class QuizBeheerController {
 	}
 	
 	public void updateTabel() {
-		view.setQuizzen(dbHandler.getQuizCatalogus().getQuizzen());
+		tabelModel.setQuizzen(dbHandler.getQuizCatalogus().getQuizzen());
 	}
 
 	class NieuweQuizKnopListener implements ActionListener {
@@ -84,7 +87,7 @@ public class QuizBeheerController {
 	class AanpassenQuizKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			quiz = view.getGeselecteerdeQuiz();
+			quiz = tabelModel.getQuiz(view.getGeselecteerdeRij());
 			if (quiz == null) {
 				view.toonInformationDialog(
 						"Selecteer een quiz om aan te passen", "Fout");
@@ -101,7 +104,7 @@ public class QuizBeheerController {
 				quizAanpassingController.getView().toFront();
 			}
 			else {
-				quiz = view.getGeselecteerdeQuiz();
+				quiz = tabelModel.getQuiz(view.getGeselecteerdeRij());
 				if (quiz == null) {
 					view.toonInformationDialog(
 							"Selecteer een quiz om te verwijderen", "Fout");
@@ -120,5 +123,63 @@ public class QuizBeheerController {
 			}			
 		}
 	}	
+	
+	//TABELMODEL
+	@SuppressWarnings("serial")
+	public class QuizBeheerTableModel extends AbstractTableModel {
+
+		private ArrayList<Quiz> quizzen;
+		private String[] headers;
+		
+		
+		public QuizBeheerTableModel () {
+			headers = new String[]{"Auteur","Onderwerp","Klas","Vragen","Status","Test","Unieke Deelname"};
+			quizzen = new ArrayList<Quiz>();
+		}
+		
+		
+		@Override
+		public int getColumnCount() {
+			return headers.length;
+		}
+		@Override
+		public int getRowCount() {
+			return quizzen.size();
+		}
+		
+		@Override   
+		public String getColumnName(int col) {
+		        return headers[col];
+		}
+		
+		@Override
+		public Object getValueAt(int row, int col) {
+			Quiz quiz = quizzen.get(row);
+		     switch (col) {
+		     case 0: return quiz.getAuteur();
+		     case 1: return quiz.getOnderwerp();
+		     case 2: return quiz.getDoelLeerjaren();
+		     case 3: return (quiz.getQuizOpdrachten()).size();
+		     case 4: return quiz.getQuizStatus();
+		     case 5: return quiz.getIsTest();
+		     case 6: return quiz.getIsUniekeDeelname();
+		     
+		     default: return null;
+		    }
+		}
+
+		public void setQuizzen (Collection<Quiz> quizzen) {
+			this.quizzen = new ArrayList<Quiz>(quizzen);
+			this.fireTableDataChanged();
+		}
+		
+		public Quiz getQuiz(int row) {
+			if (row < quizzen.size() && row >= 0) {
+				return quizzen.get(row);
+			}
+			return null;
+		}
+			
+	}
 
 }
