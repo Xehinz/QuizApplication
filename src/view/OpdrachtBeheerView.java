@@ -6,18 +6,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
-import persistency.DBHandler;
-import controller.OpdrachtBeheerController;
-import controller.OpstartController;
-import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
 
+@SuppressWarnings("serial")
 public class OpdrachtBeheerView extends JFrame {
 
 	private JButton btnNieuweKlassieke = new JButton(
@@ -41,30 +37,32 @@ public class OpdrachtBeheerView extends JFrame {
 		this.setSize(800, 500);
 		selecteerCategorie.setSelectedItem(null);
 
-		JPanel newPanel = new JPanel();
-		newPanel.setLayout(new GridBagLayout());
+		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
 		selecteerCategorie.setPreferredSize(new Dimension(175, 25));
 		selecteerCategorie.setMinimumSize(new Dimension(175, 25));
 
-		JPanel boxPanel = new JPanel();
-		BoxLayout boxLayout = new BoxLayout(boxPanel, BoxLayout.Y_AXIS);
-		boxPanel.setLayout(boxLayout);
+		JPanel boxPanelBoven = new JPanel();
+		BoxLayout boxLayout = new BoxLayout(boxPanelBoven, BoxLayout.Y_AXIS);
+		boxPanelBoven.setLayout(boxLayout);
 
-		boxPanel.add(btnNieuweKlassieke);
-		boxPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-		boxPanel.add(btnNieuweMeerkeuze);
-		boxPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-		boxPanel.add(btnNieuweOpsomming);
-		boxPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-		boxPanel.add(btnNieuweReproductie);
-		boxPanel.add(Box.createRigidArea(new Dimension(10, 150)));
-		boxPanel.add(btnPasOpdrachtAan);
-		boxPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-		boxPanel.add(btnVerwijderOpdracht);
-		boxPanel.add(Box.createRigidArea(new Dimension(10, 10)));
-		boxPanel.add(btnBekijkDetails);
+		boxPanelBoven.add(btnNieuweKlassieke);
+		boxPanelBoven.add(Box.createRigidArea(new Dimension(10, 10)));
+		boxPanelBoven.add(btnNieuweMeerkeuze);
+		boxPanelBoven.add(Box.createRigidArea(new Dimension(10, 10)));
+		boxPanelBoven.add(btnNieuweOpsomming);
+		boxPanelBoven.add(Box.createRigidArea(new Dimension(10, 10)));
+		boxPanelBoven.add(btnNieuweReproductie);
+		
+		JPanel boxPanelOnder = new JPanel();
+		BoxLayout boxLayoutOnder = new BoxLayout(boxPanelOnder, BoxLayout.Y_AXIS);
+		boxPanelOnder.setLayout(boxLayoutOnder);
+		boxPanelOnder.add(btnPasOpdrachtAan);
+		boxPanelOnder.add(Box.createRigidArea(new Dimension(10, 10)));
+		boxPanelOnder.add(btnVerwijderOpdracht);
+		boxPanelOnder.add(Box.createRigidArea(new Dimension(10, 10)));
+		boxPanelOnder.add(btnBekijkDetails);
 
 		c = new GridBagConstraints();
 		c.gridy = 1;
@@ -72,7 +70,7 @@ public class OpdrachtBeheerView extends JFrame {
 		c.weightx = 0.5;
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.insets = new Insets(10, 10, 0, 10);
-		newPanel.add(boxPanel, c);
+		this.add(boxPanelBoven, c);
 
 		c = new GridBagConstraints();
 		c.gridx = 1;
@@ -81,19 +79,26 @@ public class OpdrachtBeheerView extends JFrame {
 		c.weighty = 0.5;
 		c.insets = new Insets(10, 0, 0, 0);
 		c.anchor = GridBagConstraints.WEST;
-		newPanel.add(selecteerCategorie, c);
+		this.add(selecteerCategorie, c);
+		
+		c = new GridBagConstraints();
+		c.gridy = 3;
+		c.gridx = 0;
+		c.anchor = GridBagConstraints.SOUTHWEST;
+		c.insets = new Insets(0, 10, 10, 10);
+		this.add(boxPanelOnder, c);
 
 		c = new GridBagConstraints();
 		c.gridy = 1;
 		c.gridx = 1;
 		c.weightx = 10;
 		c.weighty = 10;
+		c.gridheight = 3;
 		c.insets = new Insets(5, 0, 10, 10);
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.WEST;
-		newPanel.add(new JScrollPane(lijstOpdrachten), c);
+		this.add(new JScrollPane(lijstOpdrachten), c);
 
-		this.add(newPanel);
 		SwingUtilities.updateComponentTreeUI(this);
 	}
 
