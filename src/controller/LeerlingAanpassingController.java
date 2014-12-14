@@ -42,9 +42,7 @@ public class LeerlingAanpassingController {
 		aView.setLeerjaar(aLeerling.getLeerjaar());
 	
 		aView.addLeerlingBewarenListener(new LeerlingBewarenListener());
-		aView.openQuizDeelnamesListener(new QuizDeelnamesListener());
 
-		//aView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		aView.setVisible(true);
 	}
 	
@@ -66,15 +64,6 @@ public class LeerlingAanpassingController {
 			else {aLeerling = aDBHandler.getLeerlingContainer().getLeerling(Integer.parseInt(aView.getID()));}
 			
 			aView.setID(aLeerling.getID());
-		}
-	}
-
-	class QuizDeelnamesListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			/**
-			 * verder uit te werken --> openen quiz deelnames deze leerling
-			 */
 		}
 	}
 

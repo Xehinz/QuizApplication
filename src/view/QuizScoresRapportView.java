@@ -128,7 +128,7 @@ public class QuizScoresRapportView extends JFrame implements
 	
 	public void setLeerling(Leerling leerling) {
 		this.leerling = leerling;
-		this.lblDeelnamenRapport.setText(String.format("%s%s",this.lblDeelnamenRapport.getText(), this.leerling.getLeerlingFamilienaam() + " " + this.leerling.getLeerlingVoornaam()));
+		this.lblDeelnamenRapport.setText(String.format("Deelnamen Rapport: %s", this.leerling.getLeerlingFamilienaam() + " " + this.leerling.getLeerlingVoornaam()));
 	}
 	
 	

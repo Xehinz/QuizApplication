@@ -16,7 +16,8 @@ import java.util.Observer;
  *
  */
 
-public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iterable<Quiz>, Observer {
+public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable,
+		Iterable<Quiz>, Observer {
 	private ArrayList<Quiz> quizcatalogus;
 	private int hoogsteID;
 
@@ -30,7 +31,8 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	}
 
 	/**
-	 * Maakt een nieuwe QuizCatalogus aan van een reeds bestaande lijst van quizzen
+	 * Maakt een nieuwe QuizCatalogus aan van een reeds bestaande lijst van
+	 * quizzen
 	 *
 	 * @param qc
 	 *            een lijst van quizzen
@@ -69,7 +71,8 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 * @param Q
 	 *            de toe te voegen Quiz
 	 * @throws IllegalArgumentException
-	 *             als het onderwerp van de meegegeven Quiz al voorkomt in de QuizCatalogus
+	 *             als het onderwerp van de meegegeven Quiz al voorkomt in de
+	 *             QuizCatalogus
 	 */
 	public void addQuiz(Quiz Q) throws IllegalArgumentException {
 		if (onderwerpBestaatAl(Q.getOnderwerp())) {
@@ -93,13 +96,15 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	 * @param Q
 	 *            de te verwijderen Quiz
 	 * @throws IllegalStateException
-	 *             als de quiz zich niet in de status 'In constructie' of 'Afgewerkt' bevindt en dus niet verwijderbaar
-	 *             is
+	 *             als de quiz zich niet in de status 'In constructie' of
+	 *             'Afgewerkt' bevindt en dus niet verwijderbaar is
 	 */
 	public void removeQuiz(Quiz Q) throws IllegalStateException {
 		if (!Q.isVerwijderbaar()) {
-			throw new IllegalStateException(String.format(
-					"De quiz bevindt zich in de status %s en is dus niet verwijderbaar", Q.getQuizStatus().toString()));
+			throw new IllegalStateException(
+					String.format(
+							"De quiz bevindt zich in de status %s en is dus niet verwijderbaar",
+							Q.getQuizStatus().toString()));
 		}
 		if (Q.getID() == hoogsteID) {
 			hoogsteID--;
@@ -139,13 +144,16 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	public int count() {
 		return this.quizcatalogus.size();
 	}
-	
+
 	/**
 	 * Haalt de Quiz op uit de QuizCatalogus met een bepaalde ID
 	 * 
-	 * @param quizID de ID van de gewenste Quiz
+	 * @param quizID
+	 *            de ID van de gewenste Quiz
 	 * @return de Quiz met matchende ID
-	 * @throws IllegalArgumentException wanneer er geen Quiz object gevonden wordt met de meegegeven ID
+	 * @throws IllegalArgumentException
+	 *             wanneer er geen Quiz object gevonden wordt met de meegegeven
+	 *             ID
 	 */
 	public Quiz getQuiz(int quizID) throws IllegalArgumentException {
 		for (Quiz quiz : this) {
@@ -153,25 +161,31 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 				return quiz;
 			}
 		}
-		throw new IllegalArgumentException("De QuizCatalogus bevat geen Quiz met ID=" + quizID);
+		throw new IllegalArgumentException(
+				"De QuizCatalogus bevat geen Quiz met ID=" + quizID);
 	}
-	
+
 	/**
-	 * Geeft en lijst terug met alle quizzen uit de QuizCatalogus die de meegegeven Leerling mag maken
+	 * Geeft en lijst terug met alle quizzen uit de QuizCatalogus die de
+	 * meegegeven Leerling mag maken
 	 * 
-	 * @param leerling de Leerling waarvoor de geldige quizzen opgehaald worden
-	 * @return een ArrayList&lt;Quiz&gt; met alle mogelijke quizzen voor de Leerling
+	 * @param leerling
+	 *            de Leerling waarvoor de geldige quizzen opgehaald worden
+	 * @return een ArrayList&lt;Quiz&gt; met alle mogelijke quizzen voor de
+	 *         Leerling
 	 */
 	public ArrayList<Quiz> getMogelijkeQuizzenVoor(Leerling leerling) {
 		ArrayList<Quiz> quizzen = new ArrayList<Quiz>();
-		
+
 		for (Quiz quiz : this) {
-			if (quiz.isDeelnameMogelijk() && quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
+			if (quiz.isDeelnameMogelijk()
+					&& quiz.isGeldigLeerjaar(leerling.getLeerjaar())) {
 				if (!quiz.getIsUniekeDeelname()) {
 					quizzen.add(quiz);
 				} else {
 					boolean heeftAlDeelgenomen = false;
-					for (QuizDeelname quizDeelname : leerling.getQuizDeelnames()) {
+					for (QuizDeelname quizDeelname : leerling
+							.getQuizDeelnames()) {
 						if (quizDeelname.getQuiz().equals(quiz)) {
 							heeftAlDeelgenomen = true;
 						}
@@ -182,30 +196,41 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 				}
 			}
 		}
-		
+
 		return quizzen;
 	}
-	
+
 	/**
 	 * Geeft een lijst terug van al de quizzen waaraan al is deelgenomen
 	 * 
-	 * @return een ArrayList&lt;Quiz&gt; van al de quizzen waaraan al is deelgenomen
+	 * @return een ArrayList&lt;Quiz&gt; van al de quizzen waaraan al is
+	 *         deelgenomen
 	 */
 	public ArrayList<Quiz> getReedsIngevuldeQuizzen() {
 		ArrayList<Quiz> reedsIngevuldeQuizzen = new ArrayList<Quiz>();
 		for (Quiz quiz : this) {
-			if(quiz.getQuizDeelnames().size() > 0) {
+			if (quiz.getQuizDeelnames().size() > 0) {
 				reedsIngevuldeQuizzen.add(quiz);
 			}
 		}
 		return reedsIngevuldeQuizzen;
 	}
-	
+
 	@Override
 	public void update(Observable observable, Object dataObject) {
-		if (onderwerpBestaatAl((String)dataObject)) {
-			throw new IllegalArgumentException(
-					"In de catalogus zit al een quiz met een onderwerp dat equivalent is aan dat van de meegegeven Quiz");
+		if (observable instanceof Quiz) {
+			Quiz observedQuiz = (Quiz) observable;
+			for (Quiz quiz : this) {
+				if (quiz.getID() != observedQuiz.getID()) {
+					if (vormOmNaarElementairOnderwerp((String) dataObject)
+							.equalsIgnoreCase(
+									vormOmNaarElementairOnderwerp(quiz
+											.getOnderwerp()))) {
+						throw new IllegalArgumentException(
+								"In de catalogus zit al een quiz met een onderwerp dat equivalent is aan dat van de meegegeven Quiz");
+					}
+				}
+			}
 		}
 	}
 
@@ -277,7 +302,8 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 
 	private boolean onderwerpBestaatAl(String onderwerp) {
 		for (Quiz quiz : quizcatalogus) {
-			if (vormOmNaarElementairOnderwerp(onderwerp).equalsIgnoreCase(vormOmNaarElementairOnderwerp(quiz.getOnderwerp()))) {
+			if (vormOmNaarElementairOnderwerp(onderwerp).equalsIgnoreCase(
+					vormOmNaarElementairOnderwerp(quiz.getOnderwerp()))) {
 				return true;
 			}
 		}
@@ -285,7 +311,8 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	}
 
 	private String vormOmNaarElementairOnderwerp(String onderwerp) {
-		String[] teNegeren = new String[] { "de", "een", "het", "met", "van", "in" };
+		String[] teNegeren = new String[] { "de", "een", "het", "met", "van",
+				"in" };
 
 		onderwerp = onderwerp.toLowerCase();
 		String[] woorden = onderwerp.split(" ");
@@ -324,10 +351,9 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 
 		return result;
 	}
-	
+
 	private String scheiding() {
 		return "\n----------------------------------------------------------------------------------------------------\n";
 	}
-
 
 }

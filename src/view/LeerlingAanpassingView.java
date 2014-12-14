@@ -174,10 +174,6 @@ public class LeerlingAanpassingView extends JFrame  {
 	public void addLeerlingBewarenListener(ActionListener listener) {
 		btnLeerlingBewaren.addActionListener(listener);
 	}
-
-	public void openQuizDeelnamesListener(ActionListener listener) {
-		btnQuizDeelnames.addActionListener(listener);
-	}
 	
 	/**
 	 * getters & setters (textboxen)
