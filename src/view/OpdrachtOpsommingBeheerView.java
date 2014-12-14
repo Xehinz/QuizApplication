@@ -8,9 +8,10 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import view.OpdrachtAanpassingView;
+import view.viewInterfaces.IOpdrachtOpsommingBeheerView;
 
 @SuppressWarnings("serial")
-public class OpdrachtOpsommingBeheerView extends OpdrachtAanpassingView {
+public class OpdrachtOpsommingBeheerView extends OpdrachtAanpassingView implements IOpdrachtOpsommingBeheerView {
 
 	protected JLabel lblInJuisteVolgorde;
 	protected JCheckBox chbInJuisteVolgorde;

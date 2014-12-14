@@ -9,9 +9,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import view.OpdrachtAanpassingView;
+import view.viewInterfaces.IOpdrachtReproductieBeheerView;
 
 @SuppressWarnings("serial")
-public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView {
+public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView implements IOpdrachtReproductieBeheerView {
 
 	protected JLabel lblMinimumAantalTrefwoorden;
 	protected JTextField txtMinimumAantalTrefwoorden;

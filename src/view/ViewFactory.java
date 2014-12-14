@@ -2,9 +2,6 @@ package view;
 
 import java.util.Properties;
 
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
 import view.viewInterfaces.IOpdrachtDeelnameViewFactory;
 import view.viewInterfaces.IView;
 
@@ -59,7 +56,35 @@ public class ViewFactory {
 			if (settings.getProperty("mainleraar").equals("MainLeraarView")) {
 				return new MainLeraarView();
 			}
-		}
+		case OpdrachtBeheerView:
+			if (settings.getProperty("opdrachtbeheer").equals("OpdrachtBeheerView")) {
+				return new OpdrachtBeheerView();
+			}
+		case OpdrachtAanpassingView:
+			if (settings.getProperty("opdrachtaanpassing").equals("OpdrachtAanpassingView")) {
+				return new OpdrachtAanpassingView();
+			}
+		case OpdrachtMeerkeuzeBeheerView:
+			if (settings.getProperty("opdrachtmeerkeuzebeheer").equals("OpdrachtMeerkeuzeBeheerView")) {
+				return new OpdrachtMeerkeuzeBeheerView();
+			}
+		case OpdrachtOpsommingBeheerView:
+			if (settings.getProperty("opdrachtopsommingbeheerview").equals("OpdrachtOpsommingBeheerView")) {
+				return new OpdrachtOpsommingBeheerView();
+			}
+		case OpdrachtReproductieBeheerView:
+			if (settings.getProperty("opdrachtreproductiebeheerview").equals("OpdrachtReproductieBeheerView")) {
+				return new OpdrachtReproductieBeheerView();
+			}
+		case BeheerLeerlingView:
+			if (settings.getProperty("beheerleerlingview").equals("BeheerLeerlingView")) {
+				return new BeheerLeerlingView();
+			}
+		case LeerlingAanpassingView:
+			if (settings.getProperty("leerlingaanpassingview").equals("LeerlingAanpassingView")) {
+				return new LeerlingAanpassingView();
+			}
+		}	
 		return null;
 	}
 

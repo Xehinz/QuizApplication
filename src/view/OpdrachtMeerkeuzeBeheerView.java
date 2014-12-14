@@ -8,9 +8,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import view.OpdrachtAanpassingView;
+import view.viewInterfaces.IOpdrachtMeerkeuzeBeheerView;
 
 @SuppressWarnings("serial")
-public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView {
+public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView implements IOpdrachtMeerkeuzeBeheerView {
 
 	protected JLabel lblMogelijkeAntwoordenMeerkeuze;
 	protected JTextField txtMogelijkeAntwoordenMeerkeuze;

@@ -12,9 +12,7 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import model.Leerling;
 import model.Leraar;

@@ -1,27 +1,23 @@
 package controller;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 
 import model.Leerling;
 import model.Leraar;
 import persistency.DBHandler;
-import view.BeheerLeerlingView;
 import view.QuizScoresRapportView;
-import view.viewInterfaces.IQuizScoresRapportView;
+import view.ViewFactory;
+import view.ViewType;
+import view.viewInterfaces.IBeheerLeerlingView;
+import view.viewInterfaces.IView;
 
 /**
  * 
@@ -32,7 +28,8 @@ import view.viewInterfaces.IQuizScoresRapportView;
 public class BeheerLeerlingController {
 
 	private DBHandler aDBHandler;
-	private BeheerLeerlingView aView;
+	private ViewFactory viewFactory;
+	private IBeheerLeerlingView aView;
 	private Leerling aLeerling;
 	private Leraar aLeraar;
 	private BeheerLeerlingTableModel aTabelModel = new BeheerLeerlingTableModel();
@@ -43,9 +40,10 @@ public class BeheerLeerlingController {
 	 * @param aLeraar
 	 * @param aView
 	 */
-	public BeheerLeerlingController(DBHandler aHandler, Leraar aLeraar, BeheerLeerlingView aView) {
+	public BeheerLeerlingController(DBHandler aHandler, Leraar aLeraar, ViewFactory viewFactory) {
 		this.setDBHandler(aHandler);
-		this.setBeheerLeerlingView(aView);
+		this.viewFactory = viewFactory;
+		this.aView = (IBeheerLeerlingView)viewFactory.maakView(ViewType.BeheerLeerlingView);
 		this.setLeerling(aLeerling);
 		this.setLeraar(aLeraar);
 		
@@ -54,11 +52,15 @@ public class BeheerLeerlingController {
 		aTabelModel.setLeerlingen(aDBHandler.getLeerlingContainer().getLeerlingen());
 
 	}
+	
+	public IView getView() {
+		return aView;
+	}
 		
 	/**
 	 * Toevoegen van action listeners en loaden van tabel
 	 */
-	private void AddListeners(BeheerLeerlingView aView){
+	private void AddListeners(IBeheerLeerlingView aView){
 		aView.setTableModel(aTabelModel);
 		// Windows
 		aView.addFrameWindowListener(new FrameWindowListener());
@@ -66,14 +68,13 @@ public class BeheerLeerlingController {
 		aView.addNieuweLeerlingListener(new NieuweLeerlingListener());
 		aView.addAanpassenLeerlingListener(new AanpassenLeerlingListener());
 		aView.addVerwijderLeerlingListener(new VerwijderLeerlingListener());
-		aView.addLeerlingScoresListener(new ScoresLeerlingListener());
-		
-		//aView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		aView.addLeerlingScoresListener(new ScoresLeerlingListener());		
+
 		aView.setVisible(true);		
 	}
 	
 	private void openLeerlingAanpassing(Leerling aLeerling, Leraar aLeraar) {
-		new LeerlingAanpassingController(aLeerling, aLeraar, getDBHandler());
+		new LeerlingAanpassingController(aLeerling, aLeraar, getDBHandler(), viewFactory);
 	}
 
 	/**
@@ -164,13 +165,6 @@ public class BeheerLeerlingController {
 	}
 	private void setDBHandler(DBHandler aDBHandler) {
 		this.aDBHandler = aDBHandler;
-	}
-
-	private BeheerLeerlingView getBeheerLeerlingView(){
-		return this.aView;
-	}
-	private void setBeheerLeerlingView(BeheerLeerlingView aView) {
-		this.aView = aView;
 	}
 	
 	public Leerling getLeerling() {

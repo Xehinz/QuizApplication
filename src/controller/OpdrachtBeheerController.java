@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -18,21 +17,24 @@ import model.OpdrachtCategorie;
 import model.Opsomming;
 import model.Reproductie;
 import persistency.DBHandler;
-import view.OpdrachtAanpassingView;
-import view.OpdrachtBeheerView;
+import view.ViewFactory;
+import view.ViewType;
+import view.viewInterfaces.IOpdrachtBeheerView;
 
 public class OpdrachtBeheerController {
 
 	private DBHandler dbHandler;
-	private OpdrachtBeheerView view;
+	private ViewFactory viewFactory;
+	private IOpdrachtBeheerView view;
 	private Opdracht opdracht;
 	private Leraar leraar;
 
 	public OpdrachtBeheerController(DBHandler dbHandler, Leraar leraar,
-			OpdrachtBeheerView view) {
+			ViewFactory viewFactory) {
 		this.setDBHandler(dbHandler);
 		this.leraar = leraar;
-		this.view = view;
+		this.viewFactory = viewFactory;
+		this.view = (IOpdrachtBeheerView)viewFactory.maakView(ViewType.OpdrachtBeheerView);
 		this.opdracht = null;
 
 		view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten());
@@ -59,17 +61,17 @@ public class OpdrachtBeheerController {
 		this.dbHandler = dbHandler;
 	}
 
-	public OpdrachtBeheerView getView() {
+	public IOpdrachtBeheerView getView() {
 		return this.view;
 	}
 
 	private void openOpdrachtAanpassing(Opdracht opdracht, Leraar leraar) {
-		new OpdrachtAanpassingController(opdracht, leraar, dbHandler, this);
+		new OpdrachtAanpassingController(opdracht, leraar, dbHandler, this, viewFactory);
 	}
 
 	private void openOpdrachtBekijken(Opdracht opdracht, Leraar leraar) {
 		OpdrachtAanpassingController OAC = new OpdrachtAanpassingController(
-				opdracht, leraar, dbHandler, this);
+				opdracht, leraar, dbHandler, this, viewFactory);
 		OAC.getView().disableAanpassen();
 	}
 
@@ -175,6 +177,7 @@ public class OpdrachtBeheerController {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	class OpdrachtListCellRenderer extends JLabel implements
 			ListCellRenderer<Opdracht> {
 

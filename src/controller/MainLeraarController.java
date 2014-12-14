@@ -23,9 +23,7 @@ import model.Leraar;
 import model.score.ScoreStrategyType;
 import persistency.DBHandler;
 import persistency.StorageStrategy;
-import view.BeheerLeerlingView;
 import view.DBConnectieGegevensView;
-import view.OpdrachtBeheerView;
 import view.QuizBeheerView;
 import view.ViewFactory;
 import view.ViewType;
@@ -51,8 +49,6 @@ public class MainLeraarController extends Observable {
 	private BeheerLeerlingController beheerLeerlingController;
 
 	private QuizBeheerView quizBeheerView;
-	private OpdrachtBeheerView opdrachtBeheerView;
-	private BeheerLeerlingView beheerLeerlingView;
 	private DBConnectieGegevensView connectieGegevensView;
 
 	private ViewFactory viewFactory;
@@ -156,17 +152,16 @@ public class MainLeraarController extends Observable {
 		public void actionPerformed(ActionEvent event) {
 			if (!opdrachtBeheerStaatOpen) {
 				opdrachtBeheerStaatOpen = true;
-				opdrachtBeheerView = new OpdrachtBeheerView();
 				opdrachtBeheerController = new OpdrachtBeheerController(
-						dbHandler, leraar, opdrachtBeheerView);
-				opdrachtBeheerView.addWindowListener(new WindowAdapter() {
+						dbHandler, leraar, viewFactory);
+				opdrachtBeheerController.getView().addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
 						opdrachtBeheerStaatOpen = false;
 					}
 				});
 			} else {
-				opdrachtBeheerView.toFront();
+				opdrachtBeheerController.getView().toFront();
 			}
 		}
 
@@ -200,17 +195,16 @@ public class MainLeraarController extends Observable {
 		public void actionPerformed(ActionEvent event) {
 			if (!leerlingBeheerStaatOpen) {
 				leerlingBeheerStaatOpen = true;
-				beheerLeerlingView = new BeheerLeerlingView();
 				beheerLeerlingController = new BeheerLeerlingController(
-						dbHandler, leraar, beheerLeerlingView);
-				beheerLeerlingView.addWindowListener(new WindowAdapter() {
+						dbHandler, leraar, viewFactory);
+				beheerLeerlingController.getView().addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {
 						leerlingBeheerStaatOpen = false;
 					}
 				});
 			} else {
-				beheerLeerlingView.toFront();
+				beheerLeerlingController.getView().toFront();
 			}
 		}
 	}

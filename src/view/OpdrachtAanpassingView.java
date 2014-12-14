@@ -20,11 +20,12 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
+import view.viewInterfaces.IOpdrachtAanpassingView;
 import model.Leraar;
 import model.OpdrachtCategorie;
 
 @SuppressWarnings("serial")
-public class OpdrachtAanpassingView extends JFrame {
+public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassingView {
 
 	private JButton btnOpslaan = new JButton("Opslaan");
 	private JButton btnAddHint = new JButton("vv Voeg hint toe vv");

@@ -12,14 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import model.Leerling;
-import model.Leraar;
+import view.viewInterfaces.ILeerlingAanpassingView;
 
 @SuppressWarnings("serial")
-public class LeerlingAanpassingView extends JFrame  {
-
-	private Leerling aLeerling;
-	private Leraar aLeraar;
+public class LeerlingAanpassingView extends JFrame implements ILeerlingAanpassingView {
 
 	//SWINGFIELDS	
 	private GridBagLayout layout;
@@ -28,16 +24,13 @@ public class LeerlingAanpassingView extends JFrame  {
 	private JButton btnLeerlingBewaren, btnQuizDeelnames;
 	private JTextField txtID, txtVoornaam, txtFamilienaam, txtLeerjaar;
 
-	public LeerlingAanpassingView(Leerling aLeerling, Leraar aLeraar) {
+	public LeerlingAanpassingView() {
 		super("Leerling");
 		this.setSize(400, 300);		
 		this.setLocationRelativeTo(null);
 		
 		layout = new GridBagLayout();
 		this.setLayout(layout);
-				
-		this.aLeerling = aLeerling;
-		this.aLeraar = aLeraar;
 		
 		//INIT BUTTONS
 		btnLeerlingBewaren = new JButton("Leerling bewaren");
@@ -181,6 +174,7 @@ public class LeerlingAanpassingView extends JFrame  {
 	public String getID() {
 		return txtID.getText();
 	}
+	
 	public void setID(int id) {
 		 txtID.setText(Integer.toString(id));
 	}
@@ -188,6 +182,7 @@ public class LeerlingAanpassingView extends JFrame  {
 	public String getVoornaam() {
 		return txtVoornaam.getText();
 	}
+	
 	public void setVoornaam(String voornaam) {
 		 txtVoornaam.setText(voornaam);
 	}
@@ -195,6 +190,7 @@ public class LeerlingAanpassingView extends JFrame  {
 	public String getFamilienaam() {
 		return txtFamilienaam.getText();
 	}
+	
 	public void setFamilienaam(String familienaam) {
 		 txtFamilienaam.setText(familienaam);
 	}
@@ -202,6 +198,7 @@ public class LeerlingAanpassingView extends JFrame  {
 	public int getLeerjaar() {
 		return Integer.parseInt(txtLeerjaar.getText());
 	}
+	
 	public void setLeerjaar(int leerjaar) {
 		 txtLeerjaar.setText(Integer.toString(leerjaar));
 	}

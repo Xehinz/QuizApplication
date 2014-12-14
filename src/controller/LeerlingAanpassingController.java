@@ -2,39 +2,27 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
-import controller.OpdrachtBeheerController.NieuweKlassiekeKnopListener;
-import controller.OpdrachtBeheerController.NieuweMeerkeuzeKnopListener;
 import model.Leerling;
 import model.Leraar;
-import model.Meerkeuze;
-import model.Opdracht;
-import model.OpdrachtCategorie;
-import model.Opsomming;
-import model.Reproductie;
+
 import persistency.DBHandler;
-import view.LeerlingAanpassingView;
-import view.OpdrachtMeerkeuzeBeheerView;
-import view.OpdrachtOpsommingBeheerView;
-import view.OpdrachtReproductieBeheerView;
+import view.ViewFactory;
+import view.ViewType;
+import view.viewInterfaces.ILeerlingAanpassingView;
 
 public class LeerlingAanpassingController {
 
-	private LeerlingAanpassingView aView;
+	private ILeerlingAanpassingView aView;
 	private DBHandler aDBHandler;
 	private Leerling aLeerling;
-	private Leraar aLeraar;
 
 	
 	public LeerlingAanpassingController(Leerling aLeerling, Leraar aLeraar,
-			DBHandler dbHandler) {
-		this.aLeraar = aLeraar;
+			DBHandler dbHandler, ViewFactory viewFactory) {
 		this.aLeerling = aLeerling;
 		this.aDBHandler = dbHandler;
-		this.aView = new LeerlingAanpassingView(aLeerling, aLeraar);
+		this.aView = (ILeerlingAanpassingView)viewFactory.maakView(ViewType.LeerlingAanpassingView);
 		
 		aView.setID(aLeerling.getID());
 		aView.setVoornaam(aLeerling.getLeerlingVoornaam());

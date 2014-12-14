@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 
+import view.viewInterfaces.IOpdrachtBeheerView;
 import model.Opdracht;
 import model.OpdrachtCategorie;
 
 @SuppressWarnings("serial")
-public class OpdrachtBeheerView extends JFrame {
+public class OpdrachtBeheerView extends JFrame implements IOpdrachtBeheerView {
 
 	private JButton btnNieuweKlassieke = new JButton(
 			"Nieuwe klassieke opdracht");

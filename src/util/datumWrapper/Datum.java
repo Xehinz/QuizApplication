@@ -71,17 +71,19 @@ public class Datum implements Comparable<Datum> {
 	 *             als de input String van een foutief formaat is of als de datumwaarde ongeldig is
 	 */
 	public Datum(String datum) {
-		String[] parts = datum.replace("'","").substring(0,10).split("/|-");
+		String[] parts = datum.split(" ");
+		String datumString = parts[0].trim();
+		String[] dateParts = datumString.split("/|-");
 		
 		//Europese notatie = DD/MM/YYYY
-		String dag = parts[0];
-		String maand = parts[1];
-		String jaar = parts[2];
+		String dag = dateParts[0];
+		String maand = dateParts[1];
+		String jaar = dateParts[2];
 		
 		//MySQL notatie = YYYY-MM-DD
 		if (dag.length() == 4 && jaar.length() <= 2) {
-			dag = parts[2];
-			jaar = parts[0];
+			dag = dateParts[2];
+			jaar = dateParts[0];
 		}
 		
 		try {

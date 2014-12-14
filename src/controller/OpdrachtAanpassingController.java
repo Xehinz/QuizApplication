@@ -4,13 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
-import controller.OpdrachtBeheerController.BekijkDetailsKnopListener;
-import controller.OpdrachtBeheerController.NieuweKlassiekeKnopListener;
-import controller.OpdrachtBeheerController.PasOpdrachtAanKnopListener;
-import controller.OpdrachtBeheerController.VerwijderOpdrachtKnopListener;
 import model.KlassiekeOpdracht;
 import model.Leraar;
 import model.Meerkeuze;
@@ -19,35 +12,36 @@ import model.OpdrachtCategorie;
 import model.Opsomming;
 import model.Reproductie;
 import persistency.DBHandler;
-import view.OpdrachtAanpassingView;
-import view.OpdrachtBeheerView;
 import view.OpdrachtMeerkeuzeBeheerView;
 import view.OpdrachtOpsommingBeheerView;
 import view.OpdrachtReproductieBeheerView;
-import view.QuizAanpassingView;
+import view.ViewFactory;
+import view.ViewType;
+import view.viewInterfaces.IOpdrachtAanpassingView;
+import view.viewInterfaces.IOpdrachtMeerkeuzeBeheerView;
+import view.viewInterfaces.IOpdrachtOpsommingBeheerView;
+import view.viewInterfaces.IOpdrachtReproductieBeheerView;
 
 public class OpdrachtAanpassingController {
-	private OpdrachtAanpassingView view;
+	private IOpdrachtAanpassingView view;
 	private DBHandler dbHandler;
 	private Opdracht opdracht;
-	private Leraar leraar;
 	private OpdrachtBeheerController opdrachtBeheerController;
 
 	public OpdrachtAanpassingController(Opdracht opdracht, Leraar leraar,
 			DBHandler dbHandler,
-			OpdrachtBeheerController opdrachtBeheerController) {
+			OpdrachtBeheerController opdrachtBeheerController, ViewFactory viewFactory) {
 		this.opdracht = opdracht;
-		this.leraar = leraar;
 		this.dbHandler = dbHandler;
 		this.opdrachtBeheerController = opdrachtBeheerController;
 
 		if (opdracht instanceof KlassiekeOpdracht) {
-			view = new OpdrachtAanpassingView();
+			view = (IOpdrachtAanpassingView)viewFactory.maakView(ViewType.OpdrachtAanpassingView);
 			setAlgemeneComponenten(view);
 		}
 
 		if (opdracht instanceof Meerkeuze) {
-			view = new OpdrachtMeerkeuzeBeheerView();
+			view = (IOpdrachtMeerkeuzeBeheerView)viewFactory.maakView(ViewType.OpdrachtMeerkeuzeBeheerView);
 			setAlgemeneComponenten(view);
 			((OpdrachtMeerkeuzeBeheerView) view)
 					.setMogelijkeAntwoordenMeerkeuze(((Meerkeuze) opdracht)
@@ -55,14 +49,14 @@ public class OpdrachtAanpassingController {
 		}
 
 		if (opdracht instanceof Opsomming) {
-			view = new OpdrachtOpsommingBeheerView();
+			view = (IOpdrachtOpsommingBeheerView)viewFactory.maakView(ViewType.OpdrachtOpsommingBeheerView);
 			setAlgemeneComponenten(view);
 			((OpdrachtOpsommingBeheerView) view)
 					.setInJuisteVolgorde(((Opsomming) opdracht)
 							.getInJuisteVolgorde());
 		}
 		if (opdracht instanceof Reproductie) {
-			view = new OpdrachtReproductieBeheerView();
+			view = (IOpdrachtReproductieBeheerView)viewFactory.maakView(ViewType.OpdrachtReproductieBeheerView);
 			setAlgemeneComponenten(view);
 			((OpdrachtReproductieBeheerView) view)
 					.setMinimumAantalTrefwoorden(((Reproductie) opdracht)
@@ -70,7 +64,7 @@ public class OpdrachtAanpassingController {
 		}
 	}
 
-	public void setAlgemeneComponenten(OpdrachtAanpassingView view) {
+	private void setAlgemeneComponenten(IOpdrachtAanpassingView view) {
 		view.setOpdrachtCategorie(getOpdracht().getOpdrachtCategorie());
 		view.setAuteur(getOpdracht().getAuteur());
 		view.setVraag(getOpdracht().getVraag());
@@ -91,7 +85,7 @@ public class OpdrachtAanpassingController {
 		return opdracht;
 	}
 
-	public OpdrachtAanpassingView getView() {
+	public IOpdrachtAanpassingView getView() {
 		return this.view;
 	}
 

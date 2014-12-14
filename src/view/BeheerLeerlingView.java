@@ -5,10 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowListener;
-import java.util.Collection;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,10 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import model.Leerling;
+import view.viewInterfaces.IBeheerLeerlingView;
 
 /**
  * @author Johan Boogers
@@ -28,7 +24,7 @@ import model.Leerling;
  */
 
 @SuppressWarnings("serial")
-public class BeheerLeerlingView extends JFrame {
+public class BeheerLeerlingView extends JFrame implements IBeheerLeerlingView {
 
 	private JPanel aKnoppenVeld = new JPanel();
 	private GridBagLayout aGBLayout = new GridBagLayout();
@@ -152,6 +148,15 @@ public class BeheerLeerlingView extends JFrame {
 	public int getGeselecteerdeRij() {
 		return aLeerlingTabel.getSelectedRow();
 	}
+
+	/**
+	 * Een message tonen op het scherm (JOptionPane)
+	 * @param boodschap
+	 * @param titel
+	 */
+	public void toonInformationDialog(String boodschap, String titel) {
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
+	}
 	
 	/**
 	 * Instellen van de breedten van de verschillende kolommen van de JTable
@@ -162,15 +167,6 @@ public class BeheerLeerlingView extends JFrame {
 		aJTable.getColumnModel().getColumn(1).setPreferredWidth(140); //Voornaam
 		aJTable.getColumnModel().getColumn(2).setPreferredWidth(190); //Familienaam
 		aJTable.getColumnModel().getColumn(3).setPreferredWidth(50);  //Leerjaar
-	}
-
-	/**
-	 * Een message tonen op het scherm (JOptionPane)
-	 * @param boodschap
-	 * @param titel
-	 */
-	public void toonInformationDialog(String boodschap, String titel) {
-		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 }
