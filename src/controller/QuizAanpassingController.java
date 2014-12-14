@@ -189,10 +189,11 @@ public class QuizAanpassingController {
 			quiz.setDoelLeerjaren(klassenArray);
 			quiz.setOnderwerp(onderwerp);
 			quiz.setIsTest(isTest);
-			quiz.setIsUniekeDeelname(isUniekeDeelname);
-			quiz.setQuizStatus(status);			
+			quiz.setIsUniekeDeelname(isUniekeDeelname);					
 			
-				// ONTKOPPEL ALLES
+			
+			if (quiz.isAanpasbaar()) {
+			// ONTKOPPEL ALLES
 			for(QuizOpdracht qo : quiz.getQuizOpdrachten()) {
 				qo.ontkoppelOpdrachtVanQuiz();				
 			}
@@ -200,7 +201,10 @@ public class QuizAanpassingController {
 			for (int i = 0; i<quizOpdrachtenTabelModel.getQuizOpdrachten().size(); i++) {
 				
 				QuizOpdracht.koppelOpdrachtAanQuiz(quiz, quizOpdrachtenTabelModel.getOpdracht(i), quizOpdrachtenTabelModel.getMaxScore(i));
-			}			
+			}	
+			}
+			
+			quiz.setQuizStatus(status);	
 			
 			// ADD QUIZ TO DB
 			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {  
@@ -399,7 +403,7 @@ public class QuizAanpassingController {
 		
 		@Override
 		public boolean isCellEditable(int row, int col) {
-		     if(col == 3) {
+		     if(col == 3 && quiz.isAanpasbaar()) {
 		    	 return true;
 		     } else {
 		    	 return false;
