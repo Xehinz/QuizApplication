@@ -20,7 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 @SuppressWarnings("serial")

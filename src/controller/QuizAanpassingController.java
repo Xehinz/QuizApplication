@@ -194,23 +194,23 @@ public class QuizAanpassingController {
 			
 			if (quiz.isAanpasbaar()) {
 			// ONTKOPPEL ALLES
-			for(QuizOpdracht qo : quiz.getQuizOpdrachten()) {
-				qo.ontkoppelOpdrachtVanQuiz();				
-			}
+				for(QuizOpdracht qo : quiz.getQuizOpdrachten()) {
+					qo.ontkoppelOpdrachtVanQuiz();				
+				}
 				// KOPPEL ALLES
-			for (int i = 0; i<quizOpdrachtenTabelModel.getQuizOpdrachten().size(); i++) {
-				
-				QuizOpdracht.koppelOpdrachtAanQuiz(quiz, quizOpdrachtenTabelModel.getOpdracht(i), quizOpdrachtenTabelModel.getMaxScore(i));
-			}	
+				for (int i = 0; i<quizOpdrachtenTabelModel.getQuizOpdrachten().size(); i++) {				
+					QuizOpdracht.koppelOpdrachtAanQuiz(quiz, quizOpdrachtenTabelModel.getOpdracht(i), quizOpdrachtenTabelModel.getMaxScore(i));
+				}	
 			}
 			
 			quiz.setQuizStatus(status);	
 			
 			// ADD QUIZ TO DB
 			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {  
-				dbHandler.getQuizCatalogus().addQuiz(quiz); //Add quiz to DB
+				dbHandler.getQuizCatalogus().addQuiz(quiz);
 			}			
 			view.toonInformationDialog("Quiz bewaard", "Ok");
+			
 			// SET VIEW WITH NEW QUIZ
 			quiz = new Quiz(leraar);
 			quizBeheerController.updateTabel();
@@ -411,8 +411,8 @@ public class QuizAanpassingController {
 		}
 		
 		@Override  
-	    public Class<?> getColumnClass(int col) {  
-	        if (col == 3)       //MaxScore moet int zijn
+	    public Class<?> getColumnClass(int col) {  //MaxScore moet int zijn
+	        if (col == 3)       
 	            return Integer.class;  
 	        else return String.class;
 		}
