@@ -92,7 +92,7 @@ public class QuizBeheerController {
 						"Selecteer een quiz om aan te passen", "Fout");
 				return;
 			}
-			openQuizAanpassing(quiz, quiz.getAuteur());
+			openQuizAanpassing(quiz, leraar);
 		}
 	}
 

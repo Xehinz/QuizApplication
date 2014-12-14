@@ -60,11 +60,10 @@ public class QuizAanpassingView extends JFrame {
 	/**
 	 * Default constructor met parameters
 	 * @param quiz
-	 * @param ingelogde leraar
 	 * @param dbHandler
 	 * 
 	 */
-	public QuizAanpassingView(Quiz quiz, Leraar leraar, DBHandler dbHandler) {
+	public QuizAanpassingView(Quiz quiz, DBHandler dbHandler) {
 		//Set JFrame
 		super("Quiz");
 		this.setSize(1200, 800);		
@@ -367,10 +366,8 @@ public class QuizAanpassingView extends JFrame {
 	 */	
 	public void setViewToQuiz(Quiz quiz) {
 		txtOnderwerp.setText(quiz.getOnderwerp());
-		txtOnderwerp.setEditable(quiz.isAanpasbaar());
-		txtLeraar.setEditable(true); //TODO testen of dit nodig is
+		txtOnderwerp.setEditable(quiz.isAanpasbaar());		
 		txtLeraar.setText(quiz.getAuteur().toString());
-		txtLeraar.setEditable(false);
 		txtKlas.setText(quiz.getDoelLeerjaren().toString());
 		txtKlas.setEditable(quiz.isAanpasbaar());
 		cmbStatus.setSelectedItem(quiz.getQuizStatus());

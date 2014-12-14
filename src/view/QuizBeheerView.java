@@ -102,8 +102,6 @@ public class QuizBeheerView extends JFrame {
 		SwingUtilities.updateComponentTreeUI(this);		
 	}	
 	
-	//TODO btnVerwijderQuiz disabled als quiz niet verwijderbaar is.
-	
 	public void addNieuweQuizKnopActionListener(ActionListener listener) {
 		btnNieuweQuiz.addActionListener(listener);
 	}

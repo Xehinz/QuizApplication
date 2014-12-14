@@ -45,6 +45,7 @@ public class QuizAanpassingController {
 	private QuizOpdrachtenTableModel quizOpdrachtenTabelModel;
 	private TableRowSorter<TableModel> rowSorter;
 	private List<RowSorter.SortKey> sortKeys;
+	private ArrayList<HulpQuizOpdracht> quizOpdrachten;
 	
 	/**
 	 * Default constructor met parameters
@@ -60,8 +61,9 @@ public class QuizAanpassingController {
 		this.dbHandler = dbHandler;
 		alleOpdrachtenTabelModel = new AlleOpdrachtenTableModel();
 		quizOpdrachtenTabelModel = new QuizOpdrachtenTableModel();
-		this.quizBeheerController = quizBeheerController;
-		view = new QuizAanpassingView(quiz, leraar,
+		this.quizBeheerController = quizBeheerController;		
+		setQuizOpdrachtenToQuiz(quiz);
+		view = new QuizAanpassingView(quiz,
 				dbHandler);		
 
 		// Set buttonlisteners
@@ -79,7 +81,7 @@ public class QuizAanpassingController {
 		rowSorter = new TableRowSorter<TableModel>(view.getAlleOpdrachtenTabel().getModel());		
 		view.getAlleOpdrachtenTabel().setRowSorter(rowSorter);
 		
-		loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz.getQuizOpdrachten());
+		loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachten);
 		
 
 		view.setVisible(true);
@@ -90,9 +92,20 @@ public class QuizAanpassingController {
 		return view;
 	}
 	
-	private void loadTables(Collection<Opdracht> alleOpdrachten, Collection<QuizOpdracht> quizOpdrachten) {		
-		quizOpdrachtenTabelModel.setOpdrachten(quiz);
-		alleOpdrachten.removeAll(quizOpdrachten);
+	private void setQuizOpdrachtenToQuiz(Quiz quiz) {
+		quizOpdrachten = new ArrayList<>();
+		for(QuizOpdracht qo : quiz.getQuizOpdrachten()) {
+			quizOpdrachten.add(new HulpQuizOpdracht(qo));
+		}
+	}
+	
+	private void loadTables(Collection<Opdracht> alleOpdrachten, Collection<HulpQuizOpdracht> quizOpdrachten) {		
+		quizOpdrachtenTabelModel.setOpdrachten(quizOpdrachten);
+		ArrayList<Opdracht> teVerwijderenOpdrachten = new ArrayList<>();
+		for(HulpQuizOpdracht hqo : quizOpdrachten) {
+			teVerwijderenOpdrachten.add(hqo.getOpdracht());
+		}		
+		alleOpdrachten.removeAll(teVerwijderenOpdrachten);
 		alleOpdrachtenTabelModel.setOpdrachten(alleOpdrachten);
 		view.setLblAantalOpdrachten();
 	}	
@@ -130,6 +143,8 @@ public class QuizAanpassingController {
 				return;
 			}
 			quizOpdrachtenTabelModel.addOpdracht(opdracht);
+			quizOpdrachten = new ArrayList<>(quizOpdrachtenTabelModel.getOpdrachten());
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachten);
 		}
 	}
 	
@@ -143,6 +158,8 @@ public class QuizAanpassingController {
 				return;
 			}
 			quizOpdrachtenTabelModel.removeOpdracht(view.getSelectieGeselecteerdeOpdrachten());
+			quizOpdrachten = new ArrayList<>(quizOpdrachtenTabelModel.getOpdrachten());
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachten);
 		}
 	}
 	
@@ -152,39 +169,48 @@ public class QuizAanpassingController {
 			String foutboodschap = new String("");
 			// STATUS
 			QuizStatus status = view.getQuizStatuscmb();
-			// TODO Checken of status geldig is.				
-			// KLAS
-			String klas = view.getKlasTxt();
-			if (klas.equals("")) {
-				foutboodschap += "Geef een klas in./n";
-			}
-			int[] klassenArray = new int[6];
-			try {
-				klas = klas.substring(1, klas.length() - 1);
-				String[] klassen = klas.split(", ");
-				klassenArray = new int[klassen.length];			
-				for (int i = 0; i < (klassen.length); i++) {					
-					klassenArray[i] = Integer.parseInt(klassen[i]);
-					if (klassenArray[i]<0 || klassenArray[i]>6) {
-						throw new IllegalArgumentException();
-					}
-				}
-			} catch (Exception ex) {
-				foutboodschap += "Klassen in foutief formaat, gebruik [4] of [1, 2, 4]./n";
-			}
-			// ONDERWERP
+			// TODO Checken of status geldig is.	
+			//ONDERWERP
 			String onderwerp = view.getOnderwerpTxt();
 			if (onderwerp.equals("")) {
-				foutboodschap += "Geef een onderwerp in. /n";
+				foutboodschap += "<html>Geef een onderwerp in.<br></html>";
 			}
+			// KLAS
+			String klas = view.getKlasTxt();
+			int[] klassenArray = new int[6];
+			if (klas.equals("")) {
+				foutboodschap.concat("<html>Klassen in foutief formaat, gebruik [4] of [1, 2, 4].<br></html>");  //TODO foutboodschap toont slechts 1 fout
+			} else {				
+				try {
+					klas = klas.substring(1, klas.length() - 1);
+					String[] klassen = klas.split(", ");
+					klassenArray = new int[klassen.length];			
+					for (int i = 0; i < (klassen.length); i++) {					
+						klassenArray[i] = Integer.parseInt(klassen[i]);
+						if (klassenArray[i]<0 || klassenArray[i]>6) {
+							throw new IllegalArgumentException();
+						}
+					}
+				} catch (Exception ex) {
+					foutboodschap += "<html>Klassen in foutief formaat, gebruik [4] of [1, 2, 4].<br></html>";
+				}
+			}
+			
 			// TEST & UNIEKEDEELNAME
 			boolean isTest = view.getIsTestckb();
 			boolean isUniekeDeelname = view.getIsUniekeDeelnameckb();
+			// TEST MINSTENS 1 OPDRACHT IN AFGEWERKT
+			if(quizOpdrachtenTabelModel.getOpdrachten().size() == 0 && view.getQuizStatuscmb().toString().equals("Afgewerkt")) {
+				foutboodschap += "<html>ongeldige status, voeg minstens 1 opdracht toe voor <i>afgewerkt</i>.<br></html>";
+			}
+			
 			// TEST OP FOUT
 			if (!foutboodschap.equals("")) {
 				view.toonFoutBoodschap(foutboodschap);
+				view.toonInformationDialog(foutboodschap, "FOUT");
 				return;
 			}
+			
 			// SET		
 			quiz.setDoelLeerjaren(klassenArray);
 			quiz.setOnderwerp(onderwerp);
@@ -215,7 +241,8 @@ public class QuizAanpassingController {
 			quiz = new Quiz(leraar);
 			quizBeheerController.updateTabel();
 			view.setViewToQuiz(quiz);
-			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quiz.getQuizOpdrachten());
+			setQuizOpdrachtenToQuiz(quiz);
+			loadTables(dbHandler.getOpdrachtCatalogus().getOpdrachten(), quizOpdrachten);
 		}		
 	}
 	
@@ -225,12 +252,12 @@ public class QuizAanpassingController {
 			String opdrachtCategorieString = view.getOpdrachtCategorie();
 			if (opdrachtCategorieString.equals("Alle categorieën")) {
 				loadTables(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(), quiz.getQuizOpdrachten());
+						.getOpdrachten(), quizOpdrachten);
 			} else {
 				OpdrachtCategorie OC = OpdrachtCategorie
 						.valueOf(opdrachtCategorieString.toUpperCase());
 				loadTables(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(OC), quiz.getQuizOpdrachten());
+						.getOpdrachten(OC), quizOpdrachten);
 			}
 		}
 	}
@@ -255,10 +282,11 @@ public class QuizAanpassingController {
 		}
 	}
 	
-	class WijzigVolgordeKnopListener implements ActionListener {
+	class WijzigVolgordeKnopListener implements ActionListener {		
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			quizOpdrachtenTabelModel.zetGeselecteerdeOpdrachtEenHoger();
+			quizOpdrachten = new ArrayList<>(quizOpdrachtenTabelModel.getOpdrachten());
 		}		
 	}
 	
@@ -340,15 +368,15 @@ public class QuizAanpassingController {
 
 		public QuizOpdrachtenTableModel() {
 			headers = new String[] { "Cat.", "Type", "Vraag", "Max. Score" };
-			quizOpdrachten = new ArrayList<>();
+			this.quizOpdrachten = new ArrayList<>();
 		}	
 
 		public int getMaxScore(int row) {
-			return quizOpdrachten.get(row).getMaxScore();
+			return this.quizOpdrachten.get(row).getMaxScore();
 		}
 		
 		public ArrayList<HulpQuizOpdracht> getQuizOpdrachten() {
-			return quizOpdrachten;
+			return this.quizOpdrachten;
 		}
 
 		@Override
@@ -358,7 +386,7 @@ public class QuizAanpassingController {
 
 		@Override
 		public int getRowCount() {
-			return quizOpdrachten.size();
+			return this.quizOpdrachten.size();
 		}
 
 		@Override
@@ -368,7 +396,7 @@ public class QuizAanpassingController {
 
 		@Override
 		public Object getValueAt(int row, int col) {
-			HulpQuizOpdracht quizOpdracht = quizOpdrachten.get(row);
+			HulpQuizOpdracht quizOpdracht = this.quizOpdrachten.get(row);
 			Opdracht opdracht = quizOpdracht.getOpdracht();
 			switch (col) {
 			case 0: {
@@ -421,7 +449,7 @@ public class QuizAanpassingController {
 		   public void setValueAt(Object maxScore, int row, int col)
 		   {	  
 				if(col == 3) {
-					quizOpdrachten.get(row).setMaxScore((Integer)maxScore);
+					this.quizOpdrachten.get(row).setMaxScore((Integer)maxScore);
 				}	
 		   }
 		
@@ -431,18 +459,18 @@ public class QuizAanpassingController {
 			if (teVerplaatsenIndex < 0) {
 				return;
 			}
-			teVerplaatsen = quizOpdrachten.get(teVerplaatsenIndex);
+			teVerplaatsen = this.quizOpdrachten.get(teVerplaatsenIndex);
 			if (teVerplaatsenIndex == 0) {
-				quizOpdrachten.remove(0);
-				quizOpdrachten.add(teVerplaatsen);			
+				this.quizOpdrachten.remove(0);
+				this.quizOpdrachten.add(teVerplaatsen);			
 			} else {
-				Collections.swap(quizOpdrachten, teVerplaatsenIndex, teVerplaatsenIndex - 1);
+				Collections.swap(this.quizOpdrachten, teVerplaatsenIndex, teVerplaatsenIndex - 1);
 			}
 			this.fireTableDataChanged();
 		}
 		
 		public boolean bevatReedsOpdracht(Opdracht opdracht) {
-			for (HulpQuizOpdracht quizOpdracht : quizOpdrachten) {
+			for (HulpQuizOpdracht quizOpdracht : this.quizOpdrachten) {
 				if (quizOpdracht.getOpdracht().equals(opdracht)) {
 					return true;
 				}
@@ -450,29 +478,30 @@ public class QuizAanpassingController {
 			return false;
 		}
 		
-		public void setOpdrachten(Quiz quiz) {
-			this.quizOpdrachten = new ArrayList<HulpQuizOpdracht>();
-			for (QuizOpdracht quizOpdracht : quiz.getQuizOpdrachten()) {
-				this.quizOpdrachten.add(new HulpQuizOpdracht(quizOpdracht));
-			}
+		public void setOpdrachten(Collection<HulpQuizOpdracht> quizOpdrachten) {
+			this.quizOpdrachten = new ArrayList<HulpQuizOpdracht>(quizOpdrachten);			
 			this.fireTableDataChanged();
+		}
+		
+		public Collection<HulpQuizOpdracht> getOpdrachten() {
+			return this.quizOpdrachten;
 		}
 
 		public Opdracht getOpdracht(int row) {
 			if (row < quizOpdrachten.size() && row >= 0) {
-				return quizOpdrachten.get(row).getOpdracht();
+				return this.quizOpdrachten.get(row).getOpdracht();
 			}
 			return null;
 		}		
 		
 		public void addOpdracht(Opdracht opdracht) {
-			quizOpdrachten.add(new HulpQuizOpdracht(opdracht, 1));
+			this.quizOpdrachten.add(new HulpQuizOpdracht(opdracht, 1));
 			view.setLblAantalOpdrachten();
 			this.fireTableDataChanged();
 		}
 		
 		public void removeOpdracht(int row) {
-			quizOpdrachten.remove(row);
+			this.quizOpdrachten.remove(row);
 			view.setLblAantalOpdrachten();
 			this.fireTableDataChanged();
 		}
