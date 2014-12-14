@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -20,6 +22,7 @@ import persistency.DBHandler;
 import view.ViewFactory;
 import view.ViewType;
 import view.viewInterfaces.IOpdrachtBeheerView;
+import view.viewInterfaces.IView;
 
 public class OpdrachtBeheerController {
 
@@ -28,16 +31,19 @@ public class OpdrachtBeheerController {
 	private IOpdrachtBeheerView view;
 	private Opdracht opdracht;
 	private Leraar leraar;
+	
+	private OpdrachtenListModel opdrachtenListModel;
 
 	public OpdrachtBeheerController(DBHandler dbHandler, Leraar leraar,
 			ViewFactory viewFactory) {
-		this.setDBHandler(dbHandler);
+		this.dbHandler = dbHandler;
 		this.leraar = leraar;
 		this.viewFactory = viewFactory;
 		this.view = (IOpdrachtBeheerView)viewFactory.maakView(ViewType.OpdrachtBeheerView);
 		this.opdracht = null;
+		this.opdrachtenListModel = new OpdrachtenListModel(dbHandler.getOpdrachtCatalogus().getOpdrachten());
 
-		view.setOpdrachten(dbHandler.getOpdrachtCatalogus().getOpdrachten());
+		view.setListModel(opdrachtenListModel);
 		view.setOpdrachtCategorie();
 
 		view.setListCellRenderer(new OpdrachtListCellRenderer());
@@ -53,16 +59,16 @@ public class OpdrachtBeheerController {
 		view.setVisible(true);
 	}
 
-	public DBHandler getDBHandler() {
-		return dbHandler;
-	}
-
-	private void setDBHandler(DBHandler dbHandler) {
-		this.dbHandler = dbHandler;
-	}
-
-	public IOpdrachtBeheerView getView() {
+	public IView getView() {
 		return this.view;
+	}
+	
+	protected void refreshTabel() {
+		opdrachtenListModel.refresh();
+	}
+	
+	protected void addOpdrachtAanLijst(Opdracht opdracht) {
+		opdrachtenListModel.addOpdracht(opdracht);
 	}
 
 	private void openOpdrachtAanpassing(Opdracht opdracht, Leraar leraar) {
@@ -110,8 +116,13 @@ public class OpdrachtBeheerController {
 	class PasOpdrachtAanKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			try {
-				opdracht = view.getGeselecteerdeOpdracht();
+			if (view.getGeselecteerdeRij() > -1) {
+				opdracht = opdrachtenListModel.getOpdracht(view.getGeselecteerdeRij());
+			} else {
+				view.toonErrorMessage("Selecteer een opdracht om ze aan te passen", "Geen opdracht geselecteerd");
+			}
+			
+			try {				
 				openOpdrachtAanpassing(opdracht, opdracht.getAuteur());
 			} catch (Exception e) {
 				view.toonErrorMessage(String.format(
@@ -124,11 +135,15 @@ public class OpdrachtBeheerController {
 	class VerwijderOpdrachtKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
+			if (view.getGeselecteerdeRij() > -1) {
+				opdracht = opdrachtenListModel.getOpdracht(view.getGeselecteerdeRij());
+			} else {
+				view.toonErrorMessage("Selecteer een opdracht om ze aan te verwijderen", "Geen opdracht geselecteerd");
+			}
+			
 			try {
-				opdracht = view.getGeselecteerdeOpdracht();
 				dbHandler.getOpdrachtCatalogus().removeOpdracht(opdracht);
-				view.setOpdrachten(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten());
+				opdrachtenListModel.removeOpdracht(opdracht);
 			} catch (Exception e) {
 				view.toonErrorMessage(String.format(
 						"Fout bij het verwijderen van de opdracht:\n%s",
@@ -140,8 +155,13 @@ public class OpdrachtBeheerController {
 	class BekijkDetailsKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
+			if (view.getGeselecteerdeRij() > -1) {
+				opdracht = opdrachtenListModel.getOpdracht(view.getGeselecteerdeRij());
+			} else {
+				view.toonErrorMessage("Selecteer een opdracht om er de details van te bekijken", "Geen opdracht geselecteerd");
+			}
+			
 			try {
-				opdracht = view.getGeselecteerdeOpdracht();
 				openOpdrachtBekijken(opdracht, opdracht.getAuteur());
 			} catch (Exception e) {
 				view.toonErrorMessage(
@@ -156,24 +176,22 @@ public class OpdrachtBeheerController {
 		public void actionPerformed(ActionEvent event) {
 			String opdrachtCategorieString = view.getOpdrachtCategorie();
 			if (opdrachtCategorieString.equals("Alle categorieën")) {
-				view.setOpdrachten(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten());
+				opdrachtenListModel.setFilterCategorie(null);
 			} else {
 				OpdrachtCategorie OC = OpdrachtCategorie
 						.valueOf(opdrachtCategorieString.toUpperCase());
-				view.setOpdrachten(dbHandler.getOpdrachtCatalogus()
-						.getOpdrachten(OC));
+				opdrachtenListModel.setFilterCategorie(OC);
 			}
 		}
 	}
 
 	class OpdrachtGeselecteerd implements ListSelectionListener {
 		@Override
-		public void valueChanged(ListSelectionEvent arg0) {
-			if (view.getGeselecteerdeOpdracht() != null) {
-				opdracht = view.getGeselecteerdeOpdracht();
+		public void valueChanged(ListSelectionEvent event) {
+			if (view.getGeselecteerdeRij() > -1) {
+				opdracht = opdrachtenListModel.getOpdracht(view.getGeselecteerdeRij());
 				view.disableAanpassen(opdracht.isAanpasbaar());
-			}
+			} 		
 		}
 	}
 
@@ -212,5 +230,66 @@ public class OpdrachtBeheerController {
 			setForeground(foreground);
 			return this;
 		}
+	}
+	
+	@SuppressWarnings("serial")
+	class OpdrachtenListModel extends AbstractListModel<Opdracht> {
+
+		private ArrayList<Opdracht> opdrachten;
+		private ArrayList<Opdracht> gefilterd;
+		private OpdrachtCategorie filterCategorie;
+		
+		public OpdrachtenListModel(Collection<Opdracht> opdrachten) {
+			this.opdrachten = new ArrayList<Opdracht>(opdrachten);
+			filter();
+		}
+		
+		@Override
+		public Opdracht getElementAt(int index) {
+			return gefilterd.get(index);
+		}
+
+		@Override
+		public int getSize() {
+			return gefilterd.size();
+		}
+		
+		public Opdracht getOpdracht(int index) {
+			return gefilterd.get(index);
+		}
+		
+		public void setFilterCategorie(OpdrachtCategorie filterCategorie) {
+			this.filterCategorie = filterCategorie;
+			filter();
+		}
+		
+		public void addOpdracht(Opdracht opdracht) {
+			opdrachten.add(opdracht);
+			filter();
+			fireContentsChanged(this, 0, gefilterd.size() - 1);
+		}
+		
+		public void removeOpdracht(Opdracht opdracht) {
+			opdrachten.remove(opdracht);
+			filter();
+			fireContentsChanged(this, 0, gefilterd.size() - 1);
+		}
+		
+		public void refresh() {
+			filter();
+		}
+		
+		private void filter() {
+			gefilterd = new ArrayList<Opdracht>(opdrachten);
+			if (filterCategorie != null) {
+				for (Opdracht opdracht : opdrachten) {
+					if (!opdracht.getOpdrachtCategorie().equals(filterCategorie)) {
+						gefilterd.remove(opdracht);
+					}
+				}
+			}
+			fireContentsChanged(this, 0, gefilterd.size() - 1);
+		}
+		
 	}
 }

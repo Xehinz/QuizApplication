@@ -135,11 +135,11 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.insets = new Insets(10, 10, 0, 10);
 		c.anchor = GridBagConstraints.WEST;
 		c.fill = GridBagConstraints.BOTH;
-		lijstHints = new JList<>();
-		JScrollPane scroller = new JScrollPane();
+		lijstHints = new JList<String>();	
+		lijstHints.setVisibleRowCount(5);
+		JScrollPane scroller = new JScrollPane(lijstHints);
 		scroller.setMinimumSize(new Dimension(200, 80));
-		scroller.add(lijstHints);		
-		this.add(scroller, c);
+		this.getContentPane().add(scroller, c);
 	
 		c = new GridBagConstraints();
 		c.gridy = 8;
@@ -176,9 +176,8 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.insets = new Insets(10, 10, 10, 0);
 		c.fill = GridBagConstraints.NONE;
 		this.add(btnOpslaan, c);
-
-		this.setVisible(true);
-		SwingUtilities.updateComponentTreeUI(this);
+		
+		SwingUtilities.updateComponentTreeUI(this);		
 	}
 
 	public void setVraag(String vraag) {
@@ -205,11 +204,11 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 	}
 
 	public void setHints(ArrayList<String> hints) {
-		DefaultListModel<String> model = new DefaultListModel<>();
+		DefaultListModel<String> model = new DefaultListModel<String>();
 		for (String S : hints) {
 			model.addElement(S);
 		}
-		lijstHints.setModel(model);
+		lijstHints.setModel(model);		
 	}
 
 	public ArrayList<String> getHints() {
@@ -292,6 +291,10 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 	public void toonErrorMessage(String boodschap, String titel) {
 		JOptionPane.showMessageDialog(this, boodschap, titel,
 				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void setHintListModel(ListModel<String> listModel) {
+		lijstHints.setModel(listModel);		
 	}
 
 }

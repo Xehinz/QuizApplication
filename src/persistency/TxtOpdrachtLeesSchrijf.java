@@ -1,6 +1,7 @@
 package persistency;
 
 import java.io.IOException;
+
 import model.Opdracht;
 
 /**
@@ -20,6 +21,7 @@ abstract class TxtOpdrachtLeesSchrijf extends TxtTemplate {
 	@Override
 	protected abstract String getBestandsnaam();
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected abstract Opdracht maakObject(String[] fields) throws IOException;
 

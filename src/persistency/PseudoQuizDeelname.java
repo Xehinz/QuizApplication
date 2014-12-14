@@ -1,7 +1,5 @@
 package persistency;
 
-import java.time.LocalTime;
-
 import util.datumWrapper.Datum;
 
 class PseudoQuizDeelname {

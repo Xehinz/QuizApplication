@@ -5,9 +5,19 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
 
 import view.viewInterfaces.IOpdrachtBeheerView;
@@ -29,7 +39,7 @@ public class OpdrachtBeheerView extends JFrame implements IOpdrachtBeheerView {
 	private JButton btnVerwijderOpdracht = new JButton("Verwijder opdracht");
 	private JButton btnBekijkDetails = new JButton("Bekijk details");
 
-	private JList<Opdracht> lijstOpdrachten = new JList<>();
+	private JList<Opdracht> lijstOpdrachten = new JList<Opdracht>();
 	private JComboBox<String> selecteerCategorie = new JComboBox<>();
 
 	public OpdrachtBeheerView() {
@@ -102,14 +112,6 @@ public class OpdrachtBeheerView extends JFrame implements IOpdrachtBeheerView {
 
 		SwingUtilities.updateComponentTreeUI(this);
 	}
-
-	public void setOpdrachten(ArrayList<Opdracht> opdrachten) {
-		DefaultListModel<Opdracht> model = new DefaultListModel<Opdracht>();
-		for (Opdracht O : opdrachten) {
-			model.addElement(O);
-		}
-		lijstOpdrachten.setModel(model);
-	}
 	
 	public void setOpdrachtCategorie(){
 		selecteerCategorie.addItem("Alle categorieën");
@@ -117,13 +119,9 @@ public class OpdrachtBeheerView extends JFrame implements IOpdrachtBeheerView {
 			selecteerCategorie.addItem(a.toString());			
 		}
 	}
-
-	public Opdracht getGeselecteerdeOpdracht() {
-		if (lijstOpdrachten.getSelectedValue() == null){
-			throw new IllegalArgumentException(
-					"Gelieve een opdracht te selecteren");
-		}
-		return (Opdracht) lijstOpdrachten.getSelectedValue();
+	
+	public int getGeselecteerdeRij() {
+		return lijstOpdrachten.getSelectedIndex();
 	}
 
 	public String getOpdrachtCategorie() {
@@ -177,6 +175,10 @@ public class OpdrachtBeheerView extends JFrame implements IOpdrachtBeheerView {
 	public void toonErrorMessage(String boodschap, String titel) {
 		JOptionPane.showMessageDialog(this, boodschap, titel,
 				JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void setListModel(ListModel<Opdracht> listModel) {		
+		lijstOpdrachten.setModel(listModel);
 	}
 	
 }

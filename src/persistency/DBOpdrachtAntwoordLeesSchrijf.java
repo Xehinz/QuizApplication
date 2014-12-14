@@ -15,6 +15,7 @@ class DBOpdrachtAntwoordLeesSchrijf extends DBTemplate {
 		return "SELECT * FROM opdracht_antwoorden";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected PseudoOpdrachtAntwoord maakObject(Object[] rij) {
 		String quizDeelnameID = rij[0].toString();

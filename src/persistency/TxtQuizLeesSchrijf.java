@@ -27,6 +27,7 @@ class TxtQuizLeesSchrijf extends TxtTemplate {
 		return useCSV ? "resources/quizzen.csv" : "resources/quizzen.txt";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Quiz maakObject(String[] fields) throws IOException {
 		try {

@@ -28,6 +28,7 @@ class DBMeerkeuzeLeesSchrijf extends DBOpdrachtLeesSchrijf {
 		return "SELECT * FROM meerkeuze_opdracht";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Opdracht maakObject(Object[] rij) {
 		int ID = (Integer) rij[0];

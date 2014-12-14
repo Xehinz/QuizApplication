@@ -25,9 +25,10 @@ class DBKlassiekeOpdrachtLeesSchrijf extends DBOpdrachtLeesSchrijf {
 
 	@Override
 	protected String getLeesQuery() {
-		return "SELECT * FROM klassieke_opdracht"; //TODO check tblName 
+		return "SELECT * FROM klassieke_opdracht"; 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Opdracht maakObject(Object[] rij) {
 		int ID = (Integer) rij[0];

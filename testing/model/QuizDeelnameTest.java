@@ -12,8 +12,6 @@ import model.quizStatus.Opengesteld;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.datumWrapper.Datum;
-
 /**
  * Testklasse voor QuizDeelname
  *
@@ -23,18 +21,16 @@ import util.datumWrapper.Datum;
 
 public class QuizDeelnameTest {
 
-	private QuizDeelname quizdeelname, quizdeelname2, quizdeelname3, quizdeelname4;
+	private QuizDeelname quizdeelname, quizdeelname2, quizdeelname4;
 	private Quiz quiz, quiz2, quiz3, quiz4;
-	private Leerling leerling, leerling2, leerling3;
+	private Leerling leerling, leerling2;
 	private KlassiekeOpdracht opdracht1, opdracht2;
 	private QuizOpdracht quizopdracht1, quizopdracht2;
 	private OpdrachtAntwoord opdrachtantwoord1, opdrachtantwoord2;
 	private ArrayList<OpdrachtAntwoord> opdrachtantwoordlijst;
-	private Datum datum;
 
 	@Before
 	public void setUp() {
-		datum = new Datum();
 		quiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "Onderwerp 1");
 		quiz.setQuizStatus(new Opengesteld());
 		quiz2 = new Quiz(Leraar.JOS_VERBEEK);
@@ -47,11 +43,9 @@ public class QuizDeelnameTest {
 
 		leerling = new Leerling("Bram", "Verhelst", 3);
 		leerling2 = new Leerling("An", "Stijnen", 2);
-		leerling3 = new Leerling("Bram", "Verhelst", 3);
 
 		quizdeelname = QuizDeelname.koppelQuizAanLeerling(quiz, leerling);
 		quizdeelname2 = QuizDeelname.koppelQuizAanLeerling(quiz, leerling2);
-		quizdeelname3 = QuizDeelname.koppelQuizAanLeerling(quiz, leerling3);
 		QuizDeelname.koppelQuizAanLeerling(quiz4, leerling);
 	
 		quizdeelname4 = quizdeelname;

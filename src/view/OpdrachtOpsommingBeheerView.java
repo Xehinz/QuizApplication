@@ -43,5 +43,11 @@ public class OpdrachtOpsommingBeheerView extends OpdrachtAanpassingView implemen
 	public boolean getInJuisteVolgorde(){
 		return chbInJuisteVolgorde.isSelected();
 	}
+	
+	@Override
+	public void disableAanpassen() {
+		super.disableAanpassen();
+		chbInJuisteVolgorde.setEnabled(false);
+	}
 
 }

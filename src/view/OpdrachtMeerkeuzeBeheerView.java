@@ -48,4 +48,10 @@ public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView implemen
 		if (txtMogelijkeAntwoordenMeerkeuze.getText().equals("")){throw new IllegalArgumentException("Gelieve mogelijke antwoordkeuzes in te geven");}
 		return txtMogelijkeAntwoordenMeerkeuze.getText();
 	}
+	
+	@Override
+	public void disableAanpassen() {
+		super.disableAanpassen();
+		txtMogelijkeAntwoordenMeerkeuze.setEditable(false);
+	}
 }

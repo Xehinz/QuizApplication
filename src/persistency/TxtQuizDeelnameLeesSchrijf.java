@@ -1,10 +1,8 @@
 package persistency;
 
 import java.io.IOException;
-import java.time.LocalTime;
 
 import util.datumWrapper.Datum;
-import model.OpdrachtAntwoord;
 import model.QuizDeelname;
 
 class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
@@ -18,6 +16,7 @@ class TxtQuizDeelnameLeesSchrijf extends TxtTemplate {
 		return useCSV ? "resources/quizDeelnames.csv" : "resources/quizDeelnames.txt";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected PseudoQuizDeelname maakObject(String[] fields) throws IOException {
 		try {

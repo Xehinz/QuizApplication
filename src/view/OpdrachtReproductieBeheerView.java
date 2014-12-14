@@ -18,7 +18,7 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView implem
 	protected JTextField txtMinimumAantalTrefwoorden;
 	
 	public OpdrachtReproductieBeheerView() {
-		super();
+		super();		
 		this.setTitle("Reproductie opdracht");
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -57,6 +57,12 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView implem
 					"Gelieve een positief geheel getal in te geven voor minimum aantal trefwoorden");
 		}
 		return Integer.parseInt(txtMinimumAantalTrefwoorden.getText());
+	}
+	
+	@Override
+	public void disableAanpassen() {
+		super.disableAanpassen();
+		txtMinimumAantalTrefwoorden.setEnabled(false);
 	}
 
 }

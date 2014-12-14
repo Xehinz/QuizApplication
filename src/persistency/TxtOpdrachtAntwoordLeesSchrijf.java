@@ -15,6 +15,7 @@ class TxtOpdrachtAntwoordLeesSchrijf extends TxtTemplate {
 		return useCSV ? "resources/opdrachtAntwoorden.csv" : "resources/opdrachtAntwoorden.txt";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected PseudoOpdrachtAntwoord maakObject(String[] fields) throws IOException {
 		try {

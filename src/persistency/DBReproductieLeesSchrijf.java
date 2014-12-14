@@ -28,6 +28,7 @@ class DBReproductieLeesSchrijf extends DBOpdrachtLeesSchrijf {
 		return "SELECT * FROM reproductie_opdracht";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Opdracht maakObject(Object[] rij) {
 		int ID = Integer.parseInt(rij[0].toString());

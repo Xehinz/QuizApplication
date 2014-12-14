@@ -20,7 +20,6 @@ import model.QuizDeelname;
 import model.QuizOpdracht;
 import model.Reproductie;
 import model.quizStatus.Afgesloten;
-import model.quizStatus.Afgewerkt;
 import model.quizStatus.InConstructie;
 import model.quizStatus.LaatsteKans;
 import model.quizStatus.Opengesteld;

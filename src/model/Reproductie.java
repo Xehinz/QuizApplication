@@ -225,8 +225,6 @@ public class Reproductie extends Opdracht {
 	@Override
 	public void setJuisteAntwoord(String juisteAntwoord)
 			throws IllegalStateException {
-		ArrayList<String> lijst = new ArrayList<String>(
-				Arrays.asList(juisteAntwoord.split(";")));
 		if (!isAanpasbaar()) {
 			throw new IllegalStateException(
 					"Deze Opdracht is niet meer aanpasbaar. Er hebben reeds leerlingen deze opdracht opgelost in een quiz");

@@ -24,12 +24,10 @@ public class QuizCatalogusTest {
 	private QuizCatalogus quizCatalogusExtra;
 	private QuizCatalogus catalogus;
 	private Quiz myQuiz;
-	private Quiz myOtherQuiz;
 
 	@Before
 	public void Setup() {
 		myQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "test quiz");
-		myOtherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "test andere quiz");
 		quizCatalogusBasis = new QuizCatalogus();
 		quizCatalogusExtra = new QuizCatalogus();
 		catalogus = new QuizCatalogus();

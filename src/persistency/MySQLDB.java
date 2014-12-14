@@ -1,7 +1,6 @@
 package persistency;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.KlassiekeOpdracht;

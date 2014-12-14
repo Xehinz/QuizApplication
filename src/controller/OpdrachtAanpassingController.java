@@ -3,6 +3,9 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.swing.AbstractListModel;
 
 import model.KlassiekeOpdracht;
 import model.Leraar;
@@ -23,10 +26,13 @@ import view.viewInterfaces.IOpdrachtOpsommingBeheerView;
 import view.viewInterfaces.IOpdrachtReproductieBeheerView;
 
 public class OpdrachtAanpassingController {
+	
 	private IOpdrachtAanpassingView view;
 	private DBHandler dbHandler;
 	private Opdracht opdracht;
 	private OpdrachtBeheerController opdrachtBeheerController;
+	
+	private HintListModel hintListModel;
 
 	public OpdrachtAanpassingController(Opdracht opdracht, Leraar leraar,
 			DBHandler dbHandler,
@@ -34,7 +40,8 @@ public class OpdrachtAanpassingController {
 		this.opdracht = opdracht;
 		this.dbHandler = dbHandler;
 		this.opdrachtBeheerController = opdrachtBeheerController;
-
+		this.hintListModel = new HintListModel(opdracht.getHints());		
+		
 		if (opdracht instanceof KlassiekeOpdracht) {
 			view = (IOpdrachtAanpassingView)viewFactory.maakView(ViewType.OpdrachtAanpassingView);
 			setAlgemeneComponenten(view);
@@ -62,22 +69,7 @@ public class OpdrachtAanpassingController {
 					.setMinimumAantalTrefwoorden(((Reproductie) opdracht)
 							.getMinimumAantalTrefwoorden());
 		}
-	}
-
-	private void setAlgemeneComponenten(IOpdrachtAanpassingView view) {
-		view.setOpdrachtCategorie(getOpdracht().getOpdrachtCategorie());
-		view.setAuteur(getOpdracht().getAuteur());
-		view.setVraag(getOpdracht().getVraag());
-		view.setJuisteAntwoord(getOpdracht().getJuisteAntwoord());
-		view.setHints(getOpdracht().getHints());
-		view.setMaxAantalPogingen(Integer.toString(getOpdracht()
-				.getMaxAantalPogingen()));
-		view.setMaxAntwoordTijd(Integer.toString(getOpdracht()
-				.getMaxAntwoordTijd()));
-
-		view.NieuweHintKnopActionListener(new NieuweHintKnopListener());
-		view.OpslaanKnopActionListener(new OpslaanKnopListener());
-
+		
 		view.setVisible(true);
 	}
 
@@ -88,8 +80,26 @@ public class OpdrachtAanpassingController {
 	public IOpdrachtAanpassingView getView() {
 		return this.view;
 	}
+	
+	protected void setAlgemeneComponenten(IOpdrachtAanpassingView view) {
+		view.setOpdrachtCategorie(getOpdracht().getOpdrachtCategorie());
+		view.setAuteur(getOpdracht().getAuteur());
+		view.setVraag(getOpdracht().getVraag());
+		view.setJuisteAntwoord(getOpdracht().getJuisteAntwoord());
+		view.setHints(getOpdracht().getHints());
+		view.setMaxAantalPogingen(Integer.toString(getOpdracht()
+				.getMaxAantalPogingen()));
+		view.setMaxAntwoordTijd(Integer.toString(getOpdracht()
+				.getMaxAntwoordTijd()));
+		view.setHintListModel(hintListModel);
 
-	public void setOpdracht(OpdrachtCategorie oc, String vraag,
+		view.NieuweHintKnopActionListener(new NieuweHintKnopListener());
+		view.OpslaanKnopActionListener(new OpslaanKnopListener());
+
+		view.setVisible(true);
+	}
+
+	private void setOpdracht(OpdrachtCategorie oc, String vraag,
 			String juisteAntwoord, ArrayList<String> hints,
 			int maxAantalPogingen, int maxAntwoordTijd) {
 		opdracht.setJuisteAntwoord(juisteAntwoord);
@@ -100,15 +110,15 @@ public class OpdrachtAanpassingController {
 		opdracht.setHints(hints);
 	}
 
-	public void setMeerkeuze(String mogelijkeAntwoorden) {
+	private void setMeerkeuze(String mogelijkeAntwoorden) {
 		((Meerkeuze) opdracht).setOpties(mogelijkeAntwoorden);
 	}
 
-	public void setOpsomming(boolean inJuisteVolgorde) {
+	private void setOpsomming(boolean inJuisteVolgorde) {
 		((Opsomming) opdracht).setInJuisteVolgorde(inJuisteVolgorde);
 	}
 
-	public void setReproductie(int minAantalTrefwoorden) {
+	private void setReproductie(int minAantalTrefwoorden) {
 		((Reproductie) opdracht)
 				.setMinimumAantalTrefwoorden(minAantalTrefwoorden);
 	}
@@ -116,8 +126,8 @@ public class OpdrachtAanpassingController {
 	class NieuweHintKnopListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			getOpdracht().addHint(view.getHint());
-			view.setHints(getOpdracht().getHints());
+			opdracht.addHint(view.getHint());
+			hintListModel.addHint(view.getHint());
 		}
 	}
 
@@ -146,15 +156,42 @@ public class OpdrachtAanpassingController {
 				}
 				if (opdracht.getID() == 0) {
 					dbHandler.getOpdrachtCatalogus().addOpdracht(opdracht);
+					opdrachtBeheerController.addOpdrachtAanLijst(opdracht);
+				} else {
+					opdrachtBeheerController.refreshTabel();
 				}
 				view.dispose();
-				opdrachtBeheerController.getView().setOpdrachten(
-						dbHandler.getOpdrachtCatalogus().getOpdrachten());
 			} catch (Exception e) {
 				view.toonErrorMessage(String.format(
 						"Fout bij het opslaan van de opdracht:\n%s",
 						e.getMessage()), "Fout bij Opslaan");
 			}
 		}
+	}
+	
+	@SuppressWarnings("serial")
+	class HintListModel extends AbstractListModel<String> {
+
+		private ArrayList<String> hints;
+		
+		public HintListModel(Collection<String> hints) {
+			this.hints = new ArrayList<String>(hints);
+		}
+		
+		@Override
+		public String getElementAt(int index) {
+			return hints.get(index);
+		}
+
+		@Override
+		public int getSize() {
+			return hints.size();
+		}
+		
+		public void addHint(String hint) {
+			hints.add(hint);
+			fireContentsChanged(this, 0, hints.size() - 1);
+		}
+		
 	}
 }

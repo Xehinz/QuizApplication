@@ -11,7 +11,6 @@ package persistency;
 
 import java.io.IOException;
 
-import model.KlassiekeOpdracht;
 import model.Leraar;
 import model.Opdracht;
 import model.OpdrachtCategorie;
@@ -29,6 +28,7 @@ class DBOpsommingLeesSchrijf extends DBOpdrachtLeesSchrijf {
 		return "SELECT * FROM opsomming_opdrachten";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Opdracht maakObject(Object[] rij) {
 		int ID = (Integer) rij[0];

@@ -3,6 +3,8 @@ package view.viewInterfaces;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ListModel;
+
 import model.Leraar;
 import model.OpdrachtCategorie;
 
@@ -43,5 +45,7 @@ public interface IOpdrachtAanpassingView extends IView {
 	public void disableAanpassen();
 
 	public void toonErrorMessage(String boodschap, String titel);
+	
+	public void setHintListModel(ListModel<String> listModel);
 
 }

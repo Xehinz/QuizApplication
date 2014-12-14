@@ -3,9 +3,6 @@ package view.viewInterfaces;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.UIManager.LookAndFeelInfo;
-
 import persistency.StorageStrategy;
 import model.score.ScoreStrategyType;
 

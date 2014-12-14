@@ -3,7 +3,6 @@ package persistency;
 import java.io.IOException;
 
 import model.Leerling;
-import model.QuizOpdracht;
 
 class DBLeerlingLeesSchrijf extends DBTemplate {
 	/**
@@ -23,6 +22,7 @@ class DBLeerlingLeesSchrijf extends DBTemplate {
 		return "SELECT * FROM leerling";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Leerling maakObject(Object[] rij) {
 		int ID = (Integer) rij[0];

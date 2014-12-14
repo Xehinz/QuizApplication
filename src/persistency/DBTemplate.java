@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -25,6 +24,7 @@ abstract class DBTemplate {
 	
 	protected abstract String getDeleteStatement();
 	
+	@SuppressWarnings("unchecked")
 	public <T> ArrayList<T> lees() throws IOException {
 		
 		ArrayList<T> objecten = new ArrayList<T>();

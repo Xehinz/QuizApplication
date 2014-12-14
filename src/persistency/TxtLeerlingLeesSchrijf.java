@@ -22,6 +22,7 @@ class TxtLeerlingLeesSchrijf extends TxtTemplate {
 		return useCSV ? "resources/leerlingen.csv" : "resources/leerlingen.txt";
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Leerling maakObject(String[] fields) throws IOException {
 		try {

@@ -1,20 +1,18 @@
 package view.viewInterfaces;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 import javax.swing.event.ListSelectionListener;
 
 import model.Opdracht;
 
 public interface IOpdrachtBeheerView extends IView {
 	
-	public void setOpdrachten(ArrayList<Opdracht> opdrachten);
-	
 	public void setOpdrachtCategorie();
-
-	public Opdracht getGeselecteerdeOpdracht();
+	
+	public int getGeselecteerdeRij();
 
 	public String getOpdrachtCategorie();
 
@@ -41,5 +39,7 @@ public interface IOpdrachtBeheerView extends IView {
 	public void disableAanpassen(boolean b);
 	
 	public void toonErrorMessage(String boodschap, String titel);
+	
+	public void setListModel(ListModel<Opdracht> listModel);
 
 }
