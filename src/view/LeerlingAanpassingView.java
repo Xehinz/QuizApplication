@@ -30,7 +30,7 @@ public class LeerlingAanpassingView extends JFrame implements ILeerlingAanpassin
 		this.setLocationRelativeTo(null);
 		
 		layout = new GridBagLayout();
-		this.setLayout(layout);
+		this.setLayout(layout);		
 		
 		//INIT BUTTONS
 		btnLeerlingBewaren = new JButton("Leerling bewaren");
@@ -39,11 +39,13 @@ public class LeerlingAanpassingView extends JFrame implements ILeerlingAanpassin
 		//INIT TEXTFIELDS
 		txtID = new JTextField();
 		txtID.setEditable(false);
-		txtID.setPreferredSize(new Dimension(100, 20));
+		Dimension textFieldDimension = txtID.getPreferredSize();
+		textFieldDimension.width = 100;
+		txtID.setPreferredSize(textFieldDimension);
 		txtVoornaam = new JTextField();
 		txtFamilienaam = new JTextField();
 		txtLeerjaar = new JTextField();
-		txtLeerjaar.setPreferredSize(new Dimension(100, 20));
+		txtLeerjaar.setPreferredSize(textFieldDimension);
 		
 		//INIT LABELS
 		lblID = new JLabel("ID");

@@ -36,8 +36,10 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView implem
 		c.anchor = GridBagConstraints.WEST;
 		c.fill = GridBagConstraints.NONE;
 		txtMinimumAantalTrefwoorden = new JTextField();
-		txtMinimumAantalTrefwoorden.setPreferredSize(new Dimension(100, 20));
-		txtMinimumAantalTrefwoorden.setMinimumSize(new Dimension(100, 20));
+		Dimension korteTextFieldDim = txtMinimumAantalTrefwoorden.getPreferredSize();
+		korteTextFieldDim.width = 100;
+		txtMinimumAantalTrefwoorden.setPreferredSize(korteTextFieldDim);
+		txtMinimumAantalTrefwoorden.setMinimumSize(korteTextFieldDim);
 		this.add(txtMinimumAantalTrefwoorden, c);
 		
 		SwingUtilities.updateComponentTreeUI(this);

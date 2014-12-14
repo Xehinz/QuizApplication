@@ -66,6 +66,8 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		lblLeraar = new JLabel();
 		this.add(lblNaamLeraar, c);
 
+		Dimension korteComboBoxDim = cbbOpdrachtCategorie.getPreferredSize();
+		korteComboBoxDim.width = 150;
 		c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 1;
@@ -75,8 +77,8 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.gridx = 2;
 		c.weightx = 10;
 		c.anchor = GridBagConstraints.WEST;
-		cbbOpdrachtCategorie.setPreferredSize(new Dimension(150, 25));
-		cbbOpdrachtCategorie.setMinimumSize(new Dimension(150, 25));
+		cbbOpdrachtCategorie.setPreferredSize(korteComboBoxDim);
+		cbbOpdrachtCategorie.setMinimumSize(korteComboBoxDim);
 		this.add(cbbOpdrachtCategorie, c);
 
 		c = new GridBagConstraints();
@@ -138,7 +140,7 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		scroller.setMinimumSize(new Dimension(200, 80));
 		scroller.add(lijstHints);		
 		this.add(scroller, c);
-
+	
 		c = new GridBagConstraints();
 		c.gridy = 8;
 		c.gridx = 1;
@@ -150,8 +152,10 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.anchor = GridBagConstraints.WEST;
 		c.fill = GridBagConstraints.NONE;
 		txtMaxAantalPogingen = new JTextField();
-		txtMaxAantalPogingen.setMinimumSize(new Dimension(100, 20));
-		txtMaxAantalPogingen.setPreferredSize(new Dimension(100, 20));
+		Dimension korteTextFieldDim = txtMaxAantalPogingen.getPreferredSize();
+		korteTextFieldDim.width = 100;
+		txtMaxAantalPogingen.setMinimumSize(korteTextFieldDim);
+		txtMaxAantalPogingen.setPreferredSize(korteTextFieldDim);
 		this.add(txtMaxAantalPogingen, c);
 
 		c = new GridBagConstraints();
@@ -164,8 +168,8 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.anchor = GridBagConstraints.WEST;
 		c.fill = GridBagConstraints.NONE;
 		txtMaxAntwoordTijd = new JTextField();
-		txtMaxAntwoordTijd.setPreferredSize(new Dimension(100, 20));
-		txtMaxAntwoordTijd.setMinimumSize(new Dimension(100, 20));
+		txtMaxAntwoordTijd.setPreferredSize(korteTextFieldDim);
+		txtMaxAntwoordTijd.setMinimumSize(korteTextFieldDim);
 		this.add(txtMaxAntwoordTijd, c);
 
 		c.gridy = 10;

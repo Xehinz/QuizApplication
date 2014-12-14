@@ -24,7 +24,6 @@ import model.score.ScoreStrategyType;
 import persistency.DBHandler;
 import persistency.StorageStrategy;
 import view.DBConnectieGegevensView;
-import view.QuizBeheerView;
 import view.ViewFactory;
 import view.ViewType;
 import view.viewInterfaces.IMainLeraarView;
@@ -48,7 +47,6 @@ public class MainLeraarController extends Observable {
 	private QuizBeheerController quizBeheerController;
 	private BeheerLeerlingController beheerLeerlingController;
 
-	private QuizBeheerView quizBeheerView;
 	private DBConnectieGegevensView connectieGegevensView;
 
 	private ViewFactory viewFactory;
@@ -84,6 +82,7 @@ public class MainLeraarController extends Observable {
 				ScoreStrategyType.class, settings.getProperty("scoreregel")));
 		mainView.setOpslagStrategySelected(Enum.valueOf(StorageStrategy.class,
 				settings.getProperty("dbstrategy")));
+		mainView.setSelectedLookAndFeel(settings.getProperty("lookandfeel"));
 
 		mainView.addRodeLoginClickedListener(new RodeLoginClickedHandler());
 		mainView.addScoreStrategieChangedListener(new ScoreRegelChangedHandler());
@@ -110,6 +109,18 @@ public class MainLeraarController extends Observable {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			mainView.dispose();
+			if (overzichtScoresStaatOpen) {
+				overzichtScoresController.getView().dispose();
+			}
+			if (opdrachtBeheerStaatOpen) {
+				opdrachtBeheerController.getView().dispose();
+			}
+			if (quizBeheerStaatOpen) {
+				quizBeheerController.getView().dispose();
+			}
+			if (leerlingBeheerStaatOpen) {
+				beheerLeerlingController.getView().dispose();
+			}
 			opstartController.login();
 		}
 

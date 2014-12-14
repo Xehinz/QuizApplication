@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -37,8 +36,7 @@ public class BeheerLeerlingView extends JFrame implements IBeheerLeerlingView {
 	/**
 	 * Default constructor
 	 */
-	public BeheerLeerlingView() {
-		
+	public BeheerLeerlingView() {		
 		
 		//Set Window
 		super("Beheer Leerlingen");
@@ -50,11 +48,12 @@ public class BeheerLeerlingView extends JFrame implements IBeheerLeerlingView {
 		aLeerlingTabel.setFillsViewportHeight(true);
 
 		//Set JScrollPane
-		aTabelVeld.setPreferredSize(new Dimension(800, 700));
 		aGBConstraints = new GridBagConstraints();
 		aGBConstraints.insets = new Insets(10, 10, 10, 10);
 		aGBConstraints.gridy = 0;
 		aGBConstraints.gridx = 0;
+		aGBConstraints.weighty = 10;
+		aGBConstraints.weightx = 10;
 		aGBConstraints.fill = GridBagConstraints.BOTH;
 		aGBConstraints.anchor = GridBagConstraints.NORTHWEST;
 		this.add(aTabelVeld, aGBConstraints); //JScrollPane @JFrame

@@ -56,7 +56,13 @@ public class MainLeerlingController {
 
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			mainView.dispose();			
+			mainView.dispose();	
+			if (quizDeelnameStaatOpen) {
+				quizDeelnameController.getView().dispose();
+			}
+			if (quizScoresRapportStaatOpen) {
+				quizScoresRapportController.getView().dispose();
+			}
 			opstartController.login();
 		}
 		
