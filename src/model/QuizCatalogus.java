@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * De QuizCatalogus klasse, met 1 field: Een lijst met alle bestaande quizzen
@@ -14,7 +16,7 @@ import java.util.Iterator;
  *
  */
 
-public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iterable<Quiz> {
+public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iterable<Quiz>, Observer {
 	private ArrayList<Quiz> quizcatalogus;
 	private int hoogsteID;
 
@@ -82,6 +84,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 			}
 		}
 		this.quizcatalogus.add(Q);
+		Q.addObserver(this);
 	}
 
 	/**
@@ -197,6 +200,14 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 		}
 		return reedsIngevuldeQuizzen;
 	}
+	
+	@Override
+	public void update(Observable observable, Object dataObject) {
+		if (onderwerpBestaatAl((String)dataObject)) {
+			throw new IllegalArgumentException(
+					"In de catalogus zit al een quiz met een onderwerp dat equivalent is aan dat van de meegegeven Quiz");
+		}
+	}
 
 	/**
 	 * Override van de toString methode
@@ -266,7 +277,7 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 
 	private boolean onderwerpBestaatAl(String onderwerp) {
 		for (Quiz quiz : quizcatalogus) {
-			if (vormOmNaarElementairOnderwerp(onderwerp).equals(vormOmNaarElementairOnderwerp(quiz.getOnderwerp()))) {
+			if (vormOmNaarElementairOnderwerp(onderwerp).equalsIgnoreCase(vormOmNaarElementairOnderwerp(quiz.getOnderwerp()))) {
 				return true;
 			}
 		}
@@ -317,4 +328,6 @@ public class QuizCatalogus implements Comparable<QuizCatalogus>, Cloneable, Iter
 	private String scheiding() {
 		return "\n----------------------------------------------------------------------------------------------------\n";
 	}
+
+
 }

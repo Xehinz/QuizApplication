@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Observable;
 
 import model.quizStatus.InConstructie;
 import model.quizStatus.QuizStatus;
@@ -35,7 +36,7 @@ import util.datumWrapper.Datum;
  *
  */
 
-public class Quiz implements Comparable<Quiz>, Cloneable {
+public class Quiz extends Observable implements Comparable<Quiz>, Cloneable {
 
 	private int ID;
 	private String onderwerp = "";
@@ -276,6 +277,8 @@ public class Quiz implements Comparable<Quiz>, Cloneable {
 	 *            het onderwerp van deze quiz *
 	 */
 	public void setOnderwerp(String onderwerp) {
+		setChanged();
+		notifyObservers(onderwerp);
 		this.onderwerp = onderwerp;
 	}
 

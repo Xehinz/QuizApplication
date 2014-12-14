@@ -58,6 +58,8 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	 * @throws IllegalStateException
 	 *             als de status van de Quiz het toevoegen van een Opdracht niet
 	 *             toelaat
+	 * @throws IllegalArgumentException
+	 *             als de opdracht al is opgenomen in de quiz
 	 */
 	public static QuizOpdracht koppelOpdrachtAanQuiz(String ID, Quiz quiz,
 			Opdracht opdracht, int maxScore, boolean uitStorage)
@@ -67,6 +69,10 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 			if (!quiz.isAanpasbaar()) {
 				throw new IllegalStateException(
 						"De Quiz bevindt zich in een status die toevoegen van opdrachten onmogelijk maakt");
+			}
+			if (quiz.getOpdrachten().contains(opdracht)) {
+				throw new IllegalArgumentException(
+						"Deze opdracht zit al in de quiz");
 			}
 		}
 
@@ -164,12 +170,11 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	public int getMaxScore() {
 		return maxScore;
 	}
-	
+
 	/**
 	 * verandert de maximum score van deze QuizOpdracht
 	 * 
-	 * @param int
-	 * 			de maximum score
+	 * @param int de maximum score
 	 */
 	public void setMaxScore(int maxScore) {
 		this.maxScore = maxScore;

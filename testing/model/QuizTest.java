@@ -182,15 +182,10 @@ public class QuizTest {
 		Quiz aQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "new quiz");
 		Quiz anotherQuiz = new Quiz(Leraar.CHARLOTTE_NEVEN, "another quiz");
 		Opdracht aOpdracht = new KlassiekeOpdracht(OpdrachtCategorie.AARDRIJKSKUNDE, Leraar.CHARLOTTE_NEVEN);
+		Opdracht tweedeOpdracht = new KlassiekeOpdracht(OpdrachtCategorie.NEDERLANDS, Leraar.STEVEN_OPDEBEEK);
 
 		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, aOpdracht, 5);
-		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, aOpdracht, 10);
-		// QuizOpdracht aQuizOpdracht = new QuizOpdracht(aQuiz, aOpdracht, 5);
-		// QuizOpdracht anotherQuizOpdracht = new QuizOpdracht(aQuiz, aOpdracht,
-		// 10);
-
-		// aQuiz.addQuizOpdracht(aQuizOpdracht);
-		// aQuiz.addQuizOpdracht(anotherQuizOpdracht);
+		QuizOpdracht.koppelOpdrachtAanQuiz(aQuiz, tweedeOpdracht, 10);
 
 		anotherQuiz = aQuiz.clone();
 

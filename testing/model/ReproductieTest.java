@@ -70,11 +70,6 @@ public class ReproductieTest {
 		opdracht5TrefWoordenNodig.setJuisteAntwoord("");
 	}
 	
-	@Test (expected = IllegalArgumentException.class)
-	public void testSetJuisteAntwoord_MinderTrefwoordenDanMinimumAantalTrefwoorden_ThrowsIllegalArgumentException() {
-		opdracht5TrefWoordenNodig.setJuisteAntwoord("mars;aarde;venus;zon");
-	}
-	
 	@Test
 	public void testEquals_TweeDezelfdeOpJuisteTrefwoordenNa_GeeftFalse() {
 		Reproductie clone = opdracht5TrefWoordenNodig.clone();

@@ -234,12 +234,7 @@ public class Reproductie extends Opdracht {
 		if (juisteAntwoord.equals("")) {
 			throw new IllegalArgumentException("Minimum 1 trefwoord nodig");
 		}
-	/*if (lijst.size() < this.minimumAantalTrefwoorden) {
-			throw new IllegalArgumentException("Minimum "
-					+ this.minimumAantalTrefwoorden + " trefwoorden nodig");
-		}*/
 		this.juisteTrefwoorden = juisteAntwoord.trim().toLowerCase();
-
 	}
 
 	/**

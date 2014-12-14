@@ -66,8 +66,6 @@ public class QuizOpdrachtTest {
 	
 	@Test
 	public void testAttachOpdrachtToQuiz_KoppelOpdrachtAanQuiz_CorrecteKoppeling() {
-		QuizOpdracht quizOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(quiz1, opdracht1, 5);
-		//assertTrue("Quiz1 heeft juiste opdracht", quiz1.getOpdrachten().contains(quizOpdracht));
 		assertTrue("Opdracht1 heeft juiste quiz", opdracht1.getQuizOpdrachten().contains(quizOpdracht));
 		quizOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(quiz2, opdracht2, 10);
 		assertTrue("Quiz2 heeft juiste opdracht", quiz2.getOpdrachten().contains(opdracht2));
@@ -75,18 +73,16 @@ public class QuizOpdrachtTest {
 	}
 	
 	@Test
-	public void testDetachOpdrachtFromQuiz_OntkoppelOpdrachtVanQuiz_CorrecteOntkoppeling() {
-		QuizOpdracht qOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(quiz1, opdracht1, 5);
-		quiz1.removeQuizOpdracht(qOpdracht);
-		opdracht1.removeQuizOpdracht(qOpdracht);
-		assertFalse("Correcte ontkoppeling", quiz1.getQuizOpdrachten().contains(qOpdracht));
-		assertFalse("Correcte ontkoppeling", opdracht1.getQuizOpdrachten().contains(qOpdracht));
+	public void testDetachOpdrachtFromQuiz_OntkoppelOpdrachtVanQuiz_CorrecteOntkoppeling() {		
+		quiz1.removeQuizOpdracht(quizOpdracht);
+		opdracht1.removeQuizOpdracht(quizOpdracht);
+		assertFalse("Correcte ontkoppeling", quiz1.getQuizOpdrachten().contains(quizOpdracht));
+		assertFalse("Correcte ontkoppeling", opdracht1.getQuizOpdrachten().contains(quizOpdracht));
 	}
 	
 	@Test
 	public void testAddOpdrachtAntwoord_VoegOpdrachtAntwoordToe_CorrectToegevoegd() {
 		Leerling leerling = new Leerling("Lolli", "Pop", 1);
-		quizOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(quiz1, opdracht1, 0);
 		quiz1.setQuizStatus(new Opengesteld());
 		QuizDeelname quizDeelname = QuizDeelname.koppelQuizAanLeerling(quiz1, leerling);		
 		OpdrachtAntwoord opdrachtAntwoord = OpdrachtAntwoord.koppelQuizDeelnameAanQuizOpdracht(quizDeelname, quizOpdracht, 10, 10, "HUDUUH");
@@ -98,7 +94,6 @@ public class QuizOpdrachtTest {
 	public void testGetGemiddeldeScore_VerkrijgGemiddeldeScore_CorrecteGemiddeldeScore() {
 		Leerling leerling = new Leerling("Lolli", "Pop", 1);
 		Leerling leerling1 = new Leerling("Jan", "Jansen", 2);
-		quizOpdracht = QuizOpdracht.koppelOpdrachtAanQuiz(quiz1, opdracht1, 0);
 		QuizOpdracht quizOpdracht1 = QuizOpdracht.koppelOpdrachtAanQuiz(quiz2, opdracht2, 5);
 		quiz1.setQuizStatus(new Opengesteld());
 		quiz2.setQuizStatus(new Opengesteld());
