@@ -15,8 +15,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
+import view.viewInterfaces.IRapportNaDeelnameView;
+
 @SuppressWarnings("serial")
-public class RapportNaDeelnameView extends JFrame {
+public class RapportNaDeelnameView extends JFrame implements IRapportNaDeelnameView {
 
 	private JLabel lblLeerling, lblQuizScore;
 	private JTable tblRapport;

@@ -15,12 +15,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import persistency.DBHandler;
-import view.RapportNaDeelnameView;
 import view.ViewFactory;
 import view.ViewType;
 import view.viewInterfaces.IOpdrachtDeelnameView;
 import view.viewInterfaces.IOpdrachtDeelnameViewFactory;
 import view.viewInterfaces.IQuizDeelnameView;
+import view.viewInterfaces.IRapportNaDeelnameView;
 import view.viewInterfaces.IView;
 import model.Leerling;
 import model.Meerkeuze;
@@ -39,13 +39,13 @@ import model.Valideerbaar;
 public class QuizDeelnameController {
 
 	private DBHandler dbHandler;
-	private final Leerling leerling;
-	private IQuizDeelnameView quizDeelnameView;
-	private IOpdrachtDeelnameViewFactory opdrachtDeelnameViewFactory;
+	private ViewFactory viewFactory;	
 
-	private Quiz quiz;
 	private QuizTableModel quizTableModel;
-
+	private RapportTableModel rapportTableModel;
+	
+	private final Leerling leerling;
+	private Quiz quiz;
 	private Opdracht huidigeOpdracht;
 	private QuizOpdracht huidigeQuizOpdracht;
 	private IOpdrachtDeelnameView huidigeOpdrachtView;
@@ -55,8 +55,9 @@ public class QuizDeelnameController {
 	private int verstrekenTijd;
 	private String laatsteAntwoord;
 	
-	private RapportNaDeelnameView rapportNaDeelnameView;
-	private RapportTableModel rapportTableModel;
+	private IOpdrachtDeelnameViewFactory opdrachtDeelnameViewFactory;
+	private IRapportNaDeelnameView rapportNaDeelnameView;	
+	private IQuizDeelnameView quizDeelnameView;
 
 	private Timer timer;
 
@@ -64,6 +65,7 @@ public class QuizDeelnameController {
 			ViewFactory viewFactory) {
 
 		this.dbHandler = dbHandler;
+		this.viewFactory = viewFactory;
 		this.leerling = leerling;
 		this.quizDeelnameView = (IQuizDeelnameView) viewFactory
 				.maakView(ViewType.QuizDeelname);
@@ -267,7 +269,7 @@ public class QuizDeelnameController {
 		huidigeOpdrachtView.dispose();
 		huidigeOpdrachtIndex = 0;
 		
-		rapportNaDeelnameView = new RapportNaDeelnameView();
+		rapportNaDeelnameView = (IRapportNaDeelnameView)viewFactory.maakView(ViewType.RapportNaDeelnameView);
 		rapportNaDeelnameView.setLeerling(leerling.getNaam());
 		rapportNaDeelnameView.setQuiz(quiz.getOnderwerp());
 		rapportNaDeelnameView.setQuizScore(quizDeelname.getBehaaldeScore());

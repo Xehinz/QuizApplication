@@ -5,11 +5,9 @@ import java.awt.event.ActionListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
-import model.Leerling;
-
 public interface IQuizScoresRapportView extends IView {
 	
-	public void setLeerling(Leerling leerling);
+	public void setLeerling(String volledigeNaam);
 	
 	public int getGeselecteerdeRij();
 	

@@ -2,7 +2,6 @@ package view;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
@@ -17,29 +16,22 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 
-import model.Leerling;
-import view.viewInterfaces.IOverzichtScoresQuizzenView;
 import view.viewInterfaces.IQuizScoresRapportView;
-import controller.QuizScoresRapportController;
 
 @SuppressWarnings("serial")
 public class QuizScoresRapportView extends JFrame implements
 		IQuizScoresRapportView {
 
 	private GridBagLayout layout ;
-	private GridBagConstraints constraints;
-	
-	private JLabel lblLeerling;
+	private GridBagConstraints constraints;	
+
 	private JLabel lblDeelnamenRapport;
 	private JLabel lblQuizzenRapport;
 	
 	private JTable tblDeelnamen;
 	private JTable tblQuizzen;
 	
-	private JButton btnToonQuizzen;
-	
-	private Leerling leerling;
-	
+	private JButton btnToonQuizzen;	
 	
 	public QuizScoresRapportView() {
 		super("Deelnamen en quizrapporten");
@@ -47,7 +39,6 @@ public class QuizScoresRapportView extends JFrame implements
 		
 		layout = new GridBagLayout();
 		this.setLayout(layout);
-
 		
 		lblDeelnamenRapport = new JLabel("Deelnamen Rapport: ");
 		constraints = new GridBagConstraints();
@@ -60,12 +51,7 @@ public class QuizScoresRapportView extends JFrame implements
 		
 		tblDeelnamen = new JTable();			
 		tblDeelnamen.setAutoCreateRowSorter(true);
-		tblDeelnamen.setFillsViewportHeight(true);
-		
-		
-
-		
-		
+		tblDeelnamen.setFillsViewportHeight(true);	
 		
 		constraints = new GridBagConstraints();
 		constraints.gridy = 10;
@@ -77,7 +63,6 @@ public class QuizScoresRapportView extends JFrame implements
 		
 		JScrollPane scroller1 = new JScrollPane(tblDeelnamen);
 		this.add(scroller1, constraints);	
-
 		
 		lblQuizzenRapport = new JLabel("Quiz Scores Rapport: ");
 		constraints = new GridBagConstraints();
@@ -126,25 +111,19 @@ public class QuizScoresRapportView extends JFrame implements
 		tblQuizzen.getColumnModel().getColumn(3).setCellRenderer( centerRenderer );
 	}
 	
-	public void setLeerling(Leerling leerling) {
-		this.leerling = leerling;
-		this.lblDeelnamenRapport.setText(String.format("Deelnamen Rapport: %s", this.leerling.getLeerlingFamilienaam() + " " + this.leerling.getLeerlingVoornaam()));
-	}
-	
-	
-	@Override
+	public void setLeerling(String volledigeNaam) {
+		this.lblDeelnamenRapport.setText(String.format("Deelnamen Rapport: %s", volledigeNaam));
+	}		
+
 	public void addDetailKnopListener(ActionListener listener) {
 		btnToonQuizzen.addActionListener(listener);
-
 	}
 
-	@Override
 	public void toonInformationDialog(String boodschap, String titel) {
 		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
-	@Override
 	public int getGeselecteerdeRij() {
 		return tblDeelnamen.convertRowIndexToModel(tblDeelnamen.getSelectedRow());
 	}

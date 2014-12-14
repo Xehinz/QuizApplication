@@ -13,7 +13,6 @@ import javax.swing.table.AbstractTableModel;
 import model.Leerling;
 import model.Leraar;
 import persistency.DBHandler;
-import view.QuizScoresRapportView;
 import view.ViewFactory;
 import view.ViewType;
 import view.viewInterfaces.IBeheerLeerlingView;
@@ -135,15 +134,9 @@ public class BeheerLeerlingController {
 		}
 	}
 	
-	class ScoresLeerlingListener implements ActionListener {
+	class ScoresLeerlingListener implements ActionListener {	
 		
-		private QuizScoresRapportController quizScoresRapportController;
-		private QuizScoresRapportView quizScoresRapportView;
-		
-		public ScoresLeerlingListener() {
-			quizScoresRapportView =  new QuizScoresRapportView();			
-		}
-		
+		@SuppressWarnings("unused")
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			aLeerling =  aTabelModel.getLeerling(aView.getGeselecteerdeRij());
@@ -152,7 +145,7 @@ public class BeheerLeerlingController {
 						"Selecteer een leerling om scores op te vragen", "Fout");
 				return;
 			}
-			quizScoresRapportController = new QuizScoresRapportController(getDBHandler(), aLeerling, quizScoresRapportView);
+			QuizScoresRapportController quizScoresRapportController = new QuizScoresRapportController(getDBHandler(), aLeerling, viewFactory);
 		}
 	}
 

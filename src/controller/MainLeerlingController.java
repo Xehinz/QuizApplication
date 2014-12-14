@@ -9,11 +9,9 @@ import javax.swing.JFrame;
 
 import model.Leerling;
 import persistency.DBHandler;
-import view.QuizScoresRapportView;
 import view.ViewFactory;
 import view.ViewType;
 import view.viewInterfaces.IMainLeerlingView;
-import view.viewInterfaces.IQuizScoresRapportView;
 
 /**
  * 
@@ -22,7 +20,7 @@ import view.viewInterfaces.IQuizScoresRapportView;
  */
 public class MainLeerlingController {
 	
-	private boolean quizDeelnameStaatOpen;
+	private boolean quizDeelnameStaatOpen, quizScoresRapportStaatOpen;
 	
 	private DBHandler dbHandler;
 	private Leerling leerling;	
@@ -30,9 +28,9 @@ public class MainLeerlingController {
 	private ViewFactory viewFactory;
 	
 	private QuizDeelnameController quizDeelnameController;
+	private QuizScoresRapportController quizScoresRapportController;
 	
 	private IMainLeerlingView mainView;
-	private IQuizScoresRapportView quizScoresRapportView;
 	
 	public MainLeerlingController(DBHandler dbHandler, Leerling leerling, OpstartController opstartController, ViewFactory viewFactory) {
 		this.dbHandler = dbHandler;
@@ -96,10 +94,18 @@ public class MainLeerlingController {
 		
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			
-			quizScoresRapportView = new QuizScoresRapportView();
-			QuizScoresRapportController controller = new QuizScoresRapportController(dbHandler, leerling, quizScoresRapportView);
-			
+			if (!quizScoresRapportStaatOpen) {
+				quizScoresRapportStaatOpen = true;
+				quizScoresRapportController = new QuizScoresRapportController(dbHandler, leerling, viewFactory);
+				quizScoresRapportController.getView().addWindowListener(new WindowAdapter() {
+					@Override
+					public void windowClosing(WindowEvent event) {
+						quizScoresRapportStaatOpen = false;
+					}
+				});				
+			} else {
+				quizScoresRapportController.getView().toFront();
+			}			
 		}
 		
 	}
