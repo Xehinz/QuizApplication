@@ -31,6 +31,9 @@ import model.Opsomming;
 import model.Quiz;
 import model.QuizOpdracht;
 import model.Reproductie;
+import model.quizStatus.Afgesloten;
+import model.quizStatus.Afgewerkt;
+import model.quizStatus.InConstructie;
 import model.quizStatus.QuizStatus;
 
 public class QuizAanpassingController {
@@ -169,7 +172,16 @@ public class QuizAanpassingController {
 			String foutboodschap = new String("<html>");
 			// STATUS
 			QuizStatus status = view.getQuizStatuscmb();
-			// TODO Checken of status geldig is.	
+			// TODO Checken of status geldig is.
+			if(!quiz.isVerwijderbaar() && (status instanceof InConstructie || status instanceof Afgewerkt)) {   //kan niet terug van niet naar wel verwijderbaar		
+				foutboodschap += "Ongeldige status, quiz werd al opengesteld.<br/>";
+				view.setStatus(quiz.getQuizStatus());
+			}
+			if(quiz.isVerwijderbaar() && status instanceof Afgesloten) {    //kan niet naar afgesloten zonder mogelijke deelname
+				foutboodschap += "Ongeldige status, quiz werd nog niet opengesteld.<br/>";   
+				view.setStatus(quiz.getQuizStatus());
+			}
+			
 			//ONDERWERP
 			String onderwerp = view.getOnderwerpTxt();
 			if (onderwerp.equals("")) {
@@ -179,7 +191,7 @@ public class QuizAanpassingController {
 			String klas = view.getKlasTxt();
 			int[] klassenArray = new int[6];
 			if (klas.equals("")) {
-				foutboodschap.concat("Klassen in foutief formaat, gebruik [4] of [1, 2, 4].<br/>");  //TODO foutboodschap toont slechts 1 fout
+				foutboodschap += "Klassen in foutief formaat, gebruik [4] of [1, 2, 4].<br/>";
 			} else {				
 				try {
 					klas = klas.substring(1, klas.length() - 1);
@@ -200,7 +212,7 @@ public class QuizAanpassingController {
 			boolean isTest = view.getIsTestckb();
 			boolean isUniekeDeelname = view.getIsUniekeDeelnameckb();
 			// TEST MINSTENS 1 OPDRACHT IN AFGEWERKT
-			if(quizOpdrachtenTabelModel.getOpdrachten().size() == 0 && view.getQuizStatuscmb().toString().equals("Afgewerkt")) {
+			if(quizOpdrachtenTabelModel.getOpdrachten().size() == 0 && view.getQuizStatuscmb() instanceof Afgewerkt) {
 				foutboodschap += "ongeldige status, voeg minstens 1 opdracht toe voor <i>afgewerkt</i>.<br/>";
 			}
 			
@@ -208,13 +220,19 @@ public class QuizAanpassingController {
 			if (!foutboodschap.equals("<html>")) {
 				foutboodschap += "</html>";
 				view.toonFoutBoodschap(foutboodschap);
-				view.toonInformationDialog(foutboodschap, "FOUT");
 				return;
 			}
 			
 			// SET		
 			quiz.setDoelLeerjaren(klassenArray);
-			quiz.setOnderwerp(onderwerp);
+			try {
+				quiz.setOnderwerp(onderwerp); 
+			} catch(IllegalArgumentException ex) {
+				foutboodschap += ex.getMessage();
+				foutboodschap += "</html>";
+				view.toonFoutBoodschap(foutboodschap);
+				return;
+			}
 			quiz.setIsTest(isTest);
 			quiz.setIsUniekeDeelname(isUniekeDeelname);					
 			
@@ -228,14 +246,20 @@ public class QuizAanpassingController {
 				for (int i = 0; i<quizOpdrachtenTabelModel.getQuizOpdrachten().size(); i++) {				
 					QuizOpdracht.koppelOpdrachtAanQuiz(quiz, quizOpdrachtenTabelModel.getOpdracht(i), quizOpdrachtenTabelModel.getMaxScore(i));
 				}	
-			}
-			
-			quiz.setQuizStatus(status);	
+			}			
 			
 			// ADD QUIZ TO DB
-			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) {  
-				dbHandler.getQuizCatalogus().addQuiz(quiz);
-			}			
+			if(!(dbHandler.getQuizCatalogus().getQuizzen()).contains(quiz)) { 
+				try {
+					dbHandler.getQuizCatalogus().addQuiz(quiz);
+					} catch(IllegalArgumentException ex) {
+						foutboodschap += ex.getMessage();
+						foutboodschap += "</html>";
+						view.toonFoutBoodschap(foutboodschap);
+						return;
+					}				
+			}	
+			quiz.setQuizStatus(status);	
 			view.toonInformationDialog("Quiz bewaard", "Ok");
 			
 			// SET VIEW WITH NEW QUIZ

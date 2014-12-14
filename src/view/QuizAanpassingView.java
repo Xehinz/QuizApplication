@@ -409,6 +409,10 @@ public class QuizAanpassingView extends JFrame {
 		table.getColumnModel().getColumn(3).setPreferredWidth(40);  //MaxScore
 	}
 	
+	public void setStatus(QuizStatus status) {
+		cmbStatus.setSelectedItem(status);		
+	}
+	
 	//Listeners
 	public void addQuizBewarenKnopActionListener(ActionListener listener) {
 		btnQuizBewaren.addActionListener(listener);
@@ -452,7 +456,7 @@ public class QuizAanpassingView extends JFrame {
 		return (QuizStatus)cmbStatus.getSelectedItem();
 	}
 	public JTable getAlleOpdrachtenTabel() {
-		return alleOpdrachtenTabel;
+		return alleOpdrachtenTabel;	
 	}
 	
 }
