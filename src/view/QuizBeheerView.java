@@ -3,11 +3,10 @@ package view;
 /**
  * 
  * @author Adriaan Kuipers
- * @version 14/12/2014
+ * @version 15/12/2014
  * 
  */
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -50,7 +49,7 @@ public class QuizBeheerView extends JFrame {
 				
 		tabelVeld = new JScrollPane(quizTabel);
 		quizTabel.setFillsViewportHeight(true);
-		//table.setAutoCreateRowSorter(true);
+		
 				//Set constraints
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
@@ -58,7 +57,8 @@ public class QuizBeheerView extends JFrame {
 		constraints.gridx = 0;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-		tabelVeld.setPreferredSize(new Dimension(800, 700));
+		constraints.weighty = 1;
+		constraints.weightx = 1;
 		this.add(tabelVeld, constraints);
 		
 		//Set knoppenVeld

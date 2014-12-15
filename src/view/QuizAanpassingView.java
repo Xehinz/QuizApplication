@@ -21,7 +21,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
 
 import persistency.DBHandler;
-import model.Leraar;
 import model.OpdrachtCategorie;
 import model.Quiz;
 import model.quizStatus.Afgesloten;
@@ -34,7 +33,7 @@ import model.quizStatus.QuizStatus;
 /**
  * 
  * @author Adriaan Kuipers
- * @version 08/12/2014
+ * @version 15/12/2014
  * 
  */
 
@@ -105,8 +104,8 @@ public class QuizAanpassingView extends JFrame {
 		geselecteerdeOpdrachtenTabel = new JTable();
 		alleOpdrachtenVeld = new JScrollPane(alleOpdrachtenTabel);		
 		geselecteerdeOpdrachtenVeld = new JScrollPane(geselecteerdeOpdrachtenTabel);
-		alleOpdrachtenVeld.setPreferredSize(new Dimension(380, 400));
-		geselecteerdeOpdrachtenVeld.setPreferredSize(new Dimension(420, 400));
+		alleOpdrachtenTabel.setFillsViewportHeight(true);
+		geselecteerdeOpdrachtenTabel.setFillsViewportHeight(true);
 		
 		//INIT LABEL
 		lblOnderwerp = new JLabel("Onderwerp");
@@ -147,6 +146,7 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridy = 0;
 		constraints.gridx = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.WEST;
 		sorteerVeld.add(cmbCategorie, constraints);
 				
 		constraints = new GridBagConstraints();
@@ -154,6 +154,7 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridy = 1;
 		constraints.gridx = 1;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.WEST;
 		sorteerVeld.add(cmbSorteer, constraints);
 		
 			//ADD LABEL
@@ -161,18 +162,21 @@ public class QuizAanpassingView extends JFrame {
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 0;
 		constraints.gridx = 2;
+		constraints.anchor = GridBagConstraints.EAST;
 		sorteerVeld.add(lblAantalOpdrachten, constraints);
 		
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 0;
 		constraints.gridx = 0;
+		constraints.anchor = GridBagConstraints.WEST;
 		sorteerVeld.add(lblFilterOpCategorie, constraints);
 		
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
 		constraints.gridx = 0;
+		constraints.anchor = GridBagConstraints.WEST;
 		sorteerVeld.add(lblSorteer, constraints);
 		
 			//ADD BUTTON
@@ -180,6 +184,9 @@ public class QuizAanpassingView extends JFrame {
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 1;
 		constraints.gridx = 2;
+		constraints.weighty = 1;
+		constraints.weightx = 1;
+		constraints.anchor = GridBagConstraints.EAST;
 		sorteerVeld.add(btnWijzigVolgorde, constraints);
 		
 		//INIT QUIZINFOVELD
@@ -226,6 +233,8 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridwidth = 2;
 		constraints.gridheight = 2;
 		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weighty = 1;
+		constraints.weightx = 1;
 		quizInfoVeld.add(btnQuizBewaren, constraints);
 		
 			//ADD COMBOBOX
@@ -256,6 +265,7 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridx = 1;
 		constraints.gridwidth = 3;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1;
 		quizInfoVeld.add(txtOnderwerp, constraints);
 		
 		constraints = new GridBagConstraints();
@@ -271,6 +281,8 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridy = 1;
 		constraints.gridx = 3;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
+		txtKlas.setMinimumSize(new Dimension(40,22));
+		constraints.weightx = 1;
 		quizInfoVeld.add(txtKlas, constraints);
 		
 		//BUILD WINDOW
@@ -296,6 +308,9 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridy = 2;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.SOUTH;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weighty = 1;
+		constraints.weightx = 1;
 		this.add(alleOpdrachtenVeld, constraints);
 		
 		constraints = new GridBagConstraints();
@@ -303,6 +318,9 @@ public class QuizAanpassingView extends JFrame {
 		constraints.gridy = 2;
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.SOUTH;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weighty = 1;
+		constraints.weightx = 1;
 		this.add(geselecteerdeOpdrachtenVeld, constraints);
 		
 		constraints = new GridBagConstraints();
