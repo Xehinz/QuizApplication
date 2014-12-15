@@ -64,7 +64,7 @@ public class OverzichtScoresAntwoordenController {
 	class AntwoordTableModel extends AbstractTableModel {
 
 		private QuizDeelname quizDeelname;
-		private String[] headers = new String[] {"Vraag", "Gegeven antwoord", "Behaalde score"};
+		private String[] headers = new String[] {"Vraag", "Gegeven antwoord", "Antwoordtijd (s)", "Aantal pogingen", "Behaalde score"};
 		
 		public AntwoordTableModel(QuizDeelname quizDeelname) {
 			this.quizDeelname = quizDeelname;			
@@ -101,6 +101,10 @@ public class OverzichtScoresAntwoordenController {
 			case 1:
 				return opdrachtAntwoord.getLaatsteAntwoord();
 			case 2:
+				return opdrachtAntwoord.getAntwoordTijd();
+			case 3:
+				return opdrachtAntwoord.getAantalPogingen();
+			case 4:
 				return String.format("%.2f/%d", opdrachtAntwoord.getBehaaldeScore(), opdrachtAntwoord.getQuizOpdracht().getMaxScore());
 			default: 
 				return "";
