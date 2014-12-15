@@ -46,7 +46,7 @@ public class OpstartController {
 		OpdrachtScoreRegelsFactory.getEnigeInstantie().setScoreStrategyType(
 				ScoreStrategyType.valueOf(settings.getProperty("scoreregel")));
 
-		this.dbHandler = new DBHandler();
+		this.dbHandler = DBHandler.getEnigeInstantie();
 		this.dbHandler.setConnectionString(getConnectieString());
 		dbHandler.setDBStrategy(StorageStrategy.valueOf(settings
 				.getProperty("dbstrategy")));
@@ -57,7 +57,7 @@ public class OpstartController {
 				JOptionPane.showConfirmDialog(null, "Fout bij het veranderen van look and feel", "Fout", JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
 			}		
 
-		viewFactory = new ViewFactory(settings);
+		viewFactory = ViewFactory.getEnigeInstantie(settings);
 		login();
 
 		try {

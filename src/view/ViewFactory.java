@@ -7,9 +7,18 @@ import view.viewInterfaces.IView;
 
 public class ViewFactory {
 
+	private static ViewFactory enigeInstantie;
+	
 	private Properties settings;
 
-	public ViewFactory(Properties settings) {
+	public static ViewFactory getEnigeInstantie(Properties settings) {
+		if (enigeInstantie == null) {
+			enigeInstantie = new ViewFactory(settings);
+		}
+		return enigeInstantie;
+	}
+	
+	private ViewFactory(Properties settings) {
 		this.settings = settings;
 	}
 
@@ -107,7 +116,7 @@ public class ViewFactory {
 	public IOpdrachtDeelnameViewFactory maakOpdrachtDeelnameViewFactory() {
 		switch (settings.getProperty("opdrachtdeelnameviewfactory")) {
 		case "OpdrachtDeelnameViewFactory":
-			return new OpdrachtDeelnameViewFactory();
+			return OpdrachtDeelnameViewFactory.getEnigeInstantie();
 		default:
 			return null;
 		}

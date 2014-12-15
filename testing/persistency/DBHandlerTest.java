@@ -156,7 +156,7 @@ public class DBHandlerTest {
 		quizA.setQuizStatus(new Afgesloten());
 		quizB.setQuizStatus(new Afgesloten());
 
-		dbHandler = new DBHandler(opdrachtCatalogus, leerlingContainer,
+		dbHandler = DBHandler.getEnigeInstantie(opdrachtCatalogus, leerlingContainer,
 				quizCatalogus);
 		dbHandler.setDBStrategy(StorageStrategy.DATABASE);
 

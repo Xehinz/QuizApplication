@@ -21,13 +21,17 @@ import model.QuizOpdracht;
  * setDBStrategy(StorageStrategy storageStrategy) om een StorageStrategy in te
  * stellen. Keuze tussen StorageStrategy.TEKST, StorageStrategy.CSV en
  * StorageStrategy.DATABASE. DBHandler werkt niet als er geen StorageStrategy
- * ingesteld wordt.
+ * ingesteld wordt.<br/><br/>
+ * 
+ * DBHandler is Singleton
  * 
  * @author Ben Vandenberk
  * @version 17/11/2014
  *
  */
 public class DBHandler implements Observer {
+
+	private static DBHandler enigeInstantie;
 
 	private DBStrategy dbStrategy;
 	private OpdrachtCatalogus opdrachtCatalogus;
@@ -38,18 +42,19 @@ public class DBHandler implements Observer {
 	private String connectionString;
 
 	/**
-	 * Maakt een DBHandler object aan. Gebruik deze constructor als je enkel wil
-	 * inlezen uit opslag
+	 * Geeft een Singleton DBHandler object terug. Gebruik deze method als je de
+	 * DBHandler enkel wil gebruiken om in te lezen uit opslag
 	 */
-	public DBHandler() {
-		opdrachtCatalogus = new OpdrachtCatalogus();
-		leerlingContainer = new LeerlingContainer();
-		quizCatalogus = new QuizCatalogus();
+	public static DBHandler getEnigeInstantie() {
+		if (enigeInstantie == null) {
+			enigeInstantie = new DBHandler();
+		}
+		return enigeInstantie;
 	}
 
 	/**
-	 * Maakt een DBHandler object aan. Gebruik deze constructor voor
-	 * wegschrijven of inlezen
+	 * Geeft een Singleton DBHandler object terug. Gebruik deze method als je de
+	 * DBHandler wil gebruiken voor inlezen of wegschrijven
 	 * 
 	 * @param opdrachtCatalogus
 	 *            de OpdrachtCatalogus om weg te schrijven
@@ -58,7 +63,23 @@ public class DBHandler implements Observer {
 	 * @param quizCatalogus
 	 *            de QuizCatalogus om weg te schrijven
 	 */
-	public DBHandler(OpdrachtCatalogus opdrachtCatalogus,
+	public static DBHandler getEnigeInstantie(
+			OpdrachtCatalogus opdrachtCatalogus,
+			LeerlingContainer leerlingContainer, QuizCatalogus quizCatalogus) {
+		if (enigeInstantie == null) {
+			enigeInstantie = new DBHandler(opdrachtCatalogus,
+					leerlingContainer, quizCatalogus);
+		}
+		return enigeInstantie;
+	}
+
+	private DBHandler() {
+		opdrachtCatalogus = new OpdrachtCatalogus();
+		leerlingContainer = new LeerlingContainer();
+		quizCatalogus = new QuizCatalogus();
+	}
+
+	private DBHandler(OpdrachtCatalogus opdrachtCatalogus,
 			LeerlingContainer leerlingContainer, QuizCatalogus quizCatalogus) {
 		this.opdrachtCatalogus = opdrachtCatalogus;
 		this.leerlingContainer = leerlingContainer;

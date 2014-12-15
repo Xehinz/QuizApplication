@@ -26,6 +26,8 @@ public class OpdrachtScoreRegelsFactory {
 			return new BasisScoreStrategy();
 		case TIJD:
 			return new TijdScoreStrategy();
+		case POGINGEN:
+			return new PogingScoreStrategy();
 		default:
 			return null;
 		}

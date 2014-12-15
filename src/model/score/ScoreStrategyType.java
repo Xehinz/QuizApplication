@@ -1,7 +1,7 @@
 package model.score;
 
 public enum ScoreStrategyType {
-	BASIS, TIJD;
+	BASIS, TIJD, POGINGEN;
 	
 	public String toString() {
 		switch(this) {
@@ -9,6 +9,8 @@ public enum ScoreStrategyType {
 			return "Basis";
 		case TIJD:
 			return "Tijd";
+		case POGINGEN:
+			return "Pogingen";
 		default:
 			return "";
 		}

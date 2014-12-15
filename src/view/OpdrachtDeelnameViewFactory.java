@@ -10,7 +10,16 @@ import view.viewInterfaces.IOpdrachtDeelnameViewFactory;
  */
 public class OpdrachtDeelnameViewFactory implements IOpdrachtDeelnameViewFactory {
 
-	public OpdrachtDeelnameViewFactory() {
+	private static OpdrachtDeelnameViewFactory enigeInstantie;
+	
+	public static OpdrachtDeelnameViewFactory getEnigeInstantie() {
+		if (enigeInstantie == null) {
+			enigeInstantie = new OpdrachtDeelnameViewFactory();
+		}
+		return enigeInstantie;
+	}
+	
+	private OpdrachtDeelnameViewFactory() {
 		
 	}
 	
