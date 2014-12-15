@@ -1,3 +1,4 @@
 ID	Datum	QuizStatus	Auteur	Onderwerp	IsUniekeDeelname	IsTest	DoelLeerjaren
 1	8/12/2014	Opengesteld	MIEKE_WITTEMANS	Priemgetallen en steden	true	true	1,2,3,4,5,6
-2	8/12/2014	Opengesteld	CHARLOTTE_NEVEN	Eten	false	false	4,5,6
+2	8/12/2014	Opengesteld	CHARLOTTE_NEVEN	Eten	true	true	4,5,6
+3	15/12/2014	Opengesteld	JOS_VERBEEK	DemoQuiz	false	false	1,2,3,4,5,6

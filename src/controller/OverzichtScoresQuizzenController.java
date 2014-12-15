@@ -38,7 +38,7 @@ public class OverzichtScoresQuizzenController {
 	}
 	
 	protected void run() {
-		quizzenView.setTableModel(quizScoreTableModel);		
+		quizzenView.setTableModel(quizScoreTableModel, 3, 1, 1, 1);		
 		quizzenView.addDetailKnopListener(new DetailKnopListener());				
 		quizzenView.setVisible(true);	
 	}

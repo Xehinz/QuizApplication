@@ -73,9 +73,11 @@ public class OverzichtScoresQuizzenView extends JFrame implements IOverzichtScor
 		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
-	public void setTableModel(TableModel quizScoreTableModel) {
+	public void setTableModel(TableModel quizScoreTableModel, int... kolomBreedtes) {
 		tblQuizzen.setModel(quizScoreTableModel);
-		tblQuizzen.getColumnModel().getColumn(0).setPreferredWidth(300);
+		for (int i = 0; i < tblQuizzen.getColumnCount() && i < kolomBreedtes.length; i++) {
+			tblQuizzen.getColumnModel().getColumn(i).setPreferredWidth(kolomBreedtes[i] * 1000);
+		}		
 	}
 	
 	public void addDetailKnopListener(ActionListener listener) {

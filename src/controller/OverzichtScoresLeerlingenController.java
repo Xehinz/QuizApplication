@@ -39,7 +39,7 @@ public class OverzichtScoresLeerlingenController {
 	}
 	
 	protected void run() {
-		leerlingenView.setTableModel(leerlingScoreTableModel);
+		leerlingenView.setTableModel(leerlingScoreTableModel, 1, 2);
 		leerlingenView.setQuizOnderwerp(quiz.getOnderwerp());		
 		leerlingenView.addDetailKnopListener(new DetailKnopListener());			
 		leerlingenView.setVisible(true);

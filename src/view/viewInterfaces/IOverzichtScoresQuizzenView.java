@@ -11,7 +11,7 @@ import javax.swing.table.TableModel;
  */
 public interface IOverzichtScoresQuizzenView extends IView {
 	
-	public void setTableModel(TableModel quizScoreTableModel);
+	public void setTableModel(TableModel quizScoreTableModel, int... kolomBreedtes);
 	
 	public void addDetailKnopListener(ActionListener listener);
 	

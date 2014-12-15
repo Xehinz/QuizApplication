@@ -33,7 +33,7 @@ public class QuizDeelnameView extends JFrame implements IQuizDeelnameView {
 	
 	public QuizDeelnameView() {
 		super("Deelnemen aan Quiz");
-		this.setSize(1200, 400);
+		this.setSize(800, 400);
 		this.setLocationRelativeTo(null);
 		
 		layout = new GridBagLayout();
@@ -52,8 +52,7 @@ public class QuizDeelnameView extends JFrame implements IQuizDeelnameView {
 		constraints = new GridBagConstraints();
 		constraints.insets = new Insets(10, 10, 0, 0);
 		constraints.gridy = 1;
-		constraints.gridx = 0;		
-		constraints.weighty = 0.5;
+		constraints.gridx = 0;	
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		this.add(lblQuizzen, constraints);		
 			
@@ -62,7 +61,7 @@ public class QuizDeelnameView extends JFrame implements IQuizDeelnameView {
 		tblQuizzen.setFillsViewportHeight(true);		
 		
 		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.insets = new Insets(5, 10, 10, 10);
 		constraints.gridy = 2;
 		constraints.gridx = 0;
 		constraints.weighty = 10;
@@ -91,8 +90,11 @@ public class QuizDeelnameView extends JFrame implements IQuizDeelnameView {
 		return tblQuizzen.convertRowIndexToModel(tblQuizzen.getSelectedRow());
 	}
 	
-	public void setTableModel(TableModel tableModel) {
+	public void setTableModel(TableModel tableModel, int... kolomBreedtes) {
 		tblQuizzen.setModel(tableModel);
+		for (int i = 0; i < tableModel.getColumnCount() && i < kolomBreedtes.length; i++) {
+			tblQuizzen.getColumnModel().getColumn(i).setPreferredWidth(kolomBreedtes[i] * 1000);
+		}
 	}
 	
 	public void toonInformationDialog(String boodschap, String titel) {

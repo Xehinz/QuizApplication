@@ -79,10 +79,11 @@ public class OverzichtScoresAntwoordenView extends JFrame implements IOverzichtS
 	}
 	
 	
-	public void setAntwoordTableModel(TableModel antwoordTableModel) {
-		tblAntwoorden.setModel(antwoordTableModel);
-		tblAntwoorden.getColumnModel().getColumn(0).setPreferredWidth(300);
-		tblAntwoorden.getColumnModel().getColumn(1).setPreferredWidth(300);
+	public void setAntwoordTableModel(TableModel antwoordTableModel, int... kolomBreedtes) {
+		tblAntwoorden.setModel(antwoordTableModel);		
+		for (int i = 0; i < kolomBreedtes.length && i < antwoordTableModel.getColumnCount(); i++) {
+			tblAntwoorden.getColumnModel().getColumn(i).setPreferredWidth(kolomBreedtes[i] * 1000);
+		}
 	}
 	
 	public void addAntwoordenSelectionListener(ListSelectionListener listener) {

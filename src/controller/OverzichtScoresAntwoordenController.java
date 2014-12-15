@@ -35,7 +35,7 @@ public class OverzichtScoresAntwoordenController {
 	}	
 	
 	protected void run() {
-		antwoordenView.setAntwoordTableModel(antwoordTableModel);
+		antwoordenView.setAntwoordTableModel(antwoordTableModel, 3, 3, 1, 1, 1);
 		antwoordenView.setTitel(quizDeelname.getLeerling().getNaam(), quizDeelname.getQuiz().getOnderwerp());		
 		antwoordenView.addAntwoordenSelectionListener(new AntwoordSelectionListener());		
 		antwoordenView.setVisible(true);

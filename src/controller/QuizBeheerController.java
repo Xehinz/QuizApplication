@@ -165,8 +165,8 @@ public class QuizBeheerController {
 		     case 2: return quiz.getDoelLeerjaren();
 		     case 3: return (quiz.getQuizOpdrachten()).size();
 		     case 4: return quiz.getQuizStatus();
-		     case 5: return quiz.getIsTest();
-		     case 6: return quiz.getIsUniekeDeelname();
+		     case 5: return quiz.getIsTest() ? "Ja" : "Nee";
+		     case 6: return quiz.getIsUniekeDeelname() ? "Ja" : "Nee";
 		     
 		     default: return null;
 		    }

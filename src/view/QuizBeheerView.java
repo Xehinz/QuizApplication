@@ -36,7 +36,7 @@ public class QuizBeheerView extends JFrame implements IQuizBeheerView {
 	public QuizBeheerView() {
 		//Set window
 		super("Beheer Quizzen");
-		this.setSize(1200, 800);
+		this.setSize(1350, 400);
 		this.setLocationRelativeTo(null);
 		
 		

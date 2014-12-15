@@ -65,6 +65,7 @@ public class RapportNaDeelnameView extends JFrame implements IRapportNaDeelnameV
 		add(new JScrollPane(tblRapport), constraints);
 
 		txtareaAntwoordDetail = new JTextArea();
+		txtareaAntwoordDetail.setOpaque(false);
 		txtareaAntwoordDetail.setLineWrap(true);
 		constraints = new GridBagConstraints();
 		constraints.gridx = 0;
@@ -100,8 +101,11 @@ public class RapportNaDeelnameView extends JFrame implements IRapportNaDeelnameV
 		setTitle(String.format("Rapport voor quiz: %s", onderwerp));
 	}
 
-	public void setRapportTableModel(TableModel rapportTableModel) {
+	public void setRapportTableModel(TableModel rapportTableModel, int... kolomBreedtes) {
 		tblRapport.setModel(rapportTableModel);
+		for (int i = 0; i < rapportTableModel.getColumnCount() && i < kolomBreedtes.length; i++) {
+			tblRapport.getColumnModel().getColumn(i).setPreferredWidth(kolomBreedtes[i] * 1000);
+		}
 	}
 
 	public void addDeelnameMenuKnopListener(ActionListener listener) {

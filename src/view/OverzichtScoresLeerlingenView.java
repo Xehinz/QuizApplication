@@ -73,12 +73,13 @@ public class OverzichtScoresLeerlingenView extends JFrame implements IOverzichtS
 		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
-	public void setTableModel(TableModel leerlingScoreTableModel) {
+	public void setTableModel(TableModel leerlingScoreTableModel, int... gecentreerdeKolommen) {
 		tblDeelnames.setModel(leerlingScoreTableModel);	
 		DefaultTableCellRenderer middleRenderer = new DefaultTableCellRenderer();
 		middleRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
-		tblDeelnames.getColumnModel().getColumn(1).setCellRenderer(middleRenderer);
-		tblDeelnames.getColumnModel().getColumn(2).setCellRenderer(middleRenderer);
+		for (int kolom : gecentreerdeKolommen) {
+			tblDeelnames.getColumnModel().getColumn(kolom).setCellRenderer(middleRenderer);
+		}
 	}
 	
 	public void setQuizOnderwerp(String onderwerp) {

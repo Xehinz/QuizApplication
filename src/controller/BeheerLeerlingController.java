@@ -40,16 +40,18 @@ public class BeheerLeerlingController {
 	 * @param aView
 	 */
 	public BeheerLeerlingController(DBHandler aHandler, Leraar aLeraar, ViewFactory viewFactory) {
+		
 		this.setDBHandler(aHandler);
 		this.viewFactory = viewFactory;
 		this.aView = (IBeheerLeerlingView)viewFactory.maakView(ViewType.BeheerLeerlingView);
 		this.setLeerling(aLeerling);
 		this.setLeraar(aLeraar);
 		
+	}
+	
+	protected void run() {
 		AddListeners(aView);
-
 		aTabelModel.setLeerlingen(aDBHandler.getLeerlingContainer().getLeerlingen());
-
 	}
 	
 	public IView getView() {
@@ -73,7 +75,8 @@ public class BeheerLeerlingController {
 	}
 	
 	private void openLeerlingAanpassing(Leerling aLeerling, Leraar aLeraar) {
-		new LeerlingAanpassingController(aLeerling, aLeraar, getDBHandler(), viewFactory);
+		LeerlingAanpassingController leerlingAanpassingController = new LeerlingAanpassingController(aLeerling, aLeraar, getDBHandler(), viewFactory);
+		leerlingAanpassingController.run();
 	}
 
 	/**

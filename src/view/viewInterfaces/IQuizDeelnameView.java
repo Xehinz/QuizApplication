@@ -15,7 +15,7 @@ public interface IQuizDeelnameView extends IView {
 	
 	public int getGeselecteerdeRij();
 	
-	public void setTableModel(TableModel tableModel);
+	public void setTableModel(TableModel tableModel, int... kolomBreedtes);
 	
 	public void toonInformationDialog(String boodschap, String titel);
 	

@@ -94,7 +94,7 @@ public class QuizDeelnameController {
 	}
 	
 	protected void run() {
-		quizDeelnameView.setTableModel(quizTableModel);
+		quizDeelnameView.setTableModel(quizTableModel, 3, 1, 1, 1);
 		quizDeelnameView.setLeerling(leerling.getNaam());
 		quizDeelnameView.addDeelneemKnopListener(new DeelneemKnopListener());
 
@@ -278,7 +278,7 @@ public class QuizDeelnameController {
 		rapportNaDeelnameView.setQuiz(quiz.getOnderwerp());
 		rapportNaDeelnameView.setQuizScore(quizDeelname.getBehaaldeScore());
 		rapportTableModel = new RapportTableModel(quizDeelname); 
-		rapportNaDeelnameView.setRapportTableModel(rapportTableModel);
+		rapportNaDeelnameView.setRapportTableModel(rapportTableModel, 3, 2, 2, 1, 1, 1);
 		rapportNaDeelnameView.addDeelnameMenuKnopListener(ae -> keerTerugNaarKiezenQuiz());	
 		rapportNaDeelnameView.addAntwoordGeselecteerdListener(new AntwoordSelectieChangedHandler());
 		

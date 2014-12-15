@@ -211,6 +211,7 @@ public class MainLeraarController extends Observable {
 				leerlingBeheerStaatOpen = true;
 				beheerLeerlingController = new BeheerLeerlingController(
 						dbHandler, leraar, viewFactory);
+				beheerLeerlingController.run();
 				beheerLeerlingController.getView().addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {

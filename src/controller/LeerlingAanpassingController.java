@@ -19,11 +19,15 @@ public class LeerlingAanpassingController {
 
 	public LeerlingAanpassingController(Leerling aLeerling, Leraar aLeraar,
 			DBHandler dbHandler, ViewFactory viewFactory) {
+		
 		this.aLeerling = aLeerling;
 		this.aDBHandler = dbHandler;
 		this.aView = (ILeerlingAanpassingView) viewFactory
 				.maakView(ViewType.LeerlingAanpassingView);
-
+		
+	}
+	
+	protected void run() {
 		aView.setID(aLeerling.getID());
 		aView.setVoornaam(aLeerling.getLeerlingVoornaam());
 		aView.setFamilienaam(aLeerling.getLeerlingFamilienaam());

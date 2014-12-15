@@ -13,7 +13,7 @@ public interface IRapportNaDeelnameView extends IView {
 
 	public void setQuiz(String onderwerp);
 
-	public void setRapportTableModel(TableModel rapportTableModel);
+	public void setRapportTableModel(TableModel rapportTableModel, int... kolomBreedtes);
 
 	public void addDeelnameMenuKnopListener(ActionListener listener);
 

@@ -10,7 +10,7 @@ import javax.swing.table.TableModel;
  */
 public interface IOverzichtScoresAntwoordenView extends IView {
 	
-	public void setAntwoordTableModel(TableModel antwoordTableModel);
+	public void setAntwoordTableModel(TableModel antwoordTableModel, int... kolomBreedtes);
 	
 	public void addAntwoordenSelectionListener(ListSelectionListener listener);
 	

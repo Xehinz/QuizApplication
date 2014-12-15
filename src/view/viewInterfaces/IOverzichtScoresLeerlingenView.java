@@ -11,7 +11,7 @@ import javax.swing.table.TableModel;
  */
 public interface IOverzichtScoresLeerlingenView extends IView {
 	
-	public void setTableModel(TableModel leerlingScoreTableModel);
+	public void setTableModel(TableModel leerlingScoreTableModel, int... gecentreerdeKolommen);
 	
 	public void setQuizOnderwerp(String onderwerp);
 	
