@@ -22,12 +22,19 @@ public class OverzichtScoresAntwoordenController {
 
 	private AntwoordTableModel antwoordTableModel;
 	private IOverzichtScoresAntwoordenView antwoordenView;
+	private QuizDeelname quizDeelname;
+	private OverzichtScoresQuizzenController startScoreController;
 	
 	public OverzichtScoresAntwoordenController(QuizDeelname quizDeelname, OverzichtScoresQuizzenController startScoreController, ViewFactory viewFactory) {		
 		
 		this.antwoordenView = (IOverzichtScoresAntwoordenView)viewFactory.maakView(ViewType.OverzichtScoresAntwoorden);
 		antwoordTableModel = new AntwoordTableModel(quizDeelname);
+		this.quizDeelname = quizDeelname;
+		this.startScoreController = startScoreController;
 		
+	}	
+	
+	protected void run() {
 		antwoordenView.setAntwoordTableModel(antwoordTableModel);
 		antwoordenView.setTitel(quizDeelname.getLeerling().getNaam(), quizDeelname.getQuiz().getOnderwerp());		
 		antwoordenView.addAntwoordenSelectionListener(new AntwoordSelectionListener());		
@@ -40,7 +47,7 @@ public class OverzichtScoresAntwoordenController {
 				antwoordenView.dispose();
 			}
 		});
-	}	
+	}
 	
 	class AntwoordSelectionListener implements ListSelectionListener {
 		

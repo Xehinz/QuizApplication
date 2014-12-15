@@ -39,8 +39,33 @@ public class OpstartController {
 
 	private Properties settings;
 	private ViewFactory viewFactory;
+	
+	private MainLeerlingController mainLeerlingController;
+	private MainLeraarController mainLeraarController;
 
 	public OpstartController() {
+		
+	}
+
+	public static void main(String[] args) {
+		OpstartController opstartController = new OpstartController();
+		opstartController.run();
+	}
+
+	public void login() {
+		loginView = (ILoginView) viewFactory.maakView(ViewType.LoginView);
+		loginView.addWindowListener(new LoginViewClosedHandler());
+		loginView.addLoginActionListener(new LoginKnopListener());
+
+		loginView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		loginView.setVisible(true);
+	}
+
+	public Properties getSettings() {
+		return settings;
+	}
+	
+	protected void run() {
 		loadSettings();
 
 		OpdrachtScoreRegelsFactory.getEnigeInstantie().setScoreStrategyType(
@@ -69,25 +94,6 @@ public class OpstartController {
 		} catch (Exception ex) {
 			loginView.toonErrorMessage("Fout:\n" + ex.getMessage(), "Fout");
 		}
-		
-	}
-
-	public static void main(String[] args) {
-		@SuppressWarnings("unused")
-		OpstartController opstartController = new OpstartController();
-	}
-
-	public void login() {
-		loginView = (ILoginView) viewFactory.maakView(ViewType.LoginView);
-		loginView.addWindowListener(new LoginViewClosedHandler());
-		loginView.addLoginActionListener(new LoginKnopListener());
-
-		loginView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		loginView.setVisible(true);
-	}
-
-	public Properties getSettings() {
-		return settings;
 	}
 
 	protected void saveEnSluitAf() {
@@ -166,18 +172,19 @@ public class OpstartController {
 
 	class LoginKnopListener implements ActionListener {
 
-		@SuppressWarnings("unused")
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			if (valideerLeerlingOfLeraar(loginView.getVolledigeNaam())) {
 				if (leraar == null) {
-					MainLeerlingController mainLeerlingController = new MainLeerlingController(
+					mainLeerlingController = new MainLeerlingController(
 							dbHandler, leerling, OpstartController.this,
 							viewFactory);
+					mainLeerlingController.run();
 				} else {
-					MainLeraarController mainLeraarController = new MainLeraarController(
+					mainLeraarController = new MainLeraarController(
 							dbHandler, leraar, OpstartController.this,
 							viewFactory);
+					mainLeraarController.run();
 				}
 				loginView.dispose();
 			} else {

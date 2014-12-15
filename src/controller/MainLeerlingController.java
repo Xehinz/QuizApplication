@@ -33,13 +33,16 @@ public class MainLeerlingController {
 	private IMainLeerlingView mainView;
 	
 	public MainLeerlingController(DBHandler dbHandler, Leerling leerling, OpstartController opstartController, ViewFactory viewFactory) {
+		
 		this.dbHandler = dbHandler;
 		this.leerling = leerling;
 		this.opstartController = opstartController;
 		this.viewFactory = viewFactory;
 		mainView = (IMainLeerlingView)viewFactory.maakView(ViewType.MainLeerlingView);
 		quizDeelnameStaatOpen = false;
-		
+	}
+	
+	protected void run() {
 		mainView.setLeerling(leerling.getNaam());
 		mainView.addAfsluitenKnopActionListener(ae -> opstartController.saveEnSluitAf());
 		mainView.addLogoutKnopActionListener(new LogoutKnopListener());
@@ -83,6 +86,7 @@ public class MainLeerlingController {
 			if (!quizDeelnameStaatOpen) {
 				quizDeelnameStaatOpen = true;				
 				quizDeelnameController = new QuizDeelnameController(dbHandler, leerling, viewFactory);
+				quizDeelnameController.run();
 				quizDeelnameController.getView().addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(WindowEvent event) {

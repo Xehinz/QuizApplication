@@ -26,15 +26,19 @@ public class OverzichtScoresLeerlingenController {
 	private IOverzichtScoresLeerlingenView leerlingenView;
 	private ViewFactory viewFactory;
 	private OverzichtScoresQuizzenController startScoreController;
+	private Quiz quiz;
 
 	public OverzichtScoresLeerlingenController(Quiz quiz, OverzichtScoresQuizzenController startScoreController, ViewFactory viewFactory) {		
 		
 		this.viewFactory = viewFactory;
 		this.leerlingenView = (IOverzichtScoresLeerlingenView)viewFactory.maakView(ViewType.OverzichtScoresLeerlingen);
 		this.startScoreController = startScoreController;
-		
-		leerlingScoreTableModel = new LeerlingScoreTableModel(quiz.getQuizDeelnames());
-		
+		this.quiz = quiz;
+		leerlingScoreTableModel = new LeerlingScoreTableModel(quiz.getQuizDeelnames());		
+
+	}
+	
+	protected void run() {
 		leerlingenView.setTableModel(leerlingScoreTableModel);
 		leerlingenView.setQuizOnderwerp(quiz.getOnderwerp());		
 		leerlingenView.addDetailKnopListener(new DetailKnopListener());			
@@ -57,8 +61,8 @@ public class OverzichtScoresLeerlingenController {
 			if (geselecteerd == null) {
 				leerlingenView.toonInformationDialog("Selecteer een deelname om details te zien", "Geen deelname geselecteerd");
 			} else {
-				@SuppressWarnings("unused")
 				OverzichtScoresAntwoordenController overzichtScoresAntwoordController = new OverzichtScoresAntwoordenController(geselecteerd, startScoreController, viewFactory);
+				overzichtScoresAntwoordController.run();
 			}
 		}
 	}

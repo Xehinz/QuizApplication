@@ -86,15 +86,19 @@ public class QuizDeelnameController {
 
 		quizTableModel = new QuizTableModel(dbHandler.getQuizCatalogus()
 				.getMogelijkeQuizzenVoor(leerling));
+
+	}
+
+	public IView getView() {
+		return quizDeelnameView;
+	}
+	
+	protected void run() {
 		quizDeelnameView.setTableModel(quizTableModel);
 		quizDeelnameView.setLeerling(leerling.getNaam());
 		quizDeelnameView.addDeelneemKnopListener(new DeelneemKnopListener());
 
 		quizDeelnameView.setVisible(true);
-	}
-
-	public IView getView() {
-		return quizDeelnameView;
 	}
 
 	private void neemDeel() {

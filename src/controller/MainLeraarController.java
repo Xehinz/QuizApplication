@@ -74,7 +74,9 @@ public class MainLeraarController extends Observable {
 		}
 
 		this.addObserver(dbHandler);
-
+	}
+	
+	protected void run() {
 		mainView.setLeraar(leraar.toString());
 		mainView.setRodeLoginSelected(settings.getProperty("login").equals(
 				"LoginView2") ? true : false);
@@ -101,7 +103,7 @@ public class MainLeraarController extends Observable {
 
 		mainView.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		mainView.setVisible(true);
-		mainView.setLocationRelativeTo(null);
+		mainView.setLocationRelativeTo(null);		
 	}
 
 	class LogoutKnopListener implements ActionListener {
@@ -142,6 +144,7 @@ public class MainLeraarController extends Observable {
 				overzichtScoresStaatOpen = true;
 				overzichtScoresController = new OverzichtScoresQuizzenController(
 						dbHandler, viewFactory);
+				overzichtScoresController.run();
 
 				overzichtScoresController.getView().addWindowListener(
 						new WindowAdapter() {

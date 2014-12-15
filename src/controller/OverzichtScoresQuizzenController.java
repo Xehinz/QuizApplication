@@ -22,23 +22,25 @@ import model.Quiz;
 public class OverzichtScoresQuizzenController {	
 
 	private IOverzichtScoresQuizzenView quizzenView;
-	private ViewFactory viewFactory;
+	private ViewFactory viewFactory;	
 	private QuizScoreTableModel quizScoreTableModel;
 	
 	public OverzichtScoresQuizzenController(DBHandler dbHandler, ViewFactory viewFactory) {
 		
 		this.viewFactory = viewFactory;
 		this.quizzenView = (IOverzichtScoresQuizzenView)viewFactory.maakView(ViewType.OverzichtScoresQuizzen);
+		quizScoreTableModel = new QuizScoreTableModel(dbHandler.getQuizCatalogus().getReedsIngevuldeQuizzen());	
 
-		quizScoreTableModel = new QuizScoreTableModel(dbHandler.getQuizCatalogus().getReedsIngevuldeQuizzen());
-		
-		quizzenView.setTableModel(quizScoreTableModel);		
-		quizzenView.addDetailKnopListener(new DetailKnopListener());				
-		quizzenView.setVisible(true);	
 	}
 	
 	public IView getView() {
 		return quizzenView;
+	}
+	
+	protected void run() {
+		quizzenView.setTableModel(quizScoreTableModel);		
+		quizzenView.addDetailKnopListener(new DetailKnopListener());				
+		quizzenView.setVisible(true);	
 	}
 	
 	class DetailKnopListener implements ActionListener {
@@ -49,9 +51,9 @@ public class OverzichtScoresQuizzenController {
 			if (geselecteerd == null) {
 				quizzenView.toonInformationDialog("Selecteer een quiz om details te zien", "Geen quiz geselecteerd");
 			}
-			else {
-				@SuppressWarnings("unused")
-				OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this, viewFactory);					
+			else {				
+				OverzichtScoresLeerlingenController overzichtScoresLeerlingController = new OverzichtScoresLeerlingenController(geselecteerd, OverzichtScoresQuizzenController.this, viewFactory);	
+				overzichtScoresLeerlingController.run();
 			}			
 		}
 		
