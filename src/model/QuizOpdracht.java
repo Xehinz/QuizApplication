@@ -150,7 +150,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	 * @return de Quiz geassocieerd met deze QuizOpdracht
 	 */
 	public Quiz getQuiz() {
-		return quiz.clone();
+		return quiz;
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class QuizOpdracht implements Comparable<QuizOpdracht> {
 	 * @return de Opdracht geassocieerd met deze QuizOpdracht
 	 */
 	public Opdracht getOpdracht() {
-		return opdracht.clone();
+		return opdracht;
 	}
 
 	/**
