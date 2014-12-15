@@ -37,6 +37,8 @@ public interface IOpdrachtAanpassingView extends IView {
 	public void setOpdrachtCategorie(OpdrachtCategorie oc);
 
 	public void NieuweHintKnopActionListener(ActionListener listener);
+	
+	public void VerwijderHintKnopActionListener(ActionListener listener);
 
 	public void OpslaanKnopActionListener(ActionListener listener);
 
@@ -47,5 +49,8 @@ public interface IOpdrachtAanpassingView extends IView {
 	public void toonErrorMessage(String boodschap, String titel);
 	
 	public void setHintListModel(ListModel<String> listModel);
+	
+	public int getGeselecteerdeHintIndex();
+
 
 }

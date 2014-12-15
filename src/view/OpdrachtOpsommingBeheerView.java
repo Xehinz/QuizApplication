@@ -28,6 +28,7 @@ public class OpdrachtOpsommingBeheerView extends OpdrachtAanpassingView implemen
 		lblInJuisteVolgorde = new JLabel("In juiste volgorde: ");
 		this.add(lblInJuisteVolgorde, c);
 		c.gridx = 2;
+		c.gridwidth = 2;
 		c.weightx = 10;
 		c.anchor = GridBagConstraints.WEST;
 		chbInJuisteVolgorde = new JCheckBox();

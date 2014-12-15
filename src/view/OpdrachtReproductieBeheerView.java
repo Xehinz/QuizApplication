@@ -31,6 +31,7 @@ public class OpdrachtReproductieBeheerView extends OpdrachtAanpassingView implem
 		c = new GridBagConstraints();
 		c.insets = new Insets(10, 10, 0, 0);
 		c.gridx = 2;
+		c.gridwidth = 2;
 		c.gridy = 3;
 		c.weightx = 10;
 		c.anchor = GridBagConstraints.WEST;

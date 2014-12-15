@@ -28,7 +28,9 @@ import model.OpdrachtCategorie;
 public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassingView {
 
 	private JButton btnOpslaan = new JButton("Opslaan");
-	private JButton btnAddHint = new JButton("vv Voeg hint toe vv");
+	private JButton btnAddHint = new JButton("VV Voeg hint toe VV");
+	private String verwijderHintHMTL = "<html><style>p {white-space: nowrap}</style><p>&#923;&#923; Verwijder hint &#923;&#923;</p></html>";
+	private JButton btnVerwijderHint = new JButton(verwijderHintHMTL);
 	private JLabel lblOpdrachtCategorie = new JLabel(
 			"Opdrachtcategorie: ");
 	private JLabel lblVraag = new JLabel("Vraag: ");
@@ -75,6 +77,7 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.insets = new Insets(10, 10, 0, 0);
 		this.add(lblOpdrachtCategorie, c);
 		c.gridx = 2;
+		c.gridwidth = 2;
 		c.weightx = 10;
 		c.anchor = GridBagConstraints.WEST;
 		cbbOpdrachtCategorie.setPreferredSize(korteComboBoxDim);
@@ -88,6 +91,7 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.anchor = GridBagConstraints.EAST;
 		this.add(lblVraag, c);
 		c.gridx = 2;
+		c.gridwidth = 2;
 		c.insets = new Insets(10, 10, 0, 10);
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
@@ -102,6 +106,7 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.anchor = GridBagConstraints.EAST;
 		this.add(lblJuisteAntwoord, c);
 		c.gridx = 2;
+		c.gridwidth = 2;
 		c.insets = new Insets(10, 10, 0, 10);
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
@@ -116,6 +121,7 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.anchor = GridBagConstraints.EAST;
 		this.add(lblHints, c);
 		c.gridx = 2;
+		c.gridwidth = 2;
 		c.insets = new Insets(10, 10, 0, 10);
 		c.weightx = 0.8;
 		c.anchor = GridBagConstraints.WEST;
@@ -126,10 +132,19 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		c.gridy = 6;
 		c.insets = new Insets(10, 10, 0, 0);
 		this.add(btnAddHint, c);
+		
+		c = new GridBagConstraints();
+		c.gridy = 6;
+		c.gridx = 3;
+		c.weightx = 10;
+		c.anchor = GridBagConstraints.WEST;
+		c.insets = new Insets(10, 20, 0, 0);
+		this.add(btnVerwijderHint, c);
 
 		c = new GridBagConstraints();
 		c.gridy = 7;
 		c.gridx = 2;
+		c.gridwidth = 2;
 		c.weightx = 0.8;
 		c.weighty = 10;
 		c.insets = new Insets(10, 10, 0, 10);
@@ -267,6 +282,10 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 	public void NieuweHintKnopActionListener(ActionListener listener) {
 		btnAddHint.addActionListener(listener);
 	}
+	
+	public void VerwijderHintKnopActionListener(ActionListener listener) {
+		btnVerwijderHint.addActionListener(listener);
+	}
 
 	public void OpslaanKnopActionListener(ActionListener listener) {
 		btnOpslaan.addActionListener(listener);
@@ -286,6 +305,7 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 		txtHints.setEditable(false);
 		txtMaxAantalPogingen.setEditable(false);
 		txtMaxAntwoordTijd.setEditable(false);
+		btnVerwijderHint.setEnabled(false);
 	}
 
 	public void toonErrorMessage(String boodschap, String titel) {
@@ -295,6 +315,10 @@ public class OpdrachtAanpassingView extends JFrame implements IOpdrachtAanpassin
 	
 	public void setHintListModel(ListModel<String> listModel) {
 		lijstHints.setModel(listModel);		
+	}
+	
+	public int getGeselecteerdeHintIndex() {
+		return lijstHints.getSelectedIndex();
 	}
 
 }

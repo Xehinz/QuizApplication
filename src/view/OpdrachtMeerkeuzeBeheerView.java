@@ -29,6 +29,7 @@ public class OpdrachtMeerkeuzeBeheerView extends OpdrachtAanpassingView implemen
 		this.add(lblMogelijkeAntwoordenMeerkeuze, c);
 		c = new GridBagConstraints();
 		c.gridx = 2;
+		c.gridwidth = 2;
 		c.gridy = 3;
 		c.insets = new Insets(10, 10, 0, 10);
 		c.weightx = 10;

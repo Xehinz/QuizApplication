@@ -95,6 +95,7 @@ public class OpdrachtAanpassingController {
 
 		view.NieuweHintKnopActionListener(new NieuweHintKnopListener());
 		view.OpslaanKnopActionListener(new OpslaanKnopListener());
+		view.VerwijderHintKnopActionListener(new VerwijderHintKnopListener());
 
 		view.setVisible(true);
 	}
@@ -129,6 +130,20 @@ public class OpdrachtAanpassingController {
 			opdracht.addHint(view.getHint());
 			hintListModel.addHint(view.getHint());
 		}
+	}
+	
+	class VerwijderHintKnopListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent event) {			
+			if (view.getGeselecteerdeHintIndex() > -1) {
+				String hint = hintListModel.getElementAt(view.getGeselecteerdeHintIndex());
+				opdracht.removeHint(hint);
+				hintListModel.removeHint(hint);
+			} else {
+				view.toonErrorMessage("Selecteer een hint om te verwijderen", "Geen hint geselecteerd");
+			}
+			
+		}		
 	}
 
 	class OpslaanKnopListener implements ActionListener {
@@ -186,10 +201,15 @@ public class OpdrachtAanpassingController {
 		@Override
 		public int getSize() {
 			return hints.size();
-		}
+		}		
 		
 		public void addHint(String hint) {
 			hints.add(hint);
+			fireContentsChanged(this, 0, hints.size() - 1);
+		}
+		
+		public void removeHint(String hint) {
+			hints.remove(hint);
 			fireContentsChanged(this, 0, hints.size() - 1);
 		}
 		
