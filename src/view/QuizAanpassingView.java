@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
 
-import persistency.DBHandler;
+import view.viewInterfaces.IQuizAanpassingView;
 import model.OpdrachtCategorie;
 import model.Quiz;
 import model.quizStatus.Afgesloten;
@@ -38,7 +38,7 @@ import model.quizStatus.QuizStatus;
  */
 
 @SuppressWarnings("serial")
-public class QuizAanpassingView extends JFrame {
+public class QuizAanpassingView extends JFrame implements IQuizAanpassingView {
 	
 	//FIELDS
 	private String aantalOpdrachten;
@@ -54,15 +54,9 @@ public class QuizAanpassingView extends JFrame {
 	private JCheckBox ckbIsTest, ckbIsUniekeDeelname;
 	private JTable alleOpdrachtenTabel, geselecteerdeOpdrachtenTabel;
 	private JScrollPane alleOpdrachtenVeld, geselecteerdeOpdrachtenVeld;
-	private JPanel opdrachtKnoppenVeld, quizInfoVeld, sorteerVeld;
-	
-	/**
-	 * Default constructor met parameters
-	 * @param quiz
-	 * @param dbHandler
-	 * 
-	 */
-	public QuizAanpassingView(Quiz quiz, DBHandler dbHandler) {
+	private JPanel opdrachtKnoppenVeld, quizInfoVeld, sorteerVeld;	
+
+	public QuizAanpassingView() {
 		//Set JFrame
 		super("Quiz");
 		this.setSize(1200, 800);		
@@ -327,10 +321,7 @@ public class QuizAanpassingView extends JFrame {
 		constraints.insets = new Insets(10, 10, 10, 10);
 		constraints.gridy = 2;
 		constraints.gridx = 1;
-		this.add(opdrachtKnoppenVeld, constraints);
-		
-		//SET VIEW + TABELS
-		setViewToQuiz(quiz);	
+		this.add(opdrachtKnoppenVeld, constraints);	
 		
 		SwingUtilities.updateComponentTreeUI(this);
 	}
@@ -411,22 +402,6 @@ public class QuizAanpassingView extends JFrame {
 		setKolomBreedteGeselecteerdeOpdrachten(geselecteerdeOpdrachtenTabel);
 	}
 	
-	/**
-	 * Instellen van de breedten van de verschillende kolommen van de JTable
-	 * @param table
-	 */
-	private void setKolomBreedteAlleOpdrachten(JTable table) {
-		table.getColumnModel().getColumn(0).setPreferredWidth(40);  //Categorie
-		table.getColumnModel().getColumn(1).setPreferredWidth(40); //OpdrachtType
-		table.getColumnModel().getColumn(2).setPreferredWidth(300); //Vraag
-	}
-	private void setKolomBreedteGeselecteerdeOpdrachten(JTable table) {
-		table.getColumnModel().getColumn(0).setPreferredWidth(40);  //Categorie
-		table.getColumnModel().getColumn(1).setPreferredWidth(40); //OpdrachtType
-		table.getColumnModel().getColumn(2).setPreferredWidth(300); //Vraag
-		table.getColumnModel().getColumn(3).setPreferredWidth(40);  //MaxScore
-	}
-	
 	public void setStatus(QuizStatus status) {
 		cmbStatus.setSelectedItem(status);		
 	}
@@ -475,6 +450,22 @@ public class QuizAanpassingView extends JFrame {
 	}
 	public JTable getAlleOpdrachtenTabel() {
 		return alleOpdrachtenTabel;	
+	}
+	
+	/**
+	 * Instellen van de breedten van de verschillende kolommen van de JTable
+	 * @param table
+	 */
+	private void setKolomBreedteAlleOpdrachten(JTable table) {
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);  //Categorie
+		table.getColumnModel().getColumn(1).setPreferredWidth(40); //OpdrachtType
+		table.getColumnModel().getColumn(2).setPreferredWidth(300); //Vraag
+	}
+	private void setKolomBreedteGeselecteerdeOpdrachten(JTable table) {
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);  //Categorie
+		table.getColumnModel().getColumn(1).setPreferredWidth(40); //OpdrachtType
+		table.getColumnModel().getColumn(2).setPreferredWidth(300); //Vraag
+		table.getColumnModel().getColumn(3).setPreferredWidth(40);  //MaxScore
 	}
 	
 }

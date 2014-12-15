@@ -21,8 +21,10 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
 
+import view.viewInterfaces.IQuizBeheerView;
+
 @SuppressWarnings("serial")
-public class QuizBeheerView extends JFrame {
+public class QuizBeheerView extends JFrame implements IQuizBeheerView {
 	
 	private JPanel knoppenVeld;
 	private GridBagLayout layout;

@@ -92,6 +92,14 @@ public class ViewFactory {
 			if (settings.getProperty("rapportnadeelnameview").equals("RapportNaDeelnameView")) {
 				return new RapportNaDeelnameView();
 			}
+		case QuizBeheerView:
+			if (settings.getProperty("quizbeheerview").equals("QuizBeheerView")) {
+				return new QuizBeheerView();
+			}
+		case QuizAanpassingView:
+			if (settings.getProperty("quizaanpassingview").equals("QuizAanpassingView")) {
+				return new QuizAanpassingView();
+			}
 		}	
 		return null;
 	}

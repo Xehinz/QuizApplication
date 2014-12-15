@@ -94,15 +94,6 @@ public class LeerlingAanpassingView extends JFrame implements ILeerlingAanpassin
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.WEST;
 		this.add(btnLeerlingBewaren, constraints);
-
-		/*
-		constraints = new GridBagConstraints();
-		constraints.insets = new Insets(10, 10, 10, 10);
-		constraints.gridy = 5;
-		constraints.gridx = 3;
-		constraints.anchor = GridBagConstraints.WEST;
-		leerlingInfoVeld.add(btnQuizDeelnames, constraints);
-		*/
 				
 		//ADD TEXTFIELDS
 		constraints = new GridBagConstraints();
@@ -138,22 +129,6 @@ public class LeerlingAanpassingView extends JFrame implements ILeerlingAanpassin
 		constraints.weightx = 0.4;
 		constraints.anchor = GridBagConstraints.WEST;
 		this.add(txtLeerjaar, constraints);
-		
-//		//BUILD WINDOW
-//		constraints = new GridBagConstraints();
-//		constraints.insets = new Insets(10, 10, 10, 10);
-//		constraints.gridy = 0;
-//		constraints.gridx = 0;
-//		constraints.weightx = 1;
-//		constraints.fill = GridBagConstraints.HORIZONTAL;
-//		constraints.anchor = GridBagConstraints.NORTH;
-//		this.add(leerlingInfoVeld, constraints);
-//		
-//		constraints = new GridBagConstraints();
-//		constraints.insets = new Insets(10, 10, 10, 10);
-//		constraints.gridy = 5;
-//		constraints.gridx = 0;
-//		this.add(opdrachtKnoppenVeld, constraints);
 		
 		SwingUtilities.updateComponentTreeUI(this);
 	}

@@ -185,7 +185,7 @@ public class MainLeraarController extends Observable {
 			if (!quizBeheerStaatOpen) {
 				quizBeheerStaatOpen = true;
 				quizBeheerController = new QuizBeheerController(dbHandler,
-						leraar);
+						leraar, viewFactory);
 				quizBeheerController.getView().addWindowListener(
 						new WindowAdapter() {
 							@Override

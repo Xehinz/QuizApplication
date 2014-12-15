@@ -21,7 +21,10 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import persistency.DBHandler;
-import view.QuizAanpassingView;
+import view.ViewFactory;
+import view.ViewType;
+import view.viewInterfaces.IQuizAanpassingView;
+import view.viewInterfaces.IView;
 import model.KlassiekeOpdracht;
 import model.Leraar;
 import model.Meerkeuze;
@@ -38,7 +41,7 @@ import model.quizStatus.QuizStatus;
 
 public class QuizAanpassingController {
 	
-	private QuizAanpassingView view;
+	private IQuizAanpassingView view;
 	private DBHandler dbHandler;
 	private Quiz quiz;
 	private Leraar leraar;
@@ -58,7 +61,7 @@ public class QuizAanpassingController {
 	 * @param Controller die deze controller heeft opgeroepen	 
 	 */
 	public QuizAanpassingController(Quiz quiz, Leraar leraar,
-			DBHandler dbHandler, QuizBeheerController quizBeheerController) {		
+			DBHandler dbHandler, QuizBeheerController quizBeheerController, ViewFactory viewFactory) {		
 		this.quiz = quiz;
 		this.leraar = leraar;
 		this.dbHandler = dbHandler;
@@ -66,8 +69,8 @@ public class QuizAanpassingController {
 		quizOpdrachtenTabelModel = new QuizOpdrachtenTableModel();
 		this.quizBeheerController = quizBeheerController;		
 		setQuizOpdrachtenToQuiz(quiz);
-		view = new QuizAanpassingView(quiz,
-				dbHandler);		
+		view = (IQuizAanpassingView)viewFactory.maakView(ViewType.QuizAanpassingView);
+		view.setViewToQuiz(quiz);
 
 		// Set buttonlisteners
 		view.addOpdrachtToevoegenKnopActionListener(new OpdrachtToevoegenKnopListener());
@@ -91,7 +94,7 @@ public class QuizAanpassingController {
 	}
 	
 	//GETTER
-	public QuizAanpassingView getView() {
+	public IView getView() {
 		return view;
 	}
 	

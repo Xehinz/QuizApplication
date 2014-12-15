@@ -21,19 +21,24 @@ import model.Leraar;
 import model.Quiz;
 import persistency.DBHandler;
 import view.QuizBeheerView;
+import view.ViewFactory;
+import view.viewInterfaces.IQuizBeheerView;
+import view.viewInterfaces.IView;
 
 public class QuizBeheerController {
 
 	private DBHandler dbHandler;
-	private QuizBeheerView view;
+	private ViewFactory viewFactory;
+	private IQuizBeheerView view;
 	private Quiz quiz;
 	private Leraar leraar;
 	private boolean quizAanpassingStaatOpen;
 	private QuizAanpassingController quizAanpassingController;
 	private QuizBeheerTableModel tabelModel;
 
-	public QuizBeheerController(DBHandler dbHandler, Leraar leraar) {
+	public QuizBeheerController(DBHandler dbHandler, Leraar leraar, ViewFactory viewFactory) {
 		this.dbHandler = dbHandler;
+		this.viewFactory = viewFactory;
 		this.leraar = leraar;
 		this.view = new QuizBeheerView();
 		this.quiz = null;
@@ -50,7 +55,7 @@ public class QuizBeheerController {
 		view.setVisible(true);
 	}
 		
-	public QuizBeheerView getView() {
+	public IView getView() {
 		return view;
 	}
 
@@ -61,7 +66,7 @@ public class QuizBeheerController {
 		else {
 			quizAanpassingStaatOpen = true;
 			quizAanpassingController = new QuizAanpassingController(quiz,
-					leraar, dbHandler, this);
+					leraar, dbHandler, this, viewFactory);
 			quizAanpassingController.getView().addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent event) {
