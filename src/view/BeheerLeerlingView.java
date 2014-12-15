@@ -40,7 +40,7 @@ public class BeheerLeerlingView extends JFrame implements IBeheerLeerlingView {
 		
 		//Set Window
 		super("Beheer Leerlingen");
-		this.setSize(1200, 800);
+		this.setSize(800, 600);
 		this.setLocationRelativeTo(null);
 		//Set Layout
 		this.setLayout(aGBLayout); //layout @JFrame

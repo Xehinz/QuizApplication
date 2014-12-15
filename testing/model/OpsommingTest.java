@@ -44,13 +44,13 @@ public class OpsommingTest {
 	}
 
 	@Test
-	public void testIsValide_TeveelAntwoorden_GeeftFalse() {
-		assertFalse(opdrachtInVolgorde.isValide("maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag"));
+	public void testIsValide_1Antwoord_GeeftFalse() {
+		assertFalse(opdrachtInVolgorde.isValide("maandag"));
 	}
 
 	@Test
-	public void testIsValide_TeWeinigAntwoorden_GeeftFalse() {
-		assertFalse(opdrachtInVolgorde.isValide("maandag;dinsdag;woensdag;donderdag"));
+	public void testIsValide_FoutGescheiden_GeeftFalse() {
+		assertFalse(opdrachtInVolgorde.isValide("maandag,dinsdag,woensdag,donderdag"));
 	}
 
 	@Test

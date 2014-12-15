@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -198,11 +199,19 @@ public class LeerlingAanpassingView extends JFrame implements ILeerlingAanpassin
 	}
 	
 	public int getLeerjaar() {
+		try {
 		return Integer.parseInt(txtLeerjaar.getText());
+		} catch (NumberFormatException nEx) {
+			throw new NumberFormatException("Geef en getal tussen 1 en 6 in voor het leerjaar");
+		}
 	}
 	
 	public void setLeerjaar(int leerjaar) {
 		 txtLeerjaar.setText(Integer.toString(leerjaar));
+	}
+	
+	public void toonInformationMessage(String boodschap, String titel) {
+		JOptionPane.showMessageDialog(this, boodschap, titel, JOptionPane.OK_OPTION);
 	}
 	
 }

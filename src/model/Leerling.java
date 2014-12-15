@@ -59,6 +59,7 @@ public class Leerling implements Comparable<Leerling>, Cloneable {
 	 */
 	public Leerling() {
 		setID(0);
+		quizDeelnames = new ArrayList<QuizDeelname>();
 	}
 
 	/**

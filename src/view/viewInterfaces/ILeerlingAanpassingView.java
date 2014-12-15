@@ -23,5 +23,7 @@ public interface ILeerlingAanpassingView extends IView {
 	public int getLeerjaar();
 	
 	public void setLeerjaar(int leerjaar);
+	
+	public void toonInformationMessage(String boodschap, String titel);
 
 }

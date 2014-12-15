@@ -257,7 +257,8 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 	/**
 	 * Haalt een lijst op met de juiste antwoorden voor deze Opsomming
 	 * 
-	 * @param antwoord de String met de antwoorden gescheiden door punt-komma's
+	 * @param antwoord
+	 *            de String met de antwoorden gescheiden door punt-komma's
 	 * @return een lijst op met de juiste antwoorden voor deze Opsomming
 	 */
 	public static ArrayList<String> getLijstJuisteAntwoord(String antwoord) {
@@ -273,11 +274,14 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	@Override
 	public boolean isValide(String antwoord) {
-		if (Opsomming.getLijstJuisteAntwoord(antwoord).size() == this.aantalAntwoordenInOpsomming) {
-			return true;
-		} else {
-			return false;
+		if (aantalAntwoordenInOpsomming > 1) {
+			if (antwoord.split(";").length > 1) {
+				return true;
+			} else {
+				return false;
+			}
 		}
+		return true;
 	}
 
 	@Override
@@ -310,8 +314,9 @@ public class Opsomming extends Opdracht implements Valideerbaar {
 
 	@Override
 	public String toString() {
-		return "Opsomming " + super.toString() + opsommingJuisteAntwoord + " met de volgorde "
-				+ (inJuisteVolgorde ? "" : "niet ") + "belangrijk.";
+		return "Opsomming " + super.toString() + opsommingJuisteAntwoord
+				+ " met de volgorde " + (inJuisteVolgorde ? "" : "niet ")
+				+ "belangrijk.";
 	}
 
 	@Override

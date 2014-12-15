@@ -17,23 +17,23 @@ public class LeerlingAanpassingController {
 	private DBHandler aDBHandler;
 	private Leerling aLeerling;
 
-	
 	public LeerlingAanpassingController(Leerling aLeerling, Leraar aLeraar,
 			DBHandler dbHandler, ViewFactory viewFactory) {
 		this.aLeerling = aLeerling;
 		this.aDBHandler = dbHandler;
-		this.aView = (ILeerlingAanpassingView)viewFactory.maakView(ViewType.LeerlingAanpassingView);
-		
+		this.aView = (ILeerlingAanpassingView) viewFactory
+				.maakView(ViewType.LeerlingAanpassingView);
+
 		aView.setID(aLeerling.getID());
 		aView.setVoornaam(aLeerling.getLeerlingVoornaam());
 		aView.setFamilienaam(aLeerling.getLeerlingFamilienaam());
 		aView.setLeerjaar(aLeerling.getLeerjaar());
-	
+
 		aView.addLeerlingBewarenListener(new LeerlingBewarenListener());
 
 		aView.setVisible(true);
 	}
-	
+
 	public Leerling getLeerling() {
 		return aLeerling;
 	}
@@ -41,16 +41,24 @@ public class LeerlingAanpassingController {
 	public void setLeerling(String voornaam, String familienaam, int leerjaar) {
 		aLeerling.setLeerlingVoornaam(voornaam);
 		aLeerling.setLeerlingFamilienaam(familienaam);
-		aLeerling.setLeerjaar(leerjaar);		
+		aLeerling.setLeerjaar(leerjaar);
 	}
 
 	class LeerlingBewarenListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			setLeerling(aView.getVoornaam(),aView.getFamilienaam(), aView.getLeerjaar());
-			if (Integer.parseInt(aView.getID()) == 0) {aDBHandler.getLeerlingContainer().addLeerling(getLeerling());}
-			else {aLeerling = aDBHandler.getLeerlingContainer().getLeerling(Integer.parseInt(aView.getID()));}
-			
+			try {
+				setLeerling(aView.getVoornaam(), aView.getFamilienaam(),
+						aView.getLeerjaar());
+				if (Integer.parseInt(aView.getID()) == 0) {
+					aDBHandler.getLeerlingContainer()
+							.addLeerling(getLeerling());
+					aView.dispose();
+				}
+			} catch (Exception ex) {
+				aView.toonInformationMessage(ex.getMessage(), "Fout");
+			}
+
 			aView.setID(aLeerling.getID());
 		}
 	}
